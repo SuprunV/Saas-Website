@@ -14,7 +14,8 @@
         padding-bottom: 50px;
         transition: all 0.5s;
 
-        &:hover::after {
+        &:hover::after,
+        &:hover::before {
             content: "";
             position: absolute;
             z-index: 1;
@@ -24,7 +25,10 @@
             bottom: -4px;
             border: 4px rgb(58, 58, 58) solid;
             border-radius: 15px;
-            animation: promo-item-pulse 1s infinite;
+            animation: promo-item-pulse 1.3s infinite;
+        }
+
+        &:hover::before {
             animation-delay: 0.5s;
         }
 
@@ -51,7 +55,7 @@
         font-size: 25px;
         display: block;
         margin: 0 auto;
-        margin-top: 20px;
+        margin-top: 40px;
     }
 
     .btn-to-catalog span {
@@ -59,7 +63,7 @@
         top: -25%;
         right: 5%;
         font-size: 50px;
-        animation: arrow-collapse 1s infinite;
+        animation: arrow-collapse 1s infinite ease-in-out;
     }
 
     @keyframes arrow-collapse {

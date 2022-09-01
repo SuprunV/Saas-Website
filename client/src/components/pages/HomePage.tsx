@@ -37,7 +37,7 @@ const HomePage = ({ }) => {
                         </div>
                     </div>
                 </div>
-                <Link to={RouteNames.AUTH} className='btn btn-primary btn-lg btn-to-catalog'>Go to catalog <span>&#8594;</span></Link>
+                <Link to={RouteNames.AUTH} className='btn btn-primary btn-lg btn-to-catalog btn-dark'>Go to catalog <span>&#8594;</span></Link>
             </Container>
         </div>
     )
