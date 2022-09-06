@@ -1,13 +1,24 @@
-import React, {FC} from 'react';
+import React, { FC, useState } from 'react';
+import { Row, Card, Container } from "react-bootstrap";
+import LoginForm from '../LoginForm';
+import RegForm from '../RegForm';
+import Switcher from '../UI/Switcher';
+import "../../styles/authForms.scss";
 
-interface AuthPageProps {
-    
-}
 
-const AuthPage: FC<AuthPageProps> = ({}) => {
+const AuthPage = () => {
+    const [isLogin, setLogin] = useState(true);
     return (
-        <div>
-        </div>
+        <Container>
+            <Row className="h100 d-flex justify-content-center align-items-center auth-forms" >
+                <Card className='h-60 p-4 w-50'>
+                    <Switcher left='Login' right='Register' setValue={setLogin} value={isLogin} />
+                    {isLogin
+                        ? <LoginForm />
+                        : <RegForm />}
+                </Card>
+            </Row>
+        </Container>
     )
 }
 export default AuthPage;

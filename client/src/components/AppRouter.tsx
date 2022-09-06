@@ -12,7 +12,7 @@ const AppRouter: FC<AppRouterProps> = ({ }) => {
     const getPublicRoutes = (): React.ReactElement => {
         return (
             <Routes>
-                {publicRoutes.map(route => <Route path={route.path} element={<route.element />} />)}
+                {publicRoutes.map(route => <Route key={route.path} path={route.path} element={<route.element />} />)}
                 <Route path="/*" element={<Navigate to={RouteNames.HOME} replace />} />
             </Routes>
         );

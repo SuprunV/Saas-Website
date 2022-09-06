@@ -16,7 +16,7 @@ export enum RouteNames {
 
 export const publicRoutes: IRoute[] = [
     { path: RouteNames.HOME, element: HomePage, label: "Home" },
-    { path: RouteNames.AUTH, element: AuthPage },
+    { path: RouteNames.AUTH, element: AuthPage, label: "Authorization" },
 ]
 
 

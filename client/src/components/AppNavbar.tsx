@@ -13,7 +13,7 @@ const AppNavbar: FC = () => {
             <Container>
                 <Navbar.Brand href={RouteNames.HOME}> React Bootstrap</Navbar.Brand>
                 <Nav className="me-auto">
-                    <Nav.Link href="#features">Page 1</Nav.Link>
+                    <Nav.Link href={RouteNames.AUTH}>Authorization</Nav.Link>
                     <Nav.Link href="#pricing">Page 2</Nav.Link>
                 </Nav>
                 <Navbar.Collapse className="justify-content-end">
