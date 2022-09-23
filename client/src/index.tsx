@@ -1,15 +1,21 @@
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import './styles/index.css';
-import AppNavbar from './components/AppNavbar';
-import AppRouter from './components/AppRouter';
+import ReactDOM from "react-dom/client";
+import "./styles/index.css";
+import { IGlobalContext } from "./types/GlobalContext";
+import { createContext } from "react";
+import { UserStore } from "./store/UserStore";
+import App from "./App";
+
+export const Context = createContext<IGlobalContext>({} as IGlobalContext);
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById("root") as HTMLElement
 );
 root.render(
-  <BrowserRouter>
-    <AppNavbar />
-    <AppRouter />
-  </BrowserRouter>
+    <Context.Provider
+        value={{
+            User: new UserStore(),
+        }}
+    >
+        <App />
+    </Context.Provider>
 );

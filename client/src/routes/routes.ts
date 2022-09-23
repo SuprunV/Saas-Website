@@ -1,5 +1,5 @@
-import AuthPage from "../components/pages/AuthPage";
-import HomePage from "../components/pages/HomePage";
+import AuthPage from "../pages/AuthPage";
+import HomePage from "../pages/HomePage";
 
 interface IRoute {
   path: string;

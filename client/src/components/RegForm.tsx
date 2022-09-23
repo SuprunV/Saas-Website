@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { Button, InputGroup } from "react-bootstrap";
 import { IValidateOptions, useValidateObj } from "../hooks/useValidateObj";
-import { RolesEnum } from "../types/systemRoles";
+import { RolesEnum } from "../types/SystemRoles";
 import FormWrap, { StatusEnum } from "./UI/FormWrap";
 import ValidInput from "./UI/ValidInput";
 
@@ -48,7 +48,8 @@ const RegForm = () => {
                 placeholder={"Input your login..."}
                 showError={showError}
                 title="Login"
-                value={msgTexts.login}
+                value={regData.login}
+                errors={msgTexts.login}
             />
             <ValidInput
                 onChange={(e) =>
@@ -57,7 +58,8 @@ const RegForm = () => {
                 placeholder={"Input your password..."}
                 showError={showError}
                 title="Password"
-                value={msgTexts.password}
+                errors={msgTexts.password}
+                value={regData.password}
                 type="password"
             />
             <div className="mt-3">

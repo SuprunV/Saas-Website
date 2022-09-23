@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { StatusEnum } from "../components/UI/FormWrap";
-import { RolesEnum } from "../types/systemRoles";
+import { RolesEnum } from "../types/SystemRoles";
 
 export interface IValidateOptions {
   minLength?: number;
