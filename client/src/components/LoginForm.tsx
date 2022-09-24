@@ -9,12 +9,15 @@ import UserApi from "../api/UserApi";
 import { Context } from "..";
 import { useFetching } from "../hooks/useFetching";
 import { error } from "console";
+import { useNavigate } from "react-router-dom";
+import { RoutePaths } from "../routes/routes";
 interface ILoginData {
     login: string;
     password: string;
 }
 
 const LoginForm = () => {
+    const navigate = useNavigate();
     const [loginData, setLoginData] = useState<ILoginData>({
         login: "",
         password: "",
@@ -33,8 +36,11 @@ const LoginForm = () => {
     } = useFetching(async () => {
         const user = await UserApi.login(loginData.login, loginData.password);
         if (user) {
-            User.setIsAuth(true);
-            User.setUser(user);
+            setTimeout(() => {
+                User.setIsAuth(true);
+                User.setUser(user);
+                navigate(RoutePaths.HOME);
+            }, 2000);
         }
     });
 

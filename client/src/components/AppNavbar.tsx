@@ -4,7 +4,7 @@ import { Navbar, Nav } from "react-bootstrap";
 import Container from "react-bootstrap/esm/Container";
 import { Link, NavLink } from "react-router-dom";
 import { Context } from "..";
-import { RoutePaths } from "../routes/routes";
+import { RoutePaths, routesByRole } from "../routes/routes";
 import "../styles/navbar.scss";
 import { IUserToken } from "../types/UserTypes";
 const AppNavbar: FC = observer(() => {
@@ -19,21 +19,37 @@ const AppNavbar: FC = observer(() => {
     return (
         <Navbar bg="dark" variant="dark" className="navbar">
             <Container>
-                <Navbar.Brand href={RoutePaths.HOME}>
+                <Navbar.Brand href={RoutePaths.MAIN}>
                     {" "}
                     React Bootstrap
                 </Navbar.Brand>
                 <Nav className="me-auto">
-                    <Nav.Link href={RoutePaths.AUTH}>Authorization</Nav.Link>
-                    <Nav.Link href="#pricing">Page 2</Nav.Link>
+                    {routesByRole(User.user.role).map(
+                        (route) =>
+                            route.label && (
+                                <Link
+                                    role="button"
+                                    className="nav-link"
+                                    to={route.path}
+                                >
+                                    {route.label}
+                                </Link>
+                            )
+                    )}
                 </Nav>
                 <Navbar.Collapse className="justify-content-end">
                     {User.isAuth ? (
-                        <Navbar.Text>
+                        <Navbar.Text className="d-flex align-items-center">
                             <span className="navbar-user">
-                                {User.user.name}
+                                <Link
+                                    role="button"
+                                    className="nav-link"
+                                    to={RoutePaths.HOME}
+                                >
+                                    {User.user.name}
+                                </Link>
                             </span>{" "}
-                            <a onClick={logoutAction}>Log Out</a>
+                            <a onClick={logoutAction} className="cursor-pointer">Log Out</a>
                         </Navbar.Text>
                     ) : (
                         <Navbar.Text>
