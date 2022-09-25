@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useEffect, useRef } from "react";
 import "../styles/homePage.scss";
 import { Link, Routes } from "react-router-dom";
 import { Container, Button } from "react-bootstrap";
@@ -19,12 +19,12 @@ const MainPage = ({}) => {
                         <div className="promo-item-text">firms</div>
                     </div>
                     <div className="promo-item">
-                        <div className="promo-item-number">100+</div>
+                        <div className="promo-item-number">50+</div>
                         <div className="promo-item-text">masters</div>
                     </div>
                     <div className="promo-item">
                         <div className="promo-item-number">200+</div>
-                        <div className="promo-item-text">customers</div>
+                        <div className="promo-item-text">clients</div>
                     </div>
                 </div>
                 <Link

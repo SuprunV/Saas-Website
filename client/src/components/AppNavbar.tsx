@@ -28,6 +28,7 @@ const AppNavbar: FC = observer(() => {
                         (route) =>
                             route.label && (
                                 <Link
+                                    key={route.path}
                                     role="button"
                                     className="nav-link"
                                     to={route.path}
@@ -49,7 +50,12 @@ const AppNavbar: FC = observer(() => {
                                     {User.user.name}
                                 </Link>
                             </span>{" "}
-                            <a onClick={logoutAction} className="cursor-pointer">Log Out</a>
+                            <a
+                                onClick={logoutAction}
+                                className="cursor-pointer"
+                            >
+                                Log Out
+                            </a>
                         </Navbar.Text>
                     ) : (
                         <Navbar.Text>
