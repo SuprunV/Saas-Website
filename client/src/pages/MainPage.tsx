@@ -28,7 +28,7 @@ const MainPage = ({}) => {
                     </div>
                 </div>
                 <Link
-                    to={User.user.role ? RoutePaths.HOME : RoutePaths.AUTH}
+                    to={User.user.role ? RoutePaths.MAIN : RoutePaths.AUTH}
                     className="btn btn-primary btn-lg btn-to-catalog btn-dark"
                 >
                     Start using our App <span>&#8594;</span>

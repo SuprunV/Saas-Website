@@ -11,6 +11,7 @@ import { useFetching } from "../hooks/useFetching";
 import { error } from "console";
 import { useNavigate } from "react-router-dom";
 import { RoutePaths } from "../routes/routes";
+import { ThemeEnums } from "../types/Themes";
 interface ILoginData {
     login: string;
     password: string;
@@ -22,7 +23,7 @@ const LoginForm = () => {
         login: "",
         password: "",
     } as ILoginData);
-    const { User } = useContext(Context);
+    const { User, Theme } = useContext(Context);
     const { msgTexts, msgTextsCurrent, isValid, isValidCur, validateObj } =
         useValidateObj(loginData, {
             login: { minLength: 3, email: true } as IValidateOptions,
@@ -39,7 +40,8 @@ const LoginForm = () => {
             setTimeout(() => {
                 User.setIsAuth(true);
                 User.setUser(user);
-                navigate(RoutePaths.HOME);
+                navigate(`${RoutePaths.MAIN}${User.user.company}`);
+                Theme.setTheme(ThemeEnums.company);
             }, 2000);
         }
     });
@@ -55,39 +57,24 @@ const LoginForm = () => {
 
     const authLike = (role: RolesEnum) => {
         switch (role) {
-            case RolesEnum.client:
-                setLoginData({ login: "eren@mail.ru", password: "123" });
-                break;
             case RolesEnum.company:
-                setLoginData({ login: "ervin@mail.ru", password: "123" });
-                break;
-            case RolesEnum.master:
-                setLoginData({ login: "levi@mail.ru", password: "123" });
+                setLoginData({
+                    login: "company-example@gmail.com",
+                    password: "123",
+                });
                 break;
         }
     };
 
     return (
         <FormWrap msgStatus={status} msgText={msg} submitAction={login}>
-            Demo versions For:
+            Demo version:
             <div className="d-flex justify-content-between">
                 <Button
-                    onClick={() => authLike(RolesEnum.client)}
+                    onClick={() => authLike(RolesEnum.company)}
                     variant="outline-secondary"
                 >
-                    Client account
-                </Button>
-                <Button
-                    onClick={() => authLike(RolesEnum.company)}
-                    variant="outline-dark"
-                >
                     Company account
-                </Button>
-                <Button
-                    onClick={() => authLike(RolesEnum.master)}
-                    variant="outline-info"
-                >
-                    Master account
                 </Button>
             </div>
             <ValidInput

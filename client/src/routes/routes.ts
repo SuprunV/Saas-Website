@@ -4,25 +4,32 @@ import HomePage from "../pages/HomePage";
 import MainPage from "../pages/MainPage";
 import SearchPage from "../pages/SearchPage";
 import { RolesEnum } from "../types/SystemRoles";
+import { IUserToken } from "../types/UserTypes";
 
 interface IRoute {
     path: string;
     Component: React.ComponentType;
     label?: string;
+    isMain?: boolean;
 }
 
 export enum RoutePaths {
     MAIN = "/",
     AUTH = "/auth",
-    HOME = "/home",
     SEARCH_PAGE = "/search",
     CALENDAR = "/calendar",
 }
 
-export const routesByRole = (role: RolesEnum | undefined | null): IRoute[] => {
-    switch (role) {
-        case RolesEnum.client:
-            return privateClientRoutes;
+export const routesByRole = (user: IUserToken | undefined | null): IRoute[] => {
+    var addBaseUrl = (route: IRoute) => {
+        return {
+            ...route,
+            path: `/${user?.company}${route.path.length > 1 ? route.path : ""}`,
+        };
+    };
+    switch (user?.role) {
+        case RolesEnum.company:
+            return privateCompanyRoutes.map(addBaseUrl);
         default:
             return publicRoutes;
     }
@@ -33,16 +40,6 @@ export const publicRoutes: IRoute[] = [
     { path: RoutePaths.AUTH, Component: AuthPage, label: "Authorization" },
 ];
 
-export const privateClientRoutes: IRoute[] = [
-    { path: RoutePaths.HOME, Component: HomePage },
-    {
-        path: RoutePaths.SEARCH_PAGE,
-        Component: SearchPage,
-        label: "Find your master",
-    },
-    {
-        path: RoutePaths.CALENDAR,
-        Component: CalendarPage,
-        label: "Your events",
-    },
+export const privateCompanyRoutes: IRoute[] = [
+    { path: RoutePaths.MAIN, Component: HomePage, label: "Home" },
 ];

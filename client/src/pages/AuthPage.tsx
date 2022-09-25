@@ -11,12 +11,15 @@ const AuthPage = () => {
         <Container>
             <Row className="h100 d-flex justify-content-center align-items-center auth-forms">
                 <Card className="h-60 p-4 w-50">
-                    <Switcher
-                        left="Login"
-                        right="Register"
-                        setValue={setLogin}
-                        value={isLogin}
-                    />
+                    <h1 className="text-center mt-3">Log in as company</h1>
+                    <div className="mt-3">
+                        <Switcher
+                            left="Login"
+                            right="Register"
+                            setValue={setLogin}
+                            value={isLogin}
+                        />
+                    </div>
                     {isLogin ? <LoginForm /> : <RegForm />}
                 </Card>
             </Row>

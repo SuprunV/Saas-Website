@@ -5,4 +5,5 @@ export interface IUserToken {
     role: RolesEnum;
     name: string;
     email: string;
+    company: string;
 }

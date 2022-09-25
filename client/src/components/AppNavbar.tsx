@@ -6,25 +6,29 @@ import { Link, NavLink } from "react-router-dom";
 import { Context } from "..";
 import { RoutePaths, routesByRole } from "../routes/routes";
 import "../styles/navbar.scss";
+import { LocalStorageItemEnum } from "../types/LocalStorageItemEnum";
+import { ThemeEnums } from "../types/Themes";
 import { IUserToken } from "../types/UserTypes";
 const AppNavbar: FC = observer(() => {
-    const { User } = useContext(Context);
+    const { User, Theme } = useContext(Context);
+    const routes = routesByRole(User.user);
 
     const logoutAction = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         User.setIsAuth(false);
         User.setUser({} as IUserToken);
+        localStorage.removeItem(LocalStorageItemEnum.userJson);
+        Theme.setTheme(ThemeEnums.main);
     };
 
     return (
-        <Navbar bg="dark" variant="dark" className="navbar">
+        <Navbar className="navbar">
             <Container>
                 <Navbar.Brand href={RoutePaths.MAIN}>
-                    {" "}
-                    React Bootstrap
+                    Beauty managment
                 </Navbar.Brand>
                 <Nav className="me-auto">
-                    {routesByRole(User.user.role).map(
+                    {routes.map(
                         (route) =>
                             route.label && (
                                 <Link
@@ -45,7 +49,7 @@ const AppNavbar: FC = observer(() => {
                                 <Link
                                     role="button"
                                     className="nav-link"
-                                    to={RoutePaths.HOME}
+                                    to={RoutePaths.MAIN}
                                 >
                                     {User.user.name}
                                 </Link>

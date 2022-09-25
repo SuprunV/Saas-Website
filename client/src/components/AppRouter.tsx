@@ -6,15 +6,15 @@ import { publicRoutes, RoutePaths, routesByRole } from "../routes/routes";
 
 const AppRouter = observer(({}) => {
     const { User } = useContext(Context);
+    const routes = routesByRole(User.user);
+    const navigateTo = User.user.company ? `/${User.user.company}` : "/";
+    console.log("routes", routes, navigateTo);
     return (
         <Routes>
-            {routesByRole(User.user.role).map(({ path, Component }) => (
+            {routes.map(({ path, Component }) => (
                 <Route key={path} path={path} element={<Component />} />
             ))}
-            <Route
-                path="/*"
-                element={<Navigate to={RoutePaths.MAIN} replace />}
-            />
+            <Route path="/*" element={<Navigate to={navigateTo} replace />} />
         </Routes>
     );
 });
