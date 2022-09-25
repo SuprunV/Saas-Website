@@ -1,0 +1,9 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
+.h100 {
+    height: calc(100vh - 62px);
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
