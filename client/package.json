@@ -12,6 +12,7 @@
     "@vuepic/vue-datepicker": "^3.4.8",
     "ant-design": "^1.0.0",
     "ant-design-vue": "^3.2.12",
+    "gsap": "^3.11.2",
     "pinia": "^2.0.22",
     "primeicons": "^5.0.0",
     "primevue": "^3.17.0",

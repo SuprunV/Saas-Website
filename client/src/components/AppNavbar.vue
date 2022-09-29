@@ -3,7 +3,7 @@ import '@/styles/navbar.scss';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue';
 import { defineComponent } from 'vue';
 import { mapActions, mapMutations, mapState } from 'vuex';
-
+import { UserOutlined } from '@ant-design/icons-vue';
 export default defineComponent({
     data: () => ({
         selectedKeys: ['1'],
@@ -34,7 +34,7 @@ export default defineComponent({
             this.$emit('update:collapsed', !this.collapsed);
         },
     },
-    components: { MenuUnfoldOutlined, MenuFoldOutlined },
+    components: { MenuUnfoldOutlined, MenuFoldOutlined, UserOutlined },
 });
 </script>
 
@@ -67,6 +67,9 @@ export default defineComponent({
                         <a-button type="text">
                             <span class="btn-user">Leonid (Admin)</span>
                         </a-button>
+                        <a-avatar src="https://joeschmoe.io/api/v1/random">
+                            <!-- <template #icon><UserOutlined /></template> -->
+                        </a-avatar>
                     </a-col>
                     <a-col>
                         <a-button type="text" danger @click="logoutAction"
