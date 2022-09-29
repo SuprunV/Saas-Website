@@ -21,15 +21,18 @@
 import { defineComponent, ref } from 'vue';
 import AppSideMenu from './components/AppSideMenu.vue';
 import AppNavbar from './components/AppNavbar.vue';
+import { mapState } from 'vuex';
 
 export default defineComponent({
-    data: () => ({
-        isAuth: false,
-    }),
     setup() {
         return {
             collapsed: ref<boolean>(false),
         };
+    },
+    computed: {
+        ...mapState({
+            isAuth: (state: any) => state.isAuth,
+        }),
     },
     components: {
         AppSideMenu,

@@ -2,16 +2,22 @@
 import '@/styles/navbar.scss';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue';
 import { defineComponent } from 'vue';
+import { mapState } from 'vuex';
 
 export default defineComponent({
-    data: () => ({
-        isAuth: true,
-    }),
     props: {
         collapsed: {
             type: Boolean,
             required: true,
         },
+    },
+    setup() {
+        // console.log(this.$state);
+    },
+    computed: {
+        ...mapState({
+            isAuth: (state: any) => state.isAuth,
+        }),
     },
     methods: {
         collapseSideBar() {
