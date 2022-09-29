@@ -14,4 +14,12 @@ export default createStore({
             state.authUser = authUser;
         },
     },
+    actions: {
+        logoutAction({ commit }) {
+            commit('setIsAuth', false);
+        },
+        loginAction({ commit }) {
+            commit('setIsAuth', true);
+        },
+    },
 });
