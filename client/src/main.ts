@@ -1,10 +1,22 @@
-import App from './App.vue';
 import { createApp } from 'vue';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
-import { BootstrapVueIcons } from 'bootstrap-vue/src/icons';
-import BootstrapVue from 'bootstrap-vue';
+import Antd from 'ant-design-vue';
+import App from '@/App.vue';
+import 'ant-design-vue/dist/antd.css';
+import '@/styles/theme.scss';
+import store from '@/store';
+import router from '@/router/router';
+import directives from './directives';
 
 const app = createApp(App);
+
+directives.forEach((direcitve: any) => {
+    console.log(direcitve);
+    app.directive(direcitve.name, direcitve);
+});
+
+app.use(Antd);
+
+app.use(store);
+app.use(router);
 
 app.mount('#app');
