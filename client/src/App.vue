@@ -31,6 +31,8 @@ export default defineComponent({
 
         const { isAuth } = storeToRefs(auth);
 
+        auth.checkLoginStore();
+
         return {
             collapsed: ref<boolean>(false),
             isAuth,

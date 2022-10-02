@@ -6,7 +6,7 @@ import '@/styles/authPage.scss';
 
 export default defineComponent({
     data: () => ({
-        isRegistration: true,
+        isRegistration: false,
     }),
     components: { LoginForm, RegForm },
 });

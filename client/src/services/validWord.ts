@@ -1,9 +1,6 @@
 export const validWord = (word: string, maxLen: number): string => {
+    word = word.toLowerCase();
     var parts = word.split(' ');
-    console.log(parts);
-    parts = parts.map((p) => p.replace(/[^a-z0-9]/gi, '').toLowerCase());
-    console.log(parts);
-
     if (parts.length == 1) {
         word = parts[0].substring(0, maxLen);
     } else if (parts.length === 2) {

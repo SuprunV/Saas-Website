@@ -4,3 +4,4 @@ export interface ICompany {
     name: string;
     alias: string;
 }
+    

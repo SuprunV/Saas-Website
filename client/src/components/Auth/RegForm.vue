@@ -1,6 +1,8 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 import { validWord } from '@/services/validWord';
+import { useFetching } from '@/hooks/useFetching';
+import axios from 'axios';
 
 interface FormState {
     companyName: string;
@@ -16,6 +18,7 @@ export default defineComponent({
             emailPart: '@',
             password: '',
         });
+
         const onFinish = (values: any) => {
             console.log(values);
         };

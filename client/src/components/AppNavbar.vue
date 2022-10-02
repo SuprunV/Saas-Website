@@ -7,11 +7,12 @@ import { UserOutlined } from '@ant-design/icons-vue';
 import { useAuthStore } from '@/store/useAuth';
 import { storeToRefs } from 'pinia';
 import { AppRoutes } from '@/router/router';
+import UserAPI from '@/api/UserAPI';
 
 export default defineComponent({
     data: () => ({
         selectedKeys: [window.location.pathname],
-        AppRoutes,  
+        AppRoutes,
     }),
     props: {
         collapsed: {
@@ -22,15 +23,19 @@ export default defineComponent({
     setup() {
         const auth = useAuthStore();
 
-        const { loginAction, logoutAction } = auth;
+        const { loginActionStore, logoutActionStore } = auth;
 
         const { isAuth, authUser } = storeToRefs(auth);
 
-        return { isAuth, loginAction, logoutAction };
+        return { isAuth, authUser, loginActionStore, logoutActionStore };
     },
     methods: {
         collapseSideBar() {
             this.$emit('update:collapsed', !this.collapsed);
+        },
+        logout() {
+            UserAPI.logout(this.authUser);
+            this.logoutActionStore();
         },
     },
     components: { MenuUnfoldOutlined, MenuFoldOutlined, UserOutlined },
@@ -78,7 +83,7 @@ export default defineComponent({
                         </a-avatar>
                     </a-col>
                     <a-col>
-                        <a-button type="text" danger @click="logoutAction"
+                        <a-button type="text" danger @click="logout"
                             >Logut</a-button
                         >
                     </a-col>
