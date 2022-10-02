@@ -4,7 +4,7 @@ import { ref } from 'vue';
 
 export const useFetching = (asyncFunc: (...params: any) => void) => {
     const isLoading = ref(false);
-    const response = ref();
+    const response = ref<any>({});
     const message = ref<IFetchResponse>({
         message: '',
         type: ResponseTypeEnum.NONE,
@@ -18,7 +18,6 @@ export const useFetching = (asyncFunc: (...params: any) => void) => {
                 message: 'Success!',
                 type: ResponseTypeEnum.SUCCESS,
             };
-            console.log('in function', message.value);
         } catch (e: any) {
             message.value = {
                 message: e.message,

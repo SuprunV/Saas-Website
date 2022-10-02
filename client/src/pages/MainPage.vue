@@ -179,7 +179,9 @@ export default defineComponent({
             <template #renderItem="{ item }">
                 <a-list-item>
                     <template #actions>
-                        <a-button>Visit</a-button>
+                        <a-button @click="$router.push(item.alias)"
+                            >Visit</a-button
+                        >
                     </template>
                     <a-skeleton
                         avatar
@@ -189,7 +191,7 @@ export default defineComponent({
                     >
                         <a-list-item-meta>
                             <template #title>
-                                <a href="#">{{ item.name }}</a>
+                                <a :href="`${item.alias}`">{{ item.name }}</a>
                             </template>
                             <template #avatar>
                                 <a-avatar :src="item.img" />

@@ -4,7 +4,7 @@ export interface IUser {
     email: string;
     role: RolesEnum;
     companyName: string;
-    companyPath: string;
+    companyAlias: string;
 }
 
 export enum RolesEnum {
