@@ -6,10 +6,12 @@ import { mapActions, mapMutations, mapState } from 'vuex';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { useAuthStore } from '@/store/useAuth';
 import { storeToRefs } from 'pinia';
+import { AppRoutes } from '@/router/router';
 
 export default defineComponent({
     data: () => ({
-        selectedKeys: ['1'],
+        selectedKeys: [window.location.pathname],
+        AppRoutes,  
     }),
     props: {
         collapsed: {
@@ -53,9 +55,16 @@ export default defineComponent({
             ></a-col>
             <a-col :span="15">
                 <a-menu v-model:selectedKeys="selectedKeys" mode="horizontal">
-                    <a-menu-item key="1">nav 1</a-menu-item>
-                    <a-menu-item key="2">nav 2</a-menu-item>
-                    <a-menu-item key="3">nav 3</a-menu-item>
+                    <a-menu-item :key="AppRoutes.MAIN"
+                        ><router-link :to="AppRoutes.MAIN"
+                            >Main</router-link
+                        ></a-menu-item
+                    >
+                    <a-menu-item :key="AppRoutes.AUTH"
+                        ><router-link :to="AppRoutes.AUTH"
+                            >Authorization</router-link
+                        ></a-menu-item
+                    >
                 </a-menu>
             </a-col>
             <a-col :span="7">
@@ -78,7 +87,7 @@ export default defineComponent({
                     <a-button
                         type="text"
                         class="btn-success"
-                        @click="loginAction"
+                        @click="$router.push(AppRoutes.AUTH)"
                     >
                         Log in
                     </a-button>
