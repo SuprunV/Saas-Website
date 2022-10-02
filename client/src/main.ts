@@ -3,20 +3,19 @@ import Antd from 'ant-design-vue';
 import App from '@/App.vue';
 import 'ant-design-vue/dist/antd.css';
 import '@/styles/theme.scss';
-import store from '@/store';
 import router from '@/router/router';
 import directives from './directives';
+import { createPinia } from 'pinia';
 
 const app = createApp(App);
 
 directives.forEach((direcitve: any) => {
-    console.log(direcitve);
     app.directive(direcitve.name, direcitve);
 });
 
-app.use(Antd);
+app.use(createPinia());
 
-app.use(store);
+app.use(Antd);
 app.use(router);
 
 app.mount('#app');
