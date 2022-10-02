@@ -4,6 +4,9 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue';
 import { defineComponent } from 'vue';
 import { mapActions, mapMutations, mapState } from 'vuex';
 import { UserOutlined } from '@ant-design/icons-vue';
+import { useAuthStore } from '@/store/useAuth';
+import { storeToRefs } from 'pinia';
+
 export default defineComponent({
     data: () => ({
         selectedKeys: ['1'],
@@ -15,21 +18,15 @@ export default defineComponent({
         },
     },
     setup() {
-        // console.log(this.$state);
-    },
-    computed: {
-        ...mapState({
-            isAuth: (state: any) => state.isAuth,
-        }),
+        const auth = useAuthStore();
+
+        const { loginAction, logoutAction } = auth;
+
+        const { isAuth, authUser } = storeToRefs(auth);
+
+        return { isAuth, loginAction, logoutAction };
     },
     methods: {
-        ...mapMutations({
-            setIsAuth: 'setIsAuth',
-        }),
-        ...mapActions({
-            logoutAction: 'logoutAction',
-            loginAction: 'loginAction',
-        }),
         collapseSideBar() {
             this.$emit('update:collapsed', !this.collapsed);
         },

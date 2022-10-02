@@ -22,17 +22,19 @@ import { defineComponent, ref } from 'vue';
 import AppSideMenu from './components/AppSideMenu.vue';
 import AppNavbar from './components/AppNavbar.vue';
 import { mapState } from 'vuex';
+import { useAuthStore } from './store/useAuth';
+import { storeToRefs } from 'pinia';
 
 export default defineComponent({
     setup() {
+        const auth = useAuthStore();
+
+        const { isAuth } = storeToRefs(auth);
+
         return {
             collapsed: ref<boolean>(false),
+            isAuth,
         };
-    },
-    computed: {
-        ...mapState({
-            isAuth: (state: any) => state.isAuth,
-        }),
     },
     components: {
         AppSideMenu,
