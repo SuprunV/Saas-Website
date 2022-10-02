@@ -1,10 +1,10 @@
 <script lang="ts">
 import '@/styles/navbar.scss';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue';
-import { defineComponent } from 'vue';
-import { mapActions, mapMutations, mapState } from 'vuex';
+import { defineComponent, ref } from 'vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { useAuthStore } from '@/store/useAuth';
+import { useCompanyStore } from '@/store/useCompany';
 import { storeToRefs } from 'pinia';
 import { AppRoutes } from '@/router/router';
 import UserAPI from '@/api/UserAPI';
@@ -22,12 +22,18 @@ export default defineComponent({
     },
     setup() {
         const auth = useAuthStore();
-
         const { loginActionStore, logoutActionStore } = auth;
-
         const { isAuth, authUser } = storeToRefs(auth);
 
-        return { isAuth, authUser, loginActionStore, logoutActionStore };
+        const { company } = storeToRefs(useCompanyStore());
+
+        return {
+            isAuth,
+            authUser,
+            loginActionStore,
+            logoutActionStore,
+            company,
+        };
     },
     methods: {
         collapseSideBar() {
@@ -94,11 +100,13 @@ export default defineComponent({
                         class="btn-success"
                         @click="$router.push(AppRoutes.AUTH)"
                     >
-                        Log in
+                        {{
+                            company.id ? `Log in to ${company.name}` : `Log in`
+                        }}
                     </a-button>
                 </a-col>
             </a-col>
-            <a-col :span="1"> </a-col>
+            <a-col :span="1"></a-col>
         </a-row>
     </a-layout-header>
 </template>

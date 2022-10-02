@@ -9,6 +9,11 @@ export default defineComponent({
             required: true,
             type: Object as () => IFetchResponse,
         },
+        loadingOnly: {
+            required: false,
+            type: Boolean,
+            defaultValue: false
+        },
         isLoading: {
             required: true,
             type: Boolean,
@@ -18,11 +23,6 @@ export default defineComponent({
         ResponseTypeEnum,
     }),
     mounted() {},
-    watch: {
-        message() {
-            console.log(this.message.type);
-        },
-    },
 });
 </script>
 
@@ -30,21 +30,23 @@ export default defineComponent({
     <div>
         <a-row justify="center" align="center" class="mt-4 mb-4">
             <a-spin v-if="isLoading" />
-            <a-alert
-                v-if="message.type == ResponseTypeEnum.SUCCESS"
-                :message="message.message"
-                type="success"
-            />
-            <a-alert
-                v-else-if="message.type == ResponseTypeEnum.WARNING"
-                :message="message.message"
-                type="warning"
-            />
-            <a-alert
-                v-else-if="message.type == ResponseTypeEnum.FAIL"
-                :message="message.message"
-                type="error"
-            />
+            <div v-if="!loadingOnly">
+                <a-alert
+                    v-if="message.type == ResponseTypeEnum.SUCCESS"
+                    :message="message.message"
+                    type="success"
+                />
+                <a-alert
+                    v-else-if="message.type == ResponseTypeEnum.WARNING"
+                    :message="message.message"
+                    type="warning"
+                />
+                <a-alert
+                    v-else-if="message.type == ResponseTypeEnum.FAIL"
+                    :message="message.message"
+                    type="error"
+                />
+            </div>
         </a-row>
     </div>
 </template>

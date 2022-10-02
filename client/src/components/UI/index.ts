@@ -1,3 +1,4 @@
 import FetchResponseBlock from './FetchResponseBlock.vue';
+import PageLoading from './PageLoading.vue';
 
-export default [FetchResponseBlock];
+export default [FetchResponseBlock, PageLoading];

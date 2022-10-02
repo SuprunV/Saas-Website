@@ -1,20 +1,24 @@
 <template>
-    <a-layout>
-        <AppSideMenu v-model:collapsed="collapsed" v-if="isAuth" />
-        <a-layout>
-            <AppNavbar v-model:collapsed="collapsed" />
-            <a-layout-content
-                :style="{
-                    margin: '24px 16px',
-                    padding: '24px',
-                    // background: '#fff',
-                    minHeight: '280px',
-                }"
-            >
-                <router-view />
-            </a-layout-content>
-        </a-layout>
-    </a-layout>
+    <div>
+        <transition name="fadeIn">
+            <page-loading v-if="isPageLoading" :isLoadingPage="isPageLoading" />
+            <a-layout v-else class="whole-height">
+                <AppSideMenu v-model:collapsed="collapsed" v-if="isAuth" />
+                <a-layout class="whole-height">
+                    <AppNavbar v-model:collapsed="collapsed" />
+                    <a-layout-content
+                        :style="{
+                            margin: '24px 16px',
+                            padding: '24px',
+                            minHeight: '280px',
+                        }"
+                    >
+                        <router-view />
+                    </a-layout-content>
+                </a-layout>
+            </a-layout>
+        </transition>
+    </div>
 </template>
 
 <script lang="ts">
@@ -24,19 +28,35 @@ import AppNavbar from './components/AppNavbar.vue';
 import { mapState } from 'vuex';
 import { useAuthStore } from './store/useAuth';
 import { storeToRefs } from 'pinia';
+import { useCompanyStore } from './store/useCompany';
+import { useThemeStore } from './store/useTheme';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
     setup() {
         const auth = useAuthStore();
-
         const { isAuth } = storeToRefs(auth);
+        const companyStore = useCompanyStore();
+        const { fullPath: alias } = useRoute();
+        const { isPageLoading } = storeToRefs(useThemeStore());
 
-        auth.checkLoginStore();
+        companyStore.setCompanyPage(alias);
 
         return {
             collapsed: ref<boolean>(false),
             isAuth,
+            companyStore,
+            isPageLoading,
         };
+    },
+    watch: {
+        $route() {
+            // try to not call this function on each going page.
+            this.companyStore.setCompanyPage(this.$route.fullPath);
+        },
+        isPageLoading() {
+            console.log('is loading', this.isPageLoading);
+        },
     },
     components: {
         AppSideMenu,

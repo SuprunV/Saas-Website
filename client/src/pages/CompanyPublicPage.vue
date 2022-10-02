@@ -6,32 +6,18 @@ import { AppRoutes } from '@/router/router';
 import { ResponseTypeEnum } from '@/types/FetchResponse';
 import { defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import '@/styles/companyPage.scss';
+import { useCompanyStore } from '@/store/useCompany';
+import { storeToRefs } from 'pinia';
 
 export default defineComponent({
-    data: () => ({
-        company: {} as ICompany,
-    }),
     setup: () => {
-        const route = useRoute();
-        const router = useRouter();
-        const alias = route.fullPath;
+        const companyStore = useCompanyStore();
         const {
-            fetchData,
-            isLoading,
+            isLoadingCompany: isLoading,
+            company,
             message,
-            response: company,
-        } = useFetching(async () => {
-            return await companyAPI.getCompanyByAlias(alias);
-        });
-
-        const getCompany = async () => {
-            await fetchData();
-            if (message.value.type == ResponseTypeEnum.FAIL) {
-                router.push(AppRoutes.MAIN);
-                return;
-            }
-        };
-        getCompany();
+        } = storeToRefs(companyStore);
 
         return { isLoading, message, company };
     },
@@ -40,13 +26,19 @@ export default defineComponent({
 
 <template>
     <div>
-        <response-alert :message="message" :isLoading="isLoading" />
-        <div v-if="!isLoading">
-            <a-row justify="center">
-                <div class="user-image">
-                    <img :src="company.img" alt="avatar" />
-                </div>
-            </a-row>
+        <response-alert
+            :message="message"
+            :loadingOnly="true"
+            :isLoading="isLoading"
+        />
+        <div v-if="company.id">
+            <div class="company-image">
+                <img :src="company.img" alt="avatar" />
+            </div>
+            <h1 class="text-center mt-4">{{ company.name }}</h1>
+            <div class="">
+                <em class="text-center">HERE MUST BE DATA OF THIS COMPANY</em>
+            </div>
         </div>
     </div>
 </template>

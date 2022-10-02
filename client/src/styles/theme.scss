@@ -1,3 +1,12 @@
+html,
+body,
+#app,
+.whole-height {
+    min-height: 100vh;
+    // height: 100%;
+    margin: 0;
+}
+
 .bg-darkblue {
     background-color: darkblue;
     color: white;
@@ -14,4 +23,24 @@
 .main-numbers {
     font-size: 70px;
     line-height: 65px;
+}
+
+$time-fadeIn: 0.2s;
+
+.fadeIn-enter-active {
+    animation: comeUp $time-fadeIn;
+}
+.fadeIn-leave-active {
+    animation: comeUp $time-fadeIn reverse;
+}
+
+@keyframes comeUp {
+    0% {
+        // transform: translateY(-50vh);
+        opacity: 0;
+    }
+    100% {
+        // transform: translateY(0hv);
+        opacity: 1;
+    }
 }

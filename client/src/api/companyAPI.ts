@@ -3,6 +3,9 @@ import { ICompany } from '@/models/ICompany';
 const companyImgUrl =
     'https://static8.depositphotos.com/1378583/1010/i/600/depositphotos_10108949-stock-photo-blue-flame-logo.jpg';
 
+const companyImgUrl2 =
+    'https://www.logodesign.net/logo/bar-graph-with-swooshes-arrow-168ld.png';
+
 export class companyAPI {
     static demoCompanies: ICompany[] = [
         {
@@ -10,6 +13,12 @@ export class companyAPI {
             img: companyImgUrl,
             name: 'My First Company',
             alias: '/myfircom',
+        },
+        {
+            id: 2,
+            img: companyImgUrl2,
+            name: 'My Second Company',
+            alias: '/myseccom',
         },
     ];
 
@@ -24,7 +33,9 @@ export class companyAPI {
             const count = limit * page;
             let companies: ICompany[] = [];
             for (let i = (page - 1) * limit + 1; i <= count; i++) {
-                companies.push({ ...this.demoCompanies[0], id: i });
+                const demoCompany =
+                    i % 2 ? this.demoCompanies[0] : this.demoCompanies[1];
+                companies.push({ ...demoCompany, id: i });
             }
             return companies;
         });
