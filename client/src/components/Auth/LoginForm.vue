@@ -1,7 +1,7 @@
 <script lang="ts">
 import UserAPI from '@/api/UserAPI';
 import { useFetching } from '@/hooks/useFetching';
-import { IUser } from '@/models/IUser';
+import { IUser, RolesEnum } from '@/models/IUser';
 import { AppRoutes } from '@/router/router';
 import { useAuthStore } from '@/store/useAuth';
 import { ResponseTypeEnum } from '@/types/FetchResponse';
@@ -13,6 +13,12 @@ interface FormState {
 }
 
 export default defineComponent({
+    props: {
+        alias: {
+            required: false,
+            type: String,
+        },
+    },
     watch: {},
     setup() {
         const { loginActionStore } = useAuthStore();
@@ -23,7 +29,8 @@ export default defineComponent({
             message,
             response,
         } = useFetching(async (email: string, password: string) => {
-            await UserAPI.login(email, password);
+            const user = await UserAPI.login(email, password);
+            return user;
         });
 
         const formState = reactive<FormState>({
@@ -36,24 +43,30 @@ export default defineComponent({
             loginAsync,
             message,
             isLoading,
+            authUser: response,
             loginActionStore,
         };
     },
     methods: {
         async login(values: any) {
-            const authUser = (await this.loginAsync(
-                values.email,
-                values.password,
-            )) as IUser;
+            await this.loginAsync(values.email, values.password);
             if (this.message.type == ResponseTypeEnum.SUCCESS) {
                 setTimeout(() => {
-                    this.loginActionStore(authUser);
+                    this.loginActionStore(this.authUser);
                     this.$router.push(AppRoutes.MAIN);
                 }, 3000);
             }
         },
         putDemoData() {
-            this.formState.email = 'admin@myFirCom.com';
+            this.formState.email = 'admin@myfircom.com';
+            this.formState.password = '123';
+        },
+        putDemoClient() {
+            this.formState.email = 'eren-yeager@myfircom.com';
+            this.formState.password = '123';
+        },
+        putDemoMaster() {
+            this.formState.email = 'levi-ackerman@myfircom.com';
             this.formState.password = '123';
         },
     },
@@ -70,7 +83,17 @@ export default defineComponent({
         @finish="login"
     >
         <response-alert :message="message" :isLoading="isLoading" />
-        <a-button type="warning" @click="putDemoData">Put demo data</a-button>
+        <a-button type="warning" v-if="!alias" @click="putDemoData"
+            >Put demo data</a-button
+        >
+        <div v-else>
+            <a-button type="warning" @click="putDemoMaster"
+                >Put demo MASTER</a-button
+            >
+            <a-button type="warning" @click="putDemoClient"
+                >Put demo CLIENT</a-button
+            >
+        </div>
         <a-form-item
             label="Email"
             name="email"

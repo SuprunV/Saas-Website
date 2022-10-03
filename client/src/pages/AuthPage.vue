@@ -1,27 +1,69 @@
 <script lang="ts">
 import LoginForm from '@/components/Auth/LoginForm.vue';
 import RegForm from '@/components/Auth/RegForm.vue';
+import RegCompanyForm from '@/components/Auth/RegCompanyForm.vue';
 import { defineComponent } from 'vue';
 import '@/styles/authPage.scss';
+import { useCompanyStore } from '@/store/useCompany';
+import { storeToRefs } from 'pinia';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
     data: () => ({
         isRegistration: false,
     }),
-    components: { LoginForm, RegForm },
+    setup: () => {
+        const companyStore = useCompanyStore();
+        const { company } = storeToRefs(companyStore);
+        const alias = useRoute().params['companyUrl'];
+        if (alias) {
+            companyStore.setCompanyPage();
+        }
+
+        return { company, removeCompanyPage: companyStore.removeCompanyPage };
+    },
+    unmounted() {
+        this.removeCompanyPage();
+    },
+    components: { LoginForm, RegForm, RegCompanyForm },
 });
 </script>
 
 <template>
     <a-row justify="center">
         <a-col :span="12">
+            <div v-if="company.id">
+                <div class="company-image company-image-sm">
+                    <img :src="company.img" alt="avatar" />
+                </div>
+            </div>
             <div v-if="!isRegistration">
-                <h4 class="text-center mb-4">Authorization</h4>
-                <LoginForm />
+                <h4 class="text-center mb-4">
+                    <span v-if="company.id">
+                        Authorization to {{ company.name }}
+                    </span>
+                    <span v-else> Authorization to system! </span>
+                </h4>
+                <LoginForm :alias="company.alias" />
             </div>
             <div v-else>
-                <h4 class="text-center mb-4">Registration for your company</h4>
-                <RegForm />
+                <h4 class="text-center mb-4">
+                    <span v-if="company.id">
+                        Register account in {{ company.name }}
+                    </span>
+                    <span v-else> Registration for your company</span>
+                </h4>
+                <div v-if="company.alias">
+                    <RegCompanyForm :alias="company.alias" />
+                </div>
+                <div v-else>
+                    <div v-if="company.alias">
+                        <RegForm :alias="company.alias" />
+                    </div>
+                    <div v-else>
+                        <RegForm />
+                    </div>
+                </div>
             </div>
 
             <a-row justify="end">

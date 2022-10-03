@@ -39,6 +39,8 @@ export default defineComponent({
         const companyStore = useCompanyStore();
         const { isTotalLoading } = useThemeStore();
 
+        auth.checkLoginStore();
+
         return {
             collapsed: ref<boolean>(false),
             isAuth,

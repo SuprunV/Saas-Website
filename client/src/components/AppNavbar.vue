@@ -78,14 +78,12 @@ export default defineComponent({
                 </a-menu>
             </a-col>
             <a-col :span="7">
-                <a-row type="flex" justify="end" v-if="isAuth">
+                <a-row type="flex" justify="end" v-if="isAuth && authUser">
                     <a-col>
                         <a-button type="text">
-                            <span class="btn-user">Leonid (Admin)</span>
-                        </a-button>
                         <a-avatar src="https://joeschmoe.io/api/v1/random">
-                            <!-- <template #icon><UserOutlined /></template> -->
                         </a-avatar>
+                    </a-button>
                     </a-col>
                     <a-col>
                         <a-button type="text" danger @click="logout"
@@ -97,7 +95,13 @@ export default defineComponent({
                     <a-button
                         type="text"
                         class="btn-success"
-                        @click="$router.push(AppRoutes.AUTH)"
+                        @click="
+                            $router.push(
+                                company.id
+                                    ? `/${company.alias}/auth`
+                                    : AppRoutes.AUTH,
+                            )
+                        "
                     >
                         {{
                             company.id ? `Log in to ${company.name}` : `Log in`

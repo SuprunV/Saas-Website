@@ -6,6 +6,9 @@ const companyImgUrl =
 const companyImgUrl2 =
     'https://www.logodesign.net/logo/bar-graph-with-swooshes-arrow-168ld.png';
 
+const starplast =
+    'https://starplast.ee/wp-content/uploads/elementor/thumbs/logo_for_png-pm7lafk3amqbwy9sve6x409mmv8egtljt9iak8hc2q.png';
+
 export class companyAPI {
     static demoCompanies: ICompany[] = [
         {
@@ -20,6 +23,12 @@ export class companyAPI {
             name: 'My Second Company',
             alias: 'myseccom',
         },
+        {
+            id: 3,
+            img: starplast,
+            name: 'Starplast',
+            alias: 'starplast',
+        },
     ];
 
     static getPublicCompanies(
@@ -33,8 +42,7 @@ export class companyAPI {
             const count = limit * page;
             let companies: ICompany[] = [];
             for (let i = (page - 1) * limit + 1; i <= count; i++) {
-                const demoCompany =
-                    i % 2 ? this.demoCompanies[0] : this.demoCompanies[1];
+                var demoCompany = this.demoCompanies[i % 3];
                 companies.push({ ...demoCompany, id: i });
             }
             return companies;
