@@ -44,6 +44,7 @@ export default defineComponent({
 
         auth.setRoutes();
         auth.checkLoginStore();
+        auth.hasAccess();
 
         return {
             collapsed: ref<boolean>(false),

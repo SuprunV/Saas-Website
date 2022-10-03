@@ -88,7 +88,7 @@ export const useAuthStore = defineStore('auth', {
                 return okayPath || isAuth;
             });
 
-            if (!pathExists.length) {
+            if (!pathExists.length && this.redirectRoute.path) {
                 router.push(this.redirectRoute.path);
             }
         },

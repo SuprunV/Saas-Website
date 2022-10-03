@@ -12,7 +12,6 @@ export default defineComponent({
     }),
     setup: () => {
         const auth = useAuthStore();
-        auth.hasAccess();
 
         const { authUser } = storeToRefs(auth);
 

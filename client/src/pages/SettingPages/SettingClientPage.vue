@@ -4,10 +4,7 @@ import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-    setup: () => {
-        const auth = useAuthStore();
-        auth.hasAccess();
-    },
+    setup: () => {},
 });
 </script>
 

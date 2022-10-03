@@ -14,10 +14,6 @@ export default defineComponent({
         isRegistration: false,
     }),
     setup: () => {
-        const { hasAccess } = useAuthStore();
-
-        hasAccess();
-
         const companyStore = useCompanyStore();
         const { company } = storeToRefs(companyStore);
 

@@ -14,7 +14,6 @@ export default defineComponent({
     setup: () => {
         console.log('settings for master drawn');
         const auth = useAuthStore();
-        auth.hasAccess();
 
         const { authUser } = storeToRefs(auth);
 

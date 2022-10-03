@@ -36,8 +36,6 @@ export default defineComponent({
         const data = ref<ICompany[]>([]);
         const companyList = ref<ICompany[]>([]);
 
-        const { hasAccess } = useAuthStore();
-        hasAccess();
         onMounted(async () => {
             const companies = await companyAPI.getPublicCompanies(
                 limit.value,
