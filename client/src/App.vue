@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :key="uniqAppKey">
         <transition name="fadeIn">
             <!-- <page-loading v-show="isTotalLoading" :isLoadingPage="false" /> -->
             <a-layout v-show="!isTotalLoading" class="whole-height">
@@ -33,12 +33,16 @@ import { useThemeStore } from './store/useTheme';
 import { useRoute } from 'vue-router';
 
 export default defineComponent({
+    data: () => ({
+        uniqAppKey: 0,
+    }),
     setup() {
         const auth = useAuthStore();
         const { isAuth } = storeToRefs(auth);
         const companyStore = useCompanyStore();
         const { isTotalLoading } = useThemeStore();
 
+        auth.setRoutes();
         auth.checkLoginStore();
 
         return {
@@ -47,6 +51,12 @@ export default defineComponent({
             companyStore,
             isTotalLoading,
         };
+    },
+    watch: {
+        isAuth() {
+            console.log('is Auth changes');
+            this.uniqAppKey += 1;
+        },
     },
     components: {
         AppSideMenu,

@@ -9,7 +9,7 @@ export default class UserAPI {
             email: 'admin@myfircom.com',
             role: RolesEnum.COMPANY,
             companyName: 'My First Company',
-            companyAlias: '/myfircom',
+            companyAlias: 'myfircom',
         },
         {
             id: 2,
@@ -17,7 +17,7 @@ export default class UserAPI {
             email: 'eren-yeager@myfircom.com',
             role: RolesEnum.CLIENT,
             companyName: 'My First Company',
-            companyAlias: '/myfircom',
+            companyAlias: 'myfircom',
         },
         {
             id: 3,
@@ -25,7 +25,7 @@ export default class UserAPI {
             email: 'levi-ackerman@myfircom.com',
             role: RolesEnum.MASTER,
             companyName: 'My First Company',
-            companyAlias: '/myfircom',
+            companyAlias: 'myfircom',
         },
     ];
 

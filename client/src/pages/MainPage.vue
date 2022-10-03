@@ -7,6 +7,7 @@ import {
 import { defineComponent, ref, onMounted, nextTick } from 'vue';
 import { companyAPI } from '@/api/companyAPI';
 import { ICompany } from '@/models/ICompany';
+import { useAuthStore } from '@/store/useAuth';
 
 export default defineComponent({
     components: { UsergroupAddOutlined, IdcardOutlined, AuditOutlined },
@@ -34,6 +35,9 @@ export default defineComponent({
         const page = ref<number>(1);
         const data = ref<ICompany[]>([]);
         const companyList = ref<ICompany[]>([]);
+
+        const { hasAccess } = useAuthStore();
+        hasAccess();
         onMounted(async () => {
             const companies = await companyAPI.getPublicCompanies(
                 limit.value,

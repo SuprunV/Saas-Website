@@ -20,7 +20,7 @@ export const useCompanyStore = defineStore('company', {
             this.isLoadingCompany = true;
             const route = useRoute();
             const router = useRouter();
-            const alias = route.params['companyUrl'] as string;
+            const alias = route.params['companyAlias'] as string;
             try {
                 if (!alias) throw new Error('Incorrect company url!');
                 this.company = await companyAPI.getCompanyByAlias(alias);
@@ -47,7 +47,6 @@ export const useCompanyStore = defineStore('company', {
             }
         },
         removeCompanyPage() {
-            console.log('set removed');
             this.company = {} as ICompany;
             this.message = {
                 message: '',

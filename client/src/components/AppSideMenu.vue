@@ -1,10 +1,7 @@
 <script lang="ts">
 import { useAuthStore } from '@/store/useAuth';
-import {
-    UserOutlined,
-    VideoCameraOutlined,
-    UploadOutlined,
-} from '@ant-design/icons-vue';
+import { IconsEnum } from '@/types/Theme';
+
 import { storeToRefs } from 'pinia';
 
 import { defineComponent, ref } from 'vue';
@@ -12,23 +9,19 @@ import { mapState } from 'vuex';
 export default defineComponent({
     setup: () => {
         const authStore = useAuthStore();
-        const { authUser } = storeToRefs(authStore);
+        const { authUser, menuRoutes } = storeToRefs(authStore);
 
-        return { authUser };
+        return { authUser, menuRoutes };
     },
     data: () => ({
         selectedKeys: ['2'],
+        IconsEnum,
     }),
     props: {
         collapsed: {
             type: Boolean,
             required: true,
         },
-    },
-    components: {
-        UserOutlined,
-        VideoCameraOutlined,
-        UploadOutlined,
     },
 });
 </script>
@@ -51,17 +44,13 @@ export default defineComponent({
             </p>
         </div>
         <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
-            <a-menu-item key="1">
-                <user-outlined />
-                <span>Statistic</span>
-            </a-menu-item>
-            <a-menu-item key="2">
-                <video-camera-outlined />
-                <span>Your masters</span>
-            </a-menu-item>
-            <a-menu-item key="3">
-                <upload-outlined />
-                <span>Settings</span>
+            <a-menu-item v-for="route in menuRoutes" :key="route.path">
+                <!-- <div v-if="route.icon">
+                    <icon-by-name :icon="route.icon" />
+                </div> -->
+                <router-link :to="`${route.path}`">{{
+                    route.label
+                }}</router-link>
             </a-menu-item>
         </a-menu>
     </a-layout-sider>

@@ -7,15 +7,20 @@ import '@/styles/authPage.scss';
 import { useCompanyStore } from '@/store/useCompany';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
+import { useAuthStore } from '@/store/useAuth';
 
 export default defineComponent({
     data: () => ({
         isRegistration: false,
     }),
     setup: () => {
+        const { hasAccess } = useAuthStore();
+
+        hasAccess();
+
         const companyStore = useCompanyStore();
         const { company } = storeToRefs(companyStore);
-        const alias = useRoute().params['companyUrl'];
+        const alias = useRoute().params['companyAlias'];
         if (alias) {
             companyStore.setCompanyPage();
         }

@@ -53,7 +53,7 @@ export default defineComponent({
             if (this.message.type == ResponseTypeEnum.SUCCESS) {
                 setTimeout(() => {
                     this.loginActionStore(this.authUser);
-                    this.$router.push(AppRoutes.MAIN);
+                    this.$router.push(`/${this.authUser.companyAlias}`);
                 }, 3000);
             }
         },

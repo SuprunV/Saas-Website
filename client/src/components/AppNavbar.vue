@@ -11,7 +11,6 @@ import UserAPI from '@/api/UserAPI';
 
 export default defineComponent({
     data: () => ({
-        selectedKeys: [window.location.pathname],
         AppRoutes,
     }),
     props: {
@@ -20,12 +19,17 @@ export default defineComponent({
             required: true,
         },
     },
+    computed: {
+        selectedKeys() {
+            return [this.$route.fullPath];
+        },
+    },
     setup() {
         const auth = useAuthStore();
         const { loginActionStore, logoutActionStore } = auth;
         const { isAuth, authUser } = storeToRefs(auth);
-
         const { company } = storeToRefs(useCompanyStore());
+
         return {
             isAuth,
             authUser,
@@ -64,16 +68,26 @@ export default defineComponent({
                     /></div
             ></a-col>
             <a-col :span="15">
-                <a-menu v-model:selectedKeys="selectedKeys" mode="horizontal">
-                    <a-menu-item :key="AppRoutes.MAIN"
-                        ><router-link :to="AppRoutes.MAIN"
-                            >Main</router-link
-                        ></a-menu-item
+                <a-menu
+                    v-model:selectedKeys="selectedKeys"
+                    mode="horizontal"
+                    v-if="!company.id"
+                >
+                    <a-menu-item :key="`/`"
+                        ><router-link :to="`/`">
+                            Main Page
+                        </router-link></a-menu-item
                     >
-                    <a-menu-item :key="AppRoutes.AUTH"
-                        ><router-link :to="AppRoutes.AUTH"
-                            >Authorization</router-link
-                        ></a-menu-item
+                </a-menu>
+                <a-menu
+                    v-else
+                    v-model:selectedKeys="selectedKeys"
+                    mode="horizontal"
+                >
+                    <a-menu-item :key="`/${company.alias}`"
+                        ><router-link :to="`/${company.alias}`">{{
+                            company.name
+                        }}</router-link></a-menu-item
                     >
                 </a-menu>
             </a-col>
@@ -81,9 +95,9 @@ export default defineComponent({
                 <a-row type="flex" justify="end" v-if="isAuth && authUser">
                     <a-col>
                         <a-button type="text">
-                        <a-avatar src="https://joeschmoe.io/api/v1/random">
-                        </a-avatar>
-                    </a-button>
+                            <a-avatar src="https://joeschmoe.io/api/v1/random">
+                            </a-avatar>
+                        </a-button>
                     </a-col>
                     <a-col>
                         <a-button type="text" danger @click="logout"
