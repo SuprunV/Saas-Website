@@ -54,12 +54,12 @@ export default defineComponent({
 <template>
     <a-layout-header style="background: #fff; padding: 0">
         <a-row>
-            <a-col :span="3">
-                <div v-if="!isAuth" class="logo">
+            <a-col v-if="!isAuth" :span="3">
+                <div class="logo">
                     <router-link :to="AppRoutes.MAIN">BM</router-link>
                 </div></a-col
             >
-            <a-col :span="1">
+            <a-col v-if="isAuth" :span="1">
                 <div v-if="isAuth">
                     <menu-unfold-outlined
                         v-if="collapsed"
