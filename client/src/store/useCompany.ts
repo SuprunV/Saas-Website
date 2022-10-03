@@ -46,5 +46,13 @@ export const useCompanyStore = defineStore('company', {
                 }, 3000);
             }
         },
+        removeCompanyPage() {
+            console.log('set removed');
+            this.company = {} as ICompany;
+            this.message = {
+                message: '',
+                type: ResponseTypeEnum.FAIL,
+            };
+        },
     },
 });

@@ -17,7 +17,10 @@ export default defineComponent({
 
         console.log('update');
         companyStore.setCompanyPage();
-        return { company };
+        return { company, removeCompanyPage: companyStore.removeCompanyPage };
+    },
+    unmounted() {
+        this.removeCompanyPage();
     },
 });
 </script>
