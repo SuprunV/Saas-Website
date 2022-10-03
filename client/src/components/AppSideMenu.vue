@@ -1,11 +1,10 @@
 <script lang="ts">
 import { useAuthStore } from '@/store/useAuth';
 import { IconsEnum } from '@/types/Theme';
-
+import { UserOutlined } from '@ant-design/icons-vue';
 import { storeToRefs } from 'pinia';
 
 import { defineComponent, ref } from 'vue';
-import { mapState } from 'vuex';
 export default defineComponent({
     setup: () => {
         const authStore = useAuthStore();
@@ -23,6 +22,7 @@ export default defineComponent({
             required: true,
         },
     },
+    components: { UserOutlined },
 });
 </script>
 
@@ -45,15 +45,41 @@ export default defineComponent({
         </div>
         <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
             <a-menu-item v-for="route in menuRoutes" :key="route.path">
-                <!-- <div v-if="route.icon">
-                    <icon-by-name :icon="route.icon" />
-                </div> -->
-                <router-link :to="`${route.path}`">{{
-                    route.label
-                }}</router-link>
+                <icon-by-name v-if="route.icon" :icon="route.icon" />
+
+                <span class="app-side-menu-item">
+                    <router-link :to="`${route.path}`">
+                        {{ route.label }}
+                    </router-link>
+                </span>
             </a-menu-item>
         </a-menu>
     </a-layout-sider>
 </template>
 
-<style scoped></style>
+<style scoped>
+#components-layout-demo-custom-trigger .trigger {
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.app-side-menu-item a {
+    color: rgba(255, 255, 255, 0.65) !important;
+}
+
+#components-layout-demo-custom-trigger .trigger:hover {
+    color: #1890ff;
+}
+
+#components-layout-demo-custom-trigger .logo {
+    height: 32px;
+    background: rgba(255, 255, 255, 0.3);
+    margin: 16px;
+}
+
+.site-layout .site-layout-background {
+    background: #fff;
+}
+</style>

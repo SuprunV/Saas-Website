@@ -12,10 +12,13 @@ import {
 
 export default defineComponent({
     name: 'icon-by-name',
+    data: () => ({
+        IconsEnum,
+    }),
     props: {
         icon: {
-            required: true,
-            type: IconsEnum,
+            required: false,
+            type: Object as () => IconsEnum,
         },
     },
     components: {
@@ -30,7 +33,9 @@ export default defineComponent({
 </script>
 
 <template>
-    <div></div>
+    <home-outlined v-if="icon === IconsEnum.HomeOutlined" />
+    <setting-outlined v-else-if="icon === IconsEnum.SettingOutlined" />
+    <field-time-outlined v-else-if="icon === IconsEnum.FieldTimeOutlined" />
 </template>
 
 <style scoped></style>

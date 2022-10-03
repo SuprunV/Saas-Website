@@ -54,6 +54,11 @@ export default defineComponent({
 <template>
     <a-layout-header style="background: #fff; padding: 0">
         <a-row>
+            <a-col :span="3">
+                <div v-if="!isAuth" class="logo">
+                    <router-link :to="AppRoutes.MAIN">BM</router-link>
+                </div></a-col
+            >
             <a-col :span="1">
                 <div v-if="isAuth">
                     <menu-unfold-outlined
@@ -67,7 +72,7 @@ export default defineComponent({
                         @click="collapseSideBar"
                     /></div
             ></a-col>
-            <a-col :span="15">
+            <a-col :span="13">
                 <a-menu
                     v-model:selectedKeys="selectedKeys"
                     mode="horizontal"
@@ -91,7 +96,7 @@ export default defineComponent({
                     >
                 </a-menu>
             </a-col>
-            <a-col :span="7">
+            <a-col :span="6">
                 <a-row type="flex" justify="end" v-if="isAuth && authUser">
                     <a-col>
                         <a-button type="text">
@@ -123,7 +128,7 @@ export default defineComponent({
                     </a-button>
                 </a-col>
             </a-col>
-            <a-col :span="1"></a-col>
+            <a-col :span="2"></a-col>
         </a-row>
     </a-layout-header>
 </template>
