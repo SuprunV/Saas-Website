@@ -26,7 +26,6 @@ export default defineComponent({
         const { isAuth, authUser } = storeToRefs(auth);
 
         const { company } = storeToRefs(useCompanyStore());
-
         return {
             isAuth,
             authUser,

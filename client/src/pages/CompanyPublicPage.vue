@@ -13,24 +13,17 @@ import { storeToRefs } from 'pinia';
 export default defineComponent({
     setup: () => {
         const companyStore = useCompanyStore();
-        const {
-            isLoadingCompany: isLoading,
-            company,
-            message,
-        } = storeToRefs(companyStore);
+        const { company } = storeToRefs(companyStore);
 
-        return { isLoading, message, company };
+        console.log('update');
+        companyStore.setCompanyPage();
+        return { company };
     },
 });
 </script>
 
 <template>
     <div>
-        <response-alert
-            :message="message"
-            :loadingOnly="true"
-            :isLoading="isLoading"
-        />
         <div v-if="company.id">
             <div class="company-image">
                 <img :src="company.img" alt="avatar" />

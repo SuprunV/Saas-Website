@@ -12,13 +12,13 @@ export class companyAPI {
             id: 1,
             img: companyImgUrl,
             name: 'My First Company',
-            alias: '/myfircom',
+            alias: 'myfircom',
         },
         {
             id: 2,
             img: companyImgUrl2,
             name: 'My Second Company',
-            alias: '/myseccom',
+            alias: 'myseccom',
         },
     ];
 

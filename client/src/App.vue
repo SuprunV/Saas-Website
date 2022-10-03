@@ -1,8 +1,8 @@
 <template>
     <div>
         <transition name="fadeIn">
-            <page-loading v-if="isPageLoading" :isLoadingPage="isPageLoading" />
-            <a-layout v-else class="whole-height">
+            <!-- <page-loading v-show="isTotalLoading" :isLoadingPage="false" /> -->
+            <a-layout v-show="!isTotalLoading" class="whole-height">
                 <AppSideMenu v-model:collapsed="collapsed" v-if="isAuth" />
                 <a-layout class="whole-height">
                     <AppNavbar v-model:collapsed="collapsed" />
@@ -37,26 +37,14 @@ export default defineComponent({
         const auth = useAuthStore();
         const { isAuth } = storeToRefs(auth);
         const companyStore = useCompanyStore();
-        const { fullPath: alias } = useRoute();
-        const { isPageLoading } = storeToRefs(useThemeStore());
-
-        companyStore.setCompanyPage(alias);
+        const { isTotalLoading } = useThemeStore();
 
         return {
             collapsed: ref<boolean>(false),
             isAuth,
             companyStore,
-            isPageLoading,
+            isTotalLoading,
         };
-    },
-    watch: {
-        $route() {
-            // try to not call this function on each going page.
-            this.companyStore.setCompanyPage(this.$route.fullPath);
-        },
-        isPageLoading() {
-            console.log('is loading', this.isPageLoading);
-        },
     },
     components: {
         AppSideMenu,
