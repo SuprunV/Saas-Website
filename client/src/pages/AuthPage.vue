@@ -20,15 +20,10 @@ export default defineComponent({
 
         const companyStore = useCompanyStore();
         const { company } = storeToRefs(companyStore);
-        const alias = useRoute().params['companyAlias'];
-        if (alias) {
-            companyStore.setCompanyPage();
-        }
+
+        companyStore.setCompanyPage();
 
         return { company, removeCompanyPage: companyStore.removeCompanyPage };
-    },
-    unmounted() {
-        this.removeCompanyPage();
     },
     components: { LoginForm, RegForm, RegCompanyForm },
 });

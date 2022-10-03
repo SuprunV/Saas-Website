@@ -16,10 +16,8 @@ export default defineComponent({
         const { company } = storeToRefs(companyStore);
 
         companyStore.setCompanyPage();
+        
         return { company, removeCompanyPage: companyStore.removeCompanyPage };
-    },
-    unmounted() {
-        this.removeCompanyPage();
     },
 });
 </script>
