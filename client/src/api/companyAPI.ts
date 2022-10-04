@@ -3,7 +3,34 @@ import { ICompany } from '@/models/ICompany';
 const companyImgUrl =
     'https://static8.depositphotos.com/1378583/1010/i/600/depositphotos_10108949-stock-photo-blue-flame-logo.jpg';
 
+const companyImgUrl2 =
+    'https://www.logodesign.net/logo/bar-graph-with-swooshes-arrow-168ld.png';
+
+const starplast =
+    'https://starplast.ee/wp-content/uploads/elementor/thumbs/logo_for_png-pm7lafk3amqbwy9sve6x409mmv8egtljt9iak8hc2q.png';
+
 export class companyAPI {
+    static demoCompanies: ICompany[] = [
+        {
+            id: 1,
+            img: companyImgUrl,
+            name: 'My First Company',
+            alias: 'myfircom',
+        },
+        {
+            id: 2,
+            img: companyImgUrl2,
+            name: 'My Second Company',
+            alias: 'myseccom',
+        },
+        {
+            id: 3,
+            img: starplast,
+            name: 'Starplast',
+            alias: 'starplast',
+        },
+    ];
+
     static getPublicCompanies(
         limit: number,
         page: number,
@@ -15,14 +42,30 @@ export class companyAPI {
             const count = limit * page;
             let companies: ICompany[] = [];
             for (let i = (page - 1) * limit + 1; i <= count; i++) {
-                companies.push({
-                    id: i,
-                    name: `Company ${i}`,
-                    img: companyImgUrl,
-                    alias: `/company-${i}`,
-                });
+                var demoCompany = this.demoCompanies[i % 3];
+                companies.push({ ...demoCompany, id: i });
             }
             return companies;
+        });
+    }
+    static getCompanyById(id: number): Promise<ICompany> {
+        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+            const companyIndex = this.demoCompanies.findIndex(
+                (c) => c.id === id,
+            );
+            if (companyIndex >= 0) {
+                return this.demoCompanies[companyIndex];
+            } else throw Error("this company doesn't exists!");
+        });
+    }
+    static getCompanyByAlias(alias: string): Promise<ICompany> {
+        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+            const companyIndex = this.demoCompanies.findIndex(
+                (c) => c.alias === alias,
+            );
+            if (companyIndex >= 0) {
+                return this.demoCompanies[companyIndex];
+            } else throw Error("this company doesn't exists!");
         });
     }
 }

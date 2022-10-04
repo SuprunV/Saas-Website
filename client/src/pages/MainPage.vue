@@ -7,6 +7,8 @@ import {
 import { defineComponent, ref, onMounted, nextTick } from 'vue';
 import { companyAPI } from '@/api/companyAPI';
 import { ICompany } from '@/models/ICompany';
+import { useAuthStore } from '@/store/useAuth';
+import { useCompanyStore } from '@/store/useCompany';
 
 export default defineComponent({
     components: { UsergroupAddOutlined, IdcardOutlined, AuditOutlined },
@@ -34,6 +36,10 @@ export default defineComponent({
         const page = ref<number>(1);
         const data = ref<ICompany[]>([]);
         const companyList = ref<ICompany[]>([]);
+
+        const companyStore = useCompanyStore();
+        companyStore.removeCompanyPage();
+
         onMounted(async () => {
             const companies = await companyAPI.getPublicCompanies(
                 limit.value,
@@ -179,7 +185,9 @@ export default defineComponent({
             <template #renderItem="{ item }">
                 <a-list-item>
                     <template #actions>
-                        <a-button>Visit</a-button>
+                        <a-button @click="$router.push(item.alias)"
+                            >Visit</a-button
+                        >
                     </template>
                     <a-skeleton
                         avatar
@@ -189,7 +197,7 @@ export default defineComponent({
                     >
                         <a-list-item-meta>
                             <template #title>
-                                <a href="#">{{ item.name }}</a>
+                                <a :href="`${item.alias}`">{{ item.name }}</a>
                             </template>
                             <template #avatar>
                                 <a-avatar :src="item.img" />

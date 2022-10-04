@@ -1,12 +1,17 @@
 <script lang="ts">
 import '@/styles/navbar.scss';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue';
-import { defineComponent } from 'vue';
-import { mapActions, mapMutations, mapState } from 'vuex';
+import { defineComponent, ref } from 'vue';
 import { UserOutlined } from '@ant-design/icons-vue';
+import { useAuthStore } from '@/store/useAuth';
+import { useCompanyStore } from '@/store/useCompany';
+import { storeToRefs } from 'pinia';
+import { AppRoutes } from '@/router/router';
+import UserAPI from '@/api/UserAPI';
+
 export default defineComponent({
     data: () => ({
-        selectedKeys: ['1'],
+        AppRoutes,
     }),
     props: {
         collapsed: {
@@ -14,24 +19,32 @@ export default defineComponent({
             required: true,
         },
     },
-    setup() {
-        // console.log(this.$state);
-    },
     computed: {
-        ...mapState({
-            isAuth: (state: any) => state.isAuth,
-        }),
+        selectedKeys() {
+            return [this.$route.fullPath];
+        },
+    },
+    setup() {
+        const auth = useAuthStore();
+        const { loginActionStore, logoutActionStore } = auth;
+        const { isAuth, authUser } = storeToRefs(auth);
+        const { company } = storeToRefs(useCompanyStore());
+
+        return {
+            isAuth,
+            authUser,
+            loginActionStore,
+            logoutActionStore,
+            company,
+        };
     },
     methods: {
-        ...mapMutations({
-            setIsAuth: 'setIsAuth',
-        }),
-        ...mapActions({
-            logoutAction: 'logoutAction',
-            loginAction: 'loginAction',
-        }),
         collapseSideBar() {
             this.$emit('update:collapsed', !this.collapsed);
+        },
+        logout() {
+            UserAPI.logout(this.authUser);
+            this.logoutActionStore();
         },
     },
     components: { MenuUnfoldOutlined, MenuFoldOutlined, UserOutlined },
@@ -41,7 +54,12 @@ export default defineComponent({
 <template>
     <a-layout-header style="background: #fff; padding: 0">
         <a-row>
-            <a-col :span="1">
+            <a-col v-if="!isAuth" :span="3">
+                <div class="logo">
+                    <router-link :to="AppRoutes.MAIN">BM</router-link>
+                </div></a-col
+            >
+            <a-col v-if="isAuth" :span="1">
                 <div v-if="isAuth">
                     <menu-unfold-outlined
                         v-if="collapsed"
@@ -54,25 +72,40 @@ export default defineComponent({
                         @click="collapseSideBar"
                     /></div
             ></a-col>
-            <a-col :span="15">
-                <a-menu v-model:selectedKeys="selectedKeys" mode="horizontal">
-                    <a-menu-item key="1">nav 1</a-menu-item>
-                    <a-menu-item key="2">nav 2</a-menu-item>
-                    <a-menu-item key="3">nav 3</a-menu-item>
+            <a-col :span="13">
+                <a-menu
+                    v-model:selectedKeys="selectedKeys"
+                    mode="horizontal"
+                    v-if="!company.id"
+                >
+                    <a-menu-item :key="`/`"
+                        ><router-link :to="`/`">
+                            Main Page
+                        </router-link></a-menu-item
+                    >
+                </a-menu>
+                <a-menu
+                    v-else
+                    v-model:selectedKeys="selectedKeys"
+                    mode="horizontal"
+                >
+                    <a-menu-item :key="`/${company.alias}`"
+                        ><router-link :to="`/${company.alias}`">{{
+                            company.name
+                        }}</router-link></a-menu-item
+                    >
                 </a-menu>
             </a-col>
-            <a-col :span="7">
-                <a-row type="flex" justify="end" v-if="isAuth">
+            <a-col :span="6">
+                <a-row type="flex" justify="end" v-if="isAuth && authUser">
                     <a-col>
                         <a-button type="text">
-                            <span class="btn-user">Leonid (Admin)</span>
+                            <a-avatar src="https://joeschmoe.io/api/v1/random">
+                            </a-avatar>
                         </a-button>
-                        <a-avatar src="https://joeschmoe.io/api/v1/random">
-                            <!-- <template #icon><UserOutlined /></template> -->
-                        </a-avatar>
                     </a-col>
                     <a-col>
-                        <a-button type="text" danger @click="logoutAction"
+                        <a-button type="text" danger @click="logout"
                             >Logut</a-button
                         >
                     </a-col>
@@ -81,13 +114,21 @@ export default defineComponent({
                     <a-button
                         type="text"
                         class="btn-success"
-                        @click="loginAction"
+                        @click="
+                            $router.push(
+                                company.id
+                                    ? `/${company.alias}/auth`
+                                    : AppRoutes.AUTH,
+                            )
+                        "
                     >
-                        Log in
+                        {{
+                            company.id ? `Log in to ${company.name}` : `Log in`
+                        }}
                     </a-button>
                 </a-col>
             </a-col>
-            <a-col :span="1"> </a-col>
+            <a-col :span="2"></a-col>
         </a-row>
     </a-layout-header>
 </template>
