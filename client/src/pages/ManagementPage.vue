@@ -51,7 +51,8 @@ export default defineComponent({
         <a-list-item-meta  
         >
           <template #title>
-            <a href="./myfircom/management">{{ item.title }}</a>
+            <a href="./myfircom/management">{{ item.title }}</a>&nbsp &nbsp<a-button type="primary" danger>Delete</a-button> 
+            &nbsp<a-button type="primary" default>Update</a-button>
           </template>
           <template #avatar>
             <a-avatar src="https://joeschmoe.io/api/v1/random" />
@@ -74,7 +75,8 @@ export default defineComponent({
         <a-list-item-meta  
         >
           <template #title>
-            <a href="./myfircom/management">{{ item.title }}</a>
+            <a href="./myfircom/management">{{ item.title }}</a> &nbsp &nbsp<a-button type="primary" danger>Delete</a-button>  
+            &nbsp <a-button type="primary" default>Update</a-button>
           </template>
           <template #avatar>
             <a-avatar src="https://joeschmoe.io/api/v1/random" />
