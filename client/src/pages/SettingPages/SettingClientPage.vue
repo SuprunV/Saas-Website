@@ -1,21 +1,51 @@
 <script lang="ts">
 import { useAuthStore } from '@/store/useAuth';
 import { storeToRefs } from 'pinia';
-import { defineComponent } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 import ClientSettingForm from '@/components/ClientSettingForm.vue';
 
 export default defineComponent({
-    setup: () => {},
-    data: () => ({
-        changeSetingModal: false
-    }),
+    setup: () => {
+        const changeRef = ref<any>(null);
+        const isChangeModal = ref<boolean>(false);
+
+        const validateMessages = {
+            required: '${label} is required!',
+            types: {
+                email: '${label} is not a valid email!',
+                number: '${label} is not a valid number!',
+            },
+            number: {
+                range: '${label} must be between ${min} and ${max}',
+            },
+        };
+
+        const layout = {
+            labelCol: { span: 8 },
+            wrapperCol: { span: 16 },
+        };
+        const formState = reactive({
+            user: {
+                name: '',
+                surname: '',
+                age: undefined,
+                email: '',
+                gender: '',
+            },
+        });
+
+        return {
+            changeRef,
+            isChangeModal,
+            formState,
+            layout,
+            validateMessages,
+        };
+    },
     methods: {
         showChangeModal() {
-            this.changeSetingModal = true;
+            this.isChangeModal = true;
         },
-        submitChangeForm() {
-            // this.changeSetingModal = false;
-        }
     },
     components: { ClientSettingForm },
 });
@@ -33,13 +63,10 @@ export default defineComponent({
                 <li>Посмотреть историю посещений</li>
                 <li>На скольких услугах побывал</li>
             </ul>
-            <a-button type="primary" @click="showChangeModal">Change data</a-button>
-            <a-modal v-model:visible="changeSetingModal" title="Basic Modal" @ok="submitChangeForm">
-        <div class="dialog__content">
-            <ClientSettingForm/>
-        </div>
-    </a-modal>
-            
+            <a-button type="primary" @click="showChangeModal"
+                >Change data</a-button
+            >
+            <ClientSettingForm v-model:show="isChangeModal" />
         </div>
     </div>
 </template>
