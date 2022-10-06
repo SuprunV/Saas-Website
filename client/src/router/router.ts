@@ -4,6 +4,7 @@ import AuthPage from '@/pages/AuthPage.vue';
 import CompanyPublicPage from '@/pages/CompanyPublicPage.vue';
 import SettingPage from '@/pages/SettingPages/SettingPage.vue';
 import CalendarPage from '@/pages/CalendarPages/CalendarPage.vue';
+import ManagementPage from '@/pages/ManagementPage.vue';
 import {
     HomeOutlined,
     VideoCameraOutlined,
@@ -19,6 +20,7 @@ export enum AppRoutes {
     COMPANY_PAGE_AUTH = '/:companyAlias/auth',
     COMPANY_PAGE_SETTINGS = '/:companyAlias/settings',
     COMPANY_PAGE_CALENDAR = '/:companyAlias/calendar',
+    COMPANY_PAGE_MANAGEMENT = '/:companyAlias/management',
 }
 
 export interface IRoute {
@@ -83,6 +85,12 @@ export const companyRoutes: IRoute[] = [
         path: AppRoutes.COMPANY_PAGE_SETTINGS,
         component: SettingPage,
         label: 'Setting page',
+        icon: IconsEnum.SettingOutlined,
+    },
+    {
+        path: AppRoutes.COMPANY_PAGE_MANAGEMENT,
+        component: ManagementPage,
+        label: 'Management page',
         icon: IconsEnum.SettingOutlined,
     },
 ];
