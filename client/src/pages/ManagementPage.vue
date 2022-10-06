@@ -6,7 +6,8 @@ interface DataItem {
   title: string;
 }
 const changeRef = ref<any>(null);
-const isChangeModal = ref<boolean>(false);
+const isChangeModalService= ref<boolean>(false);
+const isChangeModalUser= ref<boolean>(false);
     const validateMessages = {
             required: '${label} is required!',
             types: {
@@ -22,7 +23,7 @@ const isChangeModal = ref<boolean>(false);
             labelCol: { span: 8 },
             wrapperCol: { span: 16 },
         };
-        const formStateforUser = reactive({
+        const formState = reactive({
             user: {
                 name: '',
                 surname: '',
@@ -31,13 +32,15 @@ const isChangeModal = ref<boolean>(false);
                 gender: '',
                 role: RolesEnum.MASTER
             },
-            service:{
+        });
+        
+        const formStateService = reactive({
+            service: {
                 name: '',
-                description: '',
-                duration: '',
                 price: 0,
-
-            }
+                description:'',
+                duration: 0,
+            },
         });
     
 const DataItemforPerson: DataItem[] = [
@@ -54,24 +57,31 @@ import {
     PlusCircleTwoTone
 
 } from '@ant-design/icons-vue';
+import ServiceForm from '@/components/ServiceForm.vue';
 export default defineComponent({
   components: {
     PlusCircleTwoTone,
-    ClientSettingForm
-  },
+    ClientSettingForm,
+    ServiceForm
+},
   setup() {
     return {
         DataItemforPerson,DataItemforService,
         changeRef,
-            isChangeModal,
-            formStateforUser,
+            isChangeModalUser,
+            formState,
             layout,
             validateMessages,
+            formStateService,
+            isChangeModalService
     };
   },
   methods: {
-        showChangeModal() {
-            this.isChangeModal = true;
+        showChangeModalService() {
+            this.isChangeModalService = true;
+        },
+        showChangeModalUser() {
+            this.isChangeModalUser = true;
         },
     },
 });
@@ -83,12 +93,11 @@ export default defineComponent({
 </script>
     
 <template>
-  
   <div class="row">
     &nbsp<div class="col">
-    <a-button type="primary" @click="showChangeModal">
+    <a-button type="primary" @click="showChangeModalUser">
     <template #icon><plus-circle-two-tone /></template>
-    Add new personnel <ClientSettingForm v-model:show="isChangeModal" />
+    Add new personnel  <ClientSettingForm v-model:show="isChangeModalUser" />
   </a-button>
   <div class="m-3"><b>List of personnel:</b>
     <a-list item-layout="horizontal" :data-source="DataItemforPerson">
@@ -110,9 +119,10 @@ export default defineComponent({
   </div>
     </div>
   <div class="col">
-    <a-button type="primary" @click="showChangeModal">
+    
+    <a-button type="primary" @click="showChangeModalService">
     <template #icon><plus-circle-two-tone /></template>
-    Add new service <ClientSettingForm v-model:show="isChangeModal"/>
+    Add new service  <ServiceForm v-model:show="isChangeModalService" />
   </a-button>
   <div class="m-3"><b>List of service:</b>
     <a-list item-layout="horizontal" :data-source="DataItemforService">

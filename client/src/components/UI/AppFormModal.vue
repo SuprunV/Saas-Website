@@ -53,6 +53,7 @@ export default defineComponent({
                             ><span
                                 role="img"
                                 aria-label="close"
+                        @click="close"
                                 class="anticon anticon-close ant-modal-close-icon"
                                 ><svg
                                     focusable="false"
