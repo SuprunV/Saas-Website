@@ -30,14 +30,14 @@
   import { defineComponent, ref } from 'vue';
   import { Dayjs } from 'dayjs';
 
-  const is_expanded  = ref(false);
-  const ToggleMenu = () => {
-    is_expanded.value = !is_expanded.value
-  }
+ 
   export default defineComponent({
     name: 'main-calendar',
     setup() {
-    
+        const is_expanded  = ref(false);
+  const ToggleMenu = () => {
+    is_expanded.value = !is_expanded.value
+  }
       const value = ref<Dayjs>();
   
       const getListData = (value: Dayjs) => {
@@ -81,6 +81,8 @@
         value,
         getListData,
         getMonthData,
+        is_expanded,
+        ToggleMenu
       };
     },
   });
