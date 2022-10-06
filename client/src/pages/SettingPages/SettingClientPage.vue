@@ -55,14 +55,13 @@ export default defineComponent({
     <div>
         <h1 class="text-center">Settings for Client</h1>
         <div>
-            <ul>
-                <li>Есть фото профиля</li>
-                <li>Может менять личные данные</li>
-                <li>Имя,Фамилия, возраст, Пол, почту</li>
-                <li>Будет блок со статистикой:</li>
-                <li>Посмотреть историю посещений</li>
-                <li>На скольких услугах побывал</li>
-            </ul>
+            <a-descriptions title="Client Info" bordered="true">
+            <a-descriptions-item label="Name" :span="3">Eren</a-descriptions-item>
+            <a-descriptions-item label="Surname" :span="3">Yeager</a-descriptions-item>
+            <a-descriptions-item label="Gender" :span="3">Male</a-descriptions-item>
+            <a-descriptions-item label="Age" :span="3">15</a-descriptions-item>
+            <a-descriptions-item label="Email" :span="3">eren.yeager@gmail.com</a-descriptions-item>
+            </a-descriptions>
             <a-button type="primary" @click="showChangeModal"
                 >Change data</a-button
             >
