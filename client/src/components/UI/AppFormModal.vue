@@ -48,6 +48,7 @@ export default defineComponent({
                         type="button"
                         aria-label="Close"
                         class="ant-modal-close"
+                        @click="close"
                     >
                         <span class="ant-modal-close-x"
                             ><span
