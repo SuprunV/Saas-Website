@@ -2,9 +2,22 @@
 import { useAuthStore } from '@/store/useAuth';
 import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue';
+import ClientSettingForm from '@/components/ClientSettingForm.vue';
 
 export default defineComponent({
     setup: () => {},
+    data: () => ({
+        changeSetingModal: false
+    }),
+    methods: {
+        showChangeModal() {
+            this.changeSetingModal = true;
+        },
+        submitChangeForm() {
+            // this.changeSetingModal = false;
+        }
+    },
+    components: { ClientSettingForm },
 });
 </script>
 
@@ -20,6 +33,13 @@ export default defineComponent({
                 <li>Посмотреть историю посещений</li>
                 <li>На скольких услугах побывал</li>
             </ul>
+            <a-button type="primary" @click="showChangeModal">Change data</a-button>
+            <a-modal v-model:visible="changeSetingModal" title="Basic Modal" @ok="submitChangeForm">
+        <div class="dialog__content">
+            <ClientSettingForm/>
+        </div>
+    </a-modal>
+            
         </div>
     </div>
 </template>
