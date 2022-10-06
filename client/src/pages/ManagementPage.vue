@@ -1,10 +1,45 @@
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
+import { RolesEnum } from '@/models/IUser';
+import { defineComponent, ref,reactive } from 'vue';
+import ClientSettingForm from '@/components/ClientSettingForm.vue';
 interface DataItem {
   title: string;
 }
+const changeRef = ref<any>(null);
+const isChangeModal = ref<boolean>(false);
+    const validateMessages = {
+            required: '${label} is required!',
+            types: {
+                email: '${label} is not a valid email!',
+                number: '${label} is not a valid number!',
+            },
+            number: {
+                range: '${label} must be between ${min} and ${max}',
+            },
+        };
 
+        const layout = {
+            labelCol: { span: 8 },
+            wrapperCol: { span: 16 },
+        };
+        const formStateforUser = reactive({
+            user: {
+                name: '',
+                surname: '',
+                age: undefined,
+                email: '',
+                gender: '',
+                role: RolesEnum.MASTER
+            },
+            service:{
+                name: '',
+                description: '',
+                duration: '',
+                price: 0,
 
+            }
+        });
+    
 const DataItemforPerson: DataItem[] = [
   {
     title: 'Lena Smirnova',
@@ -12,7 +47,7 @@ const DataItemforPerson: DataItem[] = [
 ];
 const DataItemforService: DataItem[] = [
   {
-    title: 'Finger care, nail cleaning and polishing',
+    title: 'Nails cleaning and polishing',
   },
 ];
 import {
@@ -22,12 +57,23 @@ import {
 export default defineComponent({
   components: {
     PlusCircleTwoTone,
+    ClientSettingForm
   },
   setup() {
     return {
-        DataItemforPerson,DataItemforService
+        DataItemforPerson,DataItemforService,
+        changeRef,
+            isChangeModal,
+            formStateforUser,
+            layout,
+            validateMessages,
     };
   },
+  methods: {
+        showChangeModal() {
+            this.isChangeModal = true;
+        },
+    },
 });
 
 
@@ -40,9 +86,9 @@ export default defineComponent({
   
   <div class="row">
     &nbsp<div class="col">
-    <a-button type="primary">
+    <a-button type="primary" @click="showChangeModal">
     <template #icon><plus-circle-two-tone /></template>
-    Add new personnel
+    Add new personnel <ClientSettingForm v-model:show="isChangeModal" />
   </a-button>
   <div class="m-3"><b>List of personnel:</b>
     <a-list item-layout="horizontal" :data-source="DataItemforPerson">
@@ -64,9 +110,9 @@ export default defineComponent({
   </div>
     </div>
   <div class="col">
-    <a-button type="primary">
+    <a-button type="primary" @click="showChangeModal">
     <template #icon><plus-circle-two-tone /></template>
-    Add new service
+    Add new service <ClientSettingForm v-model:show="isChangeModal"/>
   </a-button>
   <div class="m-3"><b>List of service:</b>
     <a-list item-layout="horizontal" :data-source="DataItemforService">
