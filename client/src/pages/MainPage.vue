@@ -160,7 +160,7 @@ export default defineComponent({
                 </a-card>
             </a-col>
         </a-row>
-        <h2 class="text-center mt-3 mb-3">List of some companys</h2>
+        <h2 class="text-center mt-3 mb-3">List of some companies</h2>
         <p class="text-center mt-3 mb-3">
             <em>here is companies, that want to be shown</em>
         </p>

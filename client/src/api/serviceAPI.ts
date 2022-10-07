@@ -37,7 +37,7 @@ export class serviceAPI {
         },
     ];
 
-    static getPublicCompanies(
+    static getPublicServices(
         limit: number,
         page: number,
     ): Promise<IService[]> {
@@ -54,7 +54,7 @@ export class serviceAPI {
             return services;
         });
     }
-    static getCompanyById(id: number): Promise<IService> {
+    static getServiceById(id: number): Promise<IService> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
             const serviceIndex = this.demoServices.findIndex(
                 (c) => c.id === id,
@@ -64,7 +64,7 @@ export class serviceAPI {
             } else throw Error("this service doesn't exists!");
         });
     }
-    static getCompanyByName(name: string): Promise<IService> {
+    static getServiceByName(name: string): Promise<IService> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
             const companyIndex = this.demoServices.findIndex(
                 (c) => c.name === name,
