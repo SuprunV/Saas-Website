@@ -1,18 +1,50 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 import { useCompanyStore } from '@/store/useCompany';
 import { storeToRefs } from 'pinia';
 import { LikeOutlined } from '@ant-design/icons-vue';
+import CompanySettingForm from '@/components/CompanySettingForm.vue';
 
 export default defineComponent({
     setup: () => {
         const companyStore = useCompanyStore();
         const { company } = storeToRefs(companyStore);
-        return { company }
+
+        const changeRef = ref<any>(null);
+        const isChangeModal = ref<boolean>(false);
+        
+        const validateMessages = {
+            required: '${label} is required!',
+        }
+        const layout = {
+            labelCol: { span: 8 },
+            wrapperCol: { span: 16 },
+        };
+        const formState = reactive({
+            company: {
+                companyName: '',
+                address: ''
+            },
+        });
+        return { 
+            company,
+            changeRef,
+            isChangeModal,
+            formState,
+            layout,
+            validateMessages,
+        };
+    },
+    methods: {
+        showChangeModal() {
+            this.isChangeModal = true;
+        },
     },
     components: {
-    LikeOutlined,
-  },
+    LikeOutlined, 
+    CompanySettingForm
+    },
+  
 });
 </script>
 
@@ -20,10 +52,12 @@ export default defineComponent({
     
     <div>
         <h1 class="text-center">Settings for Company</h1>
+        <a-space size="middle">
         <a-space direction="vertical" size="middle">
+            <div class="space-align-container">
             <div class="space-align-block">
                 <a-space align="start">
-                <img :width="155"
+                    <img :width="155"
                     :src="company.img" 
                 />
                 <a-descriptions title="Company Info" bordered="true">
@@ -31,6 +65,7 @@ export default defineComponent({
                     <a-descriptions-item label="Address" :span="3">Liivalaia 7</a-descriptions-item>
                 </a-descriptions>
                 </a-space>
+            </div>
             </div>
             <a-row>
                 <a-col :span="12">
@@ -52,7 +87,12 @@ export default defineComponent({
                 </a-statistic>
                 </a-col>
             </a-row>
+        <a-button type="primary" @click="showChangeModal"
+                >Change data</a-button
+        >
         </a-space>
+        </a-space>
+        <CompanySettingForm v-model:show="isChangeModal" />
     </div>
     
 </template>

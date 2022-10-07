@@ -12,7 +12,7 @@ export default defineComponent({
         
         const authStore = useAuthStore();
         const{authUser} = storeToRefs(authStore)
-        console.log(authUser.value)
+        
         const validateMessages = {
             required: '${label} is required!',
             types: {
