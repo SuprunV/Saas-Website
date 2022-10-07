@@ -160,8 +160,8 @@ const DataItemforPerson: DataItem[] = [
         <a-list-item-meta  
         >
           <template #title>
-            <a href="./myfircom/management">{{ item.name }}</a> <br><small>{{item.description}}</small> &nbsp &nbsp<a-button type="primary" danger>Delete</a-button>  
-            &nbsp <a-button type="primary" default>Update</a-button>
+            <a href="./myfircom/management">{{ item.name }}</a> <br><small>{{item.description}}</small> <br> <br><a-button type="primary" danger>Delete</a-button>  
+            &nbsp <a-button type="primary" default> Update </a-button>
           </template>
           <template #avatar>
             <a-avatar :src="item.img"  />
