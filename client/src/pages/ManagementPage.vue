@@ -1,8 +1,9 @@
 <script lang="ts">
-import { RolesEnum } from '@/models/IUser';
 import { serviceAPI } from '@/api/serviceAPI';
 import { IService } from '@/models/IService';
+import {UserAPI} from '@/api/UserAPI';
 import { defineComponent, ref,reactive, onMounted } from 'vue';
+import { IUser, RolesEnum } from '@/models/IUser';
 import ClientSettingForm from '@/components/ClientSettingForm.vue';
 import {
     PlusCircleTwoTone
@@ -20,31 +21,38 @@ data: () => ({
         clientCount: 0,
         companyCount: 0,
         masterCount: 0,
-        companies: [] as IService[],
+        services: [] as IService[],
+        masters: [] as IUser[],
     }),
      setup() {
     const initLoading = ref(true);
         const loading = ref(false);
         const limit = ref<number>(5);
         const page = ref<number>(1);
-        const data = ref<IService[]>([]);
+        const role = ref<RolesEnum>(RolesEnum.MASTER);
+        const dataService = ref<IService[]>([]);
         const serviceList = ref<IService[]>([]);
+        const dataMaster = ref<IUser[]>([]);
+        const masterList = ref<IUser[]>([]);
         
           onMounted(async () => {
             const services = await serviceAPI.getPublicServices(
                 limit.value,
                 page.value,
             );
-            initLoading.value = false;
-            data.value = services;
-            serviceList.value = services;
-        });
-        const DataItemforService=  serviceAPI.getPublicServices(
-                limit.value,
-                page.value,
+            const masters = await UserAPI.getPublicUsers(
+         
+              limit.value,
+              page.value,
             );
+            initLoading.value = false;
+            dataService.value = services;
+            serviceList.value= services
+            dataMaster.value = masters;
+            masterList.value = masters;
+        });
+   
     return {
-        DataItemforPerson,DataItemforService,
         changeRef,
             isChangeModalUser,
             formState,
@@ -53,7 +61,8 @@ data: () => ({
             formStateService,
             isChangeModalService,
             serviceList,
-            data,
+            masterList,
+            dataService, dataMaster,
             initLoading,
             loading
     };
@@ -68,11 +77,6 @@ data: () => ({
     },
 });
 
-
-
-interface DataItem {
-  title: string;
-}
 const changeRef = ref<any>(null);
 const isChangeModalService= ref<boolean>(false);
 const isChangeModalUser= ref<boolean>(false);
@@ -111,11 +115,7 @@ const isChangeModalUser= ref<boolean>(false);
             },
         });
     
-const DataItemforPerson: DataItem[] = [
-  {
-    title: 'Lena Smirnova',
-  },
-];
+;
 
     
 
@@ -129,34 +129,43 @@ const DataItemforPerson: DataItem[] = [
     Add new personnel  <ClientSettingForm v-model:show="isChangeModalUser" />
   </a-button>
   <div class="m-3"><b>List of personnel:</b>
-    <a-list item-layout="horizontal" :data-source="DataItemforPerson">
+    <a-list :loading="initLoading" item-layout="horizontal" :data-source="masterList">
     <template #renderItem="{ item }">
       <a-list-item>
-        <a-list-item-meta  
-        >
+        <a-skeleton    avatar
+                        :title="false"
+                        :loading="!!item.loading"
+                        active
+                    >
+        <a-list-item-meta>
           <template #title>
-            <a href="./myfircom/management">{{ item.title }}</a>&nbsp &nbsp<a-button type="primary" danger>Delete</a-button> 
+            <a href="./myfircom/management">{{ item.name }}</a>&nbsp &nbsp<a-button type="primary" danger>Delete</a-button> 
             &nbsp<a-button type="primary" default>Update</a-button>
           </template>
           <template #avatar>
-            <a-avatar src="https://joeschmoe.io/api/v1/random" />
+            <a-avatar :src="item.img"  />
           </template>
         </a-list-item-meta>
+      </a-skeleton>
       </a-list-item>
     </template>
   </a-list>
   </div>
     </div>
   <div class="col">
-    
     <a-button type="primary" @click="showChangeModalService">
     <template #icon><plus-circle-two-tone /></template>
     Add new service  <ServiceForm v-model:show="isChangeModalService" />
   </a-button>
   <div class="m-3"><b>List of service:</b>
-    <a-list item-layout="horizontal" :data-source="serviceList">
+    <a-list :loading="initLoading" item-layout="horizontal" :data-source="serviceList">
     <template #renderItem="{ item }">
       <a-list-item>
+        <a-skeleton    avatar
+                        :title="false"
+                        :loading="!!item.loading"
+                        active
+                    >
         <a-list-item-meta  
         >
           <template #title>
@@ -167,6 +176,7 @@ const DataItemforPerson: DataItem[] = [
             <a-avatar :src="item.img"  />
           </template>
         </a-list-item-meta>
+      </a-skeleton>
       </a-list-item>
     </template>
   </a-list>

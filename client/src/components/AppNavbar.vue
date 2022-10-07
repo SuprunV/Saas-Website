@@ -7,7 +7,7 @@ import { useAuthStore } from '@/store/useAuth';
 import { useCompanyStore } from '@/store/useCompany';
 import { storeToRefs } from 'pinia';
 import { AppRoutes } from '@/router/router';
-import UserAPI from '@/api/UserAPI';
+import {UserAPI} from '@/api/UserAPI';
 
 export default defineComponent({
     data: () => ({
