@@ -47,4 +47,14 @@ export default class UserAPI {
         // Here will be made request to remove token for this user (userData);
         localStorage.removeItem(LocalStorageItemEnum.userJson);
     }
+    static getUserByRole(role: RolesEnum): Promise<IUser> {
+        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+            const userIndex = this.demoUsers.findIndex(
+                (c) => c.role === role,
+            );
+            if (userIndex >= 0) {
+                return this.demoUsers[userIndex];
+            } else throw Error("this role doesn't exists!");
+        });
+    }
 }
