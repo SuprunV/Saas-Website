@@ -3,8 +3,10 @@ import { LocalStorageItemEnum } from '@/types/LocalStorageItemEnum';
 
 const companyImgUrl =
     'https://static8.depositphotos.com/1378583/1010/i/600/depositphotos_10108949-stock-photo-blue-flame-logo.jpg';
-const clientImgUrl 
-= 'https://static.javatpoint.com/difference/images/client-vs-server.png';
+const clientImgUrl = 
+    'https://static.javatpoint.com/difference/images/client-vs-server.png';
+const masterImgUrl = 
+    'https://thumbs.dreamstime.com/b/red-color-peel-sticker-label-word-master-gray-background-249615333.jpg';
     export default class UserAPI {
     static demoUsers: IUser[] = [
         {
@@ -30,7 +32,7 @@ const clientImgUrl
             name: 'Levi ackerman',
             email: 'levi-ackerman@myfircom.com',
             role: RolesEnum.MASTER,
-            img: clientImgUrl,
+            img: masterImgUrl,
             companyName: 'My First Company',
             companyAlias: 'myfircom',
         },

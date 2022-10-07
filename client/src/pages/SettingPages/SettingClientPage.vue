@@ -12,7 +12,7 @@ export default defineComponent({
         
         const authStore = useAuthStore();
         const{authUser} = storeToRefs(authStore)
-        
+
         const validateMessages = {
             required: '${label} is required!',
             types: {
@@ -60,20 +60,28 @@ export default defineComponent({
     <div>
         <h1 class="text-center">Settings for Client</h1>
         <div>
-            <a-space align="start">
-            <img :width="200"
-                :src="authUser.img"/> 
-            <a-descriptions title="Client Info" bordered="true">
-            <a-descriptions-item label="Name" :span="3">{{authUser.name}}</a-descriptions-item>
-            <a-descriptions-item label="Surname" :span="3">Yeager</a-descriptions-item>
-            <a-descriptions-item label="Gender" :span="3">Male</a-descriptions-item>
-            <a-descriptions-item label="Age" :span="3">15</a-descriptions-item>
-            <a-descriptions-item label="Email" :span="3">{{ authUser.email}}</a-descriptions-item>
-            </a-descriptions>
+            <a-space size="middle">
+                <a-space direction="vertical" size="middle">
+                    <div class="space-align-container">
+                        <div class="space-align-block">
+                            <a-space align="start">
+                                <img :width="200"
+                                    :src="authUser.img"/> 
+                                <a-descriptions title="Client Info" bordered="true">
+                                <a-descriptions-item label="Name" :span="3">Eren</a-descriptions-item>
+                                <a-descriptions-item label="Surname" :span="3">Yeager</a-descriptions-item>
+                                <a-descriptions-item label="Gender" :span="3">Male</a-descriptions-item>
+                                <a-descriptions-item label="Age" :span="3">15</a-descriptions-item>
+                                <a-descriptions-item label="Email" :span="3">{{ authUser.email}}</a-descriptions-item>
+                                </a-descriptions>
+                            </a-space>
+                        </div>
+                    </div>
+                <a-button type="primary" @click="showChangeModal"
+                    >Change data</a-button
+                >
+                </a-space>
             </a-space>
-            <a-button type="primary" @click="showChangeModal"
-                >Change data</a-button
-            >
             <ClientSettingForm v-model:show="isChangeModal" />
         </div>
     </div>
