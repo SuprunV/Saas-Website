@@ -22,8 +22,19 @@
         </a-col>
         <a-col :span="6">
             <div class="calendar-sideblock">
+                {{eventSidebar}}
+                <br><br>
                 {{ selectedDay }}
-                {{}}
+                <br><br>
+                <p class="events">
+                        <li
+                            v-for="item in getListData(selectedDay)"
+                            :key="item.content"
+                        >
+                            <a-badge :status="item.type" :text="item.content" />
+                        </li>
+                    </p>
+                
             </div>
         </a-col>
     </a-row>
@@ -38,7 +49,9 @@ export default defineComponent({
     name: 'main-calendar',
     setup() {
         const selectedDay = ref<Dayjs>(dayjs(new Date().toString()));
-      
+        const eventSidebar = "Events for today: "
+        
+       
 
         const getListData = (value: Dayjs) => {
             let listData;
@@ -83,6 +96,7 @@ export default defineComponent({
             selectedDay,
             getListData,
             getMonthData,
+            eventSidebar
         };
     },
     watch: {
@@ -94,19 +108,23 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
+
 .calendar-sideblock {
+    
+    font-size: 20px;
+    font-family: veranda;
     display: flex;
-    flex-direction: row;
+    margin: 0 auto;
+    flex-direction: column;
     min-height: 100%;
     text-align: center;
     overflow: hidden;
     padding: 1rem;
     margin-left: 20px;
 
-    background-color: var(--dark);
-    color: var(--light);
-
-    transition: 0.2s ease-out;
+    background-color:lavender;
+    color: var(--dark);
 
     @media (max-width: 768px) {
         position: fixed;
