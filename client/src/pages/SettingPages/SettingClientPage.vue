@@ -3,12 +3,16 @@ import { useAuthStore } from '@/store/useAuth';
 import { storeToRefs } from 'pinia';
 import { defineComponent, reactive, ref } from 'vue';
 import ClientSettingForm from '@/components/ClientSettingForm.vue';
+import { ContactsOutlined } from '@ant-design/icons-vue';
 
 export default defineComponent({
     setup: () => {
         const changeRef = ref<any>(null);
         const isChangeModal = ref<boolean>(false);
-
+        
+        const authStore = useAuthStore();
+        const{authUser} = storeToRefs(authStore)
+        console.log(authUser.value)
         const validateMessages = {
             required: '${label} is required!',
             types: {
@@ -40,6 +44,7 @@ export default defineComponent({
             formState,
             layout,
             validateMessages,
+            authUser
         };
     },
     methods: {
@@ -55,13 +60,17 @@ export default defineComponent({
     <div>
         <h1 class="text-center">Settings for Client</h1>
         <div>
+            <a-space align="start">
+            <img :width="200"
+                :src="authUser.img"/> 
             <a-descriptions title="Client Info" bordered="true">
-            <a-descriptions-item label="Name" :span="3">Eren</a-descriptions-item>
+            <a-descriptions-item label="Name" :span="3">{{authUser.name}}</a-descriptions-item>
             <a-descriptions-item label="Surname" :span="3">Yeager</a-descriptions-item>
             <a-descriptions-item label="Gender" :span="3">Male</a-descriptions-item>
             <a-descriptions-item label="Age" :span="3">15</a-descriptions-item>
-            <a-descriptions-item label="Email" :span="3">eren.yeager@gmail.com</a-descriptions-item>
+            <a-descriptions-item label="Email" :span="3">{{ authUser.email}}</a-descriptions-item>
             </a-descriptions>
+            </a-space>
             <a-button type="primary" @click="showChangeModal"
                 >Change data</a-button
             >
