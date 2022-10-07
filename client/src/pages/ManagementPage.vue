@@ -133,7 +133,7 @@ const isChangeModalUser= ref<boolean>(false);
     <template #renderItem="{ item }">
       <a-list-item>
         <a-skeleton    avatar
-                        :title="false"
+                        title="false"
                         :loading="!!item.loading"
                         active
                     >
@@ -162,7 +162,7 @@ const isChangeModalUser= ref<boolean>(false);
     <template #renderItem="{ item }">
       <a-list-item>
         <a-skeleton    avatar
-                        :title="false"
+                        title="false"
                         :loading="!!item.loading"
                         active
                     >
