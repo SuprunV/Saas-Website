@@ -64,11 +64,8 @@ export class UserAPI {
             let users: IUser[] = [];
             if(role!=null)
             {
-                const userIndex = this.demoUsers.findIndex(
-                    (c) => c.role === role,  );
-                    if (userIndex >= 0) { users.push({...demoUser,id:userIndex})
-                   
-                    }
+                users = this.demoUsers.filter(
+                    (c) => c.role === role,  );       
             }
             else{   
                 for (let i = (page - 1) * limit + 1; i <= count; i++) {

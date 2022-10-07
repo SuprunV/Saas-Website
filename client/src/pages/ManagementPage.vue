@@ -10,6 +10,7 @@ import {
 
 } from '@ant-design/icons-vue';
 import ServiceForm from '@/components/ServiceForm.vue';
+import { Item } from 'ant-design-vue/lib/menu';
 export default defineComponent({
   components: {
     PlusCircleTwoTone,
@@ -29,7 +30,6 @@ data: () => ({
         const loading = ref(false);
         const limit = ref<number>(5);
         const page = ref<number>(1);
-        const role = ref<RolesEnum>(RolesEnum.MASTER);
         const dataService = ref<IService[]>([]);
         const serviceList = ref<IService[]>([]);
         const dataMaster = ref<IUser[]>([]);
@@ -41,9 +41,9 @@ data: () => ({
                 page.value,
             );
             const masters = await UserAPI.getPublicUsers(
-         
               limit.value,
               page.value,
+              RolesEnum.MASTER,
             );
             initLoading.value = false;
             dataService.value = services;
@@ -140,7 +140,7 @@ const isChangeModalUser= ref<boolean>(false);
         <a-list-item-meta>
           <template #title>
             <a href="./myfircom/management">{{ item.name }}</a>&nbsp &nbsp<a-button type="primary" danger>Delete</a-button> 
-            &nbsp<a-button type="primary" default>Update</a-button>
+            &nbsp<a-button type="primary" @click="showChangeModalUser" default>Update</a-button>
           </template>
           <template #avatar>
             <a-avatar :src="item.img"  />
@@ -170,7 +170,7 @@ const isChangeModalUser= ref<boolean>(false);
         >
           <template #title>
             <a href="./myfircom/management">{{ item.name }}</a> <br><small>{{item.description}}</small> <br> <br><a-button type="primary" danger>Delete</a-button>  
-            &nbsp <a-button type="primary" default> Update </a-button>
+            &nbsp <a-button type="primary" @click="showChangeModalService" default> Update </a-button>
           </template>
           <template #avatar>
             <a-avatar :src="item.img"  />
