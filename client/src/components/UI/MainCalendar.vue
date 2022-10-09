@@ -3,14 +3,11 @@
         <a-col :span="17">
             <a-calendar v-model:value="selectedDay">
                 <template #dateCellRender="{ current }">
-                    <ul class="events">
-                        <li
-                            v-for="item in getListData(current)"
-                            :key="item.content"
-                        >
-                            <a-badge :status="item.type" :text="item.content"  />
-                        </li>
-                    </ul>
+                    <div class="events">
+                        <div class="number-circle">
+                            {{getListData(current).length}}
+                        </div>
+                    </div>
                 </template>
                 <template #monthCellRender="{ current }">
                     <div v-if="getMonthData(current)" class="notes-month">
@@ -26,7 +23,6 @@
                 {{ selectedDay.toDate().toLocaleString("it-IT", {timeZone: "Europe/Tallinn"})}}
                 <br><br>
                 <div class="content"> 
-                 
                 </div>  
                <div class="text-center bg-gray-50">
                <div class="events-table">
@@ -38,9 +34,7 @@
                     </template>
                 </a-table>
                </div>
-
                 </div>
-               
             </div>
         </a-col>
     </a-row>
@@ -56,7 +50,9 @@ export default defineComponent({
     name: 'main-calendar',
     setup() {
         const selectedDay = ref<Dayjs>(dayjs(new Date(new Date())));
+        const selectedMonth = ref<number>(selectedDay.value.month());
         const selectedDayEvents = ref<ICalendarEvents[]>([]);
+        const currentMonthEvents = ref<ICalendarEvents[]>([]);
         const eventSidebar = "Events for today: "
       
         const GetEventsToSelectedDay = async() => {
@@ -65,51 +61,39 @@ export default defineComponent({
         }   
         GetEventsToSelectedDay();
 
+        const updateMonthEvents = async() => {
+            const date = selectedDay.value.toDate();
+            const response = await CalendarEventsAPI.getEventsByMonthAndYear(date.getMonth(), date.getFullYear());
+            currentMonthEvents.value = response;
+        }   
+        updateMonthEvents();
         const getListData = (value: Dayjs) => {
-            let listData;
-            switch (value.date()) {
-                case 8:
-                    listData = [
-                        { type: 'warning', content: 'Melissa Kotenkina' },
-                        { type: 'success', content: 'Darya Gruft' },
-                    ];
-                    break;
-                case 10:
-                    listData = [
-                        { type: 'warning', content: 'This is warning event.' },
-                        { type: 'success', content: 'This is usual event.' },
-                        { type: 'error', content: 'This is error event.' },
-                    ];
-                    break;
-                case 15:
-                    listData = [
-                        { type: 'warning', content: 'This is warning event' },
-                        {
-                            type: 'success',
-                            content: 'This is very long usual event。。....'
-                        },
-                        { type: 'error', content: 'This is error event 1.' },
-                    ];
-                    break;
-                default:
-            }
+            let listData = currentMonthEvents.value.filter(e => {
+                return e.date.getDate() == value.date();
+            });
             return listData || [];
         };
         const getMonthData = (value: Dayjs) => {
+
             if (value.month() === 8) {
                 return 0;
             }
         };
         const columns = [
           {
+            title: 'Time',
+            dataIndex: 'date',
+            key: 'date',
+          },
+          {
             title: 'Client name',
             dataIndex: 'clientName',
             key: 'clientName',
           },
           {
-            title: 'Time',
-            dataIndex: 'date',
-            key: 'date',
+            title: 'Service',
+            dataIndex: 'serviceName',
+            key: 'serviceName',
           },
         ]
 
@@ -119,14 +103,20 @@ export default defineComponent({
             getMonthData,
             selectedDayEvents,
             GetEventsToSelectedDay,
+            selectedMonth,
             eventSidebar, 
+            updateMonthEvents,
             columns
             
         };
     },
     watch: {
         selectedDay() {
+            if(this.selectedMonth != this.selectedDay.month()) {
+                this.updateMonthEvents();
+            }
             this.GetEventsToSelectedDay();
+            this.selectedMonth = this.selectedDay.month();
         },
     },
 
@@ -159,13 +149,16 @@ export default defineComponent({
 
 .events {
     list-style: none;
-    margin: 0;
-    padding: 0;
+    margin: 0 auto;
+    border-radius: 100%;
+    background-color: blue;
+    padding: 5px;
+    color: white;
+    margin-top: 25%;
     font-size: 12px;
 }
 .events1 {
     font-family: Georgia, 'Times New Roman', Times, serif;
-
     list-style: none;
     margin: 0;
     padding: 1rem;
@@ -189,12 +182,12 @@ export default defineComponent({
     font-size: 28px;
 }
 
-
-
 .events-table {
     .ant-table-thead > tr > th {
-        background: lightblue;
-        
+        background:darkslateblue;
+        text-align: center;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        color: var(--light);
     }
 }
 </style> 
