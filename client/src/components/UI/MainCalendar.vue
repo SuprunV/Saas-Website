@@ -150,12 +150,15 @@ export default defineComponent({
 .events {
     list-style: none;
     margin: 0 auto;
-    border-radius: 100%;
-    background-color: blue;
+    text-align:center;
+    border-radius: 50%;
+   // display: inline-block;
+    background-color:rgb(58, 156, 123);
     padding: 5px;
     color: white;
-    margin-top: 25%;
-    font-size: 12px;
+    width: 35px;
+    height: 35px;
+    font-size: 15px;
 }
 .events1 {
     font-family: Georgia, 'Times New Roman', Times, serif;
