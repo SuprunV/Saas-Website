@@ -8,14 +8,13 @@
                             v-for="item in getListData(current)"
                             :key="item.content"
                         >
-                            <a-badge :status="item.type" :text="item.content" />
+                            <a-badge :status="item.type" :text="item.content"  />
                         </li>
                     </ul>
                 </template>
                 <template #monthCellRender="{ current }">
                     <div v-if="getMonthData(current)" class="notes-month">
                         <section>{{ getMonthData(current) }}</section>
-                        <span>Backlog number</span>
                     </div>
                 </template>
             </a-calendar>
@@ -24,17 +23,24 @@
             <div class="calendar-sideblock">
                 {{eventSidebar}}
                 <br><br>
-                {{ selectedDay }}
+                {{ selectedDay.toDate().toLocaleString("it-IT", {timeZone: "Europe/Tallinn"})}}
                 <br><br>
-                <p class="events">
-                        <li
-                            v-for="item in getListData(selectedDay)"
-                            :key="item.content"
-                        >
-                            <a-badge :status="item.type" :text="item.content" />
-                        </li>
-                    </p>
-                
+                <div class="content"> 
+                 
+                </div>  
+               <div class="text-center bg-gray-50">
+               <div class="events-table">
+                <a-table :dataSource="selectedDayEvents" :columns="columns">
+                    <template #bodyCell="{ column, record }">
+                    <template v-if="column.key === 'date'">
+                    {{ record.date.toLocaleTimeString("it-IT", {hour:"2-digit",minute: "2-digit"}) }}
+                    </template>
+                    </template>
+                </a-table>
+               </div>
+
+                </div>
+               
             </div>
         </a-col>
     </a-row>
@@ -43,23 +49,29 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import dayjs, { Dayjs } from 'dayjs';
-import { valueType } from 'ant-design-vue/lib/statistic/utils';
+import {ICalendarEvents} from '@/models/ICalendarEvents';
+import {CalendarEventsAPI} from '@/api/CalendarEventsAPI';
 
 export default defineComponent({
     name: 'main-calendar',
     setup() {
-        const selectedDay = ref<Dayjs>(dayjs(new Date().toString()));
+        const selectedDay = ref<Dayjs>(dayjs(new Date(new Date())));
+        const selectedDayEvents = ref<ICalendarEvents[]>([]);
         const eventSidebar = "Events for today: "
-        
-       
+      
+        const GetEventsToSelectedDay = async() => {
+            const response = await CalendarEventsAPI.getEvents(selectedDay.value.toDate());
+            selectedDayEvents.value = response;
+        }   
+        GetEventsToSelectedDay();
 
         const getListData = (value: Dayjs) => {
             let listData;
             switch (value.date()) {
                 case 8:
                     listData = [
-                        { type: 'warning', content: 'This is warning event.' },
-                        { type: 'success', content: 'This is usual event.' },
+                        { type: 'warning', content: 'Melissa Kotenkina' },
+                        { type: 'success', content: 'Darya Gruft' },
                     ];
                     break;
                 case 10:
@@ -74,12 +86,9 @@ export default defineComponent({
                         { type: 'warning', content: 'This is warning event' },
                         {
                             type: 'success',
-                            content: 'This is very long usual event。。....',
+                            content: 'This is very long usual event。。....'
                         },
                         { type: 'error', content: 'This is error event 1.' },
-                        { type: 'error', content: 'This is error event 2.' },
-                        { type: 'error', content: 'This is error event 3.' },
-                        { type: 'error', content: 'This is error event 4.' },
                     ];
                     break;
                 default:
@@ -88,61 +97,89 @@ export default defineComponent({
         };
         const getMonthData = (value: Dayjs) => {
             if (value.month() === 8) {
-                return 1394;
+                return 0;
             }
         };
+        const columns = [
+          {
+            title: 'Client name',
+            dataIndex: 'clientName',
+            key: 'clientName',
+          },
+          {
+            title: 'Time',
+            dataIndex: 'date',
+            key: 'date',
+          },
+        ]
 
         return {
             selectedDay,
             getListData,
             getMonthData,
-            eventSidebar
+            selectedDayEvents,
+            GetEventsToSelectedDay,
+            eventSidebar, 
+            columns
+            
         };
     },
     watch: {
         selectedDay() {
-            console.log(this.selectedDay);
+            this.GetEventsToSelectedDay();
         },
     },
+
+   
 });
 </script>
 
-<style scoped>
+<style lang="scss">
 
-
+.content{
+    flex-direction: row;
+}
 .calendar-sideblock {
     
     font-size: 20px;
-    font-family: veranda;
+    font-family: Arial ;
     display: flex;
     margin: 0 auto;
     flex-direction: column;
     min-height: 100%;
     text-align: center;
-    overflow: hidden;
+    text-overflow: auto;
+    overflow: auto;
     padding: 1rem;
     margin-left: 20px;
 
     background-color:lavender;
     color: var(--dark);
-
-    @media (max-width: 768px) {
-        position: fixed;
-        z-index: 99;
-    }
 }
 
 .events {
     list-style: none;
     margin: 0;
     padding: 0;
+    font-size: 12px;
+}
+.events1 {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+
+    list-style: none;
+    margin: 0;
+    padding: 1rem;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+
 }
 .events .ant-badge-status {
-    overflow: hidden;
+   overflow: hidden;
     white-space: nowrap;
     width: 50%;
-    text-overflow: ellipsis;
-    font-size: 12px;
+    text-overflow: auto;
+    font-size: 20px;
 }
 .notes-month {
     text-align: center;
@@ -151,18 +188,14 @@ export default defineComponent({
 .notes-month section {
     font-size: 28px;
 }
-</style>
 
-<!-- <template> 
-   <div>
-        Hei
-   </div>
-</template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
 
-    export default defineComponent({
-        name: 'main-calendar'
-    })
-</script> -->
+.events-table {
+    .ant-table-thead > tr > th {
+        background: lightblue;
+        
+    }
+}
+</style> 
+
