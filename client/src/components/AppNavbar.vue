@@ -106,7 +106,7 @@ export default defineComponent({
                     </a-col>
                     <a-col>
                         <a-button type="text" danger @click="logout"
-                            >Logut</a-button
+                            >Log out</a-button
                         >
                     </a-col>
                 </a-row>
