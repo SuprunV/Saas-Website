@@ -3,9 +3,12 @@
         <a-col :span="17">
             <a-calendar v-model:value="selectedDay">
                 <template #dateCellRender="{ current }">
+                    <br>
+                    <div v-if="getListData(current).length != 0">
                     <div class="events">
                         <div class="number-circle">
                             {{getListData(current).length}}
+                        </div>
                         </div>
                     </div>
                 </template>
@@ -79,6 +82,7 @@ export default defineComponent({
                 return 0;
             }
         };
+        
         const columns = [
           {
             title: 'Time',
@@ -101,8 +105,8 @@ export default defineComponent({
             selectedDay,
             getListData,
             getMonthData,
-            selectedDayEvents,
             GetEventsToSelectedDay,
+            selectedDayEvents,
             selectedMonth,
             eventSidebar, 
             updateMonthEvents,
@@ -137,11 +141,13 @@ export default defineComponent({
     margin: 0 auto;
     flex-direction: column;
     min-height: 100%;
+    min-width: 100%;
     text-align: center;
     text-overflow: auto;
     overflow: auto;
     padding: 1rem;
-    margin-left: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
 
     background-color:lavender;
     color: var(--dark);
@@ -167,25 +173,26 @@ export default defineComponent({
     padding: 1rem;
     font-weight: bold;
     font-size: 20px;
-    text-align: center;
+   
 
 }
-.events .ant-badge-status {
-   overflow: hidden;
-    white-space: nowrap;
-    width: 50%;
-    text-overflow: auto;
-    font-size: 20px;
-}
+// .events .ant-badge-status {
+//    overflow: hidden;
+//     white-space: nowrap;
+//     width: 50%;
+//     text-overflow: auto;
+//     font-size: 20px;
+// }
 .notes-month {
-    text-align: center;
     font-size: 28px;
 }
 .notes-month section {
     font-size: 28px;
+
 }
 
 .events-table {
+    text-align: center;
     .ant-table-thead > tr > th {
         background:darkslateblue;
         text-align: center;
