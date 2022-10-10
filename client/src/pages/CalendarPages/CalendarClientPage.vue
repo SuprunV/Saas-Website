@@ -5,6 +5,7 @@ export default {};
 <template>
     <div>
         <h1 class="text-center">Calendar page for client</h1>
+        <main-calendar />
     </div>
 </template>
 
