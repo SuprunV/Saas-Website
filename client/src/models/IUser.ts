@@ -7,7 +7,7 @@ export interface IUser {
     companyName: string;
     companyAlias: string;
 }
-S
+
 export enum RolesEnum {
     CLIENT = 'CLIENT',
     COMPANY = 'COMPANY',
