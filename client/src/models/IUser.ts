@@ -1,8 +1,10 @@
 export interface IUser {
     id: number;
+    img?: string;
     name: string;
     email: string;
     role: RolesEnum;
+    img: string;
     companyName: string;
     companyAlias: string;
 }

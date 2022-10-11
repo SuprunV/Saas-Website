@@ -1,9 +1,10 @@
 export interface IService{
     id: number;
+    img:string;
     name: string;
     description: string;
-    duration: string;
+    duration: number;
     price: number;
-    
+
 }
     
