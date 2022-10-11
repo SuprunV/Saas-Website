@@ -1,26 +1,103 @@
 <script lang="ts">
 import { useAuthStore } from '@/store/useAuth';
-import { defineComponent } from 'vue';
+import { storeToRefs } from 'pinia';
+import { defineComponent, reactive, ref } from 'vue';
+import MasterSettingForm from '@/components/MasterSettingForm.vue';
+import { LikeOutlined } from '@ant-design/icons-vue';
 
 export default defineComponent({
-    setup: () => {},
+    setup: () => {
+        const changeRef = ref<any>(null);
+        const isChangeModal = ref<boolean>(false);
+        
+        const authStore = useAuthStore();
+        const{authUser} = storeToRefs(authStore)
+
+        const validateMessages = {
+            required: '${label} is required!',
+            types: {
+                email: '${label} is not a valid email!',
+                number: '${label} is not a valid number!',
+            },
+            number: {
+                range: '${label} must be between ${min} and ${max}',
+            },
+        };
+
+        const layout = {
+            labelCol: { span: 8 },
+            wrapperCol: { span: 16 },
+        };
+        const formState = reactive({
+            master: {
+                name: '',
+                surname: '',
+                age: undefined,
+                email: '',
+                gender: '',
+                companyName: '',
+            },
+        });
+
+        return {
+            changeRef,
+            isChangeModal,
+            formState,
+            layout,
+            validateMessages,
+            authUser
+        };
+    },
+    methods: {
+        showChangeModal() {
+            this.isChangeModal = true;
+        },
+    },
+    components: { LikeOutlined, MasterSettingForm },
 });
 </script>
 
 <template>
     <div>
         <h1 class="text-center">Settings for master</h1>
-        <ul>
-                <li>Есть фото профиля</li>
-                <li>Может менять личные данные</li>
-                <li>Имя,Фамилия, возраст, Пол, почта</li>
-                <li>Будет написано, к какой фирме принадлежит</li>
-                <li>Будет блок со статистикой:</li>
-                <li>Сколько сделанных услуг</li>
-                <li>Весь оборот его услуг</li>
-                <li>Ниже будет перечень услуг, которые он предоставляет, стоимость и продолжительность.</li>
-                <li>Мастер может выбрать свой график работы - выбирает дни недели и время (перерывы)</li>
-            </ul>
+        <div>
+            <a-space size="middle">
+                <a-space direction="vertical" size="middle">
+                    <div class="space-align-container">
+                        <div class="space-align-block">
+                            <a-space align="start">
+                                <img :width="200"
+                                    :src="authUser.img"/> 
+                                <a-descriptions title="Master Info" bordered="true">
+                                <a-descriptions-item label="Name" :span="3">Levi</a-descriptions-item>
+                                <a-descriptions-item label="Surname" :span="3">Ackerman</a-descriptions-item>
+                                <a-descriptions-item label="Gender" :span="3">Male</a-descriptions-item>
+                                <a-descriptions-item label="Age" :span="3">16</a-descriptions-item>
+                                <a-descriptions-item label="Company" :span="3">{{ authUser.companyName}}</a-descriptions-item>
+                                <a-descriptions-item label="Email" :span="3">{{ authUser.email}}</a-descriptions-item>
+                                </a-descriptions>
+                            </a-space>
+                        </div>
+                    </div>
+                    <a-row>
+                        <a-col :span="12">
+                            <a-statistic title="Done work" :value="2000" />
+                        </a-col>
+                        <a-col :span="12">
+                        <a-statistic title="Feedback" :value="650" style="margin-right: 50px">
+                            <template #suffix>
+                                <like-outlined />
+                            </template>
+                        </a-statistic>
+                        </a-col>
+                    </a-row>
+                <a-button type="primary" @click="showChangeModal"
+                    >Change data</a-button
+                >
+                </a-space>
+            </a-space>
+            <MasterSettingForm v-model:show="isChangeModal" />
+        </div>
     </div>
 </template>
 

@@ -1,13 +1,20 @@
 import { IUser, RolesEnum } from '@/models/IUser';
 import { LocalStorageItemEnum } from '@/types/LocalStorageItemEnum';
 
-export default class UserAPI {
+const companyImgUrl =
+    'https://static8.depositphotos.com/1378583/1010/i/600/depositphotos_10108949-stock-photo-blue-flame-logo.jpg';
+const clientImgUrl = 
+    'https://static.javatpoint.com/difference/images/client-vs-server.png';
+const masterImgUrl = 
+    'https://thumbs.dreamstime.com/b/red-color-peel-sticker-label-word-master-gray-background-249615333.jpg';
+    export default class UserAPI {
     static demoUsers: IUser[] = [
         {
             id: 1,
             name: 'My first company',
             email: 'admin@myfircom.com',
             role: RolesEnum.COMPANY,
+            img: companyImgUrl,
             companyName: 'My First Company',
             companyAlias: 'myfircom',
         },
@@ -16,6 +23,7 @@ export default class UserAPI {
             name: 'Eren Yeager',
             email: 'eren-yeager@myfircom.com',
             role: RolesEnum.CLIENT,
+            img: clientImgUrl,
             companyName: 'My First Company',
             companyAlias: 'myfircom',
         },
@@ -24,6 +32,7 @@ export default class UserAPI {
             name: 'Levi ackerman',
             email: 'levi-ackerman@myfircom.com',
             role: RolesEnum.MASTER,
+            img: masterImgUrl,
             companyName: 'My First Company',
             companyAlias: 'myfircom',
         },
@@ -46,5 +55,15 @@ export default class UserAPI {
     static async logout(userData: IUser) {
         // Here will be made request to remove token for this user (userData);
         localStorage.removeItem(LocalStorageItemEnum.userJson);
+    }
+    static getUserById(id: number): Promise<IUser> {
+        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+            const userIndex = this.demoUsers.findIndex(
+                (u) => u.id === id,
+            );
+            if (userIndex >= 0) {
+                return this.demoUsers[userIndex];
+            } else throw Error("this company doesn't exists!");
+        });
     }
 }
