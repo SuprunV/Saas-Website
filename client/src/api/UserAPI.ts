@@ -7,7 +7,7 @@ const clientImgUrl =
     'https://static.javatpoint.com/difference/images/client-vs-server.png';
 const masterImgUrl = 
     'https://thumbs.dreamstime.com/b/red-color-peel-sticker-label-word-master-gray-background-249615333.jpg';
-    export default class UserAPI {
+    export  class UserAPI {
     static demoUsers: IUser[] = [
         {
             id: 1,
@@ -29,7 +29,6 @@ const masterImgUrl =
         },
         {
             id: 3,
-            img:'https://img.freepik.com/premium-vector/smiling-girl-avatar_102172-32.jpg',
             name: 'Levi ackerman',
             email: 'levi-ackerman@myfircom.com',
             role: RolesEnum.MASTER,
