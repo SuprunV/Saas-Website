@@ -44,20 +44,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, PropType } from 'vue';
 import dayjs, { Dayjs } from 'dayjs';
 import {ICalendarEvents} from '@/models/ICalendarEvents';
 import {CalendarEventsAPI} from '@/api/CalendarEventsAPI';
+import { RolesEnum } from '@/models/IUser';
+import { title } from 'process';
 
 export default defineComponent({
     name: 'main-calendar',
-    setup() {
+    props: {
+        role: {
+            required: true,
+            type: Object as () => RolesEnum
+        }
+    },
+    setup(props) {
         const selectedDay = ref<Dayjs>(dayjs(new Date(new Date())));
         const selectedMonth = ref<number>(selectedDay.value.month());
         const selectedDayEvents = ref<ICalendarEvents[]>([]);
         const currentMonthEvents = ref<ICalendarEvents[]>([]);
         const eventSidebar = "Events for today: "
       
+        console.log(props);
+
         const GetEventsToSelectedDay = async() => {
             const response = await CalendarEventsAPI.getEvents(selectedDay.value.toDate());
             selectedDayEvents.value = response;
@@ -82,7 +92,17 @@ export default defineComponent({
                 return 0;
             }
         };
-        
+
+        var dataIndex1 =""; 
+        var title1 = "";
+        if(props.role == "MASTER"){
+        title1 = "Client name";
+        dataIndex1 = "clientName";}
+        else if(props.role == "CLIENT"){
+        title1 = "Master name"
+        dataIndex1 = "masterName";
+        }
+
         const columns = [
           {
             title: 'Time',
@@ -90,9 +110,9 @@ export default defineComponent({
             key: 'date',
           },
           {
-            title: 'Client name',
-            dataIndex: 'clientName',
-            key: 'clientName',
+            title: title1,
+            dataIndex: dataIndex1,
+            key: dataIndex1,
           },
           {
             title: 'Service',
@@ -100,6 +120,8 @@ export default defineComponent({
             key: 'serviceName',
           },
         ]
+      
+
 
         return {
             selectedDay,
