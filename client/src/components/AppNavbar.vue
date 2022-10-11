@@ -7,7 +7,7 @@ import { useAuthStore } from '@/store/useAuth';
 import { useCompanyStore } from '@/store/useCompany';
 import { storeToRefs } from 'pinia';
 import { AppRoutes } from '@/router/router';
-import UserAPI from '@/api/UserAPI';
+import {UserAPI} from '@/api/UserAPI';
 
 export default defineComponent({
     data: () => ({
@@ -106,7 +106,7 @@ export default defineComponent({
                     </a-col>
                     <a-col>
                         <a-button type="text" danger @click="logout"
-                            >Logut</a-button
+                            >Log out</a-button
                         >
                     </a-col>
                 </a-row>

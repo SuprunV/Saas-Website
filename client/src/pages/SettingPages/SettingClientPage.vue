@@ -1,4 +1,4 @@
-<script lang="ts">
+ <script lang="ts">
 import { useAuthStore } from '@/store/useAuth';
 import { storeToRefs } from 'pinia';
 import { defineComponent, reactive, ref } from 'vue';

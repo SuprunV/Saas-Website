@@ -29,6 +29,7 @@ const masterImgUrl =
         },
         {
             id: 3,
+            img:'https://img.freepik.com/premium-vector/smiling-girl-avatar_102172-32.jpg',
             name: 'Levi ackerman',
             email: 'levi-ackerman@myfircom.com',
             role: RolesEnum.MASTER,
@@ -56,14 +57,43 @@ const masterImgUrl =
         // Here will be made request to remove token for this user (userData);
         localStorage.removeItem(LocalStorageItemEnum.userJson);
     }
-    static getUserById(id: number): Promise<IUser> {
+
+    static getPublicUsers(
+        limit: number,
+        page: number,
+        role?: RolesEnum,
+        
+    ): Promise<IUser[]> {
+        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+            // create fake users
+            // limit is 5. page is 1. neede to get 1,2,3,4,5
+            // limit is 5. page is 2. neede to get 6,7,8,9,10
+            const count = limit * page;
+            var demoUser:any
+            let users: IUser[] = [];
+            if(role!=null)
+            {
+                users = this.demoUsers.filter(
+                    (c) => c.role === role,  );       
+            }
+            else{   
+                for (let i = (page - 1) * limit + 1; i <= count; i++) {
+                demoUser = this.demoUsers[i % 3];
+                users.push({ ...demoUser, id: i });
+            }}
+            return users;
+        });
+    }
+
+    static getUserByRole(role: RolesEnum):Promise<IUser> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
             const userIndex = this.demoUsers.findIndex(
-                (u) => u.id === id,
+                (c) => c.role === role,
             );
             if (userIndex >= 0) {
                 return this.demoUsers[userIndex];
-            } else throw Error("this company doesn't exists!");
+            } else throw Error("this role doesn't exists!");
         });
     }
 }
+
