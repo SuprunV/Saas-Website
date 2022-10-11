@@ -4,11 +4,10 @@ export interface IUser {
     name: string;
     email: string;
     role: RolesEnum;
-    img: string;
     companyName: string;
     companyAlias: string;
 }
-
+S
 export enum RolesEnum {
     CLIENT = 'CLIENT',
     COMPANY = 'COMPANY',
