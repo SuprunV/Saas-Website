@@ -1,0 +1,108 @@
+<template>
+    <app-form-modal
+        :show="show"
+        :formState="formState"
+        :validateMessages="validateMessages"
+        :layout="layout"
+        @submit="submitForm"
+        @close="() => $emit('update:show', false)"
+    >
+        <a-form-item
+            :name="['user', 'companyName']"
+            label="Company name"
+            :rules="[{ required: false} ]"
+        >
+            <a-input v-model:value="formState.master.companyName" />
+        </a-form-item>
+        <a-form-item
+            :name="['user', 'name']"
+            label="Name"
+            :rules="[{ required: true }]"
+        >
+            <a-input v-model:value="formState.master.name" />
+        </a-form-item>
+        <a-form-item
+            :name="['user', 'surname']"
+            label="Surname"
+            :rules="[{ required: true }]"
+        >
+            <a-input v-model:value="formState.master.surname" />
+        </a-form-item>
+        <a-form-item
+            name="gender"
+            label="Gender"
+            has-feedback
+            :rules="[{ required: false, message: 'Gender' }]"
+        >
+            <a-select
+                v-model:value="formState.master.gender"
+                placeholder="Please select gender"
+            >
+                <a-select-option value="Male">Male</a-select-option>
+                <a-select-option value="Female">Female</a-select-option>
+            </a-select>
+        </a-form-item>
+        <a-form-item
+            :name="['user', 'age']"
+            label="Age"
+            :rules="[{ type: 'number', min: 0, max: 99 }]"
+        >
+            <a-input-number v-model:value="formState.master.age" />
+        </a-form-item>
+        <a-form-item
+            :name="['user', 'email']"
+            label="Email"
+            :rules="[{ type: 'email' }]"
+        >
+            <a-input v-model:value="formState.master.email" />
+        </a-form-item>
+    </app-form-modal>
+</template>
+<script lang="ts">
+import { defineComponent, reactive, ref } from 'vue';
+
+export default defineComponent({
+    props: {
+        show: Boolean,
+    },
+    setup(props) {
+        const layout = {
+            labelCol: { span: 8 },
+            wrapperCol: { span: 16 },
+        };
+
+        const validateMessages = {
+            required: '${label} is required!',
+            types: {
+                email: '${label} is not a valid email!',
+                number: '${label} is not a valid number!',
+            },
+            number: {
+                range: '${label} must be between ${min} and ${max}',
+            },
+        };
+
+        const formState = reactive({
+            master: {
+                name: '',
+                surname: '',
+                age: undefined,
+                email: '',
+                gender: '',
+                companyName: '',
+            },
+        });
+
+        return {
+            formState,
+            layout,
+            validateMessages,
+        };
+    },
+    methods: {
+        submitForm() {
+            console.log('submit started', this.formState);
+        },
+    },
+});
+</script>

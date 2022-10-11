@@ -1,42 +1,100 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
+import { useCompanyStore } from '@/store/useCompany';
+import { storeToRefs } from 'pinia';
+import { LikeOutlined } from '@ant-design/icons-vue';
+import CompanySettingForm from '@/components/CompanySettingForm.vue';
 
 export default defineComponent({
-    setup: () => {},
+    setup: () => {
+        const companyStore = useCompanyStore();
+        const { company } = storeToRefs(companyStore);
+
+        const changeRef = ref<any>(null);
+        const isChangeModal = ref<boolean>(false);
+        
+        const validateMessages = {
+            required: '${label} is required!',
+        }
+        const layout = {
+            labelCol: { span: 8 },
+            wrapperCol: { span: 16 },
+        };
+        const formState = reactive({
+            company: {
+                companyName: '',
+                address: ''
+            },
+        });
+        return { 
+            company,
+            changeRef,
+            isChangeModal,
+            formState,
+            layout,
+            validateMessages,
+        };
+    },
+    methods: {
+        showChangeModal() {
+            this.isChangeModal = true;
+        },
+    },
+    components: {
+    LikeOutlined, 
+    CompanySettingForm
+    },
+  
 });
 </script>
 
 <template>
+    
     <div>
         <h1 class="text-center">Settings for Company</h1>
-        <ul>
-            <li>Есть фото профиля</li>
-            <li>Может менять личные данные</li>
-            <li>Имя фирмы, адрес</li>
-            <li>Будет блок со статистикой:</li>
-            <li>Сколько сделанных услуг</li>
-            <li>Сколько всего заработал за все время</li>
-            <li>Сколько мастеров</li>
-            <li>Кнопка для добавления новой услуги (модальное окно)</li>
-            <li>пишет название услуги</li>
-            <li>ее стоимость</li>
-            <li>продолжительность</li>
-            <li>
-                Кнопка “Добавить нового работника” (Открывается модальное окно)
-            </li>
-            <li>
-                Шаг 1. Сначала идет поиск мастера, которого хотят добавить (он
-                должен быть зарегистрирован, чтобы он мог быть добавлен в фирму)
-            </li>
-            <li>
-                Шаг 2. Потом он выбирает, какую услугу будет делать этот мастер.
-            </li>
-            <li>
-                Шаг 3. Информация о том, что за человек добавляется и что он
-                будет делать. Кнопка “подтвердить”
-            </li>
-        </ul>
+            <a-space size="middle">
+                <a-space direction="vertical" size="middle">
+                    <div class="space-align-container">
+                        <div class="space-align-block">
+                            <a-space align="start">
+                                <img :width="155"
+                                :src="company.img" 
+                            />
+                            <a-descriptions title="Company Info" bordered="true">
+                                <a-descriptions-item label="Company name" :span="3">{{company.name}}</a-descriptions-item>
+                                <a-descriptions-item label="Address" :span="3">Liivalaia 7</a-descriptions-item>
+                            </a-descriptions>
+                            </a-space>
+                        </div>
+                    </div>
+                    <a-row>
+                        <a-col :span="12">
+                            <a-statistic title="Masters" :value="100" />
+                        </a-col>
+                        <a-col :span="12">
+                            <a-statistic title="Services" :value="70" />
+                        </a-col>
+                    </a-row>
+                    <a-row>
+                        <a-col :span="12">
+                            <a-statistic title="Income (EUR)" :precision="2" :value="200000" />
+                        </a-col>
+                        <a-col :span="12">
+                        <a-statistic title="Feedback" :value="556" style="margin-right: 50px">
+                            <template #suffix>
+                                <like-outlined />
+                            </template>
+                        </a-statistic>
+                        </a-col>
+                    </a-row>
+                <a-button type="primary" @click="showChangeModal"
+                        >Change data</a-button
+                >
+                </a-space>
+            </a-space>
+        <CompanySettingForm v-model:show="isChangeModal" />
     </div>
+    
 </template>
 
 <style scoped></style>
