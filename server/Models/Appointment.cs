@@ -7,7 +7,7 @@ namespace server.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-        public string? DoB { get; set; }
+        public string? date { get; set; }
 
         public Guid? clientId { get; set; }
         public Guid? serviceId { get; set; }
