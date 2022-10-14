@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace server.Models
 {
-    public class appoinment
+    public class Appointment
     {
         
     }
