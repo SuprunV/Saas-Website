@@ -969,11 +969,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "f:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj",
+      "projectUniqueName": "F:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj",
       "projectName": "server",
-      "projectPath": "f:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj",
+      "projectPath": "F:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj",
       "packagesPath": "C:\\Users\\Vladislav\\.nuget\\packages\\",
-      "outputPath": "f:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\obj\\",
+      "outputPath": "F:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Vladislav\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -983,6 +983,7 @@
         "net6.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

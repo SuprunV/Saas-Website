@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2CaQgcMEvnNF8lSn+r+86oYHsnHLTNRJBizL+hj1wkmoRLlSaZhA8TaGCTANzbjDk83dIpgqtBro/H0vkDSLKA==",
+  "dgSpecHash": "YxJUnRDIdwN2Oc63FSr0sHaYKz81FeFerXNsaSSWx96K6licPZl4shPOpF3By0gwUjzVg4KifwjeZrDYGvpwbg==",
   "success": true,
-  "projectFilePath": "f:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj",
+  "projectFilePath": "F:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Vladislav\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.10\\microsoft.entityframeworkcore.6.0.10.nupkg.sha512",
     "C:\\Users\\Vladislav\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\6.0.10\\microsoft.entityframeworkcore.abstractions.6.0.10.nupkg.sha512",
