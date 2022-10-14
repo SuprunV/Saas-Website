@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "F:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj": {}
+    "f:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj": {}
   },
   "projects": {
-    "F:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj": {
+    "f:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj",
+        "projectUniqueName": "f:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj",
         "projectName": "server",
-        "projectPath": "F:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj",
+        "projectPath": "f:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj",
         "packagesPath": "C:\\Users\\Vladislav\\.nuget\\packages\\",
-        "outputPath": "F:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\obj\\",
+        "outputPath": "f:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Vladislav\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -21,7 +21,6 @@
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -40,6 +39,18 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[6.0.10, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[6.0.7, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
