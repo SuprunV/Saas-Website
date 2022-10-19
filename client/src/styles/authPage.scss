@@ -14,5 +14,7 @@
     box-shadow: $main-shadow;
 
     background-color: rgb(46, 52, 54);
-    color: white;
+    input {
+        color: rgb(46, 52, 54);
+    }
 }

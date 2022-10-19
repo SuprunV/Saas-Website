@@ -25,18 +25,10 @@ export default defineConfig({
                     'disabled-color': 'rgba(0, 0, 0, 0.25)', // disable state color
                     'border-radius-base': '10px', // major border radius
                     'border-color-base': '#91bdff', // major border color
-                    'box-shadow-base': '0 2px 8px rgba(0, 0, 0, 0.15)', // major shadow for layers
+                    'box-shadow-base': '0 2px 8px #ffee0152', // major shadow for layers
                 },
                 javascriptEnabled: true,
             },
         },
     },
-    // css: {
-    //     preprocessorOptions: {
-    //         less: {
-    //             javascriptEnabled: true,
-    //             additionalData: '@root-entry-name: default;',
-    //         },
-    //     },
-    // },
 });

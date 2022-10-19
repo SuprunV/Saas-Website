@@ -52,8 +52,8 @@ export default defineComponent({
             await this.loginAsync(values.email, values.password);
             if (this.message.type == ResponseTypeEnum.SUCCESS) {
                 setTimeout(() => {
-                    this.loginActionStore(this.authUser);
-                    this.$router.push(`/${this.authUser.companyAlias}`);
+                    // this.loginActionStore(this.authUser);
+                    // this.$router.push(`/${this.authUser.companyAlias}`);
                 }, 3000);
             }
         },
@@ -83,17 +83,17 @@ export default defineComponent({
         @finish="login"
     >
         <response-alert :message="message" :isLoading="isLoading" />
-        <a-button type="warning" v-if="!alias" @click="putDemoData"
-            >Put demo data</a-button
-        >
-        <div v-else>
-            <a-button type="warning" @click="putDemoMaster"
+        <a-row type="flex" justify="space-around" class="mb-4">
+            <a-button v-if="!alias" type="primary" @click="putDemoData"
+                >Put demo data</a-button
+            >
+            <a-button v-if="alias" type="primary" @click="putDemoMaster"
                 >Put demo MASTER</a-button
             >
-            <a-button type="warning" @click="putDemoClient"
+            <a-button v-if="alias" type="primary" @click="putDemoClient"
                 >Put demo CLIENT</a-button
             >
-        </div>
+        </a-row>
         <a-form-item
             label="Email"
             name="email"
@@ -112,9 +112,17 @@ export default defineComponent({
             <a-input-password v-model:value="formState.password" />
         </a-form-item>
 
-        <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-            <a-button type="primary" html-type="submit">Submit</a-button>
-        </a-form-item>
+        <a-row type="flex" justify="end">
+            <a-form-item>
+                <a-button
+                    size="large"
+                    type="primary"
+                    html-type="submit"
+                    :loading="isLoading"
+                    >Submit</a-button
+                >
+            </a-form-item>
+        </a-row>
     </a-form>
 </template>
 

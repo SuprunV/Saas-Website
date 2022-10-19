@@ -29,6 +29,13 @@ export default defineComponent({
     <a-row justify="center" class="y-centered">
         <a-col :span="16">
             <div class="auth-cart">
+                <a-row justify="end">
+                    <a-switch
+                        v-model:checked="isRegistration"
+                        checked-children="Registration"
+                        un-checked-children="Authorization"
+                    />
+                </a-row>
                 <div v-if="company.id">
                     <div class="company-image company-image-sm">
                         <img :src="company.img" alt="avatar" />
@@ -62,14 +69,6 @@ export default defineComponent({
                         </div>
                     </div>
                 </div>
-
-                <a-row justify="end">
-                    <a-switch
-                        v-model:checked="isRegistration"
-                        checked-children="Registration"
-                        un-checked-children="Authorization"
-                    />
-                </a-row>
             </div>
         </a-col>
     </a-row>
