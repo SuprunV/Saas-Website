@@ -3,7 +3,7 @@ import LoginForm from '@/components/Auth/LoginForm.vue';
 import RegForm from '@/components/Auth/RegForm.vue';
 import RegCompanyForm from '@/components/Auth/RegCompanyForm.vue';
 import { defineComponent } from 'vue';
-import '@/styles/authPage.scss';
+// import '@/styles/authPage.scss';
 import { useCompanyStore } from '@/store/useCompany';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';

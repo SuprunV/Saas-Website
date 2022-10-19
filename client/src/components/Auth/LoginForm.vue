@@ -1,5 +1,5 @@
 <script lang="ts">
-import {UserAPI} from '@/api/UserAPI';
+import { UserAPI } from '@/api/UserAPI';
 import { useFetching } from '@/hooks/useFetching';
 import { IUser, RolesEnum } from '@/models/IUser';
 import { AppRoutes } from '@/router/router';

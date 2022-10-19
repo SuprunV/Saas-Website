@@ -6,7 +6,7 @@ import { AppRoutes } from '@/router/router';
 import { ResponseTypeEnum } from '@/types/FetchResponse';
 import { defineComponent } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import '@/styles/companyPage.scss';
+// import '@/styles/companyPage.scss';
 import { useCompanyStore } from '@/store/useCompany';
 import { storeToRefs } from 'pinia';
 
@@ -16,7 +16,7 @@ export default defineComponent({
         const { company } = storeToRefs(companyStore);
 
         companyStore.setCompanyPage();
-        
+
         return { company, removeCompanyPage: companyStore.removeCompanyPage };
     },
 });
