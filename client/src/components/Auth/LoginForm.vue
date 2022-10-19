@@ -52,8 +52,8 @@ export default defineComponent({
             await this.loginAsync(values.email, values.password);
             if (this.message.type == ResponseTypeEnum.SUCCESS) {
                 setTimeout(() => {
-                    // this.loginActionStore(this.authUser);
-                    // this.$router.push(`/${this.authUser.companyAlias}`);
+                    this.loginActionStore(this.authUser);
+                    this.$router.push(`/${this.authUser.companyAlias}`);
                 }, 3000);
             }
         },

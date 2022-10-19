@@ -1,2 +1,3 @@
 import VCountAnimation from './VCountAnimation';
-export default [VCountAnimation];
+import VAppearAnimation from './VAppearAnimation';
+export default [VCountAnimation, VAppearAnimation];

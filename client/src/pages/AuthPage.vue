@@ -28,7 +28,7 @@ export default defineComponent({
 <template>
     <a-row justify="center" class="y-centered">
         <a-col :span="16">
-            <div class="auth-cart">
+            <div class="auth-cart" v-appearAnimation="{ timeout: 1 }">
                 <a-row justify="end">
                     <a-switch
                         v-model:checked="isRegistration"
