@@ -6,3 +6,13 @@
     justify-content: start;
     align-items: center;
 }
+
+.auth-cart {
+    border-radius: 20px;
+    border: 5px solid #fff;
+    padding: 20px 50px;
+    box-shadow: $main-shadow;
+
+    background-color: rgb(46, 52, 54);
+    color: white;
+}

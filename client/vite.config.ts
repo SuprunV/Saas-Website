@@ -19,8 +19,8 @@ export default defineConfig({
                     'warning-color': '#faad14', // warning state color
                     'error-color': '#f5222d', // error state color
                     'font-size-base': '16px', // major text font size
-                    'heading-color': 'rgba(0, 0, 0, 0.85)', // heading text color
-                    'text-color': 'rgba(0, 0, 0, 0.85)', // major text color
+                    'heading-color': '#fff', // heading text color
+                    'text-color': '#fff', // major text color
                     'text-color-secondary': 'rgba(0, 0, 0, 0.45)', // secondary text color
                     'disabled-color': 'rgba(0, 0, 0, 0.25)', // disable state color
                     'border-radius-base': '10px', // major border radius
