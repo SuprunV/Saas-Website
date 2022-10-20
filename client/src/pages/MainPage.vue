@@ -86,11 +86,14 @@ export default defineComponent({
 </script>
 
 <template>
-    <div>
-        <h1 class="text-center mt-3 mb-3">Welcome to Beauty Manager!</h1>
+    <div v-appearAnimation="{ timeout: 100 }">
+        <h1 class="text-center mt-3 mb-3" v-appearAnimation="{ timeout: 100 }">
+            Welcome to Beauty Manager!
+        </h1>
         <a-row :gutter="16" type="flex" justify="space-between">
             <a-col :span="7">
                 <a-card
+                    v-appearAnimation="{ timeout: 100 }"
                     class="main-cart"
                     :bordered="false"
                     type="flex"
@@ -115,6 +118,7 @@ export default defineComponent({
             </a-col>
             <a-col :span="7">
                 <a-card
+                    v-appearAnimation="{ timeout: 250 }"
                     class="main-cart"
                     :bordered="false"
                     type="flex"
@@ -139,6 +143,7 @@ export default defineComponent({
             </a-col>
             <a-col :span="7">
                 <a-card
+                    v-appearAnimation="{ timeout: 400 }"
                     class="main-cart"
                     :bordered="false"
                     type="flex"

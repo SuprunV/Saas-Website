@@ -23,7 +23,7 @@ export default defineComponent({
 });
 </script>
 <template>
-    <div>
+    <div v-appearAnimation="{ timeout: 100 }">
         <SettingClientPage v-if="authUser.role === RolesEnum.CLIENT" />
         <SettingMasterPage v-else-if="authUser.role === RolesEnum.MASTER" />
         <SettingCompanyPage v-else-if="authUser.role === RolesEnum.COMPANY" />

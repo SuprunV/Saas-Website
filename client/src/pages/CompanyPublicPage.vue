@@ -23,12 +23,14 @@ export default defineComponent({
 </script>
 
 <template>
-    <div>
+    <div v-appearAnimation="{ timeout: 100 }">
         <div v-if="company.id">
-            <div class="company-image">
+            <div class="company-image" v-appearAnimation="{ timeout: 200 }">
                 <img :src="company.img" alt="avatar" />
             </div>
-            <h1 class="text-center mt-4">{{ company.name }}</h1>
+            <h1 class="text-center mt-4" v-appearAnimation="{ timeout: 300 }">
+                {{ company.name }}
+            </h1>
             <div class="">
                 <em class="text-center">HERE MUST BE DATA OF THIS COMPANY</em>
             </div>
