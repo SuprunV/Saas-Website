@@ -52,7 +52,7 @@ export default defineComponent({
 </script>
 
 <template>
-    <a-layout-header style="background: #fff; padding: 0">
+    <a-layout-header style="padding: 0">
         <a-row>
             <a-col v-if="!isAuth" :span="3">
                 <div class="logo">

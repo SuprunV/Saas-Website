@@ -3,13 +3,19 @@ body,
 #app,
 .whole-height {
     min-height: 100vh;
-    // height: 100%;
     margin: 0;
 }
 
-.bg-darkblue {
-    background-color: darkblue;
-    color: white;
+.main-cart {
+    border-radius: 20px;
+    border: 5px solid #fff;
+    padding: 20px 50px;
+    box-shadow: $main-shadow;
+
+    background-color: $black-color;
+    input {
+        color: $black-color;
+    }
 }
 
 .ant-layout-content {
@@ -29,11 +35,56 @@ body,
     font-size: 90px;
 }
 
-.main-numbers {
-    font-size: 70px;
-    line-height: 65px;
+.ant-btn-secondary {
+    background-color: rgb(143, 143, 143);
+    border-color: rgb(61, 61, 61);
+    &:hover {
+        background-color: rgb(61, 61, 61);
+        border-color: rgb(143, 143, 143);
+        color: rgb(202, 202, 202);
+    }
+    &:focus {
+        background-color: rgb(61, 61, 61);
+        border-color: rgb(143, 143, 143);
+        color: rgb(202, 202, 202);
+    }
+}
+.btn-success {
+    background-color: rgb(75, 189, 0);
+    border-color: rgb(56, 139, 0);
+    &:hover {
+        background-color: rgb(56, 139, 0);
+        border-color: rgb(75, 189, 0);
+        color: rgb(255, 255, 255);
+    }
+    &:focus {
+        background-color: rgb(56, 139, 0);
+        border-color: rgb(75, 189, 0);
+        color: rgb(255, 255, 255);
+    }
 }
 
+.ant-btn-dangerous {
+    background-color: rgb(189, 13, 0) !important;
+    border-color: rgb(139, 21, 0) !important;
+    color: rgb(255, 255, 255) !important;
+    &:hover {
+        border-color: rgb(189, 13, 0) !important;
+        background-color: rgb(139, 21, 0) !important;
+    }
+    &:hover {
+        border-color: rgb(189, 13, 0) !important;
+        background-color: rgb(139, 21, 0) !important;
+    }
+}
+
+.ant-menu {
+    background-color: $dark-color;
+}
+
+.ant-menu-horizontal {
+    border-bottom: 0;
+}
 .fadeIn-enter-active {
     animation: comeUp $time-fadeIn;
 }
@@ -46,8 +97,15 @@ body,
     padding: 5px;
     font-size: 40px;
     transition: all 0.5s;
+    background-color: $dark-color;
     &:hover {
         animation-delay: 0.5s;
         animation: shake 0.5s infinite;
+        & a {
+            color: $gold-color-light;
+        }
     }
+}
+.logo-sidebar {
+    border-radius: 20px;
 }

@@ -28,7 +28,7 @@ export default defineComponent({
 <template>
     <a-row justify="center" class="y-centered">
         <a-col :span="16">
-            <div class="auth-cart" v-appearAnimation="{ timeout: 1 }">
+            <div class="main-cart" v-appearAnimation="{ timeout: 100 }">
                 <a-row justify="end">
                     <a-switch
                         v-model:checked="isRegistration"
@@ -41,7 +41,10 @@ export default defineComponent({
                         <img :src="company.img" alt="avatar" />
                     </div>
                 </div>
-                <div v-if="!isRegistration">
+                <div
+                    v-if="!isRegistration"
+                    v-appearAnimation="{ timeout: 200 }"
+                >
                     <h4 class="text-center mb-4">
                         <span v-if="company.id">
                             Authorization to {{ company.name }}
@@ -50,7 +53,7 @@ export default defineComponent({
                     </h4>
                     <LoginForm :alias="company.alias" />
                 </div>
-                <div v-else>
+                <div v-else v-appearAnimation="{ timeout: 200 }">
                     <h4 class="text-center mb-4">
                         <span v-if="company.id">
                             Register account in {{ company.name }}
