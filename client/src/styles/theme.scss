@@ -82,6 +82,14 @@ body,
     background-color: $dark-color;
 }
 
+.ant-avatar {
+    box-shadow: $main-shadow-sm;
+    transition: all 0.5s;
+    &:hover {
+        transform: scale(1.2);
+    }
+}
+
 .ant-menu-horizontal {
     border-bottom: 0;
 }
