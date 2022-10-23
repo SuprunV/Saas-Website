@@ -7,7 +7,6 @@ import {
 import { defineComponent, ref, onMounted, nextTick } from 'vue';
 import { companyAPI } from '@/api/companyAPI';
 import { ICompany } from '@/models/ICompany';
-import { useAuthStore } from '@/store/useAuth';
 import { useCompanyStore } from '@/store/useCompany';
 
 export default defineComponent({
@@ -87,11 +86,15 @@ export default defineComponent({
 </script>
 
 <template>
-    <div style="background-color: #ececec; padding: 20px">
-        <h1 class="text-center mt-3 mb-3">Welcome to Beauty Manager!</h1>
-        <a-row :gutter="16">
-            <a-col :span="8">
+    <div v-appearAnimation="{ timeout: 100 }">
+        <h1 class="text-center mt-3 mb-3" v-appearAnimation="{ timeout: 100 }">
+            Welcome to Beauty Manager!
+        </h1>
+        <a-row :gutter="16" type="flex" justify="space-between">
+            <a-col :span="7">
                 <a-card
+                    v-appearAnimation="{ timeout: 100 }"
+                    class="main-cart"
                     :bordered="false"
                     type="flex"
                     align="center"
@@ -113,8 +116,10 @@ export default defineComponent({
                     </h3>
                 </a-card>
             </a-col>
-            <a-col :span="8">
+            <a-col :span="7">
                 <a-card
+                    v-appearAnimation="{ timeout: 250 }"
+                    class="main-cart"
                     :bordered="false"
                     type="flex"
                     align="center"
@@ -136,8 +141,10 @@ export default defineComponent({
                     </h3>
                 </a-card>
             </a-col>
-            <a-col :span="8">
+            <a-col :span="7">
                 <a-card
+                    v-appearAnimation="{ timeout: 400 }"
+                    class="main-cart"
                     :bordered="false"
                     type="flex"
                     align="center"
@@ -179,13 +186,17 @@ export default defineComponent({
                         lineHeight: '32px',
                     }"
                 >
-                    <a-button @click="onLoadMore">loading more</a-button>
+                    <a-button type="secondary" @click="onLoadMore"
+                        >loading more</a-button
+                    >
                 </div>
             </template>
             <template #renderItem="{ item }">
                 <a-list-item>
                     <template #actions>
-                        <a-button @click="$router.push(item.alias)"
+                        <a-button
+                            type="primary"
+                            @click="$router.push(item.alias)"
                             >Visit</a-button
                         >
                     </template>

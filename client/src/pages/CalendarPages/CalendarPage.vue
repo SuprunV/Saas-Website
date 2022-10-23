@@ -21,7 +21,7 @@ export default defineComponent({
 });
 </script>
 <template>
-    <div>
+    <div v-appearAnimation="{ timeout: 100 }">
         <CalendarClientPage v-if="authUser.role === RolesEnum.CLIENT" />
         <CalendarMasterPage v-else-if="authUser.role === RolesEnum.MASTER" />
     </div>

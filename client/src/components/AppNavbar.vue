@@ -1,5 +1,5 @@
 <script lang="ts">
-import '@/styles/navbar.scss';
+// import '@/styles/navbar.scss';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue';
 import { defineComponent, ref } from 'vue';
 import { UserOutlined } from '@ant-design/icons-vue';
@@ -7,7 +7,7 @@ import { useAuthStore } from '@/store/useAuth';
 import { useCompanyStore } from '@/store/useCompany';
 import { storeToRefs } from 'pinia';
 import { AppRoutes } from '@/router/router';
-import {UserAPI} from '@/api/UserAPI';
+import { UserAPI } from '@/api/UserAPI';
 
 export default defineComponent({
     data: () => ({
@@ -52,7 +52,7 @@ export default defineComponent({
 </script>
 
 <template>
-    <a-layout-header style="background: #fff; padding: 0">
+    <a-layout-header style="padding: 0">
         <a-row>
             <a-col v-if="!isAuth" :span="3">
                 <div class="logo">
