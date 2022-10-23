@@ -59,7 +59,23 @@ namespace server.Db
              mb.Entity<Appointment>().HasOne(x => x.Master)
             .WithMany(x => x.AppointmentMaster)
             .HasForeignKey(x => x.masterId);
-
+            mb.Entity<Company>().HasData(
+                new Company
+                {
+                    Id = 1,
+                    companyName = "fdkfjk"
+                    
+                }
+            );
+            mb.Entity<Service>().HasData(
+                new Service
+                {
+                    Id = 1,
+                    name = "ITB1704",
+                    price = 2,
+                    companyId = 1
+                }
+            );
             mb.UseIdentityColumns();
         }
        
