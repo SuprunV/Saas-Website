@@ -7,13 +7,13 @@ namespace server.Models
     public class Master
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string? name { get; set; }
         public string? surname { get; set; }
         public string? DoB { get; set; }
         public Gender gender { get; set; }
         
-        public Guid? userId { get; set; }
+        public int? userId { get; set; }
   
         [JsonIgnore]
         public virtual User? User { get; set; }

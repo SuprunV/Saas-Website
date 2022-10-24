@@ -59,7 +59,74 @@ namespace server.Db
              mb.Entity<Appointment>().HasOne(x => x.Master)
             .WithMany(x => x.AppointmentMaster)
             .HasForeignKey(x => x.masterId);
-
+            mb.Entity<Company>().HasData(
+                new Company
+                {
+                    Id = 1,
+                    companyName = "BeautySalon",
+                    address = "Maleva 6",
+                    img = "https://img.freepik.com/free-vector/company-concept-illustration_114360-2581.jpg?w=2000"
+                },
+                new Company
+                {
+                    Id = 2,
+                    companyName = "MassageSalon",
+                    address = "Kadaka 45",
+                    img = "https://img.freepik.com/free-vector/company-concept-illustration_114360-2581.jpg?w=2000"
+                }
+            );
+            mb.Entity<Service>().HasData(
+                new Service
+                {
+                    Id = 1,
+                    name = "Manicure",
+                    price = 35,
+                    duration = 120,
+                    description = "Manicure with massage without nail polish or with base polish",
+                    img = "https://img.freepik.com/free-photo/manicurist-master-makes-manicure-woman-s-hands-spa-treatment-concept_186202-7769.jpg?w=2000",
+                    companyId = 1
+                },
+                new Service
+                {
+                    Id = 2,
+                    name = "Pedicure",
+                    price = 45,
+                    duration = 60,
+                    description = "Pedicure with massage without nail polish or with base polish",
+                    img = "https://img.freepik.com/premium-photo/pedicure-moisturizing-cram-after-foot-rasp_79295-4791.jpg?w=2000",
+                    companyId = 1
+                },
+                new Service
+                {
+                    Id = 3,
+                    name = "Lashes extension",
+                    price = 35,
+                    duration = 110,
+                    description = "Lashes extension - 2D, 3D",
+                    img = "https://publish.purewow.net/wp-content/uploads/sites/2/2022/02/types-of-eyelash-extensions.jpg?fit=728%2C524",
+                    companyId = 1
+                },
+                new Service
+                {
+                    Id = 4,
+                    name = "Hand massage",
+                    price = 15,
+                    duration = 20,
+                    description = "Hand massage",
+                    img = "https://opt.toiimg.com/recuperator/img/toi/m-75196048/75196048.jpg&width=500&resizemode=4",
+                    companyId = 2
+                },
+                new Service
+                {
+                    Id = 5,
+                    name = "Body massage",
+                    price = 50,
+                    duration = 60,
+                    description = "Body massage",
+                    img = "http://www.alexanderworks.org.uk/wp-content/uploads/2020/06/Body-Massage-at-Home.jpg",
+                    companyId = 2
+                }
+            );
             mb.UseIdentityColumns();
         }
        
