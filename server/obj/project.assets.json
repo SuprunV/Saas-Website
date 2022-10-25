@@ -8569,24 +8569,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\37255\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\nastj\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\37255\\Documents\\university\\Project\\itb2203-2022-bs\\server\\server.csproj",
+      "projectUniqueName": "C:\\Users\\nastj\\Desktop\\BS\\itb2203-2022-bs\\server\\server.csproj",
       "projectName": "server",
-      "projectPath": "C:\\Users\\37255\\Documents\\university\\Project\\itb2203-2022-bs\\server\\server.csproj",
-      "packagesPath": "C:\\Users\\37255\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\37255\\Documents\\university\\Project\\itb2203-2022-bs\\server\\obj\\",
+      "projectPath": "C:\\Users\\nastj\\Desktop\\BS\\itb2203-2022-bs\\server\\server.csproj",
+      "packagesPath": "C:\\Users\\nastj\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\nastj\\Desktop\\BS\\itb2203-2022-bs\\server\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\37255\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\nastj\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

@@ -75,6 +75,18 @@ namespace server.Db
                     img = "https://img.freepik.com/free-vector/company-concept-illustration_114360-2581.jpg?w=2000"
                 }
             );
+            mb.Entity<Appointment>().HasData(
+                new Appointment{
+                    Id = 1,
+                    date = "22.10.2022"
+                }
+            );
+            mb.Entity<Master>().HasData(
+                new Master{
+                    Id =1, 
+                    gender = Gender.Female,
+                }
+            );
             mb.Entity<Service>().HasData(
                 new Service
                 {

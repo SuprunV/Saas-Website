@@ -18,7 +18,7 @@ namespace server.Models
         [JsonIgnore]
         public virtual User? User { get; set; }
         [JsonIgnore]
-        public virtual ICollection<Appointment> AppointmentMaster { get; set; } = new List<Appointment>();
+        public virtual ICollection<Appointment?> AppointmentMaster { get; set; } = new List<Appointment?>();
        
     }
 }
