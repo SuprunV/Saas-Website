@@ -26,14 +26,54 @@ namespace server.Controllers
             return Ok(appointment);
         }
 
-        [HttpGet("{masterId}/events")]
+        [HttpGet]
+        public ActionResult<IEnumerable<Appointment>> GetEventsByDate([FromQuery] string Date){
+            var result = _context.Appointments?.AsQueryable();
+            if(Date != null){
+                result = result?.Where(x => (x.date == Date));
+            }
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<Appointment>> GetEventsByMonthAndYear([FromQuery] string month, string year){
+            var result = _context.Appointments?.AsQueryable();
+            
+            return Ok(result);
+        }
+
+        [HttpGet("{masterId}/masterAppointments")]
         public ActionResult<IEnumerable<Appointment>> GetMasterAppointments(int masterId){
-            var masterEvents = _context.Masters!
-            .Include(x => x.AppointmentMaster)
-            .First(x => x.Id == masterId)
-            .AppointmentMaster;
+            var appointment = _context.Appointments!.Find(masterId);
+            var parseDate = DateTime.Parse(appointment.date);
+            var masterEvents = 0;
+            int id = 1;
+            if(parseDate < DateTime.Now)
+            {
+                masterEvents = _context.Masters!
+                .Include(x => x.AppointmentMaster)
+                .First(x => x.Id == masterId)
+                .AppointmentMaster.Select(x => x.Id == id).Count();
+                id++;
+            }
 
             return Ok(masterEvents);
+        }
+
+        [HttpGet("{serviceId}/companyAppointments")]
+        public ActionResult<IEnumerable<Appointment>> GetCompanyAppointments(int serviceId){
+            var appointment = _context.Appointments!.Find(serviceId);
+            var parseDate = DateTime.Parse(appointment.date);
+            var companyEvents = 0;
+            if(parseDate < DateTime.Now)
+            {
+             companyEvents = _context.Services!
+            .Include(x => x.AppointmentService)
+            .First(x => x.Id == serviceId)
+            .AppointmentService.Count();
+            }
+
+            return Ok(companyEvents);
         }
 
         [HttpPost] 

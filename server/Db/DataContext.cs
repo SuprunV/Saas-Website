@@ -78,7 +78,23 @@ namespace server.Db
             mb.Entity<Appointment>().HasData(
                 new Appointment{
                     Id = 1,
-                    date = "22.10.2022"
+                    date = "22.09.2022", 
+                    masterId = 1,
+                    serviceId = 1
+
+                },
+                new Appointment{
+                    Id = 2,
+                    date = "05.11.2022",
+                    masterId = 1,
+                    serviceId = 1
+                },
+                  new Appointment{
+                    Id = 3,
+                    date = "22.09.2022", 
+                    masterId = 1,
+                    serviceId = 1
+
                 }
             );
             mb.Entity<Master>().HasData(
