@@ -78,23 +78,29 @@ namespace server.Db
             mb.Entity<Appointment>().HasData(
                 new Appointment{
                     Id = 1,
-                    date = "22.09.2022", 
+                    date = "2022-10-27T12:01:04.942Z", 
                     masterId = 1,
                     serviceId = 1
 
                 },
                 new Appointment{
                     Id = 2,
-                    date = "05.11.2022",
+                    date = "2022-11-27T12:01:04.942Z",
                     masterId = 1,
                     serviceId = 1
                 },
                   new Appointment{
                     Id = 3,
-                    date = "22.09.2022", 
+                    date = "2022-10-27T12:01:04.942Z", 
                     masterId = 1,
                     serviceId = 1
 
+                }
+            );
+            mb.Entity<Client>().HasData(
+                new Client{
+                    Id = 1,
+                    gender = Gender.Female,
                 }
             );
             mb.Entity<Master>().HasData(
