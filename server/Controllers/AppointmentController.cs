@@ -35,45 +35,42 @@ namespace server.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<Appointment>> GetEventsByMonthAndYear([FromQuery] string month, string year){
-            var result = _context.Appointments?.AsQueryable();
+        // [HttpGet]
+        // public ActionResult<IEnumerable<Appointment>> GetEventsByMonthAndYear([FromQuery] string month, string year){
+        //     var result = _context.Appointments?.AsQueryable();
             
-            return Ok(result);
-        }
+        //     return Ok(result);
+        // }
 
         [HttpGet("{masterId}/masterAppointments")]
         public ActionResult<IEnumerable<Appointment>> GetMasterAppointments(int masterId){
-            var appointment = _context.Appointments!.Find(masterId);
-            var parseDate = DateTime.Parse(appointment.date);
+            var appointments = _context.Appointments!.Where(a => a.masterId == masterId);  
+
             var masterEvents = 0;
-            int id = 1;
-            if(parseDate < DateTime.Now)
-            {
-                masterEvents = _context.Masters!
-                .Include(x => x.AppointmentMaster)
-                .First(x => x.Id == masterId)
-                .AppointmentMaster.Select(x => x.Id == id).Count();
-                id++;
-            }
+            foreach(var a in appointments) if(DateTime.Parse(a.date) < DateTime.Now) masterEvents++;
 
             return Ok(masterEvents);
         }
 
         [HttpGet("{serviceId}/companyAppointments")]
-        public ActionResult<IEnumerable<Appointment>> GetCompanyAppointments(int serviceId){
-            var appointment = _context.Appointments!.Find(serviceId);
-            var parseDate = DateTime.Parse(appointment.date);
-            var companyEvents = 0;
-            if(parseDate < DateTime.Now)
-            {
-             companyEvents = _context.Services!
-            .Include(x => x.AppointmentService)
-            .First(x => x.Id == serviceId)
-            .AppointmentService.Count();
-            }
+        public ActionResult<IEnumerable<Appointment>> GetCompanyAppointments(int companyId){
+            // 1. get array of all masterIds of selected companyId
+            var master = _context.Masters.Include(x => x.User).First(m => m.User.companyId ==companyId);
+            // 2. filter appointments by masterIds (you have to get all appointments of all this masters from arra yMasterIds)
+            // 3. filter appointments that is in past
 
-            return Ok(companyEvents);
+            // var appointment = _context.Appointments!.Find(serviceId);
+            // var parseDate = DateTime.Parse(appointment.date);
+            // var companyEvents = 0;
+            // if(parseDate < DateTime.Now)
+            // {
+            //  companyEvents = _context.Services!
+            // .Include(x => x.AppointmentService)
+            // .First(x => x.Id == serviceId)
+            // .AppointmentService.Count();
+            // }
+
+            return Ok(0);
         }
 
         [HttpPost] 
@@ -84,7 +81,7 @@ namespace server.Controllers
 
             _context.Appointments!.Add(appointment);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(GetAppointment), new { id = appointment.Id }, appointment);
+            return CreatedAtAction(nameof(GetAppointment), new { appointmentId = appointment.Id }, appointment);
         }
 
         [HttpDelete("{appointmentId}")]
