@@ -143,6 +143,10 @@ export default defineComponent({
         };
     },
     methods: {
+        close() {
+            console.log('hi');
+            this.$emit('update:show', false);
+        },
         submitForm() {
             console.log('submit started', this.formState);
         },
