@@ -79,11 +79,6 @@ export default defineComponent({
             loading,
         };
     },
-    watch: {
-        isChangeModalUser() {
-            console.log('isChangeModalUser', this.isChangeModalUser);
-        },
-    },
     methods: {
         showChangeModalService() {
             console.log('show service');
@@ -128,8 +123,8 @@ const formStateService = reactive({
             <a-button type="primary" @click="showModalUser">
                 <template #icon><plus-circle-two-tone /></template>
                 Add new personnel
-                <ClientSettingForm v-model:show="isChangeModalUser" />
             </a-button>
+            <ClientSettingForm v-model:show="isChangeModalUser" />
             <div class="m-3">
                 <b>List of personnel:</b>
                 <a-list
@@ -173,11 +168,11 @@ const formStateService = reactive({
             </div>
         </div>
         <div class="col">
-            <a-button type="primary" @click="isChangeModalService">
+            <a-button type="primary" @click="showChangeModalService">
                 <template #icon><plus-circle-two-tone /></template>
                 Add new service
-                <ServiceForm v-model:show="isChangeModalService" />
             </a-button>
+            <ServiceForm v-model:show="isChangeModalService" />
             <div class="m-3">
                 <b>List of service:</b>
                 <a-list

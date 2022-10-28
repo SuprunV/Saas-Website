@@ -121,6 +121,7 @@ export default defineComponent({
     methods: {
         close() {
             this.$emit('update:show', false);
+            console.log('close in form', this.show);
         },
         submitForm() {
             console.log('submit started', this.formState);
