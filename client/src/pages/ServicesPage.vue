@@ -18,6 +18,11 @@ export default defineComponent({
         const page = ref<number>(1);
         const dataService = ref<IService[]>([]);
         const servicesList = ref<IService[]>([]);
+        const value = ref<string>('');
+        const onSearch = (searchValue: string) => {
+        console.log('use value', searchValue);
+        console.log('or use this.value', value.value);
+        };
         onMounted(async () => {
             const services = await serviceAPI.getPublicServices(
                 limit.value,
@@ -33,6 +38,8 @@ export default defineComponent({
       initLoading,
       dataService,
       servicesList,
+      value,
+      onSearch
     };
   },
 });
@@ -40,6 +47,13 @@ export default defineComponent({
 
 <template>
     <h1 class="text-center">Our Services</h1>
+    <a-input-search
+      v-model:value="value"
+      placeholder="Search the service"
+      style="width: 500px"
+      enter-button
+      @search="onSearch"
+    />
         <a-list
             class=""
             :loading="initLoading"
@@ -61,10 +75,18 @@ export default defineComponent({
                     <em class><br><small>{{item.description}}</small><br></em>
                         <a-row > 
                                 <a-col style="margin-right: 20px">
-                                    <a-statistic title="Duration" :value="item.duration"  />
+                                    <a-statistic title="Duration" :value="item.duration">
+                                        <template #suffix>
+                                            min
+                                        </template>
+                                    </a-statistic>
                                 </a-col>
                                 <a-col style="margin-right: 20px">
-                                    <a-statistic title="Price"  :value="item.price" />
+                                    <a-statistic title="Price"  :value="item.price">
+                                        <template #suffix>
+                                            euro
+                                        </template>
+                                    </a-statistic>
                                 </a-col>
                                 <a-col style="margin-right: 20px">
                                     <a-statistic title="Feedback" :value="500">

@@ -61,7 +61,7 @@ export const clientRoutes: IRoute[] = [
     {
         path: AppRoutes.COMPANY_PAGE_SERVICES,
         component: ServicesPage,
-        label: 'List of services',
+        label: 'Book service',
         icon: IconsEnum.FieldTimeOutlined,
     }
 ];
