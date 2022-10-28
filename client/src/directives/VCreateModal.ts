@@ -12,9 +12,8 @@ export default {
             };
         },
     ) {
-        document.body.classList.add('modal-parent');
         el.classList.add('modal-window-hidden');
-        el.classList.remove('modal-window');
+        el.classList.add('modal-window');
     },
     methods: {},
     updated(
@@ -27,7 +26,6 @@ export default {
     ) {
         if (binding.value.show) {
             el.classList.remove('modal-window-hidden');
-            el.classList.add('modal-window');
             // console.log('updated is true');
             // const modal = document.querySelector('body')!;
             // modal.classList.add('modal-window');
@@ -36,7 +34,6 @@ export default {
             // el.classList.add('fadeInUp');
         } else {
             el.classList.add('modal-window-hidden');
-            el.classList.remove('modal-window');
 
             // modal.classList.add('modal-window-hidden');
             // el.style.animationDelay = `500ms`;
