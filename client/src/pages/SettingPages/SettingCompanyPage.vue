@@ -12,10 +12,10 @@ export default defineComponent({
 
         const changeRef = ref<any>(null);
         const isChangeModal = ref<boolean>(false);
-        
+
         const validateMessages = {
             required: '${label} is required!',
-        }
+        };
         const layout = {
             labelCol: { span: 8 },
             wrapperCol: { span: 16 },
@@ -23,10 +23,10 @@ export default defineComponent({
         const formState = reactive({
             company: {
                 companyName: '',
-                address: ''
+                address: '',
             },
         });
-        return { 
+        return {
             company,
             changeRef,
             isChangeModal,
@@ -41,60 +41,75 @@ export default defineComponent({
         },
     },
     components: {
-    LikeOutlined, 
-    CompanySettingForm
+        LikeOutlined,
+        CompanySettingForm,
     },
-  
 });
 </script>
 
 <template>
-    
     <div>
         <h1 class="text-center">Settings for Company</h1>
-            <a-space size="middle">
-                <a-space direction="vertical" size="middle">
-                    <div class="space-align-container">
-                        <div class="space-align-block">
-                            <a-space align="start">
-                                <img :width="155"
-                                :src="company.img" 
-                            />
-                            <a-descriptions title="Company Info" bordered="true">
-                                <a-descriptions-item label="Company name" :span="3">{{company.name}}</a-descriptions-item>
-                                <a-descriptions-item label="Address" :span="3">Liivalaia 7</a-descriptions-item>
+        <a-space size="middle">
+            <a-space direction="vertical" size="middle">
+                <div class="space-align-container">
+                    <div class="space-align-block">
+                        <a-space align="start">
+                            <img :width="155" :src="company.img" />
+                            <a-descriptions
+                                title="Company Info"
+                                bordered="true"
+                            >
+                                <a-descriptions-item
+                                    label="Company name"
+                                    :span="3"
+                                    >{{ company.name }}</a-descriptions-item
+                                >
+                                <a-descriptions-item label="Address" :span="3"
+                                    >Liivalaia 7</a-descriptions-item
+                                >
                             </a-descriptions>
-                            </a-space>
-                        </div>
+                        </a-space>
                     </div>
-                    <a-row>
-                        <a-col :span="12">
-                            <a-statistic title="Masters" :value="100" />
-                        </a-col>
-                        <a-col :span="12">
-                            <a-statistic title="Services" :value="70" />
-                        </a-col>
-                    </a-row>
-                    <a-row>
-                        <a-col :span="12">
-                            <a-statistic title="Income (EUR)" :precision="2" :value="200000" />
-                        </a-col>
-                        <a-col :span="12">
-                        <a-statistic title="Feedback" :value="556" style="margin-right: 50px">
+                </div>
+                <a-row>
+                    <a-col :span="12">
+                        <a-statistic title="Masters" :value="100" />
+                    </a-col>
+                    <a-col :span="12">
+                        <a-statistic title="Services" :value="70" />
+                    </a-col>
+                </a-row>
+                <a-row>
+                    <a-col :span="12">
+                        <a-statistic
+                            title="Income (EUR)"
+                            :precision="2"
+                            :value="200000"
+                        />
+                    </a-col>
+                    <a-col :span="12">
+                        <a-statistic
+                            title="Feedback"
+                            :value="556"
+                            style="margin-right: 50px"
+                        >
                             <template #suffix>
                                 <like-outlined />
                             </template>
                         </a-statistic>
-                        </a-col>
-                    </a-row>
+                    </a-col>
+                </a-row>
                 <a-button type="primary" @click="showChangeModal"
-                        >Change data</a-button
+                    >Change data</a-button
                 >
-                </a-space>
             </a-space>
-        <CompanySettingForm v-model:show="isChangeModal" />
+        </a-space>
+        <CompanySettingForm
+            v-model:show="isChangeModal"
+            v-createModal="{ show: isChangeModal }"
+        />
     </div>
-    
 </template>
 
 <style scoped></style>
