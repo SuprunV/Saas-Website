@@ -35,6 +35,21 @@ namespace server.Controllers
             return Ok(company.Count);
         }
         
+        [HttpGet("{companyId}/AllClientsInCompany")]
+        public ActionResult<int> GetCompanyClients(int companyId)
+        {
+            var clientsInCompany = _context.Clients?.Where(x => x.User.companyId == companyId);
+            if(clientsInCompany == null) return Ok("No clients in company");
+            else return Ok(clientsInCompany?.ToList());
+        }
+          [HttpGet("{companyId}/AllMastersInCompany")]
+        public ActionResult<int> GetCompanyMasters(int companyId)
+        {
+            var mastersInCompany = _context.Masters?.Where(x => x.User.companyId == companyId);
+            if(mastersInCompany == null) return Ok("No masters in company");
+            else return Ok(mastersInCompany?.ToList());
+        }
+        
         [HttpPost]
         public ActionResult<Company> CreateCompany([FromBody] Company company) {
            var dbCompany = _context.Companies!.Find(company.Id);

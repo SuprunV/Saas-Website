@@ -26,9 +26,7 @@ namespace server.Db
             .HasForeignKey(x => x.companyId);
             
             mb.Entity<Company>().ToTable("Companies").HasKey(x => x.Id);
-            mb.Entity<Company>().HasOne(x => x.User)
-            .WithMany(x => x.Companies)
-            .HasForeignKey(x => x.userId);
+        
             
             mb.Entity<MasterService>().ToTable("Master&Service")
             .HasKey(key => new { key.masterId, key.serviceId });
@@ -65,14 +63,17 @@ namespace server.Db
                     Id = 1,
                     companyName = "BeautySalon",
                     address = "Maleva 6",
-                    img = "https://img.freepik.com/free-vector/company-concept-illustration_114360-2581.jpg?w=2000"
+                    img = "https://img.freepik.com/free-vector/company-concept-illustration_114360-2581.jpg?w=2000",
+                
+            
                 },
                 new Company
                 {
                     Id = 2,
                     companyName = "MassageSalon",
                     address = "Kadaka 45",
-                    img = "https://img.freepik.com/free-vector/company-concept-illustration_114360-2581.jpg?w=2000"
+                    img = "https://img.freepik.com/free-vector/company-concept-illustration_114360-2581.jpg?w=2000",
+                 
                 }
             );
             mb.Entity<Service>().HasData(
@@ -125,6 +126,109 @@ namespace server.Db
                     description = "Body massage",
                     img = "http://www.alexanderworks.org.uk/wp-content/uploads/2020/06/Body-Massage-at-Home.jpg",
                     companyId = 2
+                }
+            );
+                mb.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    login = "LinaM",
+                    password = "12345test",
+                    role = Role.Master,
+                    img = "",
+                    companyId = 2
+           
+                },
+                new User
+                {
+                    Id = 6,
+                    login = "KristinaK",
+                    password = "12345test",
+                    role = Role.Master,
+                    img = "",
+                    companyId = 1
+           
+                },
+                new User
+                {
+                    Id = 2,
+                    login = "RonaldK",
+                    password = "12345",
+                    role = Role.Client,
+                    img = "",
+                    companyId = 1
+                },
+                new User
+                {
+                    Id = 5,
+                    login = "MariP",
+                    password = "12345",
+                    role = Role.Client,
+                    img = "",
+                    companyId = 1
+                },
+                new User
+                {
+                    Id = 3,
+                    login = "BeautySalonAdmin",
+                    password = "12345",
+                    role = Role.Admin,
+                    img = "",
+                    companyId = 1
+                  
+                },
+                new User
+                {
+                    Id = 4,
+                    login = "MassageSalonAdmin",
+                    password = "12345",
+                    role = Role.Admin,
+                    img = "",
+                    companyId = 2
+      
+                }
+                
+            );
+                mb.Entity<Client>().HasData(
+                new Client
+                {
+                    Id = 1,
+                    name = "Ronald",
+                    surname= "Kuusepuu",
+                    DoB = "20.10.1976",
+                    gender = Gender.Male,
+                    userId = 2
+            
+                },
+                new Client
+                {
+                    Id = 2,
+                    name = "Mari",
+                    surname= "Tallinn",
+                    DoB = "17.06.2002",
+                    gender = Gender.Female,
+                    userId = 5
+                }
+            );
+             mb.Entity<Master>().HasData(
+                new Master
+                {
+                    Id = 1,
+                    name = "Liina",
+                    surname= "Mets",
+                    DoB = "01.08.1976",
+                    gender = Gender.Female,
+                    userId = 1
+            
+                },
+                new Master
+                {
+                    Id = 2,
+                    name = "Kristina",
+                    surname= "Koh",
+                    DoB = "17.06.200",
+                    gender = Gender.Female,
+                    userId = 6
                 }
             );
             mb.UseIdentityColumns();
