@@ -59,6 +59,18 @@ namespace server.Db
              mb.Entity<Appointment>().HasOne(x => x.Master)
             .WithMany(x => x.AppointmentMaster)
             .HasForeignKey(x => x.masterId);
+            mb.Entity<User>().HasData(
+                new User {
+                    Id = 1,
+                    companyId = 1,
+                    role = Role.Master
+                },
+                new User {
+                    Id = 2,
+                    companyId = 1,
+                    role = Role.Master
+                }
+            );
             mb.Entity<Company>().HasData(
                 new Company
                 {
@@ -78,21 +90,21 @@ namespace server.Db
             mb.Entity<Appointment>().HasData(
                 new Appointment{
                     Id = 1,
-                    date = "2022-10-27T12:01:04.942Z", 
+                    date = "2022-10-27T12:11:04.942Z", 
                     masterId = 1,
                     serviceId = 1
 
                 },
                 new Appointment{
                     Id = 2,
-                    date = "2022-11-27T12:01:04.942Z",
+                    date = "2022-11-27T13:01:04.942Z",
                     masterId = 1,
                     serviceId = 1
                 },
                   new Appointment{
                     Id = 3,
-                    date = "2022-10-27T12:01:04.942Z", 
-                    masterId = 1,
+                    date = "2022-10-27T12:50:04.942Z", 
+                    masterId = 2,
                     serviceId = 1
 
                 }
@@ -107,6 +119,12 @@ namespace server.Db
                 new Master{
                     Id =1, 
                     gender = Gender.Female,
+                    userId = 1
+                },
+                 new Master{
+                    Id =2, 
+                    gender = Gender.Male,
+                    userId = 2
                 }
             );
             mb.Entity<Service>().HasData(

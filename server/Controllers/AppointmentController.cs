@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using server.Db;
@@ -27,35 +28,49 @@ namespace server.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Appointment>> GetEventsByDate([FromQuery] string Date){
+        public ActionResult<IEnumerable<Appointment>> GetEventsByDate([FromQuery] string? Date){
             var result = _context.Appointments?.AsQueryable();
             if(Date != null){
-                result = result?.Where(x => (x.date == Date));
+                result = result?.Where(x => (x.date.Contains(Date)));
             }
             return Ok(result);
         }
 
-        // [HttpGet]
-        // public ActionResult<IEnumerable<Appointment>> GetEventsByMonthAndYear([FromQuery] string month, string year){
-        //     var result = _context.Appointments?.AsQueryable();
+        [HttpGet("eventsByMonthAndYear")]
+        public ActionResult<IEnumerable<Appointment>> GetEventsByMonthAndYear([FromQuery] string? month, string? year){
+            var result = _context.Appointments?.AsQueryable();
+            if(month != null){
+                result = result?.Where(x => (x.date.Substring(5, 2) == month ));
+            }
+            if(year != null){
+                result = result?.Where(x => (x.date.Substring(0,4) == year));
+            }
             
-        //     return Ok(result);
-        // }
+            return Ok(result);
+        }
 
-        [HttpGet("{masterId}/masterAppointments")]
-        public ActionResult<IEnumerable<Appointment>> GetMasterAppointments(int masterId){
+        [HttpGet("{masterId}/masterDoneAppointments")]
+        public ActionResult<IEnumerable<Appointment>> GetMasterDoneAppointmentsCount(int masterId){
             var appointments = _context.Appointments!.Where(a => a.masterId == masterId);  
-
             var masterEvents = 0;
             foreach(var a in appointments) if(DateTime.Parse(a.date) < DateTime.Now) masterEvents++;
 
             return Ok(masterEvents);
         }
 
-        [HttpGet("{serviceId}/companyAppointments")]
-        public ActionResult<IEnumerable<Appointment>> GetCompanyAppointments(int companyId){
+        [HttpGet("{companyId}/companyDoneAppointments")]
+        public ActionResult<IEnumerable<Appointment>> GetCompanyDoneAppointmentsCount(int companyId){
             // 1. get array of all masterIds of selected companyId
-            var master = _context.Masters.Include(x => x.User).First(m => m.User.companyId ==companyId);
+
+          var  masters = _context.Masters!.Include(x => x.User).First(m => m.User.companyId ==companyId).User.Masters.Select(x => x.Id ).ToList();
+       //   var s = masters.User.Masters.Select(x => x.Id);
+
+          //  var master = _context.Masters!.Where(a => a.User.companyId == companyId);
+            var appointments = _context.Appointments!.Where(x => masters.Contains(x.Id));  
+            var masterEvents = 0;
+         //   foreach(var a in appointments) if(DateTime.Parse(a.date) < DateTime.Now) masterEvents++;
+
+
             // 2. filter appointments by masterIds (you have to get all appointments of all this masters from arra yMasterIds)
             // 3. filter appointments that is in past
 
@@ -70,7 +85,7 @@ namespace server.Controllers
             // .AppointmentService.Count();
             // }
 
-            return Ok(0);
+            return Ok(appointments);
         }
 
         [HttpPost] 
