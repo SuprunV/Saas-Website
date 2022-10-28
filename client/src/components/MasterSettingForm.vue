@@ -1,71 +1,79 @@
 <template>
-    <div class="ant-modal " role="document" v-createModal="{ show: true }">
-        <a-form
-            :model="formState"
-            v-bind="layout"
-            name="nest-messages"
-            :validate-messages="validateMessages"
-            @finish="submitForm"
-        >
-            <div class="ant-modal-body">
-                <a-form-item
-                    :name="['user', 'companyName']"
-                    label="Company name"
-                    :rules="[{ required: false }]"
-                >
-                    <a-input v-model:value="formState.master.companyName" />
-                </a-form-item>
-                <a-form-item
-                    :name="['user', 'name']"
-                    label="Name"
-                    :rules="[{ required: true }]"
-                >
-                    <a-input v-model:value="formState.master.name" />
-                </a-form-item>
-                <a-form-item
-                    :name="['user', 'surname']"
-                    label="Surname"
-                    :rules="[{ required: true }]"
-                >
-                    <a-input v-model:value="formState.master.surname" />
-                </a-form-item>
-                <a-form-item
-                    name="gender"
-                    label="Gender"
-                    has-feedback
-                    :rules="[{ required: false, message: 'Gender' }]"
-                >
-                    <a-select
-                        v-model:value="formState.master.gender"
-                        placeholder="Please select gender"
+    <div>
+        <div class="main-cart" role="document">
+            <a-form
+                :model="formState"
+                v-bind="layout"
+                name="nest-messages"
+                :validate-messages="validateMessages"
+                @finish="submitForm"
+            >
+                <div class="ant-modal-body">
+                    <a-form-item    
+                        :name="['user', 'companyName']"
+                        label="Company name"
+                        :rules="[{ required: false }]"
                     >
-                        <a-select-option value="Male">Male</a-select-option>
-                        <a-select-option value="Female">Female</a-select-option>
-                    </a-select>
-                </a-form-item>
-                <a-form-item
-                    :name="['user', 'age']"
-                    label="Age"
-                    :rules="[{ type: 'number', min: 0, max: 99 }]"
-                >
-                    <a-input-number v-model:value="formState.master.age" />
-                </a-form-item>
-                <a-form-item
-                    :name="['user', 'email']"
-                    label="Email"
-                    :rules="[{ type: 'email' }]"
-                >
-                    <a-input v-model:value="formState.master.email" />
-                </a-form-item>
-            </div>
-            <div class="ant-modal-footer">
-                <button class="ant-btn" type="button" @click="close">
-                    <!----><span>Cancel</span></button
-                ><a-button class="ant-btn ant-btn-primary" html-type="submit">
-                    <!----><span>OK</span>
-                </a-button>
-            </div>
-        </a-form>
+                        <a-input v-model:value="formState.master.companyName" />
+                    </a-form-item>
+                    <a-form-item
+                        :name="['user', 'name']"
+                        label="Name"
+                        :rules="[{ required: true }]"
+                    >
+                        <a-input v-model:value="formState.master.name" />
+                    </a-form-item>
+                    <a-form-item
+                        :name="['user', 'surname']"
+                        label="Surname"
+                        :rules="[{ required: true }]"
+                    >
+                        <a-input v-model:value="formState.master.surname" />
+                    </a-form-item>
+                    <a-form-item
+                        name="gender"
+                        label="Gender"
+                        has-feedback
+                        :rules="[{ required: false, message: 'Gender' }]"
+                    >
+                        <a-select
+                            v-model:value="formState.master.gender"
+                            placeholder="Please select gender"
+                        >
+                            <a-select-option value="Male">Male</a-select-option>
+                            <a-select-option value="Female"
+                                >Female</a-select-option
+                            >
+                        </a-select>
+                    </a-form-item>
+                    <a-form-item
+                        :name="['user', 'age']"
+                        label="Age"
+                        :rules="[{ type: 'number', min: 0, max: 99 }]"
+                    >
+                        <a-input-number v-model:value="formState.master.age" />
+                    </a-form-item>
+                    <a-form-item
+                        :name="['user', 'email']"
+                        label="Email"
+                        :rules="[{ type: 'email' }]"
+                    >
+                        <a-input v-model:value="formState.master.email" />
+                    </a-form-item>
+                </div>
+                <div class="ant-modal-footer">
+                    <button
+                        class="ant-btn ant-btn-danger"
+                        type="button"
+                        @click="close"
+                    >
+                        <span>Cancel</span></button
+                    ><a-button class="ant-btn btn-success" html-type="submit">
+                        <span>OK</span>
+                    </a-button>
+                </div>
+            </a-form>
+        </div>
     </div>
 </template>
 <script lang="ts">
@@ -111,6 +119,7 @@ export default defineComponent({
     },
     methods: {
         close() {
+            console.log('hi');
             this.$emit('update:show', false);
         },
         submitForm() {

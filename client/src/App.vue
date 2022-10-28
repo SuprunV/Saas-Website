@@ -18,7 +18,6 @@
                 </a-layout>
             </a-layout>
         </transition>
-        <div class="modal-window modal-window-hidden"></div>
     </div>
 </template>
 
