@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-createModal="{ show: show }">
         <div class="main-cart" role="document">
             <a-form
                 :model="formState"
@@ -111,7 +111,6 @@ export default defineComponent({
     },
     methods: {
         close() {
-            console.log('hi');
             this.$emit('update:show', false);
         },
         submitForm() {

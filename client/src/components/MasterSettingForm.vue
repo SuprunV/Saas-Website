@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-createModal="{ show: show }">
         <div class="main-cart" role="document">
             <a-form
                 :model="formState"
@@ -9,7 +9,7 @@
                 @finish="submitForm"
             >
                 <div class="ant-modal-body">
-                    <a-form-item    
+                    <a-form-item
                         :name="['user', 'companyName']"
                         label="Company name"
                         :rules="[{ required: false }]"

@@ -102,10 +102,7 @@ export default defineComponent({
                     >
                 </a-space>
             </a-space>
-            <ClientSettingForm
-                v-model:show="isChangeModal"
-                v-createModal="{ show: isChangeModal }"
-            />
+            <ClientSettingForm v-model:show="isChangeModal" />
         </div>
     </div>
 </template>

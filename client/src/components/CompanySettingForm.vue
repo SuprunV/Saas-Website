@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-createModal="{ show: show }">
         <div class="main-cart" role="document">
             <a-form
                 :model="formState"
