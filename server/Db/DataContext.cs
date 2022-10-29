@@ -67,7 +67,7 @@ namespace server.Db
                 },
                 new User {
                     Id = 2,
-                    companyId = 1,
+                    companyId = 2,
                     role = Role.Master
                 }
             );
