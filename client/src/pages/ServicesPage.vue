@@ -74,22 +74,22 @@ export default defineComponent({
                     {{ item.name }}
                     <em class><br><small>{{item.description}}</small><br></em>
                         <a-row > 
-                                <a-col style="margin-right: 20px">
-                                    <a-statistic title="Duration" :value="item.duration">
+                                <a-col class="info">
+                                    <a-statistic title="" :value="item.duration">
                                         <template #suffix>
                                             min
                                         </template>
                                     </a-statistic>
                                 </a-col>
-                                <a-col style="margin-right: 20px">
-                                    <a-statistic title="Price"  :value="item.price">
+                                <a-col class="info">
+                                    <a-statistic title=""  :value="item.price">
                                         <template #suffix>
                                             euro
                                         </template>
                                     </a-statistic>
                                 </a-col>
-                                <a-col style="margin-right: 20px">
-                                    <a-statistic title="Feedback" :value="500">
+                                <a-col class="info">
+                                    <a-statistic title="" :value="500">
                                         <template #suffix>
                                             <like-outlined />
                                         </template>
