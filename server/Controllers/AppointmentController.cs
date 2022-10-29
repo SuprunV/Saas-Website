@@ -60,32 +60,12 @@ namespace server.Controllers
 
         [HttpGet("{companyId}/companyDoneAppointments")]
         public ActionResult<IEnumerable<Appointment>> GetCompanyDoneAppointmentsCount(int companyId){
-            // 1. get array of all masterIds of selected companyId
-
-          var  masters = _context.Masters!.Include(x => x.User).First(m => m.User.companyId ==companyId).User.Masters.Select(x => x.Id ).ToList();
-       //   var s = masters.User.Masters.Select(x => x.Id);
-
-          //  var master = _context.Masters!.Where(a => a.User.companyId == companyId);
-            var appointments = _context.Appointments!.Where(x => masters.Contains(x.Id));  
-            var masterEvents = 0;
-         //   foreach(var a in appointments) if(DateTime.Parse(a.date) < DateTime.Now) masterEvents++;
-
-
-            // 2. filter appointments by masterIds (you have to get all appointments of all this masters from arra yMasterIds)
-            // 3. filter appointments that is in past
-
-            // var appointment = _context.Appointments!.Find(serviceId);
-            // var parseDate = DateTime.Parse(appointment.date);
-            // var companyEvents = 0;
-            // if(parseDate < DateTime.Now)
-            // {
-            //  companyEvents = _context.Services!
-            // .Include(x => x.AppointmentService)
-            // .First(x => x.Id == serviceId)
-            // .AppointmentService.Count();
-            // }
-
-            return Ok(appointments);
+         var  masters = _context.Masters!.Include(x => x.User).Where(m => m.User.companyId ==companyId).Select(x => x.Id).ToList();
+      
+          var appointments = _context.Appointments!.Where(x => masters.Contains(x.masterId));  
+          var masterEvents = 0;
+         foreach(var a in appointments) if(DateTime.Parse(a.date) < DateTime.Now) masterEvents++;
+         return Ok(masterEvents);
         }
 
         [HttpPost] 
