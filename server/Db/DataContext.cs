@@ -141,7 +141,7 @@ namespace server.Db
                     Id = 2,
                     date = "2022-11-27T13:01:04.942Z",
                     masterId = 2,
-                    serviceId = 2
+                    serviceId = 2,
                     clientId = 2,
                 },
                   new Appointment{
