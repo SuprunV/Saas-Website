@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\User\\source\\repos\\BS\\server\\server.csproj": {}
+    "F:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj": {}
   },
   "projects": {
-    "D:\\User\\source\\repos\\BS\\server\\server.csproj": {
+    "F:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\User\\source\\repos\\BS\\server\\server.csproj",
+        "projectUniqueName": "F:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj",
         "projectName": "server",
-        "projectPath": "D:\\User\\source\\repos\\BS\\server\\server.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\User\\source\\repos\\BS\\server\\obj\\",
+        "projectPath": "F:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\server.csproj",
+        "packagesPath": "C:\\Users\\Vladislav\\.nuget\\packages\\",
+        "outputPath": "F:\\SynologyDrive\\University\\Äriinfotehnoloogia 3 semester\\ITB2203 Infosüsteemide arendamine III\\Projekt\\itb2203-2022-bs\\server\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Vladislav\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -71,7 +67,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -83,7 +80,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

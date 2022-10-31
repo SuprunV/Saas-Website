@@ -24,9 +24,6 @@ F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemi
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\server.csproj.CoreCompileInputs.cache
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\server.MvcApplicationPartsAssemblyInfo.cs
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\server.MvcApplicationPartsAssemblyInfo.cache
-F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\staticwebassets.build.json
-F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\staticwebassets.development.json
-F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\scopedcss\bundle\server.styles.css
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\server.csproj.CopyComplete
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\server.dll
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\refint\server.dll
@@ -123,3 +120,17 @@ D:\User\source\repos\BS\server\obj\Debug\net6.0\refint\server.dll
 D:\User\source\repos\BS\server\obj\Debug\net6.0\server.pdb
 D:\User\source\repos\BS\server\obj\Debug\net6.0\server.genruntimeconfig.cache
 D:\User\source\repos\BS\server\obj\Debug\net6.0\ref\server.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\server.RazorAssemblyInfo.cache
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\server.RazorAssemblyInfo.cs
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\tests\user-controller\Beauty Service.postman_collection.json
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.Razor.Extensions.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.AspNetCore.Razor.Language.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.CodeAnalysis.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.CodeAnalysis.CSharp.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.CodeAnalysis.Razor.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.DotNet.PlatformAbstractions.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Newtonsoft.Json.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\System.Security.Permissions.dll
