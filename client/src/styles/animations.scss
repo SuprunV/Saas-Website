@@ -86,12 +86,14 @@ $time-fadeIn: 0.2s;
 }
 
 .fadeInUp {
+    position: unset;
     opacity: 0;
     animation-name: fadeInUp;
-    -webkit-animation-name: fadeInUp;
+    // -webkit-animation-name: fadeInUp;
 }
 
 .fadeInDown {
+    position: unset;
     opacity: 1;
     animation-name: fadeInDown;
     -webkit-animation-name: fadeInDown;
@@ -99,22 +101,26 @@ $time-fadeIn: 0.2s;
 
 @keyframes fadeInUp {
     from {
-        transform: translate3d(0, 40px, 0);
+        position: unset;
+        // transform: translate3d(0, 40px, 0);
         opacity: 0;
     }
 
     to {
-        transform: translate3d(0, 0, 0);
+        position: unset;
+        // transform: translate3d(0, 0, 0);
         opacity: 1;
     }
 }
 
 @keyframes fadeInDown {
     from {
+        position: unset;
         transform: translate3d(0, 0, 0);
         opacity: 1;
     }
     to {
+        position: unset;
         transform: translate3d(0, 40px, 0);
         opacity: 0;
     }

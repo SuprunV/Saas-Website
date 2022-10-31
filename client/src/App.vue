@@ -25,12 +25,10 @@
 import { defineComponent, ref } from 'vue';
 import AppSideMenu from './components/AppSideMenu.vue';
 import AppNavbar from './components/AppNavbar.vue';
-import { mapState } from 'vuex';
 import { useAuthStore } from './store/useAuth';
 import { storeToRefs } from 'pinia';
 import { useCompanyStore } from './store/useCompany';
 import { useThemeStore } from './store/useTheme';
-import { useRoute } from 'vue-router';
 
 export default defineComponent({
     data: () => ({

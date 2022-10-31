@@ -1,27 +1,45 @@
 <template>
-    <app-form-modal
-        :show="show"
-        :formState="formState"
-        :validateMessages="validateMessages"
-        :layout="layout"
-        @submit="submitForm"
-        @close="() => $emit('update:show', false)"
-    >
-        <a-form-item
-            :name="['user', 'companyName']"
-            label="Company name"
-            :rules="[{ required: true }]"
-        >
-            <a-input v-model:value="formState.company.companyName" />
-        </a-form-item>
-        <a-form-item
-            :name="['user', 'address']"
-            label="Address"
-            :rules="[{ required: true }]"
-        >
-            <a-input v-model:value="formState.company.address" />
-        </a-form-item>
-    </app-form-modal>
+    <div v-createModal="{ show: show, width: 50 }">
+        <div class="main-cart" role="document">
+            <a-form
+                :model="formState"
+                v-bind="layout"
+                name="nest-messages"
+                :validate-messages="validateMessages"
+                @finish="submitForm"
+            >
+                <div class="ant-modal-body">
+                    <a-form-item
+                        :name="['user', 'companyName']"
+                        label="Company name"
+                        :rules="[{ required: true }]"
+                    >
+                        <a-input
+                            v-model:value="formState.company.companyName"
+                        />
+                    </a-form-item>
+                    <a-form-item
+                        :name="['user', 'address']"
+                        label="Address"
+                        :rules="[{ required: true }]"
+                    >
+                        <a-input v-model:value="formState.company.address" />
+                    </a-form-item>
+                </div>
+                <div class="ant-modal-footer">
+                    <button
+                        class="ant-btn ant-btn-danger"
+                        type="button"
+                        @click="close"
+                    >
+                        <span>Cancel</span></button
+                    ><a-button class="ant-btn btn-success" html-type="submit">
+                        <span>OK</span>
+                    </a-button>
+                </div>
+            </a-form>
+        </div>
+    </div>
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
@@ -37,13 +55,13 @@ export default defineComponent({
         };
 
         const validateMessages = {
-            required: '${label} is required!'
+            required: '${label} is required!',
         };
 
         const formState = reactive({
             company: {
                 companyName: '',
-                address: ''
+                address: '',
             },
         });
 
@@ -54,6 +72,9 @@ export default defineComponent({
         };
     },
     methods: {
+        close() {
+            this.$emit('update:show', false);
+        },
         submitForm() {
             console.log('submit started', this.formState);
         },

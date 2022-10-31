@@ -5,16 +5,23 @@ body,
     min-height: 100vh;
     margin: 0;
 }
+body {
+    position: relative;
+}
+
+body > div {
+    z-index: 1 !important;
+}
 
 .main-cart {
-    border-radius: 20px;
-    border: 5px solid #fff;
-    padding: 20px 50px;
-    box-shadow: $main-shadow;
+    border-radius: 20px !important;
+    border: 5px solid #fff !important;
+    padding: 20px 50px !important;
+    box-shadow: $main-shadow !important;
 
-    background-color: $black-color;
+    background-color: $black-color !important;
     input {
-        color: $black-color;
+        color: $black-color !important;
     }
 }
 
@@ -25,10 +32,6 @@ body,
 
 .y-centered {
     margin-top: 20vh;
-}
-
-.btn-success {
-    border: 2px solid #52c41a;
 }
 
 .large-icon {

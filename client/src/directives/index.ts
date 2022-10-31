@@ -1,3 +1,4 @@
 import VCountAnimation from './VCountAnimation';
 import VAppearAnimation from './VAppearAnimation';
-export default [VCountAnimation, VAppearAnimation];
+import VCreateModal from './VCreateModal';
+export default [VCountAnimation, VAppearAnimation, VCreateModal];
