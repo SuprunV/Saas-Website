@@ -11,7 +11,7 @@ namespace server.Models
 
         public int? clientId { get; set; }
         public int? serviceId { get; set; }
-        public int? masterId { get; set; }
+        public int masterId { get; set; }
 
   
         [JsonIgnore]
