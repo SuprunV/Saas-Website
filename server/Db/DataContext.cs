@@ -128,6 +128,31 @@ namespace server.Db
                     companyId = 2
                 }
             );
+             mb.Entity<Appointment>().HasData(
+                new Appointment{
+                    Id = 1,
+                    date = "2022-10-27T12:11:04.942Z", 
+                    masterId = 1,
+                    serviceId = 1,
+                    clientId = 1
+
+                },
+                new Appointment{
+                    Id = 2,
+                    date = "2022-11-27T13:01:04.942Z",
+                    masterId = 2,
+                    serviceId = 2
+                    clientId = 2,
+                },
+                  new Appointment{
+                    Id = 3,
+                    date = "2022-10-27T12:50:04.942Z", 
+                    masterId = 2,
+                    serviceId = 3,
+                    clientId = 2,
+
+                }
+            );
                 mb.Entity<User>().HasData(
                 new User
                 {
