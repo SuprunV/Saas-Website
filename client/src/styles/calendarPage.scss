@@ -22,6 +22,10 @@
     color: rgba(255, 255, 255, 0.37);
 }
 
+.ant-descriptions-bordered .ant-descriptions-item-label {
+    background-color: #fafafa00;
+}
+
 .ant-picker-cell,
 .ant-picker-cell-inner {
     &:hover {
