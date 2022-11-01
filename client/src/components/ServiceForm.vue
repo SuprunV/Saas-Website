@@ -1,41 +1,65 @@
 <template>
-    <app-form-modal
-        :show="show"
-        :formState="formStateService"
-        :validateMessages="validateMessages"
-        :layout="layout"
-        @submit="submitForm"
-        @close="() => $emit('update:show', false)"
-    >
-        <a-form-item
-            :name="['service', 'name']"
-            label="Name"
-            :rules="[{ required: true }]"
-        >
-            <a-input v-model:value="formStateService.service.name" />
-        </a-form-item>
-        <a-form-item
-            :name="['service', 'description']"
-            label="Description"
-            :rules="[{ required: true }]"
-        >
-            <a-input v-model:value="formStateService.service.description" />
-        </a-form-item>
-        <a-form-item
-            :name="['service', 'price']"
-            label="Price"
-            :rules="[{ type: 'number', min: 0, max: 1000 }]"
-        >
-            <a-input-number v-model:value="formStateService.service.price" />
-        </a-form-item>
-        <a-form-item
-            :name="['service', 'duration']"
-            label="Duration (in minutes)"
-            :rules="[{ type: 'number', min: 0, max: 1000 }]"
-        >
-            <a-input-number v-model:value="formStateService.service.duration" />
-        </a-form-item>
-    </app-form-modal>
+    <div v-createModal="{ show: show, width: 50 }">
+        <div class="main-cart" role="document">
+            <a-form
+                :model="formStateService"
+                v-bind="layout"
+                name="nest-messages"
+                :validate-messages="validateMessages"
+                @finish="submitForm"
+            >
+                <div class="ant-modal-body">
+                    <a-form-item
+                        :name="['service', 'name']"
+                        label="Name"
+                        :rules="[{ required: true }]"
+                    >
+                        <a-input
+                            v-model:value="formStateService.service.name"
+                        />
+                    </a-form-item>
+                    <a-form-item
+                        :name="['service', 'description']"
+                        label="Description"
+                        :rules="[{ required: true }]"
+                    >
+                        <a-input
+                            v-model:value="formStateService.service.description"
+                        />
+                    </a-form-item>
+                    <a-form-item
+                        :name="['service', 'price']"
+                        label="Price"
+                        :rules="[{ type: 'number', min: 0, max: 1000 }]"
+                    >
+                        <a-input-number
+                            v-model:value="formStateService.service.price"
+                        />
+                    </a-form-item>
+                    <a-form-item
+                        :name="['service', 'duration']"
+                        label="Duration (in minutes)"
+                        :rules="[{ type: 'number', min: 0, max: 1000 }]"
+                    >
+                        <a-input-number
+                            v-model:value="formStateService.service.duration"
+                        />
+                    </a-form-item>
+                </div>
+                <div class="ant-modal-footer">
+                    <button
+                        class="ant-btn ant-btn-danger"
+                        type="button"
+                        @click="close"
+                    >
+                        <span>Cancel</span></button
+                    ><a-button class="ant-btn btn-success" html-type="submit">
+                        <span>OK</span>
+                    </a-button>
+                </div>
+            </a-form>
+        </div>
+    </div>
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
@@ -64,7 +88,7 @@ export default defineComponent({
             service: {
                 name: '',
                 price: 0,
-                description:'',
+                description: '',
                 duration: 0,
             },
         });
@@ -76,6 +100,9 @@ export default defineComponent({
         };
     },
     methods: {
+        close() {
+            this.$emit('update:show', false);
+        },
         submitForm() {
             console.log('submit started', this.formStateService);
         },

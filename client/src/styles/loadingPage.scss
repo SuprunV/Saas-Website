@@ -10,3 +10,37 @@
         transform: scale(3);
     }
 }
+
+.loader {
+    position: relative;
+    min-height: 40px;
+    margin-bottom: 20px;
+}
+
+.ant-alert .ant-alert-message {
+    color: rgba(#000000, 0.8) !important;
+}
+
+.loader-circle {
+    position: absolute !important;
+    background-color: $gold-color;
+    border-radius: 100%;
+    width: 5px;
+    height: 5px;
+    box-shadow: $main-shadow;
+    display: flex;
+    position: relative;
+    animation: loader-sizing 1s infinite;
+    div {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.ant-spin-dot-item {
+    background-color: #fff !important;
+}

@@ -1,5 +1,5 @@
 <script lang="ts">
-import '@/styles/loadingPage.scss';
+// import '@/styles/loadingPage.scss';
 export default {
     name: 'page-loading',
     props: {

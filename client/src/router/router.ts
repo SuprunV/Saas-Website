@@ -5,6 +5,7 @@ import CompanyPublicPage from '@/pages/CompanyPublicPage.vue';
 import SettingPage from '@/pages/SettingPages/SettingPage.vue';
 import CalendarPage from '@/pages/CalendarPages/CalendarPage.vue';
 import ManagementPage from '@/pages/ManagementPage.vue';
+import ServicesPage from '@/pages/ServicesPage.vue';
 import {
     HomeOutlined,
     VideoCameraOutlined,
@@ -21,6 +22,7 @@ export enum AppRoutes {
     COMPANY_PAGE_SETTINGS = '/:companyAlias/settings',
     COMPANY_PAGE_CALENDAR = '/:companyAlias/calendar',
     COMPANY_PAGE_MANAGEMENT = '/:companyAlias/management',
+    COMPANY_PAGE_SERVICES = '/:companyAlias/services'
 }
 
 export interface IRoute {
@@ -56,6 +58,12 @@ export const clientRoutes: IRoute[] = [
         label: 'Calendar',
         icon: IconsEnum.FieldTimeOutlined,
     },
+    {
+        path: AppRoutes.COMPANY_PAGE_SERVICES,
+        component: ServicesPage,
+        label: 'Book service',
+        icon: IconsEnum.FieldTimeOutlined,
+    }
 ];
 
 export const masterRoutes: IRoute[] = [

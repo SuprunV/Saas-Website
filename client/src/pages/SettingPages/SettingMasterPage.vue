@@ -9,9 +9,9 @@ export default defineComponent({
     setup: () => {
         const changeRef = ref<any>(null);
         const isChangeModal = ref<boolean>(false);
-        
+
         const authStore = useAuthStore();
-        const{authUser} = storeToRefs(authStore)
+        const { authUser } = storeToRefs(authStore);
 
         const validateMessages = {
             required: '${label} is required!',
@@ -45,7 +45,7 @@ export default defineComponent({
             formState,
             layout,
             validateMessages,
-            authUser
+            authUser,
         };
     },
     methods: {
@@ -66,15 +66,41 @@ export default defineComponent({
                     <div class="space-align-container">
                         <div class="space-align-block">
                             <a-space align="start">
-                                <img :width="200"
-                                    :src="authUser.img"/> 
-                                <a-descriptions title="Master Info" bordered="true">
-                                <a-descriptions-item label="Name" :span="3">Levi</a-descriptions-item>
-                                <a-descriptions-item label="Surname" :span="3">Ackerman</a-descriptions-item>
-                                <a-descriptions-item label="Gender" :span="3">Male</a-descriptions-item>
-                                <a-descriptions-item label="Age" :span="3">16</a-descriptions-item>
-                                <a-descriptions-item label="Company" :span="3">{{ authUser.companyName}}</a-descriptions-item>
-                                <a-descriptions-item label="Email" :span="3">{{ authUser.email}}</a-descriptions-item>
+                                <img :width="200" :src="authUser.img" />
+                                <a-descriptions
+                                    title="Master Info"
+                                    bordered="true"
+                                >
+                                    <a-descriptions-item label="Name" :span="3"
+                                        >Levi</a-descriptions-item
+                                    >
+                                    <a-descriptions-item
+                                        label="Surname"
+                                        :span="3"
+                                        >Ackerman</a-descriptions-item
+                                    >
+                                    <a-descriptions-item
+                                        label="Gender"
+                                        :span="3"
+                                        >Male</a-descriptions-item
+                                    >
+                                    <a-descriptions-item label="Age" :span="3"
+                                        >16</a-descriptions-item
+                                    >
+                                    <a-descriptions-item
+                                        label="Company"
+                                        :span="3"
+                                        >{{
+                                            authUser.companyName
+                                        }}</a-descriptions-item
+                                    >
+                                    <a-descriptions-item
+                                        label="Email"
+                                        :span="3"
+                                        >{{
+                                            authUser.email
+                                        }}</a-descriptions-item
+                                    >
                                 </a-descriptions>
                             </a-space>
                         </div>
@@ -84,21 +110,28 @@ export default defineComponent({
                             <a-statistic title="Done work" :value="2000" />
                         </a-col>
                         <a-col :span="12">
-                        <a-statistic title="Feedback" :value="650" style="margin-right: 50px">
-                            <template #suffix>
-                                <like-outlined />
-                            </template>
-                        </a-statistic>
+                            <a-statistic
+                                title="Feedback"
+                                :value="650"
+                                style="margin-right: 50px"
+                            >
+                                <template #suffix>
+                                    <like-outlined />
+                                </template>
+                            </a-statistic>
                         </a-col>
                     </a-row>
-                <a-button type="primary" @click="showChangeModal"
-                    >Change data</a-button
-                >
+                    <a-button type="primary" @click="showChangeModal"
+                        >Change data</a-button
+                    >
                 </a-space>
             </a-space>
-            <MasterSettingForm v-model:show="isChangeModal" />
         </div>
     </div>
+    <MasterSettingForm
+        v-model:show="isChangeModal"
+        v-createModal="{ show: isChangeModal }"
+    />
 </template>
 
 <style scoped></style>

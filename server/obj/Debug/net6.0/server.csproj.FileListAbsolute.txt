@@ -24,12 +24,113 @@ F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemi
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\server.csproj.CoreCompileInputs.cache
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\server.MvcApplicationPartsAssemblyInfo.cs
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\server.MvcApplicationPartsAssemblyInfo.cache
-F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\staticwebassets.build.json
-F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\staticwebassets.development.json
-F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\scopedcss\bundle\server.styles.css
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\server.csproj.CopyComplete
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\server.dll
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\refint\server.dll
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\server.pdb
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\server.genruntimeconfig.cache
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\ref\server.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\obj\Debug\net6.0\server.csproj.AssemblyReference.cache
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\obj\Debug\net6.0\server.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\obj\Debug\net6.0\server.AssemblyInfoInputs.cache
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\obj\Debug\net6.0\server.AssemblyInfo.cs
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\obj\Debug\net6.0\server.csproj.CoreCompileInputs.cache
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\obj\Debug\net6.0\server.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\obj\Debug\net6.0\server.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\obj\Debug\net6.0\server.RazorAssemblyInfo.cache
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\obj\Debug\net6.0\server.RazorAssemblyInfo.cs
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\obj\Debug\net6.0\server.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\obj\Debug\net6.0\refint\server.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\obj\Debug\net6.0\server.pdb
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\appsettings.json
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\server.exe
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\server.deps.json
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\server.runtimeconfig.json
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\server.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\server.pdb
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.Razor.Extensions.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.AspNetCore.Razor.Language.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.CodeAnalysis.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.CodeAnalysis.Razor.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.InMemory.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Npgsql.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\bin\Debug\net6.0\System.Security.Permissions.dll
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\obj\Debug\net6.0\server.csproj.CopyComplete
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\obj\Debug\net6.0\server.genruntimeconfig.cache
+C:\Users\37255\Documents\university\Project\itb2203-2022-bs\server\obj\Debug\net6.0\ref\server.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\appsettings.Development.json
+D:\User\source\repos\BS\server\bin\Debug\net6.0\appsettings.json
+D:\User\source\repos\BS\server\bin\Debug\net6.0\server.exe
+D:\User\source\repos\BS\server\bin\Debug\net6.0\server.deps.json
+D:\User\source\repos\BS\server\bin\Debug\net6.0\server.runtimeconfig.json
+D:\User\source\repos\BS\server\bin\Debug\net6.0\server.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\server.pdb
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.Razor.Extensions.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Microsoft.AspNetCore.Razor.Language.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Microsoft.CodeAnalysis.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Microsoft.CodeAnalysis.CSharp.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Microsoft.CodeAnalysis.Razor.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Microsoft.DotNet.PlatformAbstractions.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.InMemory.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Microsoft.OpenApi.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Npgsql.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\System.Security.Permissions.dll
+D:\User\source\repos\BS\server\obj\Debug\net6.0\server.csproj.AssemblyReference.cache
+D:\User\source\repos\BS\server\obj\Debug\net6.0\server.GeneratedMSBuildEditorConfig.editorconfig
+D:\User\source\repos\BS\server\obj\Debug\net6.0\server.AssemblyInfoInputs.cache
+D:\User\source\repos\BS\server\obj\Debug\net6.0\server.AssemblyInfo.cs
+D:\User\source\repos\BS\server\obj\Debug\net6.0\server.csproj.CoreCompileInputs.cache
+D:\User\source\repos\BS\server\obj\Debug\net6.0\server.MvcApplicationPartsAssemblyInfo.cs
+D:\User\source\repos\BS\server\obj\Debug\net6.0\server.MvcApplicationPartsAssemblyInfo.cache
+D:\User\source\repos\BS\server\obj\Debug\net6.0\server.RazorAssemblyInfo.cache
+D:\User\source\repos\BS\server\obj\Debug\net6.0\server.RazorAssemblyInfo.cs
+D:\User\source\repos\BS\server\obj\Debug\net6.0\server.csproj.CopyComplete
+D:\User\source\repos\BS\server\obj\Debug\net6.0\server.dll
+D:\User\source\repos\BS\server\obj\Debug\net6.0\refint\server.dll
+D:\User\source\repos\BS\server\obj\Debug\net6.0\server.pdb
+D:\User\source\repos\BS\server\obj\Debug\net6.0\server.genruntimeconfig.cache
+D:\User\source\repos\BS\server\obj\Debug\net6.0\ref\server.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\server.RazorAssemblyInfo.cache
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\obj\Debug\net6.0\server.RazorAssemblyInfo.cs
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\tests\user-controller\Beauty Service.postman_collection.json
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.Razor.Extensions.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.AspNetCore.Razor.Language.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.CodeAnalysis.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.CodeAnalysis.CSharp.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.CodeAnalysis.Razor.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.DotNet.PlatformAbstractions.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Newtonsoft.Json.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\System.Security.Permissions.dll

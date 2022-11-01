@@ -6,12 +6,12 @@ namespace server.Models
     public class Appointment
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string? date { get; set; }
 
-        public Guid? clientId { get; set; }
-        public Guid? serviceId { get; set; }
-        public Guid? masterId { get; set; }
+        public int? clientId { get; set; }
+        public int? serviceId { get; set; }
+        public int masterId { get; set; }
 
   
         [JsonIgnore]
