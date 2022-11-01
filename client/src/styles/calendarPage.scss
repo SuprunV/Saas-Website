@@ -1,17 +1,28 @@
 .ant-picker-calendar,
 .ant-picker-calendar-full .ant-picker-panel,
-.ant-select,
+.ant-picker-calendar .ant-select,
 .ant-radio-button-wrapper,
-.ant-select-dropdown {
+.ant-picker-calendar .ant-select-dropdown {
     background-color: $black-color;
+}
+
+.ant-select-dropdown [aria-selected='false'] .ant-select-item-option-content {
+    color: rgb(0, 0, 0) !important;
 }
 
 .ant-picker-calendar-header {
     padding: 20px;
 }
 
-.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+.ant-picker-calendar
+    .ant-select:not(.ant-select-customize-input)
+    .ant-select-selector {
     background-color: $black-color;
+}
+
+.ant-select:not(.ant-select-customize-input),
+.ant-select-selector {
+    color: $black-color;
 }
 
 .ant-select-item-option-active:not(.ant-select-item-option-disabled) {

@@ -118,13 +118,12 @@ const formStateService = reactive({
 
 <template>
     <div class="row">
-        &nbsp
         <div class="col">
             <a-button type="primary" @click="showModalUser">
                 <template #icon><plus-circle-two-tone /></template>
                 Add new personnel
             </a-button>
-            <ClientSettingForm v-model:show="isChangeModalUser" />
+
             <div class="m-3">
                 <b>List of personnel:</b>
                 <a-list
@@ -172,7 +171,6 @@ const formStateService = reactive({
                 <template #icon><plus-circle-two-tone /></template>
                 Add new service
             </a-button>
-            <ServiceForm v-model:show="isChangeModalService" />
             <div class="m-3">
                 <b>List of service:</b>
                 <a-list
@@ -219,5 +217,7 @@ const formStateService = reactive({
                 </a-list>
             </div>
         </div>
+        <ClientSettingForm v-model:show="isChangeModalUser" />
+        <ServiceForm v-model:show="isChangeModalService" />
     </div>
 </template>
