@@ -1,6 +1,72 @@
+<script lang="ts">
+import { defineComponent, reactive, ref, onMounted } from 'vue';
+import type { Dayjs } from 'dayjs';
+import { IUser, RolesEnum } from '@/models/IUser';
+import { UserAPI } from '@/api/UserAPI';
+
+export default defineComponent({
+    props: {
+        show: Boolean,
+    },
+    data: () => ({
+        masters: [] as IUser[],
+    }),
+    setup() {
+        const masterList = ref<IUser[]>([]);
+        const limit = ref<number>(5);
+        const page = ref<number>(1);
+        const value1 = ref<string>('a');
+        const layout = {
+            labelCol: { span: 8 },
+            wrapperCol: { span: 16 },
+        };
+
+        const validateMessages = {
+            required: '${label} is required!'
+        };
+
+        const formState = reactive({
+            booking: {
+                masterName: '',
+                date: '',
+                time: ''
+            },});
+
+        onMounted(async () => {
+            const masters = await UserAPI.getPublicUsers(
+                limit.value,
+                page.value,
+                RolesEnum.MASTER,
+            );
+            masterList.value = masters;
+        });
+        return {
+            value: ref<Dayjs>(),
+            onPanelChange: (value: Dayjs, mode: string) => {
+                console.log(value, mode);},
+            formState,
+            layout,
+            validateMessages,
+            masterList,
+            limit,
+            page,
+            value1
+        };
+    },
+    methods: {
+        close() {
+            this.$emit('update:show', false);
+            console.log('close in form', this.show);
+        },
+        submitForm() {
+            console.log('submit started', this.formState);
+        },
+    },
+});
+</script>
 <template>
     <div class="">
-        <div v-createModal="{ show: show, width: 100 }">
+        <div v-createModal="{ show: show, width: 50 }">
             <div class="main-cart">
                 <a-form
                     :model="formState"
@@ -19,12 +85,7 @@
                                 v-model:value="formState.booking.masterName"
                                 placeholder="Please select master"
                             >
-                                <a-select-option value="Master1"
-                                    >Master1</a-select-option
-                                >
-                                <a-select-option value="Master2"
-                                    >Master2</a-select-option
-                                >
+                                <a-select-option v-for="master,index in masterList" v-bind:value="index">{{master.name}}</a-select-option>
                             </a-select>
                         </a-form-item>
                         <a-form-item
@@ -32,7 +93,23 @@
                             label="Date"
                             :rules="[{ required: true }]"
                         >
-                            <a-date-picker v-model:value="value1" />
+                        <div class="calendar">
+                            <a-calendar v-model:value="value" :fullscreen="false" @panelChange="onPanelChange" />
+                        </div>
+                        </a-form-item>
+                        <a-form-item
+                            :name="['time', 'time']"
+                            label="Available time:"
+                            :rules="[{ required: true }]"
+                        >
+                        <div >
+                            <a-radio-group v-model:value="value1">
+                                <a-radio-button value="a">14:00</a-radio-button>
+                                <a-radio-button value="b">15:00</a-radio-button>
+                                <a-radio-button value="c">16:00</a-radio-button>
+                                <a-radio-button value="d">17:00</a-radio-button>
+                            </a-radio-group>
+                        </div>
                         </a-form-item>
                     </div>
                     <div class="ant-modal-footer">
@@ -46,7 +123,7 @@
                             class="ant-btn btn-success"
                             html-type="submit"
                         >
-                            <span>OK</span>
+                            <span>Book</span>
                         </a-button>
                     </div>
                 </a-form>
@@ -54,47 +131,3 @@
         </div>
     </div>
 </template>
-<script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
-import type { Dayjs } from 'dayjs';
-
-export default defineComponent({
-    props: {
-        show: Boolean,
-    },
-    setup(props) {
-        const layout = {
-            labelCol: { span: 8 },
-            wrapperCol: { span: 16 },
-        };
-
-        const validateMessages = {
-            required: '${label} is required!'
-        };
-
-        const formState = reactive({
-            booking: {
-                masterName: '',
-                date: '',
-                time: ''
-            },
-        });
-
-        return {
-            value1: ref<Dayjs>(),
-            formState,
-            layout,
-            validateMessages,
-        };
-    },
-    methods: {
-        close() {
-            this.$emit('update:show', false);
-            console.log('close in form', this.show);
-        },
-        submitForm() {
-            console.log('submit started', this.formState);
-        },
-    },
-});
-</script>

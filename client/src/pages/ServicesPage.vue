@@ -54,6 +54,8 @@ export default defineComponent({
             dataService,
             servicesList,
             value,
+            current: ref(1),
+            page,
             onSearch
         };
     },
@@ -137,6 +139,7 @@ const formState = reactive({
             </a-list-item>
             </template>
         </a-list>
+        <a-pagination v-model:current="current" :total="page" show-less-items />
         <BookingForm v-model:show="isBookingModal" />
 </template>
 
