@@ -1,17 +1,25 @@
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, reactive, onMounted, ref } from 'vue';
 import { IService } from '@/models/IService';
 import { serviceAPI } from '@/api/serviceAPI';
 import { LikeOutlined } from '@ant-design/icons-vue';
+import BookingForm from '@/components/BookingForm.vue';
 
 export default defineComponent({
     components: {
     LikeOutlined,
+    BookingForm
   },
     data: () => ({
         services: [] as IService[],
     }),
     setup() {
+        const changeRef = ref<any>(null);
+        const isBookingModal = ref<boolean>(false);
+        const validateMessages = {
+            required: '${label} is required!'
+        };
+
         const initLoading = ref(true);
         const loading = ref(false);
         const limit = ref<number>(3);
@@ -23,6 +31,8 @@ export default defineComponent({
         console.log('use value', searchValue);
         console.log('or use this.value', value.value);
         };
+
+        
         onMounted(async () => {
             const services = await serviceAPI.getPublicServices(
                 limit.value,
@@ -33,15 +43,37 @@ export default defineComponent({
             servicesList.value= services
         });
 
-    return {
-      loading,
-      initLoading,
-      dataService,
-      servicesList,
-      value,
-      onSearch
-    };
-  },
+        return {
+            changeRef,
+            isBookingModal,
+            formState,
+            layout,
+            validateMessages,
+            loading,
+            initLoading,
+            dataService,
+            servicesList,
+            value,
+            onSearch
+        };
+    },
+    methods: {
+        showBookingModal() {
+            this.isBookingModal = true;
+        },
+    },
+});
+const layout = {
+    labelCol: { span: 8 },
+    wrapperCol: { span: 16 },
+};
+
+const formState = reactive({
+    booking: {
+        masterName: '',
+        date: '',
+        time: ''
+    },
 });
 </script>
 
@@ -98,12 +130,14 @@ export default defineComponent({
                         </a-row>
                     </template>
                 </a-list-item-meta>
-                <a-button type="primary">Book time</a-button> 
-                
+                <a-button type="primary" @click="showBookingModal"
+                        >Book time</a-button
+                    >
                 </a-skeleton>
             </a-list-item>
             </template>
         </a-list>
+        <BookingForm v-model:show="isBookingModal" />
 </template>
 
 
