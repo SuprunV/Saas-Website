@@ -20,9 +20,6 @@ body > div {
     box-shadow: $main-shadow !important;
 
     background-color: $black-color !important;
-    input {
-        color: $black-color !important;
-    }
 }
 
 .ant-layout-content {
@@ -82,7 +79,7 @@ body > div {
 }
 
 .ant-menu {
-    background-color: $dark-color;
+    background-color: #1f1f1f;
 }
 
 .ant-avatar {
