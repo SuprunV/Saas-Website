@@ -9,6 +9,7 @@ import { useAuthStore } from '@/store/useAuth';
 import { IMaster } from '@/models/IMaster';
 import { IAppointment } from '@/models/IAppointment';
 import { IService } from '@/models/IService';
+import { AppointmentAPI } from '@/api/AppointmentAPI';
 
 export default defineComponent({
     props: {
@@ -59,19 +60,24 @@ export default defineComponent({
         //  1. remove selected time
         //  2. remove selected master
         //  3. Update free masters on this day AND near master name is shown count of free places.
-        const uploadFreeAppointment = async () => {};
+        const isDateChange = (value: Dayjs, mode: string) => {
+            selectedAppointment.value.date = value.toDate();
+            selectedAppointment.value.masterId = -1;
+            selectedAppointment.value.time = '';
+            uploadFreeAppointment();
+        };
+
+        const uploadFreeAppointment = async () => {
+            const appointments = await AppointmentAPI.
+        };
 
         // Step 2. Select Master. When master is selected or updated, doing:
         // 1. remove selected time
         // 2. update free time, when selected master is free.
-        const uploadMasters = async () => {};
+        const sortMasters = async () => {};
 
         // Step 3. Time is Selected:
         // 1. is able to add book
-
-        const isDateChange = (value: Dayjs, mode: string) => {
-            console.log('panel', value, mode);
-        };
 
         const formState = reactive({
             booking: {
