@@ -67,8 +67,12 @@ export class AppointmentAPI {
         companyId: number,
     ): Promise<IAppointment[]> {
         try {
-            const response = await axios.get<IAppointment[]>(`${$host}/appointment/`);
-            return [];
+            const date = selectedDate.toISOString().split('T')[0];
+            const response = await axios.get<IAppointment[]>(
+                `${$host}/company/${companyId}/appointments?date=${date}`,
+            );
+            console.log('all events of this company by ', response.data);
+            return response.data;
         } catch (e) {
             return [];
         }

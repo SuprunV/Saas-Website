@@ -1,7 +1,9 @@
+import { IMaster } from './IMaster';
+
 export interface IAppointment {
     Id: number;
     clientName: string;
-    masterName: string;
+    master: IMaster;
     date: Date;
     serviceId: number;
     serviceName: string;

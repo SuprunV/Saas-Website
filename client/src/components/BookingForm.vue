@@ -40,7 +40,9 @@ export default defineComponent({
             clientId: authUser.value.id,
             clientName: authUser.value.name,
             date: new Date(),
-            masterName: '',
+            master: {
+                name: '',
+            } as IMaster,
             serviceId: -1, // is taken from find service page, when click
             serviceName: '', // is taken from find service page, when click
         });
@@ -68,7 +70,10 @@ export default defineComponent({
         };
 
         const uploadFreeAppointment = async () => {
-            const appointments = await AppointmentAPI.
+            const appointments = await AppointmentAPI.getFreeEvents(
+                selectedAppointment.value.date,
+                authUser.value.companyId,
+            );  
         };
 
         // Step 2. Select Master. When master is selected or updated, doing:
