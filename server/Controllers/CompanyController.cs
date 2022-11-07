@@ -42,12 +42,13 @@ namespace server.Controllers
             if(clientsInCompany == null) return Ok("No clients in company");
             else return Ok(clientsInCompany?.ToList());
         }
-          [HttpGet("{companyId}/masters")]
-        public ActionResult<int> GetCompanyMasters(int companyId)
+        [HttpGet("{companyId}/masters")]
+        public ActionResult<IEnumerable<Master>> GetCompanyMasters(int companyId)
         {
+            if(!CompanyExists(companyId)) return BadRequest();
             var mastersInCompany = _context.Masters?.Where(x => x.User.companyId == companyId);
-            if(mastersInCompany == null) return Ok("No masters in company");
-            else return Ok(mastersInCompany?.ToList());
+            
+            return Ok(mastersInCompany);
         }
         
         [HttpGet("{companyId}/services")]
