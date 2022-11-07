@@ -1,4 +1,6 @@
+import { $host } from '@/config';
 import { IAppointment } from '@/models/IAppointment';
+import axios from 'axios';
 
 export class AppointmentAPI {
     static demoEvents: IAppointment[] = [
@@ -59,7 +61,19 @@ export class AppointmentAPI {
             return selectedEvents;
         });
     }
-    
+
+    static async getFreeEvents(
+        selectedDate: Date,
+        companyId: number,
+    ): Promise<IAppointment[]> {
+        try {
+            const response = await axios.get<IAppointment[]>(`${$host}/appointment/`);
+            return [];
+        } catch (e) {
+            return [];
+        }
+    }
+
     static getEventsByMonthAndYear(
         month: number,
         year: number,
