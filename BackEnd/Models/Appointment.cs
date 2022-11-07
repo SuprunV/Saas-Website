@@ -14,13 +14,13 @@ namespace server.Models
         public int masterId { get; set; }
 
   
-        [JsonIgnore]
+        // [JsonIgnore]
         public virtual Client? Client { get; set; }
         
-        [JsonIgnore]
+        // [JsonIgnore]
         public virtual Service? Service { get; set; }
 
-        [JsonIgnore]
+        // [JsonIgnore]
         public virtual Master? Master { get; set; }
     }
 }
