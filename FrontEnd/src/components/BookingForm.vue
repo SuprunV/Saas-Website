@@ -3,16 +3,20 @@ import { defineComponent, reactive, ref, onMounted } from 'vue';
 import type { Dayjs } from 'dayjs';
 import { IUser, RolesEnum } from '@/models/IUser';
 import { UserAPI } from '@/api/UserAPI';
+import { CompanyAPI } from '@/api/CompanyAPI';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/store/useAuth';
+import { IMaster } from '@/models/IMaster';
 
 export default defineComponent({
     props: {
         show: Boolean,
     },
     data: () => ({
-        masters: [] as IUser[],
+        masters: [] as IMaster[],
     }),
     setup() {
-        const masterList = ref<IUser[]>([]);
+        const masterList = ref<IMaster[]>([]);
         const limit = ref<number>(5);
         const page = ref<number>(1);
         const value1 = ref<string>('a');
@@ -24,6 +28,14 @@ export default defineComponent({
         const validateMessages = {
             required: '${label} is required!',
         };
+        const { authUser } = storeToRefs(useAuthStore());
+
+        onMounted(async () => {
+            const masters = await CompanyAPI.getCompanyMasters(
+                authUser.value.companyId,
+            );
+            masterList.value = masters;
+        });
 
         const formState = reactive({
             booking: {
@@ -33,20 +45,12 @@ export default defineComponent({
             },
         });
 
-        onMounted(async () => {
-            // We have to get masters, that due to this company, not with ALL masters
-            const masters = await UserAPI.getPublicUsers(
-                limit.value,
-                page.value,
-                RolesEnum.MASTER,
-            );
-            masterList.value = masters;
-        });
         return {
             value: ref<Dayjs>(),
             onPanelChange: (value: Dayjs, mode: string) => {
                 console.log(value, mode);
             },
+            onMounted,
             formState,
             layout,
             validateMessages,
@@ -84,13 +88,10 @@ export default defineComponent({
                             label="Master name"
                             :rules="[{ required: true }]"
                         >
-                            <a-select
-                                v-model:value="formState.booking.masterName"
-                                placeholder="Please select master"
-                            >
+                            <a-select placeholder="Please select master">
                                 <a-select-option
-                                    v-for="(master, index) in masterList"
-                                    v-bind:value="index"
+                                    v-for="master in masterList"
+                                    :key="master.Id"
                                     >{{ master.name }}</a-select-option
                                 >
                             </a-select>

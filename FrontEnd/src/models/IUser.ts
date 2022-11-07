@@ -14,3 +14,8 @@ export enum RolesEnum {
     COMPANY = 'COMPANY',
     MASTER = 'MASTER',
 }
+
+export enum GenderEnum {
+    Female = 'Female',
+    Male = 'MaleY',
+}
