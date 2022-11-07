@@ -40,6 +40,14 @@ namespace server.Controllers
             if(clientsInCompany == null) return Ok("No clients in company");
             else return Ok(clientsInCompany?.ToList());
         }
+        [HttpGet("{companyId}/appointments")]
+        public ActionResult<IEnumerable<Appointment>> GetCompanyAppointmentsByDate(int companyId, [FromQuery] string date)
+        {
+            if(!CompanyExists(companyId)) return BadRequest();
+            var appointments = _context.Appointments!.Include(x => x.Master).Where((x => x.date.Contains(date) && x.Master.User.companyId == companyId));
+            return Ok(appointments);
+        }
+        
         [HttpGet("{companyId}/masters")]
         public ActionResult<IEnumerable<Master>> GetCompanyMasters(int companyId)
         {
