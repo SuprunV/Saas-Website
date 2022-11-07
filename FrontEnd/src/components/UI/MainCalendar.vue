@@ -60,7 +60,7 @@
 <script lang="ts">
 import { defineComponent, ref, PropType } from 'vue';
 import dayjs, { Dayjs } from 'dayjs';
-import { ICalendarEvents } from '@/models/ICalendarEvents';
+import { IAppointment } from '@/models/IAppointment';
 import { AppointmentAPI } from '@/api/AppointmentAPI';
 import { RolesEnum } from '@/models/IUser';
 import { title } from 'process';
@@ -76,8 +76,8 @@ export default defineComponent({
     setup(props) {
         const selectedDay = ref<Dayjs>(dayjs(new Date(new Date())));
         const selectedMonth = ref<number>(selectedDay.value.month());
-        const selectedDayEvents = ref<ICalendarEvents[]>([]);
-        const currentMonthEvents = ref<ICalendarEvents[]>([]);
+        const selectedDayEvents = ref<IAppointment[]>([]);
+        const currentMonthEvents = ref<IAppointment[]>([]);
         const eventSidebar = 'Events for today: ';
 
         console.log(props);

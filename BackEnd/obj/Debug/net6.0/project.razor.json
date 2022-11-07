@@ -13,10 +13,14 @@
     "TagHelpers": [
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": -2062097650,
 =======
         "HashCode": -1925172652,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": -652048699,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.Razor",
@@ -332,10 +336,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": -1215001756,
 =======
         "HashCode": -1685421355,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": -2087758766,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -533,10 +541,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": -1222521108,
 =======
         "HashCode": -695716601,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": -1009508609,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -664,10 +676,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": -1770813752,
 =======
         "HashCode": 1754099120,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": 1512834349,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.ComponentTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -723,10 +739,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": -1583337380,
 =======
         "HashCode": 1480946665,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": -1745587478,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.DistributedCacheTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -859,10 +879,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": 1240170651,
 =======
         "HashCode": 806335849,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": -1297117855,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.EnvironmentTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -909,10 +933,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": -146923796,
 =======
         "HashCode": 863219703,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": -1499236538,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.FormActionTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -1330,10 +1358,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": -1546865668,
 =======
         "HashCode": 754150471,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": 1808049894,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.FormTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -1436,10 +1468,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": -1406064598,
 =======
         "HashCode": -1072722963,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": -1131441831,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.ImageTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -1486,10 +1522,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": 290143758,
 =======
         "HashCode": -265292542,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": 2090343875,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.InputTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -1560,10 +1600,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": 1268137063,
 =======
         "HashCode": 593871415,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": 254130008,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.LabelTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -1597,10 +1641,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": 579296969,
 =======
         "HashCode": -1607365573,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": -1060071839,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.LinkTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -1797,10 +1845,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": 775067522,
 =======
         "HashCode": -1811420265,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": 526085108,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.OptionTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -1829,10 +1881,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": 366371964,
 =======
         "HashCode": 14316658,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": 456013655,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.PartialTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -1914,10 +1970,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": 1805440290,
 =======
         "HashCode": 39932567,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": -509894827,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.PersistComponentStateTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -1947,10 +2007,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": -1140790635,
 =======
         "HashCode": -646221281,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": 1098185408,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.ScriptTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -2104,10 +2168,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": 847787971,
 =======
         "HashCode": -2068843179,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": -1737165194,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.SelectTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -2167,10 +2235,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": 914018107,
 =======
         "HashCode": 1425857848,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": -2019411441,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.TextAreaTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -2213,10 +2285,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": -100886420,
 =======
         "HashCode": -1168495230,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": -835815188,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.ValidationMessageTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -2250,10 +2326,14 @@
       },
       {
 <<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
+<<<<<<< HEAD:BackEnd/obj/Debug/net6.0/project.razor.json
         "HashCode": -1156194289,
 =======
         "HashCode": -1367316827,
 >>>>>>> 6ea100b (GetServices in ServiceController):server/obj/Debug/net6.0/project.razor.json
+=======
+        "HashCode": -1251181114,
+>>>>>>> e804819 (listeners to changing steps):server/obj/Debug/net6.0/project.razor.json
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.ValidationSummaryTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
