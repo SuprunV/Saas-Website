@@ -9,11 +9,9 @@ namespace server.Controllers
     public class CompanyController: ControllerBase
     {
         private readonly DataContext _context;
-        public CompanyController(DataContext context)
-        {
+        public CompanyController(DataContext context) {
             _context = context;
         }
-
         [HttpGet("{companyId}")]
         public ActionResult<Company> GetCompany(int companyId)
         {
@@ -50,7 +48,6 @@ namespace server.Controllers
             
             return Ok(mastersInCompany);
         }
-        
         [HttpGet("{companyId}/services")]
         public ActionResult<IEnumerable<Service>> GetCompanyServices(int companyId) {
             if(!CompanyExists(companyId)) return BadRequest();
@@ -78,7 +75,6 @@ namespace server.Controllers
                 return Conflict("Company already exists with the same Id");
             }
         }
-
         [HttpPut("{companyId}")]
         public IActionResult UpdateCompany(int companyId, Company company)
         {
@@ -97,7 +93,6 @@ namespace server.Controllers
 
             return NoContent();
         }
-        
         [HttpDelete("{companyId}")]
         public ActionResult<Company> DeleteCompany(int companyId)
         {
@@ -112,7 +107,6 @@ namespace server.Controllers
 
             return company;
         }
-     
         private bool CompanyExists(int id)
         {
             return _context.Companies!.Any(c => c.Id == id);

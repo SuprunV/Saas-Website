@@ -1,7 +1,7 @@
-import { ICalendarEvents } from '@/models/ICalendarEvents';
+import { IAppointment } from '@/models/IAppointment';
 
 export class AppointmentAPI {
-    static demoEvents: ICalendarEvents[] = [
+    static demoEvents: IAppointment[] = [
         {
             Id: 1,
             clientName: 'Nadja Tupikova',
@@ -46,9 +46,9 @@ export class AppointmentAPI {
         },
     ];
 
-    static getEvents(selectedDate: Date): Promise<ICalendarEvents[]> {
+    static getEvents(selectedDate: Date): Promise<IAppointment[]> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-            var selectedEvents: ICalendarEvents[] = [];
+            var selectedEvents: IAppointment[] = [];
 
             selectedEvents = this.demoEvents.filter(
                 (e) =>
@@ -59,12 +59,13 @@ export class AppointmentAPI {
             return selectedEvents;
         });
     }
+    
     static getEventsByMonthAndYear(
         month: number,
         year: number,
-    ): Promise<ICalendarEvents[]> {
+    ): Promise<IAppointment[]> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-            var selectedEvents: ICalendarEvents[] = [];
+            var selectedEvents: IAppointment[] = [];
 
             selectedEvents = this.demoEvents.filter(
                 (e) =>
