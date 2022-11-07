@@ -22,17 +22,19 @@ export default defineComponent({
         };
 
         const validateMessages = {
-            required: '${label} is required!'
+            required: '${label} is required!',
         };
 
         const formState = reactive({
             booking: {
                 masterName: '',
                 date: '',
-                time: ''
-            },});
+                time: '',
+            },
+        });
 
         onMounted(async () => {
+            // We have to get masters, that due to this company, not with ALL masters
             const masters = await UserAPI.getPublicUsers(
                 limit.value,
                 page.value,
@@ -43,14 +45,15 @@ export default defineComponent({
         return {
             value: ref<Dayjs>(),
             onPanelChange: (value: Dayjs, mode: string) => {
-                console.log(value, mode);},
+                console.log(value, mode);
+            },
             formState,
             layout,
             validateMessages,
             masterList,
             limit,
             page,
-            value1
+            value1,
         };
     },
     methods: {
@@ -81,11 +84,15 @@ export default defineComponent({
                             label="Master name"
                             :rules="[{ required: true }]"
                         >
-                        <a-select
+                            <a-select
                                 v-model:value="formState.booking.masterName"
                                 placeholder="Please select master"
                             >
-                                <a-select-option v-for="master,index in masterList" v-bind:value="index">{{master.name}}</a-select-option>
+                                <a-select-option
+                                    v-for="(master, index) in masterList"
+                                    v-bind:value="index"
+                                    >{{ master.name }}</a-select-option
+                                >
                             </a-select>
                         </a-form-item>
                         <a-form-item
@@ -93,23 +100,35 @@ export default defineComponent({
                             label="Date"
                             :rules="[{ required: true }]"
                         >
-                        <div class="calendar">
-                            <a-calendar v-model:value="value" :fullscreen="false" @panelChange="onPanelChange" />
-                        </div>
+                            <div class="calendar">
+                                <a-calendar
+                                    v-model:value="value"
+                                    :fullscreen="false"
+                                    @panelChange="onPanelChange"
+                                />
+                            </div>
                         </a-form-item>
                         <a-form-item
                             :name="['time', 'time']"
                             label="Available time:"
                             :rules="[{ required: true }]"
                         >
-                        <div >
-                            <a-radio-group v-model:value="value1">
-                                <a-radio-button value="a">14:00</a-radio-button>
-                                <a-radio-button value="b">15:00</a-radio-button>
-                                <a-radio-button value="c">16:00</a-radio-button>
-                                <a-radio-button value="d">17:00</a-radio-button>
-                            </a-radio-group>
-                        </div>
+                            <div>
+                                <a-radio-group v-model:value="value1">
+                                    <a-radio-button value="a"
+                                        >14:00</a-radio-button
+                                    >
+                                    <a-radio-button value="b"
+                                        >15:00</a-radio-button
+                                    >
+                                    <a-radio-button value="c"
+                                        >16:00</a-radio-button
+                                    >
+                                    <a-radio-button value="d"
+                                        >17:00</a-radio-button
+                                    >
+                                </a-radio-group>
+                            </div>
                         </a-form-item>
                     </div>
                     <div class="ant-modal-footer">

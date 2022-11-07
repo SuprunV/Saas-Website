@@ -26,7 +26,7 @@ namespace server.Controllers
 
             return Ok(company);
         }
-        [HttpGet("/CompaniesCount")]
+        [HttpGet("/count")]
         public ActionResult<int> GetCompaniesCount()
         {
             var company = _context.Companies!
@@ -35,14 +35,14 @@ namespace server.Controllers
             return Ok(company.Count);
         }
         
-        [HttpGet("{companyId}/AllClientsInCompany")]
+        [HttpGet("{companyId}/clients")]
         public ActionResult<int> GetCompanyClients(int companyId)
         {
             var clientsInCompany = _context.Clients?.Where(x => x.User.companyId == companyId);
             if(clientsInCompany == null) return Ok("No clients in company");
             else return Ok(clientsInCompany?.ToList());
         }
-          [HttpGet("{companyId}/AllMastersInCompany")]
+          [HttpGet("{companyId}/masters")]
         public ActionResult<int> GetCompanyMasters(int companyId)
         {
             var mastersInCompany = _context.Masters?.Where(x => x.User.companyId == companyId);
