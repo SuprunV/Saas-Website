@@ -1,5 +1,5 @@
 <script lang="ts">
-import { serviceAPI } from '@/api/serviceAPI';
+import { ServiceAPI } from '@/api/ServiceAPI';
 import { IService } from '@/models/IService';
 import { UserAPI } from '@/api/UserAPI';
 import { defineComponent, ref, reactive, onMounted } from 'vue';
@@ -33,7 +33,7 @@ export default defineComponent({
         const masterList = ref<IUser[]>([]);
 
         onMounted(async () => {
-            const services = await serviceAPI.getPublicServices(
+            const services = await ServiceAPI.getPublicServices(
                 limit.value,
                 page.value,
             );
@@ -143,13 +143,11 @@ const formStateService = reactive({
                                     <template #title>
                                         <a href="./myfircom/management">{{
                                             item.name
-                                        }}</a
-                                        >&nbsp &nbsp<a-button
-                                            type="primary"
-                                            danger
+                                        }}</a>
+                                        <a-button type="primary" danger
                                             >Delete</a-button
                                         >
-                                        &nbsp<a-button
+                                        <a-button
                                             type="primary"
                                             @click="showModalUser"
                                             default
@@ -198,7 +196,6 @@ const formStateService = reactive({
                                         <br /><a-button type="primary" danger
                                             >Delete</a-button
                                         >
-                                        &nbsp
                                         <a-button
                                             type="primary"
                                             @click="showChangeModalService"

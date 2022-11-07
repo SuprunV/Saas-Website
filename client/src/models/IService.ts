@@ -5,6 +5,5 @@ export interface IService{
     description: string;
     duration: number;
     price: number;
-
 }
     

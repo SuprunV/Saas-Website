@@ -61,7 +61,7 @@
 import { defineComponent, ref, PropType } from 'vue';
 import dayjs, { Dayjs } from 'dayjs';
 import { ICalendarEvents } from '@/models/ICalendarEvents';
-import { CalendarEventsAPI } from '@/api/CalendarEventsAPI';
+import { AppointmentAPI } from '@/api/AppointmentAPI';
 import { RolesEnum } from '@/models/IUser';
 import { title } from 'process';
 
@@ -83,7 +83,7 @@ export default defineComponent({
         console.log(props);
 
         const GetEventsToSelectedDay = async () => {
-            const response = await CalendarEventsAPI.getEvents(
+            const response = await AppointmentAPI.getEvents(
                 selectedDay.value.toDate(),
             );
             selectedDayEvents.value = response;
@@ -92,7 +92,7 @@ export default defineComponent({
 
         const updateMonthEvents = async () => {
             const date = selectedDay.value.toDate();
-            const response = await CalendarEventsAPI.getEventsByMonthAndYear(
+            const response = await AppointmentAPI.getEventsByMonthAndYear(
                 date.getMonth(),
                 date.getFullYear(),
             );

@@ -1,4 +1,4 @@
-import { companyAPI } from '@/api/companyAPI';
+import { CompanyAPI } from '@/api/CompanyAPI';
 import { useFetching } from '@/hooks/useFetching';
 import { ICompany } from '@/models/ICompany';
 import { AppRoutes } from '@/router/router';
@@ -27,7 +27,7 @@ export const useCompanyStore = defineStore('company', {
 
                 try {
                     if (!alias) throw new Error('Incorrect company url!');
-                    this.company = await companyAPI.getCompanyByAlias(alias);
+                    this.company = await CompanyAPI.getCompanyByAlias(alias);
                     this.message = {
                         message: 'Success!',
                         type: ResponseTypeEnum.SUCCESS,

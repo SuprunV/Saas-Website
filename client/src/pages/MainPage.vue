@@ -5,7 +5,7 @@ import {
     AuditOutlined,
 } from '@ant-design/icons-vue';
 import { defineComponent, ref, onMounted, nextTick } from 'vue';
-import { companyAPI } from '@/api/companyAPI';
+import { CompanyAPI } from '@/api/CompanyAPI';
 import { ICompany } from '@/models/ICompany';
 import { useCompanyStore } from '@/store/useCompany';
 
@@ -40,7 +40,7 @@ export default defineComponent({
         companyStore.removeCompanyPage();
 
         onMounted(async () => {
-            const companies = await companyAPI.getPublicCompanies(
+            const companies = await CompanyAPI.getPublicCompanies(
                 limit.value,
                 page.value,
             );
@@ -60,7 +60,7 @@ export default defineComponent({
                     alias: '',
                 })) as any,
             );
-            const new_companies = await companyAPI.getPublicCompanies(
+            const new_companies = await CompanyAPI.getPublicCompanies(
                 limit.value,
                 page.value,
             );

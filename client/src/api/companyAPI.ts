@@ -9,7 +9,7 @@ const companyImgUrl2 =
 const starplast =
     'https://starplast.ee/wp-content/uploads/elementor/thumbs/logo_for_png-pm7lafk3amqbwy9sve6x409mmv8egtljt9iak8hc2q.png';
 
-export class companyAPI {
+export class CompanyAPI {
     static demoCompanies: ICompany[] = [
         {
             id: 1,
