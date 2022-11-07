@@ -134,3 +134,4 @@ F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemi
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Newtonsoft.Json.dll
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
 F:\SynologyDrive\University\Äriinfotehnoloogia 3 semester\ITB2203 Infosüsteemide arendamine III\Projekt\itb2203-2022-bs\server\bin\Debug\net6.0\System.Security.Permissions.dll
+D:\User\source\repos\BS\server\bin\Debug\net6.0\tests\user-controller\Beauty Service.postman_collection.json
