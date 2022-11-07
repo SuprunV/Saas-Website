@@ -4,6 +4,8 @@ import { IService } from '@/models/IService';
 import { ServiceAPI } from '@/api/ServiceAPI';
 import { LikeOutlined } from '@ant-design/icons-vue';
 import BookingForm from '@/components/BookingForm.vue';
+import { useAuthStore } from '@/store/useAuth';
+import { storeToRefs } from 'pinia';
 
 export default defineComponent({
     components: {
@@ -32,8 +34,11 @@ export default defineComponent({
             console.log('or use this.value', value.value);
         };
 
+        const { authUser } = storeToRefs(useAuthStore());
+
         onMounted(async () => {
             const services = await ServiceAPI.getPublicServices(
+                authUser.value.companyId,
                 limit.value,
                 page.value,
             );
