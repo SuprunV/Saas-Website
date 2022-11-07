@@ -16,16 +16,6 @@ namespace server.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<Service>> GetServices(int companyId) {
-            var service = _context.Services!.Where(x => x.companyId == companyId);
-
-            // if (service == null) {
-            //     return NotFound();
-            // }
-
-            return Ok(service);
-        }
         [HttpGet("{serviceId}")]
         public ActionResult<Service> GetService(int serviceId)
         {

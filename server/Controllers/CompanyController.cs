@@ -50,6 +50,14 @@ namespace server.Controllers
             else return Ok(mastersInCompany?.ToList());
         }
         
+        [HttpGet("{companyId}/services")]
+        public ActionResult<IEnumerable<Service>> GetCompanyServices(int companyId) {
+            if(!CompanyExists(companyId)) return BadRequest();
+
+            var services = _context.Services!.Where(s => s.companyId == companyId);
+
+            return Ok(services);
+        }
         [HttpPost]
         public ActionResult<Company> CreateCompany([FromBody] Company company) {
            var dbCompany = _context.Companies!.Find(company.Id);
