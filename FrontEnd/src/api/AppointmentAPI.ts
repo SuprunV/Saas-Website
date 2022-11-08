@@ -48,18 +48,24 @@ export class AppointmentAPI {
         },
     ];
 
-    static getEvents(selectedDate: Date): Promise<IAppointment[]> {
-        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-            var selectedEvents: IAppointment[] = [];
+    static async getEvents(selectedDate: Date): Promise<IAppointment[]> {
+        try {
+            const response = await axios.get<IAppointment[]>();
+        } catch (e) {
+            return [];
+        }
 
-            selectedEvents = this.demoEvents.filter(
-                (e) =>
-                    e.date.toLocaleDateString() ==
-                    selectedDate.toLocaleDateString(),
-            );
+        // return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+        //     var selectedEvents: IAppointment[] = [];
 
-            return selectedEvents;
-        });
+        //     selectedEvents = this.demoEvents.filter(
+        //         (e) =>
+        //             e.date.toLocaleDateString() ==
+        //             selectedDate.toLocaleDateString(),
+        //     );
+
+        //     return selectedEvents;
+        // });
     }
 
     static async getFreeEvents(

@@ -56,6 +56,7 @@ namespace server.Controllers
             
             return Ok(mastersInCompany);
         }
+        
         [HttpGet("{companyId}/services")]
         public ActionResult<IEnumerable<Service>> GetCompanyServices(int companyId) {
             if(!CompanyExists(companyId)) return BadRequest();
@@ -64,6 +65,7 @@ namespace server.Controllers
 
             return Ok(services);
         }
+        
         [HttpPost]
         public ActionResult<Company> CreateCompany([FromBody] Company company) {
            var dbCompany = _context.Companies!.Find(company.Id);
