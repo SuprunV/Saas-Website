@@ -3,7 +3,7 @@ variables:
   DOCKER_TLS_CERTDIR: "/certs"
   # Minu konteineri registri aadress AWS-s (Amazon Elastic Container Registry)
   # Asenda MINU_REGISTRI_NIMI
-  DOCKER_REGISTRY: MINU_REGISTRI_NIMI.dkr.ecr.eu-north-1.amazonaws.com/BeautyService
+  DOCKER_REGISTRY: 662032419283.dkr.ecr.eu-north-1.amazonaws.com/beautyservice
 
 stages:
   - build
