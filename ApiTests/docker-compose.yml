@@ -26,7 +26,7 @@ services:
         "/etc/startup/wait-for",
         "-t",
         "30",
-        "BeautyService_db:5432",
+        "db:5432",
         "--",
         "dotnet",
         "/app/server.dll",
