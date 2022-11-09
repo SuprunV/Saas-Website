@@ -1147,7 +1147,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/Appointment?{{date}}",
+							"raw": "{{url}}/api/Appointment?Date={{date}}",
 							"host": [
 								"{{url}}"
 							],
@@ -1158,7 +1158,7 @@
 							"query": [
 								{
 									"key": "{{date}}",
-									"value": null
+									"value": "2022-11-27T13:01:04.942Z"
 								}
 							]
 						}
