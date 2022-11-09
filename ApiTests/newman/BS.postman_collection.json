@@ -234,9 +234,9 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Clients count must be 2\", function () {\r",
+									"pm.test(\"Clients count must be 4\", function () {\r",
 									"    var users = pm.response.json();\r",
-									"    pm.expect(users.length).to.be.equal(2); \r",
+									"    pm.expect(users.length).to.be.equal(4); \r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -285,9 +285,9 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Clients count must be 1\", function () {\r",
+									"pm.test(\"Master count must be 2\", function () {\r",
 									"    var users = pm.response.json();\r",
-									"    pm.expect(users.length).to.be.equal(1); \r",
+									"    pm.expect(users.length).to.be.equal(2); \r",
 									"});"
 								],
 								"type": "text/javascript"
