@@ -96,16 +96,16 @@ namespace server.Controllers
         [HttpDelete("{serviceId}")]
         public ActionResult<Service> DeleteService(int serviceId)
         {
-            if (!ServiceExists(serviceId))
+            var service = _context.Services!.Find(serviceId);
+            if (service == null)
             {
                 return NotFound("Service does not exist");
             }
 
-            var service = _context.Services!.Find(serviceId);
             _context.Services!.Remove(service);
             _context.SaveChanges();
 
-            return service;
+            return Ok();
         }
 
         private bool ServiceExists(int id)
