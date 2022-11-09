@@ -1069,6 +1069,570 @@
 					"response": []
 				}
 			]
+		}, 
+		{
+			"name": "AppointmentController",
+			"item": [
+				{
+					"name": "Get Appointment by ID 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"ID järgi tagastab appointmenti\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"date\\\":\\\"2022-10-27T12:11:04.942Z\\\"\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/Appointment/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Appointment",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Events By Date , ID 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Appointment number must be 1\", function () {\r",
+									"    var appointment = pm.response.json();\r",
+									"    pm.expect(appointment.length).to.be.equal(1); \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check value is correct\", function () {\r",
+									"   var jsonData = pm.response.json();\r",
+									"   // pm.expect(jsonData.date).to.eql(\"2022-11-27T13:01:04.942Z\");\r",
+									"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"movie1Id\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check id is an number\", () => {\r",
+									"    _.each(pm.response.json(), (arrItem) => {\r",
+									"        console.log(arrItem.id)\r",
+									"        pm.expect(arrItem.id).to.be.a('number')\r",
+									"    })\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/Appointment?{{date}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Appointment"
+							],
+							"query": [
+								{
+									"key": "{{date}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Events By Month And Year",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Appointments count is 2\", function () {\r",
+									"    var appointment = pm.response.json();\r",
+									"    pm.expect(appointment.length).to.be.equal(2); \r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/Appointment/eventsByMonthAndYear?month=10&year=2022",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Appointment",
+								"eventsByMonthAndYear"
+							],
+							"query": [
+								{
+									"key": "month",
+									"value": "10"
+								},
+								{
+									"key": "year",
+									"value": "2022"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Events By MOnth And Year 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Appointments count is 1\", function () {\r",
+									"    var appointment = pm.response.json();\r",
+									"    pm.expect(appointment.length).to.be.equal(1); \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/Appointment/eventsByMonthAndYear?month=11&year=2022",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Appointment",
+								"eventsByMonthAndYear"
+							],
+							"query": [
+								{
+									"key": "month",
+									"value": "11"
+								},
+								{
+									"key": "year",
+									"value": "2022"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Master Done Appointments Count, Master 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body is correct\", function () {\r",
+									"    pm.response.to.have.body('1');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/Appointment/1/masterDoneAppointments",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Appointment",
+								"1",
+								"masterDoneAppointments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Master Done Appointments Count, MASTER 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body is correct\", function () {\r",
+									"    pm.response.to.have.body('1');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/Appointment/2/masterDoneAppointments",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Appointment",
+								"2",
+								"masterDoneAppointments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Company done appointments count 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body is correct\", function () {\r",
+									"    pm.response.to.have.body('1');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/Appointment/2/companyDoneAppointments",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Appointment",
+								"2",
+								"companyDoneAppointments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Appointment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    var jsonData = pm.response.json();\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"date\": \"2022-9-30T12:10:04.942Z\",\r\n  \"clientId\": 1,\r\n  \"serviceId\": 1,\r\n  \"masterId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/Appointment",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Appointment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post same Appointment again",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"date\": \"2022-9-30T12:10:04.942Z\",\r\n  \"clientId\": 1,\r\n  \"serviceId\": 1,\r\n  \"masterId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/Appointment",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Appointment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Master Done Appointments count 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body is correct\", function () {\r",
+									"    pm.response.to.have.body('2');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/Appointment/1/masterDoneAppointments",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Appointment",
+								"1",
+								"masterDoneAppointments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Company done appointments count 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body is correct\", function () {\r",
+									"    pm.response.to.have.body('2');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/Appointment/2/companyDoneAppointments",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Appointment",
+								"2",
+								"companyDoneAppointments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Appointment, ID 4",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/Appointment/4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Appointment",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete appointment ID 4 again",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/Appointment/4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Appointment",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Company Done Appointments Count 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body is correct\", function () {\r",
+									"    pm.response.to.have.body('1');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/Appointment/2/companyDoneAppointments",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Appointment",
+								"2",
+								"companyDoneAppointments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
