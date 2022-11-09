@@ -511,10 +511,9 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 201\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.environment.set(3, jsonData.id); \r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -526,7 +525,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": 0,\r\n  \"companyName\": \"CheckCompany\",\r\n  \"address\": \"Test\",\r\n  \"img\": \"test\"\r\n}\r\n",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"companyName\": \"CheckCompany\",\r\n  \"address\": \"Test\",\r\n  \"img\": \"test\"\r\n}\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -586,7 +585,7 @@
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 201\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
+									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Updated company\", function () {\r",
@@ -607,7 +606,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": 3,\r\n  \"companyName\": \"changeTest\",\r\n  \"address\": \"newAddress\",\r\n  \"img\": \"new image\"\r\n}",
+							"raw": "\r\n{\r\n  \"id\": 3,\r\n  \"companyName\": \"changeTest\",\r\n  \"address\": \"newAddress\",\r\n  \"img\": \"new image\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -746,9 +745,40 @@
 				},
 				{
 					"name": "All masters in company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Masters in company\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0].id).to.be.equal(2); \r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/Company/1/AllMastersInCompany",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Company",
+								"1",
+								"AllMastersInCompany"
+							]
+						}
 					},
 					"response": []
 				}
