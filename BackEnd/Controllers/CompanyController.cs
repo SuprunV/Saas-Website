@@ -26,7 +26,7 @@ namespace server.Controllers
 
             return Ok(company);
         }
-        [HttpGet("/CompaniesCount")]
+        [HttpGet("CompaniesCount")]
         public ActionResult<int> GetCompaniesCount()
         {
             var company = _context.Companies!
