@@ -504,8 +504,8 @@
 	],
 	"variable": [
 		{
-			"key": "url",
-			"value": "https://localhost:7242"
+			"key": "token",
+			"value": ""
 		}
 	]
 }
