@@ -23,7 +23,7 @@ namespace server.Controllers
 
             if (service == null)
             {
-                return NotFound();
+                return NotFound("No service with this id");
             }
 
             return Ok(service);
@@ -37,6 +37,11 @@ namespace server.Controllers
             .First(x => x.Id == companyId)
             .CompanyServices;
 
+            if(companyServices == null)
+            {
+                return NotFound("No services in this company");
+            }
+
             return Ok(companyServices.Count);
         }
 
@@ -48,6 +53,11 @@ namespace server.Controllers
             .First(x => x.Id == companyId)
             .CompanyServices;
 
+            if(companyServices == null)
+            {
+                return NotFound("No services in this company");
+            }
+
             return Ok(companyServices);
         }
 
@@ -56,12 +66,12 @@ namespace server.Controllers
         {
             if(_context.Services!.Any(x => x.name == service.name))
             {
-                return BadRequest();
+                return BadRequest("This service already exists");
             }
 
             _context.Services!.Add(service);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(GetService), new { id = service.Id }, service);
+            return Ok(service);
         }
 
         [HttpPut("{id}")]
@@ -74,28 +84,28 @@ namespace server.Controllers
 
             if (!ServiceExists(id))
             {
-                return NotFound();
+                return NotFound("Service does not exist");
             }
 
             _context.Entry(service).State = EntityState.Modified;
             _context.SaveChanges();
 
-            return NoContent();
+            return Ok(service);
         }
         
         [HttpDelete("{serviceId}")]
         public ActionResult<Service> DeleteService(int serviceId)
         {
-            if (!ServiceExists(serviceId))
+            var service = _context.Services!.Find(serviceId);
+            if (service == null)
             {
-                return NotFound();
+                return NotFound("Service does not exist");
             }
 
-            var service = _context.Services!.Find(serviceId);
             _context.Services!.Remove(service);
             _context.SaveChanges();
 
-            return service;
+            return Ok();
         }
 
         private bool ServiceExists(int id)
