@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using server.Db;
 
 var builder = WebApplication.CreateBuilder(args);
-var test= builder.Configuration.GetConnectionString("default");
+
 
 
 // Add services to the container.
@@ -32,8 +32,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseCors("MyPolicy");
+    
 }
+app.UseCors("MyPolicy");
 
 app.UseHttpsRedirection();
 

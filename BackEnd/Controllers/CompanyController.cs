@@ -26,7 +26,7 @@ namespace server.Controllers
 
             return Ok(company);
         }
-        [HttpGet("/CompaniesCount")]
+        [HttpGet("CompaniesCount")]
         public ActionResult<int> GetCompaniesCount()
         {
             var company = _context.Companies!
@@ -52,22 +52,28 @@ namespace server.Controllers
         
         [HttpPost]
         public ActionResult<Company> CreateCompany([FromBody] Company company) {
-           var dbCompany = _context.Companies!.Find(company.Id);
+            var dbCompany = _context.Companies!.Find(company.Id);
             if (dbCompany == null)
             {
-                _context.Add(company);
+                 _context.Companies!.Add(company);
                 _context.SaveChanges();
 
-                return CreatedAtAction(nameof(GetCompany), new { Id = company.Id }, company);
+                return Ok( company);
             }
-             if(_context.Companies!.Any(x => x.companyName == company.companyName))
+
+            if(_context.Companies!.Any(x => x.companyName == company.companyName))
             {
                 return BadRequest("Company already exists with the same name");
             }
-            else
+            if(CompanyExists(company.Id))
             {
-                return Conflict("Company already exists with the same Id");
+                return Conflict("Company already exists with the same id");
             }
+            else{
+                return BadRequest();
+            }
+            
+            
         }
 
         [HttpPut("{companyId}")]
@@ -86,7 +92,7 @@ namespace server.Controllers
             _context.Entry(company).State = EntityState.Modified;
             _context.SaveChanges();
 
-            return NoContent();
+            return Ok(company);
         }
         
         [HttpDelete("{companyId}")]

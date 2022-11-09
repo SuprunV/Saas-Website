@@ -12,7 +12,6 @@ namespace server.Models
    
         public string? img { get; set; }
         
- 
         [JsonIgnore]
         public virtual ICollection<User> CompanyUsers { get; set; } = new List<User>();
         [JsonIgnore]
