@@ -90,7 +90,7 @@ namespace server.Controllers
             _context.Entry(service).State = EntityState.Modified;
             _context.SaveChanges();
 
-            return NoContent();
+            return CreatedAtAction(nameof(GetService), new { id = service.Id }, service);
         }
         
         [HttpDelete("{serviceId}")]
