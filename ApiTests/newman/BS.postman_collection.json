@@ -665,7 +665,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete compnay 3",
+					"name": "Delete compnany 3",
 					"event": [
 						{
 							"listen": "test",
@@ -697,10 +697,34 @@
 					"response": []
 				},
 				{
-					"name": "Check company 3",
+					"name": "Get company 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/Company/3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"Company",
+								"3"
+							]
+						}
 					},
 					"response": []
 				},
