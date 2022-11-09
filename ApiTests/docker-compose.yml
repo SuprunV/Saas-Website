@@ -4,7 +4,7 @@ services:
     image: postgres:15.0-alpine
     container_name: api_db
     environment:
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=password
     networks:
       - pg_net
   back_end:
