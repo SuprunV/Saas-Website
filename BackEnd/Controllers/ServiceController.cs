@@ -71,7 +71,7 @@ namespace server.Controllers
 
             _context.Services!.Add(service);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(GetService), new { id = service.Id }, service);
+            return Ok(service);
         }
 
         [HttpPut("{id}")]
@@ -90,7 +90,7 @@ namespace server.Controllers
             _context.Entry(service).State = EntityState.Modified;
             _context.SaveChanges();
 
-            return CreatedAtAction(nameof(GetService), new { id = service.Id }, service);
+            return Ok(service);
         }
         
         [HttpDelete("{serviceId}")]
