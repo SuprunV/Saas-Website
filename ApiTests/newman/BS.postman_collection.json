@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ffa0895a-c026-4df6-b4dd-b1c3dd56f685",
+		"_postman_id": "0b475034-57d5-496a-9563-defccd068bd0",
 		"name": "BS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23297773"
@@ -1069,7 +1069,7 @@
 					"response": []
 				}
 			]
-		}, 
+		},
 		{
 			"name": "AppointmentController",
 			"item": [
@@ -1157,8 +1157,8 @@
 							],
 							"query": [
 								{
-									"key": "{{date}}",
-									"value": "2022-11-27T13:01:04.942Z"
+									"key": "Date",
+									"value": "{{date}}"
 								}
 							]
 						}
