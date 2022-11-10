@@ -30,7 +30,7 @@ export const useFetching = (asyncFunc: (...params: any) => void) => {
                     message: '',
                     type: ResponseTypeEnum.NONE,
                 };
-            }, 10000);
+            }, 5000);
         }
     };
     return { isLoading, fetchData, response, message };

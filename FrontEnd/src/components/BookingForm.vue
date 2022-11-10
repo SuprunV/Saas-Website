@@ -36,7 +36,7 @@ export default defineComponent({
     data: () => ({
         appointment: {} as IAppointment,
     }),
-    setup(props) {
+    setup(props, { emit }) {
         const { authUser } = storeToRefs(useAuthStore());
         const masterList = ref<MasterListItem[]>([]);
         const listOfTime = ref<TimeListItem[]>();
@@ -127,6 +127,9 @@ export default defineComponent({
             selectedAppointment.value.masterId = '';
             selectedAppointment.value.time = '';
             uploadFreeAppointment();
+            setTimeout(() => {
+                emit('update:show', false);
+            }, 3000);
         });
 
         return {
