@@ -1,7 +1,7 @@
 import { GenderEnum } from './IUser';
 
 export interface IMaster {
-    Id: number;
+    id: number;
     name: string;
     surname: string;
     DoB: string;
