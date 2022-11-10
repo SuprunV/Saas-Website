@@ -42,7 +42,7 @@ export default defineComponent({
             masterId: number;
             time: string;
         }>({
-            date: new Date(),
+            date: new Date(2022, 10, 27),
             masterId: -1,
             time: '',
         });
@@ -71,6 +71,7 @@ export default defineComponent({
             selectedAppointment.value.date = value.toDate();
             selectedAppointment.value.masterId = -1;
             selectedAppointment.value.time = '';
+            console.log(selectedAppointment.value);
             uploadFreeAppointment();
         };
 
