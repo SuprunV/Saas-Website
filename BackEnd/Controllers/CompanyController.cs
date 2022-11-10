@@ -47,6 +47,50 @@ namespace server.Controllers
             var appointments = _context.Appointments!.Include(x => x.Master).Where((x => x.date.Contains(date) && x.Master.User.companyId == companyId));
             return Ok(appointments);
         }
+        [HttpGet("{companyId}/free-appointments")]
+        public ActionResult<IEnumerable<Appointment>> GetCompanyFreeAppointmentsByDate(int companyId, [FromQuery] string date, int serviceId)
+        {
+            if(!_context.Services!.Any(s => s.Id == serviceId)) return Conflict();
+            if(!CompanyExists(companyId)) return BadRequest();
+            var appointments = _context.Appointments!.Include(x => x.Master).Include(x => x.Service).Where((x => x.date.Contains(date) && x.Master.User.companyId == companyId)).ToList();
+            
+            // masterId:
+            // master
+            // id: any
+            // date: generated
+            var timetable = generateTimeTable(8, 16, date);
+            
+            var serviceDuration = _context.Services!.First(s => s.Id == serviceId).duration ?? 0;
+            var freeAppointments = new List<Appointment>();
+            
+            // get list of all masters in this company
+            var masters = _context.Masters.Include(m => m.User).Where(m => m.User.companyId == companyId);
+            foreach(var master in masters) {
+                // get buzy appointments of this master.
+                var buzyAppointments = appointments.Where(a => a.masterId == master.Id);
+                if(buzyAppointments != null) {
+                    // Example: we have buzy times: 10:15 + 60 and 15:30 + 45.
+                    var buzyTimeEndings = new List<List<DateTime>>();
+                    foreach(var appointment in buzyAppointments) {
+                        var dateStart = TimeZoneInfo.ConvertTimeToUtc(DateTime.Parse(appointment.date)); 
+                        buzyTimeEndings.Add(new List<DateTime>(){dateStart.AddMinutes(-serviceDuration), dateStart.AddMinutes(appointment.Service.duration ?? 0)});
+                    }
+
+                    var freeTimes = timetable.Where(controlTime => !buzyTimeEndings.Any(buzyTime => controlTime >= buzyTime[0] && controlTime <= buzyTime[1]));
+                    
+                    foreach(var freeTime in freeTimes) {
+                        freeAppointments.Add(new Appointment() {
+                            masterId = master.Id,
+                            Master =  master,
+                            serviceId = serviceId,
+                            date = freeTime.ToString("o")
+                        });
+                    }
+                }
+
+            }
+            return Ok(freeAppointments);
+        }
         
         [HttpGet("{companyId}/masters")]
         public ActionResult<IEnumerable<Master>> GetCompanyMasters(int companyId)
@@ -116,6 +160,21 @@ namespace server.Controllers
             _context.SaveChanges();
 
             return company;
+        }
+
+        private List<DateTime> generateTimeTable(int start, int end, string dateDays) {
+            var timetable = new List<DateTime>();
+            var date = DateTime.Parse(dateDays);
+            for(var h = start; h <= end; h++) {
+                for(var m = 1; m < 4; m++) {
+                    var time = new DateTime(date.Year, date.Month, date.Day, h,m*15,0);
+                    timetable.Add(TimeZoneInfo.ConvertTimeToUtc(time));
+                }
+            }
+
+            return timetable;
+
+            
         }
         private bool CompanyExists(int id)
         {

@@ -50,10 +50,11 @@ export class AppointmentAPI {
 
     static async getEvents(selectedDate: Date): Promise<IAppointment[]> {
         try {
-            const response = await axios.get<IAppointment[]>();
+            // const response = await axios.get<IAppointment[]>();
         } catch (e) {
             return [];
         }
+        return [];
 
         // return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
         //     var selectedEvents: IAppointment[] = [];
@@ -77,7 +78,6 @@ export class AppointmentAPI {
             const response = await axios.get<IAppointment[]>(
                 `${$host}/company/${companyId}/appointments?date=${date}`,
             );
-            console.log('all events of this company by ', response.data);
             return response.data;
         } catch (e) {
             return [];

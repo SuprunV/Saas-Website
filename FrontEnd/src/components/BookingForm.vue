@@ -73,7 +73,8 @@ export default defineComponent({
             const appointments = await AppointmentAPI.getFreeEvents(
                 selectedAppointment.value.date,
                 authUser.value.companyId,
-            );  
+            );
+            console.log('appointments', appointments);
         };
 
         // Step 2. Select Master. When master is selected or updated, doing:
