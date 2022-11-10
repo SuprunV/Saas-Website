@@ -17,6 +17,11 @@ export interface MasterListItem {
     id: number;
 }
 
+export interface TimeListItem {
+    name: string;
+    value: string;
+}
+
 export default defineComponent({
     props: {
         show: Boolean,
@@ -28,6 +33,7 @@ export default defineComponent({
     setup(props) {
         const { authUser } = storeToRefs(useAuthStore());
         const masterList = ref<MasterListItem[]>([]);
+        const listOfTime = ref<TimeListItem[]>();
         const limit = ref<number>(5);
         const page = ref<number>(1);
         const freeAppointments = ref<IAppointment[]>([]);
@@ -101,30 +107,41 @@ export default defineComponent({
                 return newM;
             });
             masterList.value = allMasters;
+            updateTimes();
         };
 
         // Step 2. Select Master. When master is selected or updated, doing:
         // 1. remove selected time
         // 2. update free time, when selected master is free.
-        const sortMasters = async () => {};
+        const updateTimes = async () => {
+            const masterTimes = freeAppointments.value.filter(
+                (a) => a.master.id == selectedAppointment.value.masterId,
+            );
+            console.log(masterTimes);
+            listOfTime.value = masterTimes.map((t): TimeListItem => {
+                const name = new Date(t.date).toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                });
+                const value = new Date(t.date).toISOString();
+                return {
+                    name,
+                    value,
+                };
+            });
+        };
 
         // Step 3. Time is Selected:
         // 1. is able to add book
 
-        const formState = reactive({
-            booking: {
-                masterName: '',
-                date: '',
-                time: '',
-            },
-        });
-
         return {
             value: ref<Dayjs>(),
+            updateTimes,
             isDateChange,
             uploadFreeAppointment,
             onMounted,
-            formState,
+            listOfTime,
             validateMessages,
             selectedAppointment,
             clientAppointment,
@@ -145,7 +162,7 @@ export default defineComponent({
             console.log('close in form', this.show);
         },
         submitForm() {
-            console.log('submit started', this.formState);
+            console.log('submit started', this.selectedAppointment);
         },
     },
 });
@@ -155,7 +172,7 @@ export default defineComponent({
         <div v-createModal="{ show: show, width: 50 }">
             <div class="main-cart">
                 <a-form
-                    :model="formState"
+                    :model="selectedAppointment"
                     v-bind="{
                         labelCol: { span: 8 },
                         wrapperCol: { span: 16 },
@@ -185,11 +202,21 @@ export default defineComponent({
                         >
                             <a-select
                                 placeholder="Please select master"
-                                v-model="selectedAppointment.masterId"
+                                v-model:value="selectedAppointment.masterId"
+                                @change="() => updateTimes()"
                             >
+                                <a-select-option
+                                    default
+                                    unselectable="true"
+                                    value="-1"
+                                >
+                                    Select Master
+                                </a-select-option>
+
                                 <a-select-option
                                     v-for="master in masterList"
                                     :key="master.id"
+                                    :value="master.id"
                                     >{{ master.name }} ({{
                                         master.freeCount
                                     }})</a-select-option
@@ -202,22 +229,16 @@ export default defineComponent({
                             :rules="[{ required: true }]"
                         >
                             <div>
-                                <a-radio-group
+                                <a-select
                                     v-model:value="selectedAppointment.time"
                                 >
-                                    <a-radio-button value="a"
-                                        >14:00</a-radio-button
+                                    <a-select-option
+                                        v-for="time in listOfTime"
+                                        :key="time.value"
+                                        :value="time.value"
+                                        >{{ time.name }}</a-select-option
                                     >
-                                    <a-radio-button value="b"
-                                        >15:00</a-radio-button
-                                    >
-                                    <a-radio-button value="c"
-                                        >16:00</a-radio-button
-                                    >
-                                    <a-radio-button value="d"
-                                        >17:00</a-radio-button
-                                    >
-                                </a-radio-group>
+                                </a-select>
                             </div>
                         </a-form-item>
                     </div>

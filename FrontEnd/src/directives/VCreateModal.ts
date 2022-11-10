@@ -28,9 +28,9 @@ export default {
             };
         },
     ) {
-        console.log('show', binding.value.show);
         if (binding.value.show) {
             el.classList.remove('modal-window-hidden');
+            document.body.style.overflow = 'hidden';
             // console.log('updated is true');
             // const modal = document.querySelector('body')!;
             // modal.classList.add('modal-window');
@@ -40,6 +40,7 @@ export default {
         } else {
             el.classList.add('modal-window', 'modal-window-hidden');
 
+            document.body.style.overflow = 'auto';
             // document
             //     .querySelector('.modal-window')!
             //     .classList.add('modal-window-hidden');
