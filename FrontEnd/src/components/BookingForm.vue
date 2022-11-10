@@ -10,11 +10,17 @@ import { IMaster } from '@/models/IMaster';
 import { IAppointment } from '@/models/IAppointment';
 import { IService } from '@/models/IService';
 import { AppointmentAPI } from '@/api/AppointmentAPI';
+import { useFetching } from '@/hooks/useFetching';
 
 export interface MasterListItem {
     name: string;
     freeCount: number;
     id: number;
+}
+export interface IBookingAppointment {
+    date: Date;
+    masterId: string;
+    time: string;
 }
 
 export interface TimeListItem {
@@ -37,41 +43,19 @@ export default defineComponent({
         const limit = ref<number>(5);
         const page = ref<number>(1);
         const freeAppointments = ref<IAppointment[]>([]);
-        const selectedAppointment = ref<{
-            date: Date;
-            masterId: string;
-            time: string;
-        }>({
+        const selectedAppointment = ref<IBookingAppointment>({
             date: new Date(2022, 10, 27),
             masterId: '',
             time: '',
         });
-
-        const clientAppointment = ref<IAppointment>({
-            Id: 0,
-            clientId: authUser.value.id,
-            clientName: authUser.value.name,
-            date: new Date(),
-            master: {
-                name: '',
-            } as IMaster,
-            serviceId: -1, // is taken from find service page, when click
-            serviceName: '', // is taken from find service page, when click
-        });
-
         const validateMessages = {
             required: '${label} is required!',
         };
 
-        // Step 1. Select Date. When date is selected or updated, doing:
-        //  1. remove selected time
-        //  2. remove selected master
-        //  3. Update free masters on this day AND near master name is shown count of free places.
         const isDateChange = (value: Dayjs, mode: string) => {
             selectedAppointment.value.date = value.toDate();
             selectedAppointment.value.masterId = '';
             selectedAppointment.value.time = '';
-            console.log(selectedAppointment.value);
             uploadFreeAppointment();
         };
 
@@ -109,13 +93,10 @@ export default defineComponent({
             updateTimes();
         };
 
-        // Step 2. Select Master. When master is selected or updated, doing:
-        // 1. remove selected time
-        // 2. update free time, when selected master is free.
         const updateTimes = async () => {
             const masterTimes = freeAppointments.value.filter(
                 (a) =>
-                    String(a.master.id) == selectedAppointment.value.masterId,
+                    String(a.master?.id) == selectedAppointment.value.masterId,
             );
             listOfTime.value = masterTimes.map((t): TimeListItem => {
                 const name = new Date(t.date).toLocaleTimeString('en-US', {
@@ -131,6 +112,23 @@ export default defineComponent({
             });
         };
 
+        const {
+            isLoading,
+            message,
+            fetchData: submitForm,
+        } = useFetching(async () => {
+            const response = await AppointmentAPI.addEvent({
+                Id: 0,
+                clientId: authUser.value.id,
+                masterId: +selectedAppointment.value.masterId,
+                date: selectedAppointment.value.time,
+                serviceId: props.service?.id ?? -1,
+            });
+            selectedAppointment.value.masterId = '';
+            selectedAppointment.value.time = '';
+            uploadFreeAppointment();
+        });
+
         return {
             value: ref<Dayjs>(),
             updateTimes,
@@ -140,8 +138,11 @@ export default defineComponent({
             listOfTime,
             validateMessages,
             selectedAppointment,
-            clientAppointment,
             masterList,
+            submitForm,
+            authUser,
+            isLoading,
+            message,
             limit,
             page,
         };
@@ -157,9 +158,6 @@ export default defineComponent({
             this.$emit('update:show', false);
             console.log('close in form', this.show);
         },
-        submitForm() {
-            console.log('submit started', this.selectedAppointment);
-        },
     },
 });
 </script>
@@ -167,6 +165,7 @@ export default defineComponent({
     <div class="">
         <div v-createModal="{ show: show, width: 50 }">
             <div class="main-cart">
+                <response-alert :message="message" :isLoading="isLoading" />
                 <a-form
                     :model="selectedAppointment"
                     v-bind="{
@@ -192,6 +191,9 @@ export default defineComponent({
                             label="Step 2: Master name"
                             :rules="[{ required: true }]"
                         >
+                            <em v-if="!masterList.length"
+                                >No Masters at this day!</em
+                            >
                             <a-select
                                 placeholder="Please select master"
                                 v-model:value="selectedAppointment.masterId"
@@ -213,6 +215,12 @@ export default defineComponent({
                             :rules="[{ required: true }]"
                         >
                             <div>
+                                <em v-if="!selectedAppointment.masterId"
+                                    >Please, select master.</em
+                                >
+                                <em v-else-if="!listOfTime?.length"
+                                    >No Free times at this day!</em
+                                >
                                 <a-select
                                     v-model:value="selectedAppointment.time"
                                 >

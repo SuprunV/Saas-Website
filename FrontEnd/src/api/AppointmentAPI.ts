@@ -1,6 +1,6 @@
 import { $host } from '@/config';
 import { IAppointment } from '@/models/IAppointment';
-import axios from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
 export class AppointmentAPI {
     static demoEvents: IAppointment[] = [
@@ -82,6 +82,18 @@ export class AppointmentAPI {
             return response.data;
         } catch (e) {
             return [];
+        }
+    }
+    static async addEvent(appointment: IAppointment): Promise<AxiosResponse> {
+        try {
+            console.log('new appointment', appointment);
+            const response = await axios.post<IAppointment[]>(
+                `${$host}/appointment`,
+                appointment,
+            );
+            return response;
+        } catch (e) {
+            return { status: 404 } as AxiosResponse;
         }
     }
 
