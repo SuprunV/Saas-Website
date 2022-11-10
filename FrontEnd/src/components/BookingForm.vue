@@ -39,11 +39,11 @@ export default defineComponent({
         const freeAppointments = ref<IAppointment[]>([]);
         const selectedAppointment = ref<{
             date: Date;
-            masterId: number;
+            masterId: string;
             time: string;
         }>({
             date: new Date(2022, 10, 27),
-            masterId: -1,
+            masterId: '',
             time: '',
         });
 
@@ -69,7 +69,7 @@ export default defineComponent({
         //  3. Update free masters on this day AND near master name is shown count of free places.
         const isDateChange = (value: Dayjs, mode: string) => {
             selectedAppointment.value.date = value.toDate();
-            selectedAppointment.value.masterId = -1;
+            selectedAppointment.value.masterId = '';
             selectedAppointment.value.time = '';
             console.log(selectedAppointment.value);
             uploadFreeAppointment();
@@ -97,8 +97,6 @@ export default defineComponent({
                         } as MasterListItem),
                 );
 
-            console.log('appointments', appointments);
-            console.log('allMasters', allMasters);
             freeAppointments.value = appointments;
             allMasters = allMasters.map((m) => {
                 var newM = m;
@@ -116,9 +114,9 @@ export default defineComponent({
         // 2. update free time, when selected master is free.
         const updateTimes = async () => {
             const masterTimes = freeAppointments.value.filter(
-                (a) => a.master.id == selectedAppointment.value.masterId,
+                (a) =>
+                    String(a.master.id) == selectedAppointment.value.masterId,
             );
-            console.log(masterTimes);
             listOfTime.value = masterTimes.map((t): TimeListItem => {
                 const name = new Date(t.date).toLocaleTimeString('en-US', {
                     hour: '2-digit',
@@ -132,9 +130,6 @@ export default defineComponent({
                 };
             });
         };
-
-        // Step 3. Time is Selected:
-        // 1. is able to add book
 
         return {
             value: ref<Dayjs>(),
@@ -183,11 +178,7 @@ export default defineComponent({
                     @finish="submitForm"
                 >
                     <div class="ant-modal-body">
-                        <a-form-item
-                            :name="['date', 'date']"
-                            label="Step 1: Date"
-                            :rules="[{ required: true }]"
-                        >
+                        <a-form-item :name="['date']" label="Step 1: Date">
                             <div class="calendar">
                                 <a-calendar
                                     v-model="selectedAppointment.date"
@@ -197,7 +188,7 @@ export default defineComponent({
                             </div>
                         </a-form-item>
                         <a-form-item
-                            :name="['master', 'masterName']"
+                            :name="['masterId']"
                             label="Step 2: Master name"
                             :rules="[{ required: true }]"
                         >
@@ -206,14 +197,6 @@ export default defineComponent({
                                 v-model:value="selectedAppointment.masterId"
                                 @change="() => updateTimes()"
                             >
-                                <a-select-option
-                                    default
-                                    unselectable="true"
-                                    value="-1"
-                                >
-                                    Select Master
-                                </a-select-option>
-
                                 <a-select-option
                                     v-for="master in masterList"
                                     :key="master.id"
@@ -225,7 +208,7 @@ export default defineComponent({
                             </a-select>
                         </a-form-item>
                         <a-form-item
-                            :name="['time', 'time']"
+                            :name="['time']"
                             label="Step 3: Available time:"
                             :rules="[{ required: true }]"
                         >
