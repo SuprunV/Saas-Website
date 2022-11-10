@@ -14,6 +14,7 @@ export default defineComponent({
     },
     data: () => ({
         services: [] as IService[],
+        selectedService: {} as IService,
     }),
     setup() {
         const changeRef = ref<any>(null);
@@ -64,8 +65,9 @@ export default defineComponent({
         };
     },
     methods: {
-        showBookingModal() {
+        showBookingModal(service: IService) {
             this.isBookingModal = true;
+            this.selectedService = service;
         },
     },
 });
@@ -148,7 +150,9 @@ const formState = reactive({
                             </a-row>
                         </template>
                     </a-list-item-meta>
-                    <a-button type="primary" @click="showBookingModal"
+                    <a-button
+                        type="primary"
+                        @click="() => showBookingModal(item)"
                         >Book time</a-button
                     >
                 </a-skeleton>
@@ -156,5 +160,5 @@ const formState = reactive({
         </template>
     </a-list>
     <a-pagination v-model:current="current" :total="page" show-less-items />
-    <BookingForm v-model:show="isBookingModal" />
+    <BookingForm v-model:show="isBookingModal" :service="selectedService" />
 </template>

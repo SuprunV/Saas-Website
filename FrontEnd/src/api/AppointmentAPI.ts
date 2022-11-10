@@ -72,11 +72,12 @@ export class AppointmentAPI {
     static async getFreeEvents(
         selectedDate: Date,
         companyId: number,
+        serviceId: number,
     ): Promise<IAppointment[]> {
         try {
             const date = selectedDate.toISOString().split('T')[0];
             const response = await axios.get<IAppointment[]>(
-                `${$host}/company/${companyId}/appointments?date=${date}`,
+                `${$host}/company/${companyId}/free-appointments?date=${date}&serviceId=${serviceId}`,
             );
             return response.data;
         } catch (e) {

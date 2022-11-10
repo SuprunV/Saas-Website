@@ -11,20 +11,26 @@ import { IAppointment } from '@/models/IAppointment';
 import { IService } from '@/models/IService';
 import { AppointmentAPI } from '@/api/AppointmentAPI';
 
+export interface MasterListItem {
+    name: string;
+    freeCount: number;
+    id: number;
+}
+
 export default defineComponent({
     props: {
         show: Boolean,
         service: Object as () => IService,
     },
     data: () => ({
-        masters: [] as IMaster[],
         appointment: {} as IAppointment,
     }),
-    setup() {
+    setup(props) {
         const { authUser } = storeToRefs(useAuthStore());
-        const masterList = ref<IMaster[]>([]);
+        const masterList = ref<MasterListItem[]>([]);
         const limit = ref<number>(5);
         const page = ref<number>(1);
+        const freeAppointments = ref<IAppointment[]>([]);
         const selectedAppointment = ref<{
             date: Date;
             masterId: number;
@@ -51,13 +57,6 @@ export default defineComponent({
             required: '${label} is required!',
         };
 
-        onMounted(async () => {
-            const masters = await CompanyAPI.getCompanyMasters(
-                authUser.value.companyId,
-            );
-            masterList.value = masters;
-        });
-
         // Step 1. Select Date. When date is selected or updated, doing:
         //  1. remove selected time
         //  2. remove selected master
@@ -73,8 +72,35 @@ export default defineComponent({
             const appointments = await AppointmentAPI.getFreeEvents(
                 selectedAppointment.value.date,
                 authUser.value.companyId,
+                props.service?.id ?? -1,
             );
+            // get masters and count of their free appointments
+            var allMasters = appointments
+                .map((a) => a.master)
+                .filter(
+                    (value, index, self) =>
+                        self.map((m) => m.name).indexOf(value.name) === index,
+                )
+                .map(
+                    (m) =>
+                        ({
+                            freeCount: 0,
+                            name: m.name,
+                            id: m.id,
+                        } as MasterListItem),
+                );
+
             console.log('appointments', appointments);
+            console.log('allMasters', allMasters);
+            freeAppointments.value = appointments;
+            allMasters = allMasters.map((m) => {
+                var newM = m;
+                newM.freeCount = appointments.filter(
+                    (a) => a.master.id == m.id,
+                ).length;
+                return newM;
+            });
+            masterList.value = allMasters;
         };
 
         // Step 2. Select Master. When master is selected or updated, doing:
@@ -106,6 +132,12 @@ export default defineComponent({
             limit,
             page,
         };
+    },
+    watch: {
+        service() {
+            console.log('service is changed');
+            this.uploadFreeAppointment();
+        },
     },
     methods: {
         close() {
@@ -157,8 +189,10 @@ export default defineComponent({
                             >
                                 <a-select-option
                                     v-for="master in masterList"
-                                    :key="master.Id"
-                                    >{{ master.name }}</a-select-option
+                                    :key="master.id"
+                                    >{{ master.name }} ({{
+                                        master.freeCount
+                                    }})</a-select-option
                                 >
                             </a-select>
                         </a-form-item>
