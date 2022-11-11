@@ -11,7 +11,7 @@
 // }
 
 // .ant-picker-calendar-header {
-//     padding: 20px;
+//     padding: 30px;
 // }
 
 // .ant-picker-calendar
@@ -26,15 +26,15 @@
 // }
 
 // .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
-//     background-color: #535353;
+//     background-color: white;
 // }
 
-// .ant-picker-cell:not(.ant-picker-cell-in-view) {
-//     color: rgba(255, 255, 255, 0.37);
-// }
+// // .ant-picker-cell:not(.ant-picker-cell-in-view) {
+// //     color: black;
+// // }
 
 // .ant-descriptions-bordered .ant-descriptions-item-label {
-//     background-color: #fafafa00;
+//     background-color: white;
 // }
 
 // .ant-picker-cell,
@@ -43,3 +43,7 @@
 //         color: #1890ff;
 //     }
 // }
+
+.ant-picker-cell:not(.ant-picker-cell-in-view) {
+    color: gray;
+}
