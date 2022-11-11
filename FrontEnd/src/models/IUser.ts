@@ -6,10 +6,16 @@ export interface IUser {
     role: RolesEnum;
     companyName: string;
     companyAlias: string;
+    companyId: number;
 }
 
 export enum RolesEnum {
     CLIENT = 'CLIENT',
     COMPANY = 'COMPANY',
     MASTER = 'MASTER',
+}
+
+export enum GenderEnum {
+    Female = 'Female',
+    Male = 'MaleY',
 }

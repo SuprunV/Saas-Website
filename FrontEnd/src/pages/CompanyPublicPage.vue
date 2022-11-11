@@ -1,5 +1,5 @@
 <script lang="ts">
-import { companyAPI } from '@/api/companyAPI';
+import { CompanyAPI } from '@/api/CompanyAPI';
 import { useFetching } from '@/hooks/useFetching';
 import { ICompany } from '@/models/ICompany';
 import { AppRoutes } from '@/router/router';

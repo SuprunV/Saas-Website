@@ -1,0 +1,115 @@
+import { $host } from '@/config';
+import { IAppointment } from '@/models/IAppointment';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+
+export class AppointmentAPI {
+    static demoEvents: IAppointment[] = [
+        {
+            Id: 1,
+            clientName: 'Nadja Tupikova',
+            masterName: 'Agnetta Puu',
+            date: new Date(2022, 9, 9, 15, 30),
+            serviceName: 'Nail extensions',
+        },
+        {
+            Id: 2,
+            clientName: 'Henri Kuuper',
+            date: new Date(2022, 9, 9, 17, 45),
+            masterName: 'Angetta Puu',
+            serviceName: 'Hand massage',
+        },
+        {
+            Id: 3,
+            clientName: 'Kerli Toiker',
+            date: new Date(2022, 9, 9, 19, 0),
+            masterName: 'Angetta Puu',
+            serviceName: 'Gel polish correction',
+        },
+        {
+            Id: 4,
+            clientName: 'Liina Illipe',
+            date: new Date(2022, 9, 15, 13, 20),
+            masterName: 'Angetta Puu',
+            serviceName: 'Gel polish correction',
+        },
+        {
+            Id: 5,
+            clientName: 'Sofia Senkiv',
+            date: new Date(2022, 9, 21, 16, 0),
+            masterName: 'Angetta Puu',
+            serviceName: 'Hand massage',
+        },
+        {
+            Id: 5,
+            clientName: 'Leonid Demidov',
+            date: new Date(2022, 9, 21, 17, 30),
+            masterName: 'Angetta Puu',
+            serviceName: 'Gel polish correction',
+        },
+    ];
+
+    static async getEvents(selectedDate: Date): Promise<IAppointment[]> {
+        try {
+            // const response = await axios.get<IAppointment[]>();
+        } catch (e) {
+            return [];
+        }
+        return [];
+
+        // return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+        //     var selectedEvents: IAppointment[] = [];
+
+        //     selectedEvents = this.demoEvents.filter(
+        //         (e) =>
+        //             e.date.toLocaleDateString() ==
+        //             selectedDate.toLocaleDateString(),
+        //     );
+
+        //     return selectedEvents;
+        // });
+    }
+
+    static async getFreeEvents(
+        selectedDate: Date,
+        companyId: number,
+        serviceId: number,
+    ): Promise<IAppointment[]> {
+        try {
+            const date = selectedDate.toISOString().split('T')[0];
+            const response = await axios.get<IAppointment[]>(
+                `${$host}/company/${companyId}/free-appointments?date=${date}&serviceId=${serviceId}`,
+            );
+            return response.data;
+        } catch (e) {
+            return [];
+        }
+    }
+    static async addEvent(appointment: IAppointment): Promise<AxiosResponse> {
+        try {
+            console.log('new appointment', appointment);
+            const response = await axios.post<IAppointment[]>(
+                `${$host}/appointment`,
+                appointment,
+            );
+            return response;
+        } catch (e) {
+            return { status: 404 } as AxiosResponse;
+        }
+    }
+
+    static getEventsByMonthAndYear(
+        month: number,
+        year: number,
+    ): Promise<IAppointment[]> {
+        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+            var selectedEvents: IAppointment[] = [];
+
+            selectedEvents = this.demoEvents.filter(
+                (e) =>
+                    e.date.getMonth() == month && e.date.getFullYear() == year,
+            );
+
+            return selectedEvents;
+        });
+    }
+}

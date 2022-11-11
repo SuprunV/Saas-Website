@@ -27,15 +27,14 @@ namespace server.Controllers
             return Ok(appointment);
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<Appointment>> GetEventsByDate([FromQuery] string? Date){
+        [HttpGet("{Date}")]
+        public ActionResult<IEnumerable<Appointment>> GetEventsByDate(string Date){
             var result = _context.Appointments?.AsQueryable();
             if(Date != null){
                 result = result?.Where(x => (x.date.Contains(Date)));
             }
             return Ok(result);
         }
-
         [HttpGet("eventsByMonthAndYear")]
         public ActionResult<IEnumerable<Appointment>> GetEventsByMonthAndYear([FromQuery] string? month, string? year){
             var result = _context.Appointments?.AsQueryable();
