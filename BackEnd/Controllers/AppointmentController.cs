@@ -69,9 +69,8 @@ namespace server.Controllers
 
         [HttpPost] 
         public ActionResult<Appointment> PostAppointment(Appointment appointment){
-            var thisAppointment = _context.Appointments!.Any(x => x.date == appointment.date);
-            if(thisAppointment)
-             BadRequest();
+           if(_context.Appointments!.Any(x => (x.date == appointment.date) && (x.masterId == appointment.masterId)) )
+            { return BadRequest();}
 
             _context.Appointments!.Add(appointment);
             _context.SaveChanges();
