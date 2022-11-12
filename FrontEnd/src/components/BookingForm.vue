@@ -3,7 +3,7 @@ import { defineComponent, reactive, ref, onMounted } from 'vue';
 import type { Dayjs } from 'dayjs';
 import { IUser, RolesEnum } from '@/models/IUser';
 import { UserAPI } from '@/api/UserAPI';
-import { CompanyAPI } from '@/api/CompanyAPI';
+import { CompanyAPI } from '@/api/СompanyAPI';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/store/useAuth';
 import { IMaster } from '@/models/IMaster';
