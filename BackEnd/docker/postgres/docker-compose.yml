@@ -16,7 +16,7 @@ services:
         image: dpage/pgadmin4:6
         container_name: pgadmin4
         ports:
-            - 8081:81
+            - 8081:80
         volumes:
             - pgadmin-data:/var/lib/pgadmin
         environment:
