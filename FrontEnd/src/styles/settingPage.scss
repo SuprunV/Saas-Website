@@ -1,11 +1,24 @@
 .space-align-block {
-    margin: 8px 4px;
+    margin: 15px 4px;
+    margin-bottom: 0px;
     border: 1px solid #40a9ff;
     padding: 10px;
+    padding-left: 20px;
+    padding-right: 100px;
     flex: none;
     border-radius: 10px 10px 10px 10px;
 }
 
+
 .ant-statistic-title {
     color: white;
+}
+
+
+img {
+    margin: 45px;
+    margin-top: 0;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
 }
