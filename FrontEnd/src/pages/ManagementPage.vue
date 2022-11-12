@@ -8,6 +8,7 @@ import ClientSettingForm from '@/components/ClientSettingForm.vue';
 import { PlusCircleTwoTone } from '@ant-design/icons-vue';
 import ServiceForm from '@/components/ServiceForm.vue';
 import { Item } from 'ant-design-vue/lib/menu';
+import { useAuthStore } from '@/store/useAuth';
 export default defineComponent({
     components: {
         PlusCircleTwoTone,
@@ -31,9 +32,11 @@ export default defineComponent({
         const serviceList = ref<IService[]>([]);
         const dataMaster = ref<IUser[]>([]);
         const masterList = ref<IUser[]>([]);
+        const auth = useAuthStore();
 
         onMounted(async () => {
             const services = await ServiceAPI.getPublicServices(
+                auth.authUser.companyId,
                 limit.value,
                 page.value,
             );

@@ -101,7 +101,7 @@ export default defineComponent({
         updateMonthEvents();
         const getListData = (value: Dayjs) => {
             let listData = currentMonthEvents.value.filter((e) => {
-                return e.date.getDate() == value.date();
+                return e.date == value.date().toLocaleString();
             });
             return listData || [];
         };
