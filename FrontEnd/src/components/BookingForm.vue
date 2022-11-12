@@ -3,7 +3,7 @@ import { defineComponent, reactive, ref, onMounted } from 'vue';
 import type { Dayjs } from 'dayjs';
 import { IUser, RolesEnum } from '@/models/IUser';
 import { UserAPI } from '@/api/UserAPI';
-import { CompanyAPI } from '@/api/CompanyAPI';
+import { CompanyAPI } from '@/api/СompanyAPI';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/store/useAuth';
 import { IMaster } from '@/models/IMaster';
@@ -70,14 +70,14 @@ export default defineComponent({
                 .map((a) => a.master)
                 .filter(
                     (value, index, self) =>
-                        self.map((m) => m.name).indexOf(value.name) === index,
+                        self.map((m) => m?.name).indexOf(value?.name) === index,
                 )
                 .map(
                     (m) =>
                         ({
                             freeCount: 0,
-                            name: m.name,
-                            id: m.id,
+                            name: m?.name,
+                            id: m?.id,
                         } as MasterListItem),
                 );
 
@@ -85,7 +85,7 @@ export default defineComponent({
             allMasters = allMasters.map((m) => {
                 var newM = m;
                 newM.freeCount = appointments.filter(
-                    (a) => a.master.id == m.id,
+                    (a) => a.master?.id == m.id,
                 ).length;
                 return newM;
             });
