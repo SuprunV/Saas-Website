@@ -102,10 +102,12 @@ body > div {
 .logo {
     text-align: center;
     line-height: 55%;
+    padding-bottom: 10px;
     padding: 5px;
     font-size: 40px;
     transition: all 0.5s;
-    background-color: $dark-color;
+    border-radius: 10px 10px 10px 10px;
+    background-color:  #1f1f1f;
     &:hover {
         animation-delay: 0.5s;
         animation: shake 0.5s infinite;

@@ -169,7 +169,7 @@ export default defineComponent({
         </a-row>
         <h2 class="text-center mt-3 mb-3">List of some companies</h2>
         <p class="text-center mt-3 mb-3">
-            <em>here is companies, that want to be shown</em>
+            <em>here are companies, that want to be shown</em>
         </p>
         <a-list
             :loading="initLoading"
@@ -187,7 +187,7 @@ export default defineComponent({
                     }"
                 >
                     <a-button type="secondary" @click="onLoadMore"
-                        >loading more</a-button
+                        >load more</a-button
                     >
                 </div>
             </template>
