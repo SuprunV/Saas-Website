@@ -27,7 +27,7 @@ namespace server.Controllers
             return Ok(appointment);
         }
 
-        [HttpGet("{Date}")]
+        [HttpGet("{Date}/events")]
         public ActionResult<IEnumerable<Appointment>> GetEventsByDate(string Date){
             var result = _context.Appointments?.AsQueryable();
             if(Date != null){

@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "0b475034-57d5-496a-9563-defccd068bd0",
+		"_postman_id": "2618e552-2dce-4d70-a49c-748dbd90071d",
 		"name": "BS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "23297773"
+		"_exporter_id": "19681724"
 	},
 	"item": [
 		{
@@ -651,14 +651,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/Company/CompaniesCount",
+							"raw": "{{url}}/api/Company/count",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"Company",
-								"CompaniesCount"
+								"count"
 							]
 						}
 					},
@@ -753,7 +753,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/Company/1/AllClientsInCompany",
+							"raw": "{{url}}/api/Company/1/clients",
 							"host": [
 								"{{url}}"
 							],
@@ -761,7 +761,7 @@
 								"api",
 								"Company",
 								"1",
-								"AllClientsInCompany"
+								"clients"
 							]
 						}
 					},
@@ -792,7 +792,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/Company/1/AllMastersInCompany",
+							"raw": "{{url}}/api/Company/1/masters",
 							"host": [
 								"{{url}}"
 							],
@@ -800,7 +800,7 @@
 								"api",
 								"Company",
 								"1",
-								"AllMastersInCompany"
+								"masters"
 							]
 						}
 					},
@@ -1082,7 +1082,7 @@
 								"exec": [
 									"\r",
 									"pm.test(\"ID järgi tagastab appointmenti\", function () {\r",
-									"    pm.expect(pm.response.text()).to.include(\"\\\"date\\\":\\\"2022-10-27T12:11:04.942Z\\\"\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"date\\\":\\\"2022-10-27T12:15:00.942Z\\\"\");\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Status code is 200\", function () {\r",
@@ -1147,19 +1147,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/Appointment?Date={{date}}",
+							"raw": "{{url}}/api/Appointment/{{date}}/events",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"Appointment"
-							],
-							"query": [
-								{
-									"key": "Date",
-									"value": "{{date}}"
-								}
+								"Appointment",
+								"{{date}}",
+								"events"
 							]
 						}
 					},
