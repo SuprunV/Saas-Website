@@ -1,4 +1,4 @@
-import { CompanyAPI } from '@/api/CompanyAPI';
+import { CompanyAPI } from '@/api/СompanyAPI';
 import { useFetching } from '@/hooks/useFetching';
 import { ICompany } from '@/models/ICompany';
 import { AppRoutes } from '@/router/router';

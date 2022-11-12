@@ -5,7 +5,7 @@ import {
     AuditOutlined,
 } from '@ant-design/icons-vue';
 import { defineComponent, ref, onMounted, nextTick } from 'vue';
-import { CompanyAPI } from '@/api/CompanyAPI';
+import { CompanyAPI } from '@/api/СompanyAPI';
 import { ICompany } from '@/models/ICompany';
 import { useCompanyStore } from '@/store/useCompany';
 
