@@ -48,25 +48,32 @@ export class AppointmentAPI {
         // },
     ];
 
+
+
     static async getEvents(selectedDate: Date): Promise<IAppointment[]> {
         try {
-            // const response = await axios.get<IAppointment[]>();
+            const date = selectedDate.toISOString().split('T')[0];
+            const response = await axios.get<IAppointment[]>(
+                `${$host}/appointment/${date}/events`,
+            );
+            console.log('appointments', response.data);
+            return response.data;
         } catch (e) {
             return [];
         }
-        return [];
+      
 
-        // return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-        //     var selectedEvents: IAppointment[] = [];
+/*         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+            var selectedEvents: IAppointment[] = [];
 
-        //     selectedEvents = this.demoEvents.filter(
-        //         (e) =>
-        //             e.date.toLocaleDateString() ==
-        //             selectedDate.toLocaleDateString(),
-        //     );
+            selectedEvents = this.demoEvents.filter(
+                (e) =>
+                    e.date.toLocaleDateString() ==
+                    selectedDate.toLocaleDateString(),
+            );
 
-        //     return selectedEvents;
-        // });
+            return selectedEvents;
+        }); */
     }
 
     static async getFreeEvents(
@@ -97,11 +104,22 @@ export class AppointmentAPI {
         }
     }
 
-    static getEventsByMonthAndYear(
+    static async getEventsByMonthAndYear(
         month: number,
         year: number,
     ): Promise<IAppointment[]> {
-        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+        try {
+            
+            const response = await axios.get<IAppointment[]>(
+                `${$host}/appointment/eventsByMonthAndYear?month=${month.toString()}&year=${year.toString()}`,
+            );
+           
+            return response.data;
+        } catch (e) {
+            return [];
+        } 
+
+/*   return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
             var selectedEvents: IAppointment[] = [];
 
             selectedEvents = this.demoEvents.filter(
@@ -111,6 +129,6 @@ export class AppointmentAPI {
             );
 
             return selectedEvents;
-        });
+        });  */
     }
 }
