@@ -11,7 +11,7 @@ services:
         image: ${DOCKER_REGISTRY}/back:${CI_COMMIT_SHA}
         container_name: back_end
         environment:
-            - ASPNETCORE_URLS=http://+:7242
+            - ASPNETCORE_URLS=http://+:8080
         depends_on:
             - postgres
         networks:
