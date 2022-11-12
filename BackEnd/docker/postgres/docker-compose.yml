@@ -1,31 +1,31 @@
 version: "3.8"
 name: BeautyService
 services:
-  postgres: 
-    image: postgres:14.2-alpine
-    container_name: BeautyService_db
-    ports:
-    - 5432:5432
-#    volumes:
-#    - postgres-data:/var/lib/postgresql/data
-    environment:
-    - POSTGRES_PASSWORD=password
-    networks:
-    - pg_net
-  pgamdmin4:
-    image: dpage/pgadmin4:6
-    container_name: pgadmin4
-    ports:
-    - 8080:80
-    volumes:
-    - pgadmin-data:/var/lib/pgadmin
-    environment:
-    - PGADMIN_DEFAULT_EMAIL=db@BeautyServ.com
-    - PGADMIN_DEFAULT_PASSWORD=password
-    networks:
-    - pg_net
+    postgres:
+        image: postgres:14.2-alpine
+        container_name: BeautyService_db
+        ports:
+            - 5432:5432
+        #    volumes:
+        #    - postgres-data:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_PASSWORD=password
+        networks:
+            - pg_net
+    pgamdmin4:
+        image: dpage/pgadmin4:6
+        container_name: pgadmin4
+        ports:
+            - 8081:80
+        volumes:
+            - pgadmin-data:/var/lib/pgadmin
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=db@BeautyServ.com
+            - PGADMIN_DEFAULT_PASSWORD=password
+        networks:
+            - pg_net
 networks:
-  pg_net:
+    pg_net:
 volumes:
-  pgadmin-data:
+    pgadmin-data:
 # postgres-data:

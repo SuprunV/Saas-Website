@@ -1,1 +1,1 @@
-export const $host = 'https://localhost:7242/api';
+export const $host = 'https://localhost:8080/api';
