@@ -70,14 +70,14 @@ export default defineComponent({
                 .map((a) => a.master)
                 .filter(
                     (value, index, self) =>
-                        self.map((m) => m.name).indexOf(value.name) === index,
+                        self.map((m) => m?.name).indexOf(value?.name) === index,
                 )
                 .map(
                     (m) =>
                         ({
                             freeCount: 0,
-                            name: m.name,
-                            id: m.id,
+                            name: m?.name,
+                            id: m?.id,
                         } as MasterListItem),
                 );
 
@@ -85,7 +85,7 @@ export default defineComponent({
             allMasters = allMasters.map((m) => {
                 var newM = m;
                 newM.freeCount = appointments.filter(
-                    (a) => a.master.id == m.id,
+                    (a) => a.master?.id == m.id,
                 ).length;
                 return newM;
             });
