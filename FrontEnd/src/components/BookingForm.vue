@@ -54,11 +54,16 @@ export default defineComponent({
             required: '${label} is required!',
         };
 
-        const openNotification = () => {
+        const openNotification = (appointment: IAppointment) => {
                 notification.open({
                 message: 'Booking confirmation was sent to your e-mail.',
                 description:
-                'Your booking for the "Manicure" on November 23 at 14:00 was successfully confirmed.',
+                `Your booking for ${new Date(appointment.date).toLocaleDateString('en-GB')} at 
+                ${new Date(appointment.date).toLocaleTimeString('en-GB', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                })} was successfully confirmed.`,
                 duration: 15,
                 icon: () => h(ScheduleOutlined, { style: 'color: #52c41a' }),
             });
@@ -129,18 +134,20 @@ export default defineComponent({
             message,
             fetchData: submitForm,
         } = useFetching(async () => {
-            const response = await AppointmentAPI.addEvent({
+            const newEvent: IAppointment = {
                 Id: 0,
                 clientId: authUser.value.id,
                 masterId: +selectedAppointment.value.masterId,
                 date: selectedAppointment.value.time,
                 serviceId: props.service?.id ?? -1,
-            });
+            };
+            const response = await AppointmentAPI.addEvent(newEvent);
             selectedAppointment.value.masterId = '';
             selectedAppointment.value.time = '';
             uploadFreeAppointment();
             setTimeout(() => {
-                emit('update:show', false);
+                emit('update:show', false);     
+                openNotification(newEvent);
             }, 3000);
         });
 
@@ -260,7 +267,6 @@ export default defineComponent({
                         ><a-button
                             class="ant-btn btn-success"
                             html-type="submit"
-                            @click="openNotification"
                         >
                             <span>Book</span>
                         </a-button>

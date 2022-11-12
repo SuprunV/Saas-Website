@@ -1,12 +1,10 @@
 <script lang="ts">
-import { defineComponent, reactive, onMounted, ref, h } from 'vue';
+import { defineComponent, reactive, onMounted, ref } from 'vue';
 import { IService } from '@/models/IService';
 import { LikeOutlined } from '@ant-design/icons-vue';
-import { ScheduleOutlined } from '@ant-design/icons-vue';
 import BookingForm from '@/components/BookingForm.vue';
 import { useAuthStore } from '@/store/useAuth';
 import { storeToRefs } from 'pinia';
-import { notification } from 'ant-design-vue';
 import { ServiceAPI } from '@/api/ServiceAPI';
 
 
@@ -40,20 +38,6 @@ export default defineComponent({
 
         const { authUser } = storeToRefs(useAuthStore());
 
-        const openNotification = () => {
-                notification.open({
-                message: 'Booking confirmation was sent to your e-mail.',
-                description:
-                'Your booking for the "Manicure" on November 23 at 14:00 was successfully confirmed.',
-                duration: 15,
-                icon: () => h(ScheduleOutlined, { style: 'color: #52c41a' }),
-            });
-        };
-
-        
-
-        
-
         onMounted(async () => {
             const services = await ServiceAPI.getPublicServices(
                 authUser.value.companyId,
@@ -79,7 +63,6 @@ export default defineComponent({
             current: ref(1),
             page,
             onSearch,
-            openNotification
         };
     },
     methods: {
@@ -113,7 +96,6 @@ const formState = reactive({
         enter-button
         @search="onSearch"
     />
-    <a-button type="primary" @click="openNotification">Show notification</a-button>
     <a-list
         class=""
         :loading="initLoading"
