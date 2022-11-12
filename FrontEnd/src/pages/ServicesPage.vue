@@ -7,6 +7,7 @@ import { useAuthStore } from '@/store/useAuth';
 import { storeToRefs } from 'pinia';
 import { ServiceAPI } from '@/api/ServiceAPI';
 
+
 export default defineComponent({
     components: {
         LikeOutlined,
@@ -69,6 +70,7 @@ export default defineComponent({
             this.isBookingModal = true;
             this.selectedService = service;
         },
+        
     },
 });
 const layout = {

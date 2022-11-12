@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, reactive, ref, onMounted } from 'vue';
+import { defineComponent, reactive, ref, onMounted, h } from 'vue';
 import type { Dayjs } from 'dayjs';
 import { IUser, RolesEnum } from '@/models/IUser';
 import { UserAPI } from '@/api/UserAPI';
@@ -11,6 +11,8 @@ import { IAppointment } from '@/models/IAppointment';
 import { IService } from '@/models/IService';
 import { AppointmentAPI } from '@/api/AppointmentAPI';
 import { useFetching } from '@/hooks/useFetching';
+import { ScheduleOutlined } from '@ant-design/icons-vue';
+import { notification } from 'ant-design-vue';
 
 export interface MasterListItem {
     name: string;
@@ -50,6 +52,21 @@ export default defineComponent({
         });
         const validateMessages = {
             required: '${label} is required!',
+        };
+
+        const openNotification = (appointment: IAppointment) => {
+                notification.open({
+                message: 'Booking confirmation was sent to your e-mail.',
+                description:
+                `Your booking for "${props.service?.name}" on ${new Date(appointment.date).toLocaleDateString('ru-RU')} at 
+                ${new Date(appointment.date).toLocaleTimeString('en-GB', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                })} was successfully confirmed.`,
+                duration: 15,
+                icon: () => h(ScheduleOutlined, { style: 'color: #52c41a' }),
+            });
         };
 
         const isDateChange = (value: Dayjs, mode: string) => {
@@ -117,18 +134,20 @@ export default defineComponent({
             message,
             fetchData: submitForm,
         } = useFetching(async () => {
-            const response = await AppointmentAPI.addEvent({
+            const newEvent: IAppointment = {
                 Id: 0,
                 clientId: authUser.value.id,
                 masterId: +selectedAppointment.value.masterId,
                 date: selectedAppointment.value.time,
                 serviceId: props.service?.id ?? -1,
-            });
+            };
+            const response = await AppointmentAPI.addEvent(newEvent);
             selectedAppointment.value.masterId = '';
             selectedAppointment.value.time = '';
             uploadFreeAppointment();
             setTimeout(() => {
-                emit('update:show', false);
+                emit('update:show', false);     
+                openNotification(newEvent);
             }, 3000);
         });
 
@@ -148,6 +167,7 @@ export default defineComponent({
             message,
             limit,
             page,
+            openNotification
         };
     },
     watch: {
