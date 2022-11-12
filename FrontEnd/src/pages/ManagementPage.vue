@@ -1,5 +1,4 @@
 <script lang="ts">
-import { ServiceAPI } from '@/api/ServiceAPI';
 import { IService } from '@/models/IService';
 import { UserAPI } from '@/api/UserAPI';
 import { defineComponent, ref, reactive, onMounted } from 'vue';

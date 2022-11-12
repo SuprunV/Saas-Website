@@ -1,7 +1,6 @@
 <script lang="ts">
 import { defineComponent, reactive, onMounted, ref } from 'vue';
 import { IService } from '@/models/IService';
-import { ServiceAPI } from '@/api/ServiceAPI';
 import { LikeOutlined } from '@ant-design/icons-vue';
 import BookingForm from '@/components/BookingForm.vue';
 import { useAuthStore } from '@/store/useAuth';
