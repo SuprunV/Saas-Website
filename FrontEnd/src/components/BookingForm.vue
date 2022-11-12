@@ -58,7 +58,7 @@ export default defineComponent({
                 notification.open({
                 message: 'Booking confirmation was sent to your e-mail.',
                 description:
-                `Your booking for ${new Date(appointment.date).toLocaleDateString('en-GB')} at 
+                `Your booking for "${props.service?.name}" on ${new Date(appointment.date).toLocaleDateString('ru-RU')} at 
                 ${new Date(appointment.date).toLocaleTimeString('en-GB', {
                     hour: '2-digit',
                     minute: '2-digit',
