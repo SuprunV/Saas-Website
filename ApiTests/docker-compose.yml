@@ -1,49 +1,56 @@
 version: "3.8"
 services:
-  postgres:
-    image: postgres:15.0-alpine
-    container_name: api_db
-    environment:
-      - POSTGRES_PASSWORD=password
-    networks:
-      - pg_net
-  back_end:
-    image: ${DOCKER_REGISTRY}/back:${CI_COMMIT_SHA}
-    container_name: back_end
-    environment:
-      - ASPNETCORE_URLS=http://+:8080
-    depends_on:
-      - postgres
-    networks:
-      - pg_net
-      - api_net
-    links:
-      - "postgres:db"
-    volumes:
-      - ./startup:/etc/startup
-    entrypoint:
-      [
-        "/etc/startup/wait-for",
-        "-t",
-        "30",
-        "db:5432",
-        "--",
-        "dotnet",
-        "/app/server.dll",
-      ]
-  newman:
-    image: postman/newman:alpine
-    entrypoint:
-      ["/etc/startup/wait-for", "-t", "30", "back_end:8080", "--", "newman"]
-    container_name: newman
-    depends_on:
-      - postgres
-      - back_end
-    network_mode: "service:back_end"
-    volumes:
-      - ./startup:/etc/startup
-      - ./newman/:/etc/newman/
-    command: run /etc/newman/BS.postman_collection.json -e BS.postman_environment.json
+    postgres:
+        image: postgres:15.0-alpine
+        container_name: api_db
+        environment:
+            - POSTGRES_PASSWORD=password
+        networks:
+            - pg_net
+    back_end:
+        image: ${DOCKER_REGISTRY}/back:${CI_COMMIT_SHA}
+        container_name: back_end
+        environment:
+            - ASPNETCORE_URLS=http://+:7242
+        depends_on:
+            - postgres
+        networks:
+            - pg_net
+            - api_net
+        links:
+            - "postgres:db"
+        volumes:
+            - ./startup:/etc/startup
+        entrypoint:
+            [
+                "/etc/startup/wait-for",
+                "-t",
+                "30",
+                "db:5432",
+                "--",
+                "dotnet",
+                "/app/server.dll",
+            ]
+    newman:
+        image: postman/newman:alpine
+        entrypoint:
+            [
+                "/etc/startup/wait-for",
+                "-t",
+                "30",
+                "back_end:8080",
+                "--",
+                "newman",
+            ]
+        container_name: newman
+        depends_on:
+            - postgres
+            - back_end
+        network_mode: "service:back_end"
+        volumes:
+            - ./startup:/etc/startup
+            - ./newman/:/etc/newman/
+        command: run /etc/newman/BS.postman_collection.json -e BS.postman_environment.json
 networks:
-  pg_net:
-  api_net:
+    pg_net:
+    api_net:
