@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, reactive, ref, onMounted } from 'vue';
+import { defineComponent, reactive, ref, onMounted, h } from 'vue';
 import type { Dayjs } from 'dayjs';
 import { IUser, RolesEnum } from '@/models/IUser';
 import { UserAPI } from '@/api/UserAPI';
@@ -11,6 +11,8 @@ import { IAppointment } from '@/models/IAppointment';
 import { IService } from '@/models/IService';
 import { AppointmentAPI } from '@/api/AppointmentAPI';
 import { useFetching } from '@/hooks/useFetching';
+import { ScheduleOutlined } from '@ant-design/icons-vue';
+import { notification } from 'ant-design-vue';
 
 export interface MasterListItem {
     name: string;
@@ -50,6 +52,16 @@ export default defineComponent({
         });
         const validateMessages = {
             required: '${label} is required!',
+        };
+
+        const openNotification = () => {
+                notification.open({
+                message: 'Booking confirmation was sent to your e-mail.',
+                description:
+                'Your booking for the "Manicure" on November 23 at 14:00 was successfully confirmed.',
+                duration: 15,
+                icon: () => h(ScheduleOutlined, { style: 'color: #52c41a' }),
+            });
         };
 
         const isDateChange = (value: Dayjs, mode: string) => {
@@ -148,6 +160,7 @@ export default defineComponent({
             message,
             limit,
             page,
+            openNotification
         };
     },
     watch: {
@@ -247,6 +260,7 @@ export default defineComponent({
                         ><a-button
                             class="ant-btn btn-success"
                             html-type="submit"
+                            @click="openNotification"
                         >
                             <span>Book</span>
                         </a-button>
