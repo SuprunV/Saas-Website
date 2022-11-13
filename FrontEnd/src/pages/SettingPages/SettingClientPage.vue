@@ -65,8 +65,9 @@ export default defineComponent({
                     <div class="space-align-container">
                         <div class="space-align-block">
                             <a-space align="start">
-                                <img :width="200" :src="authUser.img" />
-                                <a-descriptions
+                                <img class="settingImage" :width="200" :src="authUser.img" />
+                                <div class="personInfo">
+                                <a-descriptions 
                                     title="Client Info"
                                     bordered="true"
                                 >
@@ -94,6 +95,7 @@ export default defineComponent({
                                         }}</a-descriptions-item
                                     >
                                 </a-descriptions>
+                                </div>
                             </a-space>
                         </div>
                     </div>

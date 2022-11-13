@@ -1,6 +1,7 @@
 .space-align-block {
     margin: 15px 4px;
     margin-bottom: 0px;
+    
     border: 1px solid #40a9ff;
     padding: 10px;
     padding-left: 20px;
@@ -9,16 +10,36 @@
     border-radius: 10px 10px 10px 10px;
 }
 
+.settingPageStatistic {
+    
+    border: 1px solid #40a9ff;
+    text-align: center !important; 
+    border-radius: 50px 50px 50px 50px;
+    flex:auto ;
+    margin: 10px;
+}
 
+.ant-descriptions-title {
+    text-align: center !important;
+}
+
+.ant-descriptions-view {
+    margin: 0px;
+    margin-left: 50px;
+}
 .ant-statistic-title {
     color: white;
 }
 
-
-img {
+.settingImage {
     margin: 45px;
-    margin-top: 0;
-    height: 150px;
-    width: 150px;
+    margin-top: 50;
+    height: 300px;
+    width: 300px;
     border-radius: 50%;
+}
+
+.personInfo{
+    margin-left:  auto !important;
+    padding: 10px 0;
 }

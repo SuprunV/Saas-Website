@@ -26,7 +26,7 @@
                 {{
                     selectedDay
                         .toDate()
-                        .toLocaleString('it-IT', { timeZone: 'Europe/Tallinn' })
+                        .toLocaleDateString('it-IT', { timeZone: 'Europe/Tallinn' })
                 }}
                 <br /><br />
                 <div class="content"></div>
