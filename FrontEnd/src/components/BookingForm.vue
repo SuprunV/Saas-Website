@@ -13,6 +13,7 @@ import { AppointmentAPI } from '@/api/AppointmentAPI';
 import { useFetching } from '@/hooks/useFetching';
 import { ScheduleOutlined } from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
+import dayjs from 'dayjs';
 
 export interface MasterListItem {
     name: string;
@@ -55,10 +56,13 @@ export default defineComponent({
         };
 
         const openNotification = (appointment: IAppointment) => {
-                notification.open({
+            notification.open({
                 message: 'Booking confirmation was sent to your e-mail.',
-                description:
-                `Your booking for "${props.service?.name}" on ${new Date(appointment.date).toLocaleDateString('ru-RU')} at 
+                description: `Your booking for "${
+                    props.service?.name
+                }" on ${new Date(appointment.date).toLocaleDateString(
+                    'ru-RU',
+                )} at
                 ${new Date(appointment.date).toLocaleTimeString('en-GB', {
                     hour: '2-digit',
                     minute: '2-digit',
@@ -146,7 +150,7 @@ export default defineComponent({
             selectedAppointment.value.time = '';
             uploadFreeAppointment();
             setTimeout(() => {
-                emit('update:show', false);     
+                emit('update:show', false);
                 openNotification(newEvent);
             }, 3000);
         });
@@ -167,7 +171,7 @@ export default defineComponent({
             message,
             limit,
             page,
-            openNotification
+            openNotification,
         };
     },
     watch: {
@@ -180,6 +184,11 @@ export default defineComponent({
         close() {
             this.$emit('update:show', false);
             console.log('close in form', this.show);
+        },
+        isValidDay(currentDate: Dayjs) {
+            const today = new Date();
+            today.setDate(new Date().getDate() - 1);
+            return currentDate.toDate() < today;
         },
     },
 });
@@ -206,7 +215,9 @@ export default defineComponent({
                                     v-model="selectedAppointment.date"
                                     :fullscreen="false"
                                     @change="isDateChange"
-                                />
+                                    :disabledDate="isValidDay"
+                                >
+                                </a-calendar>
                             </div>
                         </a-form-item>
                         <a-form-item
