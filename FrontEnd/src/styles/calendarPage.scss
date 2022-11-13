@@ -1,45 +1,6 @@
-// .ant-picker-calendar,
-// .ant-picker-calendar-full .ant-picker-panel,
-// .ant-picker-calendar .ant-select,
-// .ant-radio-button-wrapper,
-// .ant-picker-calendar .ant-select-dropdown {
-//     background-color: $black-color;
-// }
-
-// .ant-select-dropdown [aria-selected='false'] .ant-select-item-option-content {
-//     color: rgb(0, 0, 0) !important;
-// }
-
-// .ant-picker-calendar-header {
-//     padding: 20px;
-// }
-
-// .ant-picker-calendar
-//     .ant-select:not(.ant-select-customize-input)
-//     .ant-select-selector {
-//     background-color: $black-color;
-// }
-
-// .ant-select:not(.ant-select-customize-input),
-// .ant-select-selector {
-//     color: $black-color;
-// }
-
-// .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
-//     background-color: #535353;
-// }
-
-// .ant-picker-cell:not(.ant-picker-cell-in-view) {
-//     color: rgba(255, 255, 255, 0.37);
-// }
-
-// .ant-descriptions-bordered .ant-descriptions-item-label {
-//     background-color: #fafafa00;
-// }
-
-// .ant-picker-cell,
-// .ant-picker-cell-inner {
-//     &:hover {
-//         color: #1890ff;
-//     }
-// }
+.ant-picker-cell-disabled::before {
+    width: 24px;
+    height: 24px;
+    border-radius: 10px;
+    margin: 0 auto;
+}
