@@ -48,8 +48,6 @@ export class AppointmentAPI {
         // },
     ];
 
-
-
     static async getEvents(selectedDate: Date): Promise<IAppointment[]> {
         try {
             const date = selectedDate.toISOString().split('T')[0];
@@ -61,9 +59,8 @@ export class AppointmentAPI {
         } catch (e) {
             return [];
         }
-      
 
-/*         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+        /*         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
             var selectedEvents: IAppointment[] = [];
 
             selectedEvents = this.demoEvents.filter(
@@ -109,17 +106,16 @@ export class AppointmentAPI {
         year: number,
     ): Promise<IAppointment[]> {
         try {
-            
             const response = await axios.get<IAppointment[]>(
                 `${$host}/appointment/eventsByMonthAndYear?month=${month.toString()}&year=${year.toString()}`,
             );
-           
+
             return response.data;
         } catch (e) {
             return [];
-        } 
+        }
 
-/*   return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+        /*   return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
             var selectedEvents: IAppointment[] = [];
 
             selectedEvents = this.demoEvents.filter(

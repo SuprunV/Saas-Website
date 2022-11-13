@@ -39,13 +39,12 @@
                             <template #bodyCell="{ column, record }">
                                 <template v-if="column.key === 'date'">
                                     {{
-                                        record.date.toLocaleTimeString(
-                                            'it-IT',
-                                            {
-                                                hour: '2-digit',
-                                                minute: '2-digit',
-                                            },
-                                        )
+                                        new Date(
+                                            record.date,
+                                        ).toLocaleTimeString('it-IT', {
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                        })
                                     }}
                                 </template>
                             </template>
@@ -115,10 +114,10 @@ export default defineComponent({
         var title1 = '';
         if (props.role == 'MASTER') {
             title1 = 'Client name';
-            dataIndex1 = 'clientName';
+            dataIndex1 = 'client.name';
         } else if (props.role == 'CLIENT') {
             title1 = 'Master name';
-            dataIndex1 = 'masterName';
+            dataIndex1 = 'master.name';
         }
 
         const columns = [
@@ -134,8 +133,8 @@ export default defineComponent({
             },
             {
                 title: 'Service',
-                dataIndex: 'serviceName',
-                key: 'serviceName',
+                dataIndex: 'service.name',
+                key: 'service.name',
             },
         ];
 

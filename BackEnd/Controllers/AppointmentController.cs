@@ -29,7 +29,7 @@ namespace server.Controllers
 
         [HttpGet("{Date}/events")]
         public ActionResult<IEnumerable<Appointment>> GetEventsByDate(string Date){
-            var result = _context.Appointments?.AsQueryable();
+            var result = _context.Appointments?.Include(x => x.Client).Include(x => x.Master).Include(x => x.Service).AsQueryable();
             if(Date != null){
                 result = result?.Where(x => (x.date.Contains(Date)));
             }
