@@ -1,7 +1,10 @@
 <template>
     <a-row>
         <a-col :span="17">
-            <a-calendar v-model:value="selectedDay">
+            <div v-if="isLoading" class="loader-circle">
+                <a-spin  />
+            </div>
+            <a-calendar v-model:value="selectedDay" v-else>
                 <template #dateCellRender="{ current }">
                     <br />
                     <div v-if="getListData(current).length != 0">
@@ -79,8 +82,11 @@ import { IAppointment } from '@/models/IAppointment';
 import { AppointmentAPI } from '@/api/AppointmentAPI';
 import { RolesEnum } from '@/models/IUser';
 import { title } from 'process';
+import { useFetching } from '@/hooks/useFetching';
+import PageLoading from './PageLoading.vue';
 
 export default defineComponent({
+  components: { PageLoading },
     name: 'main-calendar',
     props: {
         role: {
@@ -105,20 +111,24 @@ export default defineComponent({
         };
         GetEventsToSelectedDay();
 
-        const updateMonthEvents = async () => {
+        const {fetchData:updateMonthEvents, isLoading} = useFetching(async () => {
             const date = selectedDay.value.toDate();
             const response = await AppointmentAPI.getEventsByMonthAndYear(
-                date.getMonth(),
+                date.getMonth()+1,
                 date.getFullYear(),
             );
             currentMonthEvents.value = response;
-        };
+            console.log("data is fetched", currentMonthEvents.value);
+        });
+
         updateMonthEvents();
+        console.log("start fetching", isLoading);
         const getListData = (value: Dayjs) => {
-            let listData = currentMonthEvents.value.filter((e) => {
-                return e.date == value.date().toLocaleString();
-            });
-            return listData || [];
+            let currentValue = value.toDate().toISOString().split("T")[0].trim();
+            let listData =  currentMonthEvents.value.filter((e) => e.date.split("T")[0].trim() == currentValue
+            );
+            // if(listData.length) console.log(currentValue, listData.length, listData);
+            return listData;
         };
         const getMonthData = (value: Dayjs) => {
             if (value.month() === 8) {
@@ -157,6 +167,7 @@ export default defineComponent({
         return {
             selectedDay,
             getListData,
+            isLoading,
             getMonthData,
             GetEventsToSelectedDay,
             selectedDayEvents,
@@ -167,6 +178,9 @@ export default defineComponent({
         };
     },
     watch: {
+        isLoading() {
+            console.log("isLoading updated", this.isLoading, this.selectedDayEvents);
+        },
         selectedDay() {
             if (this.selectedMonth != this.selectedDay.month()) {
                 this.updateMonthEvents();
