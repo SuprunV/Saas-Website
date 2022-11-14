@@ -1,10 +1,45 @@
 .space-align-block {
-    margin: 8px 4px;
+    margin: 15px 4px;
+    margin-bottom: 0px;
+    
     border: 1px solid #40a9ff;
-    padding: 4px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 100px;
     flex: none;
+    border-radius: 10px 10px 10px 10px;
 }
 
+.settingPageStatistic {
+    
+    border: 1px solid #40a9ff;
+    text-align: center !important; 
+    border-radius: 50px 50px 50px 50px;
+    flex:auto ;
+    margin: 10px;
+}
+
+.ant-descriptions-title {
+    text-align: center !important;
+}
+
+.ant-descriptions-view {
+    margin: 0px;
+    margin-left: 50px;
+}
 .ant-statistic-title {
     color: white;
+}
+
+.settingImage {
+    margin: 45px;
+    margin-top: 50;
+    height: 300px;
+    width: 300px;
+    border-radius: 50%;
+}
+
+.personInfo{
+    margin-left:  auto !important;
+    padding: 10px 0;
 }
