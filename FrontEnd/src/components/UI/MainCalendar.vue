@@ -26,7 +26,7 @@
                 {{
                     selectedDay
                         .toDate()
-                        .toLocaleString('it-IT', { timeZone: 'Europe/Tallinn' })
+                        .toLocaleDateString('it-IT', { timeZone: 'Europe/Tallinn' })
                 }}
                 <br /><br />
                 <div class="content"></div>
@@ -39,13 +39,12 @@
                             <template #bodyCell="{ column, record }">
                                 <template v-if="column.key === 'date'">
                                     {{
-                                        record.date.toLocaleTimeString(
-                                            'it-IT',
-                                            {
-                                                hour: '2-digit',
-                                                minute: '2-digit',
-                                            },
-                                        )
+                                        new Date(
+                                            record.date,
+                                        ).toLocaleTimeString('it-IT', {
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                        })
                                     }}
                                 </template>
                             </template>
@@ -115,10 +114,10 @@ export default defineComponent({
         var title1 = '';
         if (props.role == 'MASTER') {
             title1 = 'Client name';
-            dataIndex1 = 'clientName';
+            dataIndex1 = 'client.name';
         } else if (props.role == 'CLIENT') {
             title1 = 'Master name';
-            dataIndex1 = 'masterName';
+            dataIndex1 = 'master.name';
         }
 
         const columns = [
@@ -134,8 +133,8 @@ export default defineComponent({
             },
             {
                 title: 'Service',
-                dataIndex: 'serviceName',
-                key: 'serviceName',
+                dataIndex: 'service.name',
+                key: 'service.name',
             },
         ];
 
@@ -163,71 +162,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
-.content {
-    flex-direction: row;
-}
-.calendar-sideblock {
-    font-size: 20px;
-    font-family: Arial;
-    display: flex;
-    margin: 0 auto;
-    flex-direction: column;
-    min-height: 100%;
-    min-width: 100%;
-    text-align: center;
-    text-overflow: auto;
-    overflow: auto;
-    padding: 1rem;
-    margin-left: 10px;
-    margin-right: 10px;
-
-    background-color: lavender;
-    color: var(--dark);
-}
-
-.events {
-    list-style: none;
-    margin: 0 auto;
-    text-align: center;
-    border-radius: 50%;
-    // display: inline-block;
-    background-color: rgb(58, 156, 123);
-    padding: 5px;
-    color: white;
-    width: 35px;
-    height: 35px;
-    font-size: 15px;
-}
-.events1 {
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    list-style: none;
-    margin: 0;
-    padding: 1rem;
-    font-weight: bold;
-    font-size: 20px;
-}
-// .events .ant-badge-status {
-//    overflow: hidden;
-//     white-space: nowrap;
-//     width: 50%;
-//     text-overflow: auto;
-//     font-size: 20px;
-// }
-.notes-month {
-    font-size: 28px;
-}
-.notes-month section {
-    font-size: 28px;
-}
-
-.events-table {
-    text-align: center;
-    .ant-table-thead > tr > th {
-        background: darkslateblue;
-        text-align: center;
-        font-family: Georgia, 'Times New Roman', Times, serif;
-        color: var(--light);
-    }
-}
-</style>
+<style lang="scss"></style>

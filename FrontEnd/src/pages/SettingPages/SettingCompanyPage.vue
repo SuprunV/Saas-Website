@@ -55,7 +55,8 @@ export default defineComponent({
                 <div class="space-align-container">
                     <div class="space-align-block">
                         <a-space align="start">
-                            <img :width="155" :src="company.img" />
+                            <img class="settingImage" :width="155" :src="company.img" />
+                            <div class="personInfo">
                             <a-descriptions
                                 title="Company Info"
                                 bordered="true"
@@ -69,35 +70,43 @@ export default defineComponent({
                                     >Liivalaia 7</a-descriptions-item
                                 >
                             </a-descriptions>
+                            </div>
                         </a-space>
                     </div>
                 </div>
                 <a-row>
-                    <a-col :span="12">
-                        <a-statistic title="Masters" :value="100" />
+                    <a-col :span="5">
+                        <div class="settingPageStatistic">
+                              <a-statistic title="Masters" :value="100" />
+                        </div>
                     </a-col>
-                    <a-col :span="12">
+                    <a-col :span="5">
+                        <div class="settingPageStatistic">
                         <a-statistic title="Services" :value="70" />
+                        </div>
                     </a-col>
                 </a-row>
                 <a-row>
-                    <a-col :span="12">
+                    <a-col :span="5">
+                        <div class="settingPageStatistic">
                         <a-statistic
                             title="Income (EUR)"
                             :precision="2"
                             :value="200000"
                         />
+                        </div>
                     </a-col>
-                    <a-col :span="12">
+                    <a-col :span="5">
+                        <div class="settingPageStatistic">
                         <a-statistic
                             title="Feedback"
                             :value="556"
-                            style="margin-right: 50px"
                         >
                             <template #suffix>
                                 <like-outlined />
                             </template>
                         </a-statistic>
+                        </div>
                     </a-col>
                 </a-row>
                 <a-button type="primary" @click="showChangeModal"
