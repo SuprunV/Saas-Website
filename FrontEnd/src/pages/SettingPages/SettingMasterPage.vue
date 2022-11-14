@@ -66,7 +66,8 @@ export default defineComponent({
                     <div class="space-align-container">
                         <div class="space-align-block">
                             <a-space align="start">
-                                <img :width="200" :src="authUser.img" />
+                                <img class="settingImage" :width="200" :src="authUser.img" />
+                                <div class="personInfo">
                                 <a-descriptions
                                     title="Master Info"
                                     bordered="true"
@@ -102,23 +103,24 @@ export default defineComponent({
                                         }}</a-descriptions-item
                                     >
                                 </a-descriptions>
+                                </div>
                             </a-space>
                         </div>
                     </div>
                     <a-row>
-                        <a-col :span="12">
-                            <a-statistic title="Done work" :value="2000" />
+                        <a-col :span="5">
+                            <div class="settingPageStatistic"> <a-statistic title="Done work" :value="2000" /></div>
                         </a-col>
-                        <a-col :span="12">
+                        <a-col :span="6">
+                         <div class="settingPageStatistic"> 
                             <a-statistic
                                 title="Feedback"
-                                :value="650"
-                                style="margin-right: 50px"
-                            >
+                                :value="650">
                                 <template #suffix>
                                     <like-outlined />
                                 </template>
                             </a-statistic>
+                        </div>
                         </a-col>
                     </a-row>
                     <a-button type="primary" @click="showChangeModal"
