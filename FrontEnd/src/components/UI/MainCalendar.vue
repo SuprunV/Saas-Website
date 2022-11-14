@@ -1,7 +1,7 @@
 <template>
     <a-row>
         <a-col :span="17">
-            <a-calendar mode="dark" v-model:value="selectedDay">
+            <a-calendar v-model:value="selectedDay">
                 <template #dateCellRender="{ current }">
                     <br />
                     <div v-if="getListData(current).length != 0">
