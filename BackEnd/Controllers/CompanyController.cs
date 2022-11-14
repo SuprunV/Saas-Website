@@ -172,8 +172,8 @@ namespace server.Controllers
             var timetable = new List<DateTime>();
             var date = DateTime.Parse(dateDays);
             for(var h = start; h <= end; h++) {
-                for(var m = 1; m < 4; m++) {
-                    var time = new DateTime(date.Year, date.Month, date.Day, h,m*15,0);
+                for(var m = 0; m < 2; m++) {
+                    var time = new DateTime(date.Year, date.Month, date.Day, h,m*30,0);
                     timetable.Add(TimeZoneInfo.ConvertTimeToUtc(time));
                 }
             }

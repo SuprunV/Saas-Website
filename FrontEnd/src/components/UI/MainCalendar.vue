@@ -39,13 +39,29 @@
                             <template #bodyCell="{ column, record }">
                                 <template v-if="column.key === 'date'">
                                     {{
+
                                         new Date(
-                                            record.date,
+                                            record["date"],
                                         ).toLocaleTimeString('it-IT', {
                                             hour: '2-digit',
                                             minute: '2-digit',
                                         })
                                     }}
+                                    
+                                </template>
+                                <template v-if="column.key === 'client' || column.key === 'master' ">
+                                    {{
+                                       record[column.key].name 
+                                    }} {{
+                                       record[column.key].surname 
+                                    }}
+                                    
+                                </template>
+                                <template v-if="column.key === 'service'">
+                                    {{
+                                       record[column.key].name 
+                                    }} 
+                                    
                                 </template>
                             </template>
                         </a-table>
@@ -114,10 +130,10 @@ export default defineComponent({
         var title1 = '';
         if (props.role == 'MASTER') {
             title1 = 'Client name';
-            dataIndex1 = 'client.name';
+            dataIndex1 = 'client';
         } else if (props.role == 'CLIENT') {
             title1 = 'Master name';
-            dataIndex1 = 'master.name';
+            dataIndex1 = 'master';
         }
 
         const columns = [
@@ -133,8 +149,8 @@ export default defineComponent({
             },
             {
                 title: 'Service',
-                dataIndex: 'service.name',
-                key: 'service.name',
+                dataIndex: 'service',
+                key: 'service',
             },
         ];
 
