@@ -60,8 +60,7 @@ api_test:
   stage: api_test
   tags:
     - itb2203
-  
-  deploy:
+deploy:
   image: docker:20.10.21-alpine3.16
   when: manual
   only:
