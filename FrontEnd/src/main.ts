@@ -9,21 +9,31 @@ import { createPinia } from 'pinia';
 import components from '@/components/UI';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import { setApiUrl } from './config';
 
 const app = createApp(App);
 
-components.forEach((component) => app.component(component.name, component));
+const getRuntimeConf = async () => {
+    const runtimeConf = await fetch('/config/runtime-config.json');
+    return await runtimeConf.json();
+};
 
-directives.forEach((direcitve: any) => {
-    app.directive(direcitve.name, direcitve);
+getRuntimeConf().then((json) => {
+    setApiUrl(json.API_URL);
+
+    components.forEach((component) => app.component(component.name, component));
+
+    directives.forEach((direcitve: any) => {
+        app.directive(direcitve.name, direcitve);
+    });
+
+    app.use(createPinia());
+
+    app.use(Antd);
+    app.use(router);
+
+    app.component('DataTable', DataTable);
+    app.component('Column', Column);
+
+    app.mount('#app');
 });
-
-app.use(createPinia());
-
-app.use(Antd);
-app.use(router);
-
-app.component('DataTable', DataTable);
-app.component('Column', Column);
-
-app.mount('#app');

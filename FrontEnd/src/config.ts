@@ -1,1 +1,5 @@
-export const $host = 'https://localhost:8080/api';
+export let $host = '';
+
+export function setApiUrl(host: string) {
+    $host = host;
+}
