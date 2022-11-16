@@ -110,6 +110,15 @@ namespace server.Controllers
             return Ok(services);
         }
         
+        [HttpGet("alias-{companyAlias}/services")]
+        public ActionResult<IEnumerable<Service>> GetCompanyServices(string companyAlias) {
+            if(!_context.Companies!.Any(c => c.companyAlias == companyAlias)) return BadRequest();
+
+            var services = _context.Services!.Include(x => x.Company).Where(s => s.Company.companyAlias == companyAlias);
+
+            return Ok(services);
+        }
+
         [HttpPost]
         public ActionResult<Company> CreateCompany([FromBody] Company company) {
             var dbCompany = _context.Companies!.Find(company.Id);

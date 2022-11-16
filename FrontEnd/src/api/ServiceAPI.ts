@@ -43,15 +43,14 @@ export class ServiceAPI {
     ];
 
     static async getPublicServices(
-        companyId: number,
+        companyAlias: number,
         limit: number,
         page: number,
     ): Promise<IService[]> {
         try {
             const response = await axios.get<IService[]>(
-                `${$host}/company/${companyId}/services`,
+                `${$host}/company/alias-${companyAlias}/services`,
             );
-
             return response.data;
         } catch (e) {
             return [];
