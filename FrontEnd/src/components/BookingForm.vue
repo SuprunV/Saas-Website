@@ -14,6 +14,7 @@ import { useFetching } from '@/hooks/useFetching';
 import { ScheduleOutlined } from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
 import dayjs from 'dayjs';
+import { useCompanyStore } from '@/store/useCompany';
 
 export interface MasterListItem {
     name: string;
@@ -41,6 +42,7 @@ export default defineComponent({
     }),
     setup(props, { emit }) {
         const { authUser } = storeToRefs(useAuthStore());
+        const { company } = storeToRefs(useCompanyStore());
         const masterList = ref<MasterListItem[]>([]);
         const listOfTime = ref<TimeListItem[]>();
         const limit = ref<number>(5);
@@ -83,7 +85,7 @@ export default defineComponent({
         const uploadFreeAppointment = async () => {
             const appointments = await AppointmentAPI.getFreeEvents(
                 selectedAppointment.value.date,
-                authUser.value.companyId,
+                company.value.id,
                 props.service?.id ?? -1,
             );
             // get masters and count of their free appointments
@@ -148,7 +150,7 @@ export default defineComponent({
             const response = await AppointmentAPI.addEvent(newEvent);
             selectedAppointment.value.masterId = '';
             selectedAppointment.value.time = '';
-            uploadFreeAppointment();
+            await uploadFreeAppointment();
             setTimeout(() => {
                 emit('update:show', false);
                 openNotification(newEvent);
@@ -160,7 +162,6 @@ export default defineComponent({
             updateTimes,
             isDateChange,
             uploadFreeAppointment,
-            onMounted,
             listOfTime,
             validateMessages,
             selectedAppointment,
@@ -171,12 +172,12 @@ export default defineComponent({
             message,
             limit,
             page,
+            company,
             openNotification,
         };
     },
     watch: {
         service() {
-            console.log('service is changed');
             this.uploadFreeAppointment();
         },
     },

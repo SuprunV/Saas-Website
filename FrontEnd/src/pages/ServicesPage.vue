@@ -7,6 +7,7 @@ import { useAuthStore } from '@/store/useAuth';
 import { storeToRefs } from 'pinia';
 import { ServiceAPI } from '@/api/ServiceAPI';
 import { useRoute, useRouter } from 'vue-router';
+import { useCompanyStore } from '@/store/useCompany';
 
 export default defineComponent({
     components: {
@@ -37,7 +38,8 @@ export default defineComponent({
             console.log('or use this.value', value.value);
         };
 
-        const companyAlias = route.params['companyAlias'];
+        const company = useCompanyStore();
+        const companyAlias = route.params['companyAlias'] as string;
 
         onMounted(async () => {
             if (companyAlias) {
@@ -49,6 +51,7 @@ export default defineComponent({
                 initLoading.value = false;
                 dataService.value = services;
                 servicesList.value = services;
+                company.setCompanyPage(companyAlias);
             }
         });
 

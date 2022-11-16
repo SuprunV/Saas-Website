@@ -43,7 +43,7 @@ export class ServiceAPI {
     ];
 
     static async getPublicServices(
-        companyAlias: number,
+        companyAlias: string,
         limit: number,
         page: number,
     ): Promise<IService[]> {

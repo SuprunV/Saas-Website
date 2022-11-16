@@ -16,9 +16,9 @@ export const useCompanyStore = defineStore('company', {
         message: {} as IFetchResponse,
     }),
     actions: {
-        async setCompanyPage() {
+        async setCompanyPage(alias: string = '') {
             const route = useRoute();
-            const alias = route.params['companyAlias'] as string;
+            alias = alias ? alias : (route.params['companyAlias'] as string);
             console.log(this.company.alias, alias);
 
             if (this.company.alias !== alias) {
