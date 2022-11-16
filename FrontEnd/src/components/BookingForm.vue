@@ -15,6 +15,7 @@ import { ScheduleOutlined } from '@ant-design/icons-vue';
 import { notification } from 'ant-design-vue';
 import dayjs from 'dayjs';
 import { useCompanyStore } from '@/store/useCompany';
+import { getDateDay } from '@/services/getDateDay';
 
 export interface MasterListItem {
     name: string;
@@ -49,8 +50,6 @@ export default defineComponent({
         const { company } = storeToRefs(useCompanyStore());
         const masterList = ref<MasterListItem[]>([]);
         const listOfTime = ref<TimeListItem[]>();
-        const limit = ref<number>(5);
-        const page = ref<number>(1);
         const freeAppointments = ref<IAppointment[]>([]);
         const step = ref<number>(0);
         const steps = [0, 1];
@@ -71,9 +70,6 @@ export default defineComponent({
             time: '',
         };
         const selectedAppointment = ref<IBookingAppointment>(emptyAppointment);
-        const validateMessages = {
-            required: '${label} is required!',
-        };
 
         const openNotification = (appointment: IAppointment) => {
             notification.open({
@@ -198,12 +194,12 @@ export default defineComponent({
         return {
             value: ref<Dayjs>(),
             prev,
+            getDateDay,
             next,
             updateTimes,
             isDateChange,
             uploadFreeAppointment,
             listOfTime,
-            validateMessages,
             selectedAppointment,
             step,
             masterList,
@@ -211,8 +207,6 @@ export default defineComponent({
             authUser,
             isLoading,
             message,
-            limit,
-            page,
             steps,
             company,
             openNotification,
@@ -248,7 +242,9 @@ export default defineComponent({
                         wrapperCol: { span: 16 },
                     }"
                     name="nest-messages"
-                    :validate-messages="validateMessages"
+                    :validate-messages="{
+                        required: '${label} is required!',
+                    }"
                     @finish="submitForm"
                 >
                     <div class="ant-modal-body">
@@ -353,30 +349,50 @@ export default defineComponent({
                                         }}</a-descriptions-item
                                     >
                                     <a-descriptions-item
+                                        label="Service"
+                                        :span="3"
+                                        >{{
+                                            service?.name
+                                        }}</a-descriptions-item
+                                    >
+                                    <a-descriptions-item
+                                        label="Duration"
+                                        :span="3"
+                                        >{{
+                                            service?.duration
+                                        }}
+                                        min</a-descriptions-item
+                                    >
+                                    <a-descriptions-item
                                         label="Master"
                                         :span="3"
                                         >{{
                                             selectedAppointment.masterName
                                         }}</a-descriptions-item
                                     >
-                                    <a-descriptions-item
-                                        label="Date"
-                                        :span="3"
+                                    <a-descriptions-item label="Date" :span="3"
                                         >{{
                                             new Date(
                                                 selectedAppointment.time,
                                             ).toLocaleDateString('ru-RU')
-                                        }}</a-descriptions-item
+                                        }}
+                                        ({{
+                                            getDateDay(
+                                                new Date(
+                                                    selectedAppointment.time,
+                                                ),
+                                            )
+                                        }})</a-descriptions-item
                                     >
-                                    <a-descriptions-item
-                                        label="Time"
-                                        :span="3"
-                                        >{{
-                                            new Date(
-                                                selectedAppointment.time,
-                                            ).toLocaleTimeString()
-                                        }}</a-descriptions-item
-                                    >
+                                    <a-descriptions-item label="Time" :span="3">{{
+                                        new Date(
+                                            selectedAppointment.time,
+                                        ).toLocaleTimeString('ru-RU', {
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                            hour12: false,
+                                        })
+                                    }}</a-descriptions-item>
                                 </a-descriptions>
                             </div>
                             <!-- <div
