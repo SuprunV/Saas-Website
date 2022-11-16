@@ -23,8 +23,12 @@ export interface MasterListItem {
 }
 export interface IBookingAppointment {
     date: Date;
-    masterId: string;
     time: string;
+    masterId: string;
+    masterName: string;
+    clientId: string;
+    clientName: string;
+    clientEmail: string;
 }
 
 export interface TimeListItem {
@@ -58,8 +62,12 @@ export default defineComponent({
             step.value--;
         };
         const selectedAppointment = ref<IBookingAppointment>({
-            date: new Date(2022, 10, 27),
+            date: new Date(),
             masterId: '',
+            masterName: '',
+            clientName: authUser.value.name,
+            clientEmail: authUser.value.email,
+            clientId: String(authUser.value.id),
             time: '',
         });
         const validateMessages = {
@@ -126,6 +134,10 @@ export default defineComponent({
         };
 
         const updateTimes = async () => {
+            const master = masterList.value.find(
+                (m) => m.id == +selectedAppointment.value.masterId,
+            );
+            selectedAppointment.value.masterName = master ? master.name : '';
             const masterTimes = freeAppointments.value.filter(
                 (a) =>
                     String(a.master?.id) == selectedAppointment.value.masterId,
@@ -156,7 +168,12 @@ export default defineComponent({
                 date: selectedAppointment.value.time,
                 serviceId: props.service?.id ?? -1,
             };
-            if (newEvent.clientId >= 0) {
+            const isValid =
+                newEvent.serviceId >= 0 &&
+                newEvent.masterId >= 0 &&
+                newEvent.clientId >= 0 &&
+                new Date(newEvent.date).toString() != 'Invalid Date';
+            if (isValid) {
                 const response = await AppointmentAPI.addEvent(newEvent);
                 selectedAppointment.value.masterId = '';
                 selectedAppointment.value.time = '';
@@ -165,8 +182,12 @@ export default defineComponent({
                     emit('update:show', false);
                     openNotification(newEvent);
                 }, 3000);
-            } else {
+            } else if (!newEvent.clientId) {
                 throw Error('You have to stay your personal data OR authorize');
+            } else if (!isValid) {
+                throw Error('You have to fill ALL fields');
+            } else {
+                throw Error('Unexpected Error');
             }
         });
 
@@ -309,6 +330,56 @@ export default defineComponent({
                                 id="step-2"
                                 v-appearAnimation="{ timeout: 100 }"
                             >
+                                <a-descriptions
+                                    title="Your appointment data"
+                                    bordered="true"
+                                >
+                                    <a-descriptions-item
+                                        label="Your Name"
+                                        :span="3"
+                                        >{{
+                                            selectedAppointment.clientName
+                                        }}</a-descriptions-item
+                                    >
+                                    <a-descriptions-item
+                                        label="Your email"
+                                        :span="3"
+                                        >{{
+                                            selectedAppointment.clientEmail
+                                        }}</a-descriptions-item
+                                    >
+                                    <a-descriptions-item
+                                        label="Master"
+                                        :span="3"
+                                        >{{
+                                            selectedAppointment.masterName
+                                        }}</a-descriptions-item
+                                    >
+                                    <a-descriptions-item
+                                        label="Date"
+                                        :span="3"
+                                        >{{
+                                            new Date(
+                                                selectedAppointment.time,
+                                            ).toLocaleDateString('ru-RU')
+                                        }}</a-descriptions-item
+                                    >
+                                    <a-descriptions-item
+                                        label="Time"
+                                        :span="3"
+                                        >{{
+                                            new Date(
+                                                selectedAppointment.time,
+                                            ).toLocaleTimeString()
+                                        }}</a-descriptions-item
+                                    >
+                                </a-descriptions>
+                            </div>
+                            <!-- <div
+                                v-if="step == 1"
+                                id="step-2"
+                                v-appearAnimation="{ timeout: 100 }"
+                            >
                                 <a-form-item
                                     label="Email"
                                     name="email"
@@ -335,7 +406,7 @@ export default defineComponent({
                                 >
                                     <a-input-password />
                                 </a-form-item>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="ant-modal-footer">
@@ -358,6 +429,7 @@ export default defineComponent({
                                 >
                                 <a-button
                                     v-if="step < steps.length - 1"
+                                    :disabled="selectedAppointment.time == ''"
                                     type="primary"
                                     @click="next"
                                     >Next</a-button
@@ -366,6 +438,7 @@ export default defineComponent({
                                     v-if="step == steps.length - 1"
                                     class="ant-btn btn-success"
                                     html-type="submit"
+                                    :loading="isLoading"
                                 >
                                     <span>Book</span>
                                 </a-button>
