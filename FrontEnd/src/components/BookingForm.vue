@@ -48,6 +48,15 @@ export default defineComponent({
         const limit = ref<number>(5);
         const page = ref<number>(1);
         const freeAppointments = ref<IAppointment[]>([]);
+        const step = ref<number>(0);
+        const steps = [0, 1];
+
+        const next = () => {
+            step.value++;
+        };
+        const prev = () => {
+            step.value--;
+        };
         const selectedAppointment = ref<IBookingAppointment>({
             date: new Date(2022, 10, 27),
             masterId: '',
@@ -163,12 +172,15 @@ export default defineComponent({
 
         return {
             value: ref<Dayjs>(),
+            prev,
+            next,
             updateTimes,
             isDateChange,
             uploadFreeAppointment,
             listOfTime,
             validateMessages,
             selectedAppointment,
+            step,
             masterList,
             submitForm,
             authUser,
@@ -176,6 +188,7 @@ export default defineComponent({
             message,
             limit,
             page,
+            steps,
             company,
             openNotification,
         };
@@ -214,78 +227,150 @@ export default defineComponent({
                     @finish="submitForm"
                 >
                     <div class="ant-modal-body">
-                        <a-form-item :name="['date']" label="Step 1: Date">
-                            <div class="calendar">
-                                <a-calendar
-                                    v-model="selectedAppointment.date"
-                                    :fullscreen="false"
-                                    @change="isDateChange"
-                                    :disabledDate="isValidDay"
-                                >
-                                </a-calendar>
-                            </div>
-                        </a-form-item>
-                        <a-form-item
-                            :name="['masterId']"
-                            label="Step 2: Master name"
-                            :rules="[{ required: true }]"
-                        >
-                            <em v-if="!masterList.length"
-                                >No Masters at this day!</em
+                        <a-steps :current="step" class="mb-4">
+                            <a-step v-for="item in steps" :key="item" />
+                        </a-steps>
+                        <div class="steps-content">
+                            <div
+                                v-if="step == 0"
+                                id="step-1"
+                                v-appearAnimation="{ timeout: 100 }"
                             >
-                            <a-select
-                                placeholder="Please select master"
-                                v-model:value="selectedAppointment.masterId"
-                                @change="() => updateTimes()"
-                            >
-                                <a-select-option
-                                    v-for="master in masterList"
-                                    :key="master.id"
-                                    :value="master.id"
-                                    >{{ master.name }} ({{
-                                        master.freeCount
-                                    }})</a-select-option
+                                <a-form-item
+                                    :name="['date']"
+                                    label="Step 1: Date"
                                 >
-                            </a-select>
-                        </a-form-item>
-                        <a-form-item
-                            :name="['time']"
-                            label="Step 3: Available time:"
-                            :rules="[{ required: true }]"
-                        >
-                            <div>
-                                <em v-if="!selectedAppointment.masterId"
-                                    >Please, select master.</em
+                                    <div class="calendar">
+                                        <a-calendar
+                                            v-model="selectedAppointment.date"
+                                            :fullscreen="false"
+                                            @change="isDateChange"
+                                            :disabledDate="isValidDay"
+                                        >
+                                        </a-calendar>
+                                    </div>
+                                </a-form-item>
+                                <a-form-item
+                                    :name="['masterId']"
+                                    label="Step 2: Master name"
+                                    :rules="[{ required: true }]"
                                 >
-                                <em v-else-if="!listOfTime?.length"
-                                    >No Free times at this day!</em
-                                >
-                                <a-select
-                                    v-model:value="selectedAppointment.time"
-                                >
-                                    <a-select-option
-                                        v-for="time in listOfTime"
-                                        :key="time.value"
-                                        :value="time.value"
-                                        >{{ time.name }}</a-select-option
+                                    <em v-if="!masterList.length"
+                                        >No Masters at this day!</em
                                     >
-                                </a-select>
+                                    <a-select
+                                        placeholder="Please select master"
+                                        v-model:value="
+                                            selectedAppointment.masterId
+                                        "
+                                        @change="() => updateTimes()"
+                                    >
+                                        <a-select-option
+                                            v-for="master in masterList"
+                                            :key="master.id"
+                                            :value="master.id"
+                                            >{{ master.name }} ({{
+                                                master.freeCount
+                                            }})</a-select-option
+                                        >
+                                    </a-select>
+                                </a-form-item>
+                                <a-form-item
+                                    :name="['time']"
+                                    label="Step 3: Available time:"
+                                    :rules="[{ required: true }]"
+                                >
+                                    <div>
+                                        <em v-if="!selectedAppointment.masterId"
+                                            >Please, select master.</em
+                                        >
+                                        <em v-else-if="!listOfTime?.length"
+                                            >No Free times at this day!</em
+                                        >
+                                        <a-select
+                                            v-model:value="
+                                                selectedAppointment.time
+                                            "
+                                        >
+                                            <a-select-option
+                                                v-for="time in listOfTime"
+                                                :key="time.value"
+                                                :value="time.value"
+                                                >{{
+                                                    time.name
+                                                }}</a-select-option
+                                            >
+                                        </a-select>
+                                    </div>
+                                </a-form-item>
                             </div>
-                        </a-form-item>
+                            <div
+                                v-if="step == 1"
+                                id="step-2"
+                                v-appearAnimation="{ timeout: 100 }"
+                            >
+                                <a-form-item
+                                    label="Email"
+                                    name="email"
+                                    :rules="[
+                                        {
+                                            required: true,
+                                            message: 'Please input your email!',
+                                        },
+                                    ]"
+                                >
+                                    <a-input />
+                                </a-form-item>
+
+                                <a-form-item
+                                    label="Password"
+                                    name="password"
+                                    :rules="[
+                                        {
+                                            required: true,
+                                            message:
+                                                'Please input your password!',
+                                        },
+                                    ]"
+                                >
+                                    <a-input-password />
+                                </a-form-item>
+                            </div>
+                        </div>
                     </div>
                     <div class="ant-modal-footer">
-                        <button
-                            class="ant-btn ant-btn-danger"
-                            type="button"
-                            @click="close"
-                        >
-                            <span>Cancel</span></button
-                        ><a-button
-                            class="ant-btn btn-success"
-                            html-type="submit"
-                        >
-                            <span>Book</span>
-                        </a-button>
+                        <a-row type="flex" justify="space-between">
+                            <div class="">
+                                <button
+                                    class="ant-btn ant-btn-danger"
+                                    type="button"
+                                    @click="close"
+                                >
+                                    <span>Cancel</span>
+                                </button>
+                            </div>
+                            <div class="">
+                                <a-button
+                                    v-if="step > 0"
+                                    style="margin-left: 8px"
+                                    @click="prev"
+                                    >Previous</a-button
+                                >
+                                <a-button
+                                    v-if="step < steps.length - 1"
+                                    type="primary"
+                                    @click="next"
+                                    >Next</a-button
+                                >
+                                <a-button
+                                    v-if="step == steps.length - 1"
+                                    class="ant-btn btn-success"
+                                    html-type="submit"
+                                >
+                                    <span>Book</span>
+                                </a-button>
+                            </div>
+                        </a-row>
                     </div>
                 </a-form>
             </div>
