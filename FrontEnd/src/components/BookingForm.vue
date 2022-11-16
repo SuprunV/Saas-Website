@@ -61,7 +61,7 @@ export default defineComponent({
         const prev = () => {
             step.value--;
         };
-        const selectedAppointment = ref<IBookingAppointment>({
+        const emptyAppointment: IBookingAppointment = {
             date: new Date(),
             masterId: '',
             masterName: '',
@@ -69,7 +69,8 @@ export default defineComponent({
             clientEmail: authUser.value.email,
             clientId: String(authUser.value.id),
             time: '',
-        });
+        };
+        const selectedAppointment = ref<IBookingAppointment>(emptyAppointment);
         const validateMessages = {
             required: '${label} is required!',
         };
@@ -87,7 +88,7 @@ export default defineComponent({
                     minute: '2-digit',
                     hour12: false,
                 })} was successfully confirmed.`,
-                duration: 15,
+                duration: 5,
                 icon: () => h(ScheduleOutlined, { style: 'color: #52c41a' }),
             });
         };
@@ -164,6 +165,8 @@ export default defineComponent({
             const newEvent: IAppointment = {
                 Id: 0,
                 clientId: authUser.value.id,
+                clientEmail: selectedAppointment.value.clientEmail,
+                clientName: selectedAppointment.value.clientName,
                 masterId: +selectedAppointment.value.masterId,
                 date: selectedAppointment.value.time,
                 serviceId: props.service?.id ?? -1,
@@ -174,12 +177,13 @@ export default defineComponent({
                 newEvent.clientId >= 0 &&
                 new Date(newEvent.date).toString() != 'Invalid Date';
             if (isValid) {
-                const response = await AppointmentAPI.addEvent(newEvent);
-                selectedAppointment.value.masterId = '';
-                selectedAppointment.value.time = '';
+                await AppointmentAPI.addEvent(newEvent);
                 await uploadFreeAppointment();
                 setTimeout(() => {
                     emit('update:show', false);
+                    selectedAppointment.value.masterId = '';
+                    selectedAppointment.value.time = '';
+                    step.value = 0;
                     openNotification(newEvent);
                 }, 3000);
             } else if (!newEvent.clientId) {
@@ -222,7 +226,7 @@ export default defineComponent({
     methods: {
         close() {
             this.$emit('update:show', false);
-            console.log('close in form', this.show);
+            this.step = 0;
         },
         isValidDay(currentDate: Dayjs) {
             const today = new Date();
