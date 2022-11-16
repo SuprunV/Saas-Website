@@ -8,13 +8,18 @@
     fill: white;
 }
 
-.ant-steps-item-icon {
+.ant-steps-item-active .ant-steps-item-icon {
+    animation: shadowSizing 2s infinite;
+}
+
+.ant-steps-item-wait .ant-steps-item-icon,
+.ant-steps-item-finish .ant-steps-item-icon {
     box-shadow: $main-shadow-sm !important;
     border-radius: 100%;
 }
 
 .ant-steps-item-container {
-    padding: 20px;
+    padding: 25px;
 }
 
 .ant-steps-item-process

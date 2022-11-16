@@ -46,14 +46,14 @@ export default defineComponent({
         appointment: {} as IAppointment,
     }),
     setup(props, { emit }) {
-        const { authUser } = storeToRefs(useAuthStore());
+        const { authUser, isAuth } = storeToRefs(useAuthStore());
         const { company } = storeToRefs(useCompanyStore());
         const masterList = ref<MasterListItem[]>([]);
         const listOfTime = ref<TimeListItem[]>();
         const freeAppointments = ref<IAppointment[]>([]);
+        console.log(isAuth);
+        const steps = isAuth.value ? [0, 1] : [0, 1, 2];
         const step = ref<number>(0);
-        const steps = [0, 1];
-
         const next = () => {
             step.value++;
         };
@@ -170,18 +170,25 @@ export default defineComponent({
             const isValid =
                 newEvent.serviceId >= 0 &&
                 newEvent.masterId >= 0 &&
-                newEvent.clientId >= 0 &&
+                (newEvent.clientId >= 0 ||
+                    (newEvent.clientEmail && newEvent.clientName)) &&
                 new Date(newEvent.date).toString() != 'Invalid Date';
             if (isValid) {
                 await AppointmentAPI.addEvent(newEvent);
-                await uploadFreeAppointment();
-                setTimeout(() => {
+                setTimeout(async () => {
+                    await uploadFreeAppointment();
                     emit('update:show', false);
                     selectedAppointment.value.masterId = '';
                     selectedAppointment.value.time = '';
+                    selectedAppointment.value.clientEmail = authUser.value.email
+                        ? authUser.value.email
+                        : '';
+                    selectedAppointment.value.clientName = authUser.value.name
+                        ? authUser.value.name
+                        : '';
                     step.value = 0;
                     openNotification(newEvent);
-                }, 3000);
+                }, 1500);
             } else if (!newEvent.clientId) {
                 throw Error('You have to stay your personal data OR authorize');
             } else if (!isValid) {
@@ -196,7 +203,9 @@ export default defineComponent({
             prev,
             getDateDay,
             next,
+            steps,
             updateTimes,
+            isAuth,
             isDateChange,
             uploadFreeAppointment,
             listOfTime,
@@ -207,7 +216,6 @@ export default defineComponent({
             authUser,
             isLoading,
             message,
-            steps,
             company,
             openNotification,
         };
@@ -254,7 +262,7 @@ export default defineComponent({
                         <div class="steps-content">
                             <div
                                 v-if="step == 0"
-                                id="step-1"
+                                id="step-first"
                                 v-appearAnimation="{ timeout: 100 }"
                             >
                                 <a-form-item
@@ -326,8 +334,48 @@ export default defineComponent({
                                 </a-form-item>
                             </div>
                             <div
-                                v-if="step == 1"
-                                id="step-2"
+                                v-else-if="step == 1 && !isAuth"
+                                id="step-second"
+                                v-appearAnimation="{ timeout: 100 }"
+                            >
+                                <a-form-item
+                                    label="Your Email"
+                                    name="clientEmail"
+                                    :rules="[
+                                        {
+                                            required: true,
+                                            message: 'Please input your email!',
+                                            type: 'email',
+                                        },
+                                    ]"
+                                >
+                                    <a-input
+                                        v-model:value="
+                                            selectedAppointment.clientEmail
+                                        "
+                                    />
+                                </a-form-item>
+
+                                <a-form-item
+                                    label="Yourname"
+                                    name="clientName"
+                                    :rules="[
+                                        {
+                                            required: true,
+                                            message: 'Please input your Name!',
+                                        },
+                                    ]"
+                                >
+                                    <a-input
+                                        v-model:value="
+                                            selectedAppointment.clientName
+                                        "
+                                    />
+                                </a-form-item>
+                            </div>
+                            <div
+                                v-else
+                                id="step-last"
                                 v-appearAnimation="{ timeout: 100 }"
                             >
                                 <a-descriptions
@@ -376,13 +424,14 @@ export default defineComponent({
                                                 selectedAppointment.time,
                                             ).toLocaleDateString('ru-RU')
                                         }}
-                                        ({{
+                                        -
+                                        {{
                                             getDateDay(
                                                 new Date(
                                                     selectedAppointment.time,
                                                 ),
                                             )
-                                        }})</a-descriptions-item
+                                        }}</a-descriptions-item
                                     >
                                     <a-descriptions-item label="Time" :span="3">{{
                                         new Date(
@@ -395,38 +444,6 @@ export default defineComponent({
                                     }}</a-descriptions-item>
                                 </a-descriptions>
                             </div>
-                            <!-- <div
-                                v-if="step == 1"
-                                id="step-2"
-                                v-appearAnimation="{ timeout: 100 }"
-                            >
-                                <a-form-item
-                                    label="Email"
-                                    name="email"
-                                    :rules="[
-                                        {
-                                            required: true,
-                                            message: 'Please input your email!',
-                                        },
-                                    ]"
-                                >
-                                    <a-input />
-                                </a-form-item>
-
-                                <a-form-item
-                                    label="Password"
-                                    name="password"
-                                    :rules="[
-                                        {
-                                            required: true,
-                                            message:
-                                                'Please input your password!',
-                                        },
-                                    ]"
-                                >
-                                    <a-input-password />
-                                </a-form-item>
-                            </div> -->
                         </div>
                     </div>
                     <div class="ant-modal-footer">
@@ -449,7 +466,13 @@ export default defineComponent({
                                 >
                                 <a-button
                                     v-if="step < steps.length - 1"
-                                    :disabled="selectedAppointment.time == ''"
+                                    :disabled="
+                                        (selectedAppointment.time == '' &&
+                                            step == 0) ||
+                                        ((!selectedAppointment.clientEmail ||
+                                            !selectedAppointment.clientName) &&
+                                            step == 1)
+                                    "
                                     type="primary"
                                     @click="next"
                                     >Next</a-button
