@@ -147,14 +147,18 @@ export default defineComponent({
                 date: selectedAppointment.value.time,
                 serviceId: props.service?.id ?? -1,
             };
-            const response = await AppointmentAPI.addEvent(newEvent);
-            selectedAppointment.value.masterId = '';
-            selectedAppointment.value.time = '';
-            await uploadFreeAppointment();
-            setTimeout(() => {
-                emit('update:show', false);
-                openNotification(newEvent);
-            }, 3000);
+            if (newEvent.clientId >= 0) {
+                const response = await AppointmentAPI.addEvent(newEvent);
+                selectedAppointment.value.masterId = '';
+                selectedAppointment.value.time = '';
+                await uploadFreeAppointment();
+                setTimeout(() => {
+                    emit('update:show', false);
+                    openNotification(newEvent);
+                }, 3000);
+            } else {
+                throw Error('You have to stay your personal data OR authorize');
+            }
         });
 
         return {
