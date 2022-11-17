@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using server.Db;
 using server.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace server.Controllers
 {

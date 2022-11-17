@@ -2,8 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using server.Db;
 using server.Enums;
+using System.Text;
 using server.Models;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace server.Controllers {
@@ -15,7 +18,7 @@ namespace server.Controllers {
         private readonly DataContext _context;
         private IConfiguration _config;
 
-        public UserController(DataContext context) {
+        public UserController(IConfiguration config, DataContext context) {
             _context = context;
             _config = config;
         }
@@ -23,7 +26,7 @@ namespace server.Controllers {
         [HttpPost("login")]
         public IActionResult Login([FromBody] User login)
         {
-            var dbUser = _context.UserList!.FirstOrDefault(user => user.login == login.login);
+            var dbUser = _context.Users!.FirstOrDefault(user => user.login == login.login);
 
             if (dbUser == null) return NotFound();
 
@@ -42,7 +45,8 @@ namespace server.Controllers {
 
             _context.Users!.Add(user);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(getUser), new { id = user.Id }, user,Login(user));
+            Login(user);
+            return CreatedAtAction(nameof(getUser), new { id = user.Id }, user);
         }
         [HttpGet("{id}")]
         public ActionResult<User> getUser(int id) {
