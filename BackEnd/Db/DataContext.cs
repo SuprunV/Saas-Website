@@ -158,7 +158,7 @@ namespace server.Db
                 {
                     Id = 1,
                     login = "LinaM",
-                    password = "12345test",
+                    password =  "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
                     role = Role.Master,
                     img = "",
                     companyId = 2
@@ -168,7 +168,7 @@ namespace server.Db
                 {
                     Id = 6,
                     login = "KristinaK",
-                    password = "12345test",
+                    password = "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
                     role = Role.Master,
                     img = "",
                     companyId = 1
@@ -178,7 +178,7 @@ namespace server.Db
                 {
                     Id = 2,
                     login = "RonaldK",
-                    password = "12345",
+                    password = "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
                     role = Role.Client,
                     img = "",
                     companyId = 1
@@ -187,7 +187,7 @@ namespace server.Db
                 {
                     Id = 5,
                     login = "MariP",
-                    password = "12345",
+                    password = "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
                     role = Role.Client,
                     img = "",
                     companyId = 1
@@ -196,7 +196,7 @@ namespace server.Db
                 {
                     Id = 3,
                     login = "BeautySalonAdmin",
-                    password = "12345",
+                    password = "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
                     role = Role.Admin,
                     img = "",
                     companyId = 1
@@ -206,7 +206,7 @@ namespace server.Db
                 {
                     Id = 4,
                     login = "MassageSalonAdmin",
-                    password = "12345",
+                    password = "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
                     role = Role.Admin,
                     img = "",
                     companyId = 2
@@ -220,7 +220,7 @@ namespace server.Db
                     Id = 1,
                     name = "Ronald",
                     surname= "Kuusepuu",
-                    DoB = "20.10.1976",
+                    DoB = "1975-10-27T00:00:00.942Z",
                     gender = Gender.Male,
                     userId = 2
             
@@ -230,7 +230,7 @@ namespace server.Db
                     Id = 2,
                     name = "Mari",
                     surname= "Tallinn",
-                    DoB = "17.06.2002",
+                    DoB = "2010-11-27T00:00:00.942Z",
                     gender = Gender.Female,
                     userId = 5
                 }
@@ -241,7 +241,7 @@ namespace server.Db
                     Id = 1,
                     name = "Liina",
                     surname= "Mets",
-                    DoB = "01.08.1976",
+                    DoB = "2001-12-13T00:00:00.942Z",
                     gender = Gender.Female,
                     userId = 1
             
@@ -251,7 +251,7 @@ namespace server.Db
                     Id = 2,
                     name = "Kristina",
                     surname= "Koh",
-                    DoB = "17.06.200",
+                    DoB = "1989-10-21T00:00:00.942Z",
                     gender = Gender.Female,
                     userId = 6
                 }

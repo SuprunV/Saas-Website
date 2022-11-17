@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using server.Db;
 using server.Enums;
+using Microsoft.AspNetCore.Authorization;
 using System.Text;
 using server.Models;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
@@ -29,7 +30,7 @@ namespace server.Controllers {
             var dbUser = _context.Users!.FirstOrDefault(user => user.login == login.login);
 
             if (dbUser == null) return NotFound();
-
+            var test = HashPassword(dbUser.password);
             if (dbUser.password != HashPassword(login.password)) return Unauthorized();
 
             var token = GenerateJSONWebToken(dbUser);
@@ -45,9 +46,10 @@ namespace server.Controllers {
 
             _context.Users!.Add(user);
             _context.SaveChanges();
-            Login(user);
-            return CreatedAtAction(nameof(getUser), new { id = user.Id }, user);
+            var token = GenerateJSONWebToken(user);
+            return CreatedAtAction(nameof(getUser), new { id = user.Id, token = token,}, user);
         }
+        [Authorize]
         [HttpGet("{id}")]
         public ActionResult<User> getUser(int id) {
             var user = _context.Users?.FirstOrDefault(u => u.Id == id);
@@ -56,6 +58,7 @@ namespace server.Controllers {
     
             return Ok(user);
         }
+         [Authorize]
         // !!!! This EndPoint must be in CompanyController
         [HttpGet("company/{companyId}/{role}")]
         public ActionResult<User> getCompanyUsersByRole(int companyId, Role role) {
@@ -63,6 +66,7 @@ namespace server.Controllers {
 
             return Ok(users);
         }
+        [Authorize]
         // !!!!
         [HttpPut("{id}")]
         public ActionResult<User> updateUser(int id, [FromBody] User user) {
@@ -79,7 +83,7 @@ namespace server.Controllers {
 
             return CreatedAtAction(nameof(getUser), new { id = user.Id }, user);
         }
-
+        [Authorize]
         [HttpDelete("{id}")]
         public ActionResult<User> deleteUser(int id) {
             
