@@ -4,6 +4,7 @@ using server.Db;
 using server.Models;
 namespace server.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CompanyController: ControllerBase

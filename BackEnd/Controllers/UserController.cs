@@ -3,16 +3,35 @@ using Microsoft.EntityFrameworkCore;
 using server.Db;
 using server.Enums;
 using server.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace server.Controllers {
+ 
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase {
 
         private readonly DataContext _context;
+        private IConfiguration _config;
 
         public UserController(DataContext context) {
             _context = context;
+            _config = config;
+        }
+        
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] User login)
+        {
+            var dbUser = _context.UserList!.FirstOrDefault(user => user.login == login.login);
+
+            if (dbUser == null) return NotFound();
+
+            if (dbUser.password != HashPassword(login.password)) return Unauthorized();
+
+            var token = GenerateJSONWebToken(dbUser);
+
+            return Ok(new {token = token});
         }
 
         [HttpPost("reg")]
@@ -23,7 +42,7 @@ namespace server.Controllers {
 
             _context.Users!.Add(user);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(getUser), new { id = user.Id }, user);
+            return CreatedAtAction(nameof(getUser), new { id = user.Id }, user,Login(user));
         }
         [HttpGet("{id}")]
         public ActionResult<User> getUser(int id) {
@@ -69,6 +88,41 @@ namespace server.Controllers {
             _context.SaveChanges();
 
             return Ok();
+        }
+        private string HashPassword(string password)
+        {
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: new byte[0],
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 100000,
+                numBytesRequested: 256 / 8));
+
+            return hashed;
+        }
+        private string GetRole()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            return identity.FindFirst("roleId")!.Value;
+        }
+             private string  GetCompanyId()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            return identity.FindFirst("companyId")!.Value;
+        }
+
+        private string GenerateJSONWebToken(User user)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+              _config["Jwt:Issuer"],
+              new List<Claim> { new Claim("roleId", user.role.ToString(),"companyId",user.companyId.ToString())},
+              expires: DateTime.Now.AddMinutes(30),
+              signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         private bool UserExists(int? id, string? login = null) {
