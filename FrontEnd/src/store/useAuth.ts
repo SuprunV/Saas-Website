@@ -32,10 +32,9 @@ export const useAuthStore = defineStore('auth', {
             this.setRoutes();
         },
         loginActionStore(auth: IAuth) {
-            console.log('response auth', auth);
             const user = jwt_decode<IUser>(auth.token);
-            console.log('decoded', user);
             this.authUser = user;
+            console.log('authUser', this.authUser);
             this.isAuth = true;
             this.setRoutes();
         },

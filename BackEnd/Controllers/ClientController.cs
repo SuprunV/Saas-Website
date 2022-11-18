@@ -93,7 +93,7 @@ namespace BackEnd.Controllers
            try{var check = users.First(x=>x.Id == client.userId).Id; }
            catch (System.Exception) {return BadRequest($"The user with id: {client.userId} has not registred yet"); }
            
-            if(Role.Client != users.First(x=>x.Id == client.userId).role ){
+            if(Role.CLIENT != users.First(x=>x.Id == client.userId).role ){
                 return BadRequest($"The user with id: {client.userId} has not registred with client role yet");
             }
             _context.Clients!.Add(client);

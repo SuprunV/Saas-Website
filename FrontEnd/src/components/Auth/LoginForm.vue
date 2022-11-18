@@ -62,11 +62,11 @@ export default defineComponent({
             this.formState.password = '123';
         },
         putDemoClient() {
-            this.formState.email = 'RonaldK';
+            this.formState.email = 'eren-yeager@gmail.com';
             this.formState.password = '123';
         },
         putDemoMaster() {
-            this.formState.email = 'KristinaK';
+            this.formState.email = 'levi-ackerman@gmail.com';
             this.formState.password = '123';
         },
     },

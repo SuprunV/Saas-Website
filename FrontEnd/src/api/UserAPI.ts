@@ -54,19 +54,8 @@ export class UserAPI {
             { login: email, password },
         );
 
-        console.log(response);
+        localStorage.setItem(LocalStorageItemEnum.token, response.data.token);
         return response.data;
-        // return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-        //     let userIndex = this.demoUsers.findIndex((u) => u.email == email);
-        //     if (userIndex >= 0) {
-        //         const user = this.demoUsers[userIndex];
-        //         localStorage.setItem(
-        //             LocalStorageItemEnum.userJson,
-        //             JSON.stringify(user),
-        //         );
-        //         return user;
-        //     } else throw new Error('Incorrect demo email');
-        // });
     }
 
     static async logout(userData: IUser) {

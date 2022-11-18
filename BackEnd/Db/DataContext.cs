@@ -155,9 +155,11 @@ namespace server.Db
                 new User
                 {
                     Id = 1,
-                    login = "LinaM",
+                    login = "KristinaK@gmail.com",
+                    name = "Kristina",
+                    surname = "K",
                     password =  "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
-                    role = Role.Master,
+                    role = Role.MASTER,
                     img = "",
                     companyId = 2
            
@@ -165,9 +167,11 @@ namespace server.Db
                 new User
                 {
                     Id = 6,
-                    login = "KristinaK",
+                    name = "Levi",
+                    surname = "Ackerman",
+                    login = "levi-ackerman@gmail.com",
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
-                    role = Role.Master,
+                    role = Role.MASTER,
                     img = "",
                     companyId = 1
            
@@ -175,18 +179,22 @@ namespace server.Db
                 new User
                 {
                     Id = 2,
-                    login = "RonaldK",
+                    name = "Eren",
+                    surname = "Yeager",
+                    login = "eren-yeager@gmail.com",
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
-                    role = Role.Client,
+                    role = Role.CLIENT,
                     img = "",
                     companyId = 1
                 },
                 new User
                 {
                     Id = 5,
-                    login = "MariP",
+                    name = "Mari",
+                    surname = "Curie",
+                    login = "MariC@gmail.com",
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
-                    role = Role.Client,
+                    role = Role.CLIENT,
                     img = "",
                     companyId = 2
                 },
@@ -194,8 +202,9 @@ namespace server.Db
                 {
                     Id = 3,
                     login = "BeautySalonAdmin",
+                    name = "BeautySalonAdmin",
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
-                    role = Role.Admin,
+                    role = Role.ADMIN,
                     img = "",
                     companyId = 1
                   
@@ -204,11 +213,11 @@ namespace server.Db
                 {
                     Id = 4,
                     login = "MassageSalonAdmin",
+                    name = "MassageSalonAdmin",
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
-                    role = Role.Admin,
+                    role = Role.ADMIN,
                     img = "",
                     companyId = 2
-      
                 }
                 
             );
