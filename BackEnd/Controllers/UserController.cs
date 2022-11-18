@@ -27,13 +27,22 @@ namespace server.Controllers {
         [HttpPost("login")]
         public IActionResult Login([FromBody] User login)
         {
-            var dbUser = _context.Users!.FirstOrDefault(user => user.login == login.login);
-
+            var dbUser = _context.Users!.Include(u => u.Company).FirstOrDefault(user => user.login == login.login);
             if (dbUser == null) return NotFound();
+            
             var test = HashPassword(login.password);
             if (dbUser.password != HashPassword(login.password)) return Unauthorized();
-
-            var token = GenerateJSONWebToken(dbUser);
+            var tokenData = new UserToken() {
+                id = dbUser.Id,
+                companyAlias = dbUser.Company.companyAlias,
+                companyId = dbUser.companyId,
+                email = dbUser.login,
+                companyName = dbUser.Company.companyName,
+                img = dbUser.img,
+                name = $"{dbUser.name} {dbUser.surname}",
+                role = dbUser.role 
+            };
+            var token = GenerateJSONWebToken(tokenData);
 
             return Ok(new {token = token});
         }
@@ -46,8 +55,18 @@ namespace server.Controllers {
 
             _context.Users!.Add(user);
             _context.SaveChanges();
-            var token = GenerateJSONWebToken(user);
-            return CreatedAtAction(nameof(getUser), new { id = user.Id, token = token,}, user);
+
+            var token = GenerateJSONWebToken(new UserToken() {
+                id = user.Id,
+                companyAlias = user.Company.companyAlias,
+                companyId = user.companyId,
+                email = user.login,
+                companyName = user.Company.companyName,
+                img = user.img,
+                name = "Unknown Unknown",
+                role = user.role 
+            });
+            return CreatedAtAction(nameof(getUser), new { id = user.Id, token = token}, user);
         }
         [Authorize]
         [HttpGet("{id}")]
@@ -67,7 +86,6 @@ namespace server.Controllers {
             return Ok(users);
         }
         [Authorize]
-        // !!!!
         [HttpPut("{id}")]
         public ActionResult<User> updateUser(int id, [FromBody] User user) {
             if (id != user.Id) {
@@ -119,7 +137,7 @@ namespace server.Controllers {
             return identity.FindFirst("companyId")!.Value;
         }
 
-        private string GenerateJSONWebToken(User user)
+        private string GenerateJSONWebToken(UserToken user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

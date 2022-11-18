@@ -2,6 +2,7 @@ import { createStore } from 'vuex';
 import { IUser, RolesEnum } from '@/models/IUser';
 import { defineStore } from 'pinia';
 import { LocalStorageItemEnum } from '@/types/LocalStorageItemEnum';
+import jwt_decode from 'jwt-decode';
 import {
     clientRoutes,
     companyRoutes,
@@ -10,6 +11,10 @@ import {
     publicRoutes,
 } from '@/router/router';
 import { useRouter, useRoute } from 'vue-router';
+
+export interface IAuth {
+    token: string;
+}
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -26,7 +31,10 @@ export const useAuthStore = defineStore('auth', {
             this.isAuth = false;
             this.setRoutes();
         },
-        loginActionStore(user: IUser) {
+        loginActionStore(auth: IAuth) {
+            console.log('response auth', auth);
+            const user = jwt_decode<IUser>(auth.token);
+            console.log('decoded', user);
             this.authUser = user;
             this.isAuth = true;
             this.setRoutes();

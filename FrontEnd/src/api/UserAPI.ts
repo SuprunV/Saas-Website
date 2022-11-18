@@ -55,6 +55,7 @@ export class UserAPI {
         );
 
         console.log(response);
+        return response.data;
         // return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
         //     let userIndex = this.demoUsers.findIndex((u) => u.email == email);
         //     if (userIndex >= 0) {

@@ -9,6 +9,7 @@ namespace server.Db
         public DataContext(DbContextOptions options) : base(options) {  }       
         public DbSet<User>? Users { get; set; }
         public DbSet<Client>? Clients { get; set; }
+        public DbSet<Admin>? Admins { get; set; } 
         public DbSet<Master>? Masters { get; set; } 
         public DbSet<Company>? Companies { get; set; } 
         public DbSet<Service>? Services { get; set; } 
@@ -26,20 +27,16 @@ namespace server.Db
             .HasForeignKey(x => x.companyId);
             
             mb.Entity<Company>().ToTable("Companies").HasKey(x => x.Id);
-        
             
             mb.Entity<MasterService>().ToTable("Master&Service")
             .HasKey(key => new { key.masterId, key.serviceId });
 
             mb.Entity<Client>().ToTable("Clients").HasKey(x => x.Id);
-            mb.Entity<Client>().HasOne(x => x.User)
-            .WithMany(x => x.Clients)
-            .HasForeignKey(x => x.userId);
+            mb.Entity<Client>().HasOne(x => x.User);
+            mb.Entity<Admin>().ToTable("Admins").HasOne(x => x.User);
             
             mb.Entity<Master>().ToTable("Masters").HasKey(x => x.Id);
-            mb.Entity<Master>().HasOne(x => x.User)
-            .WithMany(x => x.Masters)
-            .HasForeignKey(x => x.userId);
+            mb.Entity<Master>().HasOne(x => x.User);
 
             mb.Entity<Service>().ToTable("Services").HasKey(x => x.Id);
             mb.Entity<Service>().HasOne(x => x.Company)

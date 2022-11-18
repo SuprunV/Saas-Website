@@ -4,7 +4,7 @@ using server.Enums;
 
 namespace server.Models
 {
-    public class Client
+    public class Admin
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -12,13 +12,10 @@ namespace server.Models
         public string? surname { get; set; }
         public string? DoB { get; set; }
         public Gender gender { get; set; }
+        
         public int? userId { get; set; }
   
         [JsonIgnore]
         public virtual User? User { get; set; }
-        
-        [JsonIgnore]
-        public virtual ICollection<Appointment> AppointmentClient { get; set; } = new List<Appointment>();
-     
     }
 }
