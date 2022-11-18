@@ -94,6 +94,13 @@ export default defineComponent({
                             company.name
                         }}</router-link></a-menu-item
                     >
+                    <a-menu-item
+                        v-if="!isAuth"
+                        :key="`/${company.alias}/services`"
+                        ><router-link :to="`/${company.alias}/services`"
+                            >Our Services</router-link
+                        ></a-menu-item
+                    >
                 </a-menu>
             </a-col>
             <a-col :span="6">

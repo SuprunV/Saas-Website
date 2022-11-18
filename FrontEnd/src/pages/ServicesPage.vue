@@ -6,7 +6,8 @@ import BookingForm from '@/components/BookingForm.vue';
 import { useAuthStore } from '@/store/useAuth';
 import { storeToRefs } from 'pinia';
 import { ServiceAPI } from '@/api/ServiceAPI';
-
+import { useRoute, useRouter } from 'vue-router';
+import { useCompanyStore } from '@/store/useCompany';
 
 export default defineComponent({
     components: {
@@ -18,6 +19,7 @@ export default defineComponent({
         selectedService: {} as IService,
     }),
     setup() {
+        const route = useRoute();
         const changeRef = ref<any>(null);
         const isBookingModal = ref<boolean>(false);
         const validateMessages = {
@@ -36,17 +38,21 @@ export default defineComponent({
             console.log('or use this.value', value.value);
         };
 
-        const { authUser } = storeToRefs(useAuthStore());
+        const company = useCompanyStore();
+        const companyAlias = route.params['companyAlias'] as string;
 
         onMounted(async () => {
-            const services = await ServiceAPI.getPublicServices(
-                authUser.value.companyId,
-                limit.value,
-                page.value,
-            );
-            initLoading.value = false;
-            dataService.value = services;
-            servicesList.value = services;
+            if (companyAlias) {
+                const services = await ServiceAPI.getPublicServices(
+                    companyAlias,
+                    limit.value,
+                    page.value,
+                );
+                initLoading.value = false;
+                dataService.value = services;
+                servicesList.value = services;
+                company.setCompanyPage(companyAlias);
+            }
         });
 
         return {
@@ -70,7 +76,6 @@ export default defineComponent({
             this.isBookingModal = true;
             this.selectedService = service;
         },
-        
     },
 });
 const layout = {

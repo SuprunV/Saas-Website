@@ -10,6 +10,8 @@ namespace server.Models
         public string? date { get; set; }
 
         public int? clientId { get; set; }
+        public string? clientName {get; set;}
+        public string? clientEmail {get; set;}
         public int? serviceId { get; set; }
         public int masterId { get; set; }
 

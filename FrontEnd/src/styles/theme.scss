@@ -18,8 +18,8 @@ body > div {
     border: 5px solid #fff !important;
     padding: 20px 50px !important;
     box-shadow: $main-shadow !important;
-
     background-color: $black-color !important;
+    transition: height 1s linear;
 }
 
 .ant-layout-content {
@@ -107,7 +107,7 @@ body > div {
     font-size: 40px;
     transition: all 0.5s;
     border-radius: 10px 10px 10px 10px;
-    background-color:  #1f1f1f;
+    background-color: #1f1f1f;
     &:hover {
         animation-delay: 0.5s;
         animation: shake 0.5s infinite;

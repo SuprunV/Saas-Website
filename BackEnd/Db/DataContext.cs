@@ -62,6 +62,7 @@ namespace server.Db
                 {
                     Id = 1,
                     companyName = "BeautySalon",
+                    companyAlias = "myfircom",
                     address = "Maleva 6",
                     img = "https://img.freepik.com/free-vector/company-concept-illustration_114360-2581.jpg?w=2000",
                 

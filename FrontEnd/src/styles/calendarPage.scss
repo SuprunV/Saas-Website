@@ -1,12 +1,9 @@
-
-
 .ant-picker-calendar {
     border-radius: 10px 10px 10px 10px;
     background: #141414;
 }
 .ant-picker-calendar-full .ant-picker-panel {
     border-radius: 10px 10px 10px 10px;
-   
 }
 .ant-picker-cell:not(.ant-picker-cell-in-view) {
     color: gray;
@@ -15,7 +12,6 @@
 .ant-radio-button-wrapper:last-child {
     margin: 0;
     margin-right: 10px;
-    
 }
 
 .ant-select-arrow {
@@ -24,7 +20,6 @@
 
 .content {
     flex-direction: row;
-    
 }
 
 .calendar-sideblock {
@@ -92,6 +87,15 @@
 .ant-table-tbody > tr > td {
     border-bottom: 1px solid #303030;
     transition: $black-color 0.3s;
-    background:  #141414;
+    background: #141414;
     border-radius: 0px 0px 10px 10px;
+}
+
+.ant-picker-cell-disabled {
+    &::before {
+        border-radius: 10px;
+        margin: 0 auto;
+        max-width: 24px;
+        height: 24px;
+    }
 }

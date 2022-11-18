@@ -22,7 +22,7 @@ export enum AppRoutes {
     COMPANY_PAGE_SETTINGS = '/:companyAlias/settings',
     COMPANY_PAGE_CALENDAR = '/:companyAlias/calendar',
     COMPANY_PAGE_MANAGEMENT = '/:companyAlias/management',
-    COMPANY_PAGE_SERVICES = '/:companyAlias/services'
+    COMPANY_PAGE_SERVICES = '/:companyAlias/services',
 }
 
 export interface IRoute {
@@ -37,6 +37,12 @@ export const publicRoutes: IRoute[] = [
     { path: AppRoutes.AUTH, component: AuthPage, label: 'Authorization' },
     { path: AppRoutes.COMPANY_PAGE, component: CompanyPublicPage },
     { path: AppRoutes.COMPANY_PAGE_AUTH, component: AuthPage },
+    {
+        path: AppRoutes.COMPANY_PAGE_SERVICES,
+        component: ServicesPage,
+        label: 'Our service',
+        icon: IconsEnum.FieldTimeOutlined,
+    },
 ];
 
 export const clientRoutes: IRoute[] = [
@@ -63,7 +69,7 @@ export const clientRoutes: IRoute[] = [
         component: ServicesPage,
         label: 'Book service',
         icon: IconsEnum.FieldTimeOutlined,
-    }
+    },
 ];
 
 export const masterRoutes: IRoute[] = [

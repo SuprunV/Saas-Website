@@ -8,6 +8,7 @@ namespace server.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string? companyName { get; set; }
+        public string? companyAlias { get; set; }
         public string? address { get; set; }
    
         public string? img { get; set; }

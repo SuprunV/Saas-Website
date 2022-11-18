@@ -125,3 +125,27 @@ $time-fadeIn: 0.2s;
         opacity: 0;
     }
 }
+
+@keyframes stepLoading {
+    0% {
+        background: #2c4155;
+    }
+    50% {
+        background: #4d98dd;
+    }
+    100% {
+        background: #2c4155;
+    }
+}
+
+@keyframes shadowSizing {
+    0% {
+        box-shadow: 0px 0px 10px 5px $gold-color;
+    }
+    50% {
+        box-shadow: 0px 0px 20px 5px $gold-color;
+    }
+    100% {
+        box-shadow: 0px 0px 10px 5px $gold-color;
+    }
+}

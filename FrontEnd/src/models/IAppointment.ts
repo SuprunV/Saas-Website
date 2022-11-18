@@ -7,6 +7,7 @@ export interface IAppointment {
     serviceId: number;
     clientId: number;
     clientName?: string;
+    clientEmail?: string;
     master?: IMaster;
     serviceName?: string;
 }
