@@ -336,9 +336,9 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Clients count must be 4\", function () {\r",
+									"pm.test(\"Clients count must be 3\", function () {\r",
 									"    var users = pm.response.json();\r",
-									"    pm.expect(users.length).to.be.equal(4); \r",
+									"    pm.expect(users.length).to.be.equal(3); \r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -963,8 +963,8 @@
 									"\r",
 									"pm.test(\"Clients in company\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0].id).to.be.equal(1); \r",
-									"    pm.expect(jsonData[1].id).to.be.equal(2); \r",
+									"    pm.expect(jsonData[0].id).to.be.equal(2); \r",
+									"  \r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -985,14 +985,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/Company/1/clients",
+							"raw": "{{url}}/api/Company/2/clients",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"Company",
-								"1",
+								"2",
 								"clients"
 							]
 						}
