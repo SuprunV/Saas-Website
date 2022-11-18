@@ -4,4 +4,10 @@ export interface ICompany {
     name: string;
     alias: string;
 }
-    
+
+export interface IRegForm {
+    companyName: string;
+    companyAlias: string;
+    username: string;
+    password: string;
+}

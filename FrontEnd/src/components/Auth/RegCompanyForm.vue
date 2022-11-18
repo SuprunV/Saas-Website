@@ -57,13 +57,6 @@ export default defineComponent({
         autocomplete="off"
         @finish="onFinish"
     >
-        <a-form-item label="Register as: ">
-            <a-radio-group v-model:value="formState.role">
-                <a-radio value="CLIENT">Client</a-radio>
-                <a-radio value="MASTER">Master</a-radio>
-            </a-radio-group>
-        </a-form-item>
-
         <a-form-item
             label="Email"
             name="usernamePart"

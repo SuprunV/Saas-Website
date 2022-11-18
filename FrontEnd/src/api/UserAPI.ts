@@ -1,9 +1,8 @@
 import { $host } from '@/config';
+import { IRegForm } from '@/models/ICompany';
 import { IUser, RolesEnum } from '@/models/IUser';
 import { LocalStorageItemEnum } from '@/types/LocalStorageItemEnum';
 import axios from 'axios';
-import { stringify } from 'querystring';
-
 const companyImgUrl =
     'https://static8.depositphotos.com/1378583/1010/i/600/depositphotos_10108949-stock-photo-blue-flame-logo.jpg';
 const clientImgUrl =
@@ -54,6 +53,14 @@ export class UserAPI {
             { login: email, password },
         );
 
+        localStorage.setItem(LocalStorageItemEnum.token, response.data.token);
+        return response.data;
+    }
+    static async registeCompany(regForm: IRegForm) {
+        const response = await axios.post<ITokenResponse>(
+            `${$host}/user/reg-company`,
+            regForm,
+        );
         localStorage.setItem(LocalStorageItemEnum.token, response.data.token);
         return response.data;
     }

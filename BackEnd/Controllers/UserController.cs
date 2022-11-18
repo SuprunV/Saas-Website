@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
+using BackEnd.DTO;
 
 namespace server.Controllers {
  
@@ -69,6 +70,47 @@ namespace server.Controllers {
             });
             return CreatedAtAction(nameof(getUser), new { id = user.Id, token = token}, user);
         }
+        [HttpPost("reg-company")]
+        public ActionResult<User> CreateUser([FromBody] RegCompanyDTO company) {
+            if(UserExists(null, company.username) && _context.Companies.Any(x => x.companyName == company.companyName) &&  _context.Companies.Any(x => x.companyAlias == company.companyAlias)) {
+                return BadRequest("This user is already registred");
+            }
+
+            var companyData = new Company() {
+                Id = 0,
+                companyAlias = company.companyAlias,
+                companyName = company.companyName
+            };
+            
+            
+            _context.Companies!.Add(companyData);
+            _context.SaveChanges();
+
+            var dbCompany = _context.Companies.First(c => c.companyAlias == companyData.companyAlias && c.address == companyData.address && c.companyName == companyData.companyName);
+
+            var userData = new User() {
+                Id = 0,
+                login = company.username,
+                password = company.password,
+                companyId = dbCompany.Id,
+                role = Role.ADMIN
+            };
+            _context.Users!.Add(userData);
+            _context.SaveChanges();
+
+            var token = GenerateJSONWebToken(new UserToken() {
+                id = userData.Id,
+                companyAlias = userData.Company.companyAlias,
+                companyId = userData.companyId,
+                email = userData.login,
+                companyName = userData.Company.companyName,
+                img = userData.img,
+                name = "Unknown Unknown",
+                role = userData.role 
+            });
+            return Ok(new { token = token });
+        }
+        
         [Authorize]
         [HttpGet("{id}")]
         public ActionResult<User> getUser(int id) {
@@ -132,8 +174,7 @@ namespace server.Controllers {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             return identity.FindFirst("roleId")!.Value;
         }
-             private string  GetCompanyId()
-        {
+        private string  GetCompanyId(){
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             return identity.FindFirst("companyId")!.Value;
         }
@@ -146,7 +187,7 @@ namespace server.Controllers {
             var claims = new List<Claim>();
 
             foreach(var keyPair in DictionaryFromType(user)) {
-                claims.Add(new Claim(keyPair.Key.ToString(), keyPair.Value.ToString()));
+                claims.Add(new Claim(keyPair.Key.ToString(), keyPair.Value?.ToString() ?? ""));
             }
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],

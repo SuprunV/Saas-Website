@@ -50,6 +50,7 @@ export default defineComponent({
     methods: {
         async login(values: any) {
             await this.loginAsync(values.email, values.password);
+            
             if (this.message.type == ResponseTypeEnum.SUCCESS) {
                 setTimeout(() => {
                     this.loginActionStore(this.authUser);
