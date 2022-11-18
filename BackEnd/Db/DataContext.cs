@@ -159,7 +159,7 @@ namespace server.Db
                 {
                     Id = 1,
                     login = "LinaM",
-                    password =  "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
+                    password =  "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.Master,
                     img = "",
                     companyId = 2
@@ -169,7 +169,7 @@ namespace server.Db
                 {
                     Id = 6,
                     login = "KristinaK",
-                    password = "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
+                    password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.Master,
                     img = "",
                     companyId = 1
@@ -179,7 +179,7 @@ namespace server.Db
                 {
                     Id = 2,
                     login = "RonaldK",
-                    password = "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
+                    password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.Client,
                     img = "",
                     companyId = 1
@@ -188,7 +188,7 @@ namespace server.Db
                 {
                     Id = 5,
                     login = "MariP",
-                    password = "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
+                    password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.Client,
                     img = "",
                     companyId = 2
@@ -197,7 +197,7 @@ namespace server.Db
                 {
                     Id = 3,
                     login = "BeautySalonAdmin",
-                    password = "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
+                    password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.Admin,
                     img = "",
                     companyId = 1
@@ -207,7 +207,7 @@ namespace server.Db
                 {
                     Id = 4,
                     login = "MassageSalonAdmin",
-                    password = "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
+                    password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.Admin,
                     img = "",
                     companyId = 2

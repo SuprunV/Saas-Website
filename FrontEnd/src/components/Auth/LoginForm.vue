@@ -58,15 +58,15 @@ export default defineComponent({
             }
         },
         putDemoData() {
-            this.formState.email = 'admin@myfircom.com';
+            this.formState.email = 'BeautySalonAdmin';
             this.formState.password = '123';
         },
         putDemoClient() {
-            this.formState.email = 'eren-yeager@myfircom.com';
+            this.formState.email = 'RonaldK';
             this.formState.password = '123';
         },
         putDemoMaster() {
-            this.formState.email = 'levi-ackerman@myfircom.com';
+            this.formState.email = 'KristinaK';
             this.formState.password = '123';
         },
     },

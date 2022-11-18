@@ -30,7 +30,7 @@ namespace server.Controllers {
             var dbUser = _context.Users!.FirstOrDefault(user => user.login == login.login);
 
             if (dbUser == null) return NotFound();
-            var test = HashPassword(dbUser.password);
+            var test = HashPassword(login.password);
             if (dbUser.password != HashPassword(login.password)) return Unauthorized();
 
             var token = GenerateJSONWebToken(dbUser);
