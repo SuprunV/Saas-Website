@@ -36,7 +36,7 @@ export default defineComponent({
 
         onMounted(async () => {
             const services = await ServiceAPI.getPublicServices(
-                auth.authUser.companyId,
+                auth.authUser.companyAlias,
                 limit.value,
                 page.value,
             );
