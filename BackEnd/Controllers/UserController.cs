@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 
 namespace server.Controllers {
  
@@ -142,9 +143,15 @@ namespace server.Controllers {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
+            var claims = new List<Claim>();
+
+            foreach(var keyPair in DictionaryFromType(user)) {
+                claims.Add(new Claim(keyPair.Key.ToString(), keyPair.Value.ToString()));
+            }
+
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
               _config["Jwt:Issuer"],
-              new List<Claim> { new Claim("roleId", user.role.ToString(),"companyId",user.companyId.ToString())},
+              claims,
               expires: DateTime.Now.AddMinutes(30),
               signingCredentials: credentials);
 
@@ -154,5 +161,18 @@ namespace server.Controllers {
         private bool UserExists(int? id, string? login = null) {
             return _context.Users!.Any(u => (id != null && u.Id == id) || (login != null && u.login == login));
         }
+
+        private static Dictionary<string, object> DictionaryFromType(object atype) {
+            if (atype == null) return new Dictionary<string, object>();
+            Type t = atype.GetType();
+            PropertyInfo[] props = t.GetProperties();
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            foreach (PropertyInfo prp in props)
+            {
+                object value = prp.GetValue(atype, new object[]{});
+                dict.Add(prp.Name, value);
+            }
+            return dict;
+}
     }
 }
