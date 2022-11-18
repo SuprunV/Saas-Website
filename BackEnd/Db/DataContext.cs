@@ -190,7 +190,7 @@ namespace server.Db
                     password = "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
                     role = Role.Client,
                     img = "",
-                    companyId = 1
+                    companyId = 2
                 },
                 new User
                 {
