@@ -45,6 +45,17 @@ export class UserAPI {
             companyAlias: 'myfircom',
             companyId: 1,
         },
+        {
+            id : 4,
+            name : 'Kristina K',
+            email : "KristinaK@gmail.com",
+            role : RolesEnum.MASTER, 
+            img: masterImgUrl,
+            companyName: 'My First Company',
+            companyAlias: 'myfircom',
+            companyId: 1,
+   
+        },
     ];
 
     static async login(loginForm: IRegClientForm) {

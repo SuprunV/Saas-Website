@@ -161,7 +161,7 @@ namespace server.Db
                     password =  "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.MASTER,
                     img = "",
-                    companyId = 2
+                    companyId = 1
            
                 },
                 new User

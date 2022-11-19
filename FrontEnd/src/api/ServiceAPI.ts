@@ -26,19 +26,34 @@ export class ServiceAPI {
             return [];
         }
 
-        // return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-        //     // create fake services
-        //     // limit is 5. page is 1. neede to get 1,2,3,4,5
-        //     // limit is 5. page is 2. neede to get 6,7,8,9,10
-        //     const count = limit * page;
-        //     let services: IService[] = [];
-        //     for (let i = (page - 1) * limit + 1; i <= count; i++) {
-        //         var demoService = this.demoServices[i % 3];
-        //         services.push({ ...demoService, id: i });
-        //     }
-        //     return services;
-        // });
-    }
+    //     // return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
+    //     //     // create fake services
+    //     //     // limit is 5. page is 1. neede to get 1,2,3,4,5
+    //     //     // limit is 5. page is 2. neede to get 6,7,8,9,10
+    //     //     const count = limit * page;
+    //     //     let services: IService[] = [];
+    //     //     for (let i = (page - 1) * limit + 1; i <= count; i++) {
+    //     //         var demoService = this.demoServices[i % 3];
+    //     //         services.push({ ...demoService, id: i });
+    //     //     }
+    //     //     return services;
+    //     // });
+     }
+
+     static async postPublicServices(
+            companyAlias: string,
+            limit: number,
+            page: number,
+        ): Promise<IService[]> {
+            try {
+                const response = await $host.delete<IService[]>(
+                    `/company/alias-${companyAlias}/services`,
+                );
+                return response.request;
+            } catch (e) {
+                return [];
+            }
+        }
     static getServiceById(id: number): Promise<IService> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
             // const serviceIndex = this.demoServices.findIndex(

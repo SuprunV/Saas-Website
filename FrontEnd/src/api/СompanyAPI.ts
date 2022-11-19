@@ -53,10 +53,12 @@ export class CompanyAPI {
         });
     }
 
+  
+
     static async getCompanyMasters(companyId: number): Promise<IMaster[]> {
         try {
             const response = await $host.get<IMaster[]>(
-                `/company/${companyId}/masters`,
+                `/Company/${companyId}/masters`,
             );
             console.log('masters', response.data);
             return response.data;
@@ -75,6 +77,18 @@ export class CompanyAPI {
         //     }
         //     return companies;
         // });
+    }
+
+    static async postCompanyMasters(companyId: number): Promise<IMaster[]> {
+        try {
+            const response = await $host.post<IMaster[]>(
+                `/Company/${companyId}/masters`,
+            );
+            console.log('masters', response.data);
+            return response.data;
+        } catch (e) {
+            return [];
+        }
     }
     static getCompanyById(id: number): Promise<ICompany> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
