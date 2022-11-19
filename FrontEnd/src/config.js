@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { LocalStorageItemEnum } from './types/LocalStorageItemEnum';
 
 export let $baseUrl = '';
 

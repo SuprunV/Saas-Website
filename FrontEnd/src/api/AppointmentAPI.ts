@@ -1,19 +1,15 @@
-import { $host } from '@/config';
+import { $authHost, $host } from '@/config';
 import { IAppointment } from '@/models/IAppointment';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
 export class AppointmentAPI {
     static async getEvents(selectedDate: Date): Promise<IAppointment[]> {
-        try {
-            const date = selectedDate.toISOString().split('T')[0];
-            const response = await $host.get<IAppointment[]>(
-                `/appointment/${date}/events`,
-            );
-            console.log('appointments', response.data);
-            return response.data;
-        } catch (e) {
-            return [];
-        }
+        const date = selectedDate.toISOString().split('T')[0];
+        const response = await $authHost.get<IAppointment[]>(
+            `/appointment/${date}/events`,
+        );
+        console.log('appointments', response.data);
+        return response.data;
 
         /*         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
             var selectedEvents: IAppointment[] = [];
@@ -59,7 +55,7 @@ export class AppointmentAPI {
         year: number,
     ): Promise<IAppointment[]> {
         try {
-            const response = await $host.get<IAppointment[]>(
+            const response = await $authHost.get<IAppointment[]>(
                 `/appointment/eventsByMonthAndYear?month=${month.toString()}&year=${year.toString()}`,
             );
 
