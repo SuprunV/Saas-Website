@@ -16,6 +16,7 @@ export default defineComponent({
         const auth = useAuthStore();
 
         const { authUser } = storeToRefs(auth);
+        
 
         return { authUser };
     },

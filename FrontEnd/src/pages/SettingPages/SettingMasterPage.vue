@@ -1,6 +1,7 @@
 <script lang="ts">
 import { useAuthStore } from '@/store/useAuth';
 import { storeToRefs } from 'pinia';
+import { UserAPI } from '@/api/UserAPI';
 import { defineComponent, reactive, ref } from 'vue';
 import MasterSettingForm from '@/components/MasterSettingForm.vue';
 import { LikeOutlined } from '@ant-design/icons-vue';

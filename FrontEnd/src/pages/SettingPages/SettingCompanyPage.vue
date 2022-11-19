@@ -2,6 +2,7 @@
 import { defineComponent, reactive, ref } from 'vue';
 import { useCompanyStore } from '@/store/useCompany';
 import { storeToRefs } from 'pinia';
+import { UserAPI } from '@/api/UserAPI';
 import { LikeOutlined } from '@ant-design/icons-vue';
 import CompanySettingForm from '@/components/CompanySettingForm.vue';
 
