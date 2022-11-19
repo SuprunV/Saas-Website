@@ -5,7 +5,7 @@ export interface ICompany {
     alias: string;
 }
 
-export interface IRegForm {
+export interface IRegCompanyForm {
     companyName: string;
     companyAlias: string;
     username: string;

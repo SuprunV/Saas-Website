@@ -1,6 +1,6 @@
 import { $host } from '@/config';
-import { IRegForm } from '@/models/ICompany';
-import { IUser, RolesEnum } from '@/models/IUser';
+import { IRegCompanyForm } from '@/models/ICompany';
+import { IRegClientForm, IUser, RolesEnum } from '@/models/IUser';
 import { LocalStorageItemEnum } from '@/types/LocalStorageItemEnum';
 import axios from 'axios';
 const companyImgUrl =
@@ -56,9 +56,19 @@ export class UserAPI {
         localStorage.setItem(LocalStorageItemEnum.token, response.data.token);
         return response.data;
     }
-    static async registeCompany(regForm: IRegForm) {
+    static async registeCompany(regForm: IRegCompanyForm) {
         const response = await axios.post<ITokenResponse>(
             `${$host}/user/reg-company`,
+            regForm,
+        );
+        localStorage.setItem(LocalStorageItemEnum.token, response.data.token);
+        return response.data;
+    }
+
+    static async registeUser(regForm: IRegClientForm) {
+        console.log('regForm to post', regForm);
+        const response = await axios.post<ITokenResponse>(
+            `${$host}/user/reg-client`,
             regForm,
         );
         localStorage.setItem(LocalStorageItemEnum.token, response.data.token);

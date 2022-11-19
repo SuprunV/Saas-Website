@@ -49,29 +49,39 @@ namespace server.Controllers {
             return Ok(new {token = token});
         }
 
-        [HttpPost("reg")]
-        public ActionResult<User> CreateUser([FromBody] User user) {
-            if(UserExists(null, user.login)) {
+        [HttpPost("reg-client")]
+        public ActionResult<User> RegistrateClient([FromBody] RegClientDTO user) {
+            if(_context.Users.Any(u => u.login == user.email && u.companyId == user.companyId)) {
                 return BadRequest("This user is already registred");
             }
 
-            _context.Users!.Add(user);
+            var newUser = new User() {
+                Id = 0,
+                login = user.email,
+                password = HashPassword(user.password),
+                companyId = user.companyId,
+                role = Role.CLIENT
+            };
+
+            _context.Users!.Add(newUser);
             _context.SaveChanges();
 
-            var token = GenerateJSONWebToken(new UserToken() {
-                id = user.Id,
-                companyAlias = user.Company.companyAlias,
-                companyId = user.companyId,
-                email = user.login,
-                companyName = user.Company.companyName,
-                img = user.img,
-                name = "Unknown Unknown",
-                role = user.role 
-            });
-            return CreatedAtAction(nameof(getUser), new { id = user.Id, token = token}, user);
+            var dbClient = _context.Users.First(c => c.login == user.email && c.companyId== user.companyId);
+            var userToken = new UserToken() {
+                id = dbClient.Id,
+                companyAlias = dbClient?.Company?.companyAlias ?? "",
+                companyId = dbClient?.companyId,
+                email = dbClient?.login,
+                companyName = dbClient?.Company?.companyName,
+                img = dbClient?.img,
+                name = $"Unknown",
+                role = dbClient?.role ?? Role.CLIENT 
+            };
+            var token = GenerateJSONWebToken(userToken);
+            return Ok(new { token = token});
         }
         [HttpPost("reg-company")]
-        public ActionResult<User> CreateUser([FromBody] RegCompanyDTO company) {
+        public ActionResult<User> RegistrateCompany([FromBody] RegCompanyDTO company) {
             if(UserExists(null, company.username) && _context.Companies.Any(x => x.companyName == company.companyName) &&  _context.Companies.Any(x => x.companyAlias == company.companyAlias)) {
                 return BadRequest("This user is already registred");
             }
@@ -91,7 +101,7 @@ namespace server.Controllers {
             var userData = new User() {
                 Id = 0,
                 login = company.username,
-                password = company.password,
+                password = HashPassword(company.password),
                 companyId = dbCompany.Id,
                 role = Role.ADMIN
             };
@@ -105,7 +115,7 @@ namespace server.Controllers {
                 email = userData.login,
                 companyName = userData.Company.companyName,
                 img = userData.img,
-                name = "Unknown Unknown",
+                name = $"Admin: {userData.Company.companyName}",
                 role = userData.role 
             });
             return Ok(new { token = token });

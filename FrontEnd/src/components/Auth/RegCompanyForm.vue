@@ -1,48 +1,56 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 import { validWord } from '@/services/validWord';
-import { RolesEnum } from '@/models/IUser';
+import { useFetching } from '@/hooks/useFetching';
+import axios from 'axios';
+import { UserAPI } from '@/api/UserAPI';
+import { useAuthStore } from '@/store/useAuth';
+import { ResponseTypeEnum } from '@/types/FetchResponse';
+import { storeToRefs } from 'pinia';
+import { IRegCompanyForm } from '@/models/ICompany';
 
-interface FormState {
-    companyName: string;
-    usernamePart: string;
-    emailPart: string;
-    password: string;
-    role: RolesEnum;
-}
 export default defineComponent({
-    props: {
-        alias: {
-            required: true,
-            type: String,
-        },
-    },
     setup() {
-        const formState = reactive<FormState>({
-            companyName: '',
-            usernamePart: '',
-            emailPart: '@',
-            password: '',
-            role: RolesEnum.CLIENT,
+        const auth = useAuthStore();
+        const { authUser } = storeToRefs(auth);
+
+        const {
+            isLoading,
+            fetchData: regAsync,
+            message,
+            response: userToken,
+        } = useFetching(async (formState) => {
+            const user = await UserAPI.registeCompany(formState);
+            return user;
         });
 
-        const onFinish = (values: any) => {
-            console.log(values);
-        };
+        const formState = reactive<IRegCompanyForm>({
+            companyName: '',
+            companyAlias: '',
+            username: '',
+            password: '',
+        });
+
         return {
             formState,
-            onFinish,
+            regAsync,
+            message,
+            isLoading,
+            authUser,
+            userToken,
+            loginActionStore: auth.loginActionStore,
         };
     },
-    mounted() {
-        this.formState.emailPart = `@${this.alias}.com`;
-    },
-    computed: {
-        okayFormState() {
-            this.formState.usernamePart = this.formState.usernamePart
-                .replace(' ', '_')
-                .substring(0);
-            return this.formState;
+    methods: {
+        async onFinish(values: any) {
+            await this.regAsync(this.formState);
+            console.log('response', this.userToken, this.message);
+            if (this.message.type == ResponseTypeEnum.SUCCESS) {
+                setTimeout(() => {
+                    this.loginActionStore(this.userToken);
+                    this.$router.push(`/${this.authUser.companyAlias}`);
+                }, 3000);
+            }
         },
     },
 });
@@ -57,19 +65,40 @@ export default defineComponent({
         autocomplete="off"
         @finish="onFinish"
     >
+        <response-alert :message="message" :isLoading="isLoading" />
         <a-form-item
-            label="Email"
-            name="usernamePart"
-            :rules="[{ required: true, message: 'Please input your email!' }]"
+            label="Company Name"
+            name="companyName"
+            :rules="[
+                {
+                    required: true,
+                    message: 'Please input name of your company!',
+                },
+            ]"
         >
-            <a-row>
-                <a-col :span="14">
-                    <a-input v-model:value="okayFormState.usernamePart" />
-                </a-col>
-                <a-col :span="10" class="sub-elem">
-                    <span>{{ okayFormState.emailPart }}</span>
-                </a-col>
-            </a-row>
+            <a-input v-model:value="formState.companyName" />
+        </a-form-item>
+        <a-form-item
+            label="Company Alias (url)"
+            name="companyAlias"
+            :rules="[
+                {
+                    required: true,
+                    message: 'Please input name of your company!',
+                },
+            ]"
+        >
+            <a-input v-model:value="formState.companyAlias" />
+        </a-form-item>
+
+        <a-form-item
+            label="Username"
+            name="username"
+            :rules="[
+                { required: true, message: 'Please input your username!' },
+            ]"
+        >
+            <a-input v-model:value="formState.username" />
         </a-form-item>
 
         <a-form-item

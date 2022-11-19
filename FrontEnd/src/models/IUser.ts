@@ -19,3 +19,9 @@ export enum GenderEnum {
     Female = 'Female',
     Male = 'MaleY',
 }
+
+export interface    IRegClientForm {
+    companyId: number;
+    email: string;
+    password: string;
+}
