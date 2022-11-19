@@ -81,12 +81,12 @@ export const useAuthStore = defineStore('auth', {
             });
 
             if (!pathExists.length && this.redirectRoute.path) {
-                console.log(
-                    'FROM ',
-                    path,
-                    ' REDIRECT TO ',
-                    this.redirectRoute.path,
-                );
+                // console.log(
+                //     'FROM ',
+                //     path,
+                //     ' REDIRECT TO ',
+                //     this.redirectRoute.path,
+                // );
                 router.push(this.redirectRoute.path);
             }
         },

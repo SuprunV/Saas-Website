@@ -17,11 +17,6 @@ export default defineComponent({
 
         const route = useRoute();
 
-        console.log(
-            'companyAlias in public page component',
-            route.params['companyAlias'],
-        );
-
         companyStore.setCompanyPage();
 
         return { company, removeCompanyPage: companyStore.removeCompanyPage };

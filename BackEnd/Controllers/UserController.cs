@@ -66,7 +66,7 @@ namespace server.Controllers {
             _context.Users!.Add(newUser);
             _context.SaveChanges();
 
-            var dbClient = _context.Users.First(c => c.login == user.login && c.companyId== user.companyId);
+            var dbClient = _context.Users.Include(u => u.Company).First(c => c.login == user.login && c.companyId== user.companyId);
             var userToken = new UserToken() {
                 id = dbClient.Id,
                 companyAlias = dbClient?.Company?.companyAlias ?? "",
@@ -110,12 +110,12 @@ namespace server.Controllers {
 
             var token = GenerateJSONWebToken(new UserToken() {
                 id = userData.Id,
-                companyAlias = userData.Company.companyAlias,
+                companyAlias = company.companyAlias,
                 companyId = userData.companyId,
                 email = userData.login,
-                companyName = userData.Company.companyName,
+                companyName = company.companyName,
                 img = userData.img,
-                name = userData.Company.companyName,
+                name = company.companyName,
                 role = userData.role 
             });
             return Ok(new { token = token });
