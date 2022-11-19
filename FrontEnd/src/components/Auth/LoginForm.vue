@@ -5,6 +5,7 @@ import { IUser, RolesEnum } from '@/models/IUser';
 import { AppRoutes } from '@/router/router';
 import { useAuthStore } from '@/store/useAuth';
 import { ResponseTypeEnum } from '@/types/FetchResponse';
+import { storeToRefs } from 'pinia';
 import { defineComponent, reactive } from 'vue';
 
 interface FormState {
@@ -21,13 +22,14 @@ export default defineComponent({
     },
     watch: {},
     setup() {
-        const { loginActionStore } = useAuthStore();
+        const auth = useAuthStore();
+        const { authUser } = storeToRefs(auth);
 
         const {
             isLoading,
             fetchData: loginAsync,
             message,
-            response,
+            response: userToken,
         } = useFetching(async (email: string, password: string) => {
             const user = await UserAPI.login(email, password);
             return user;
@@ -43,17 +45,19 @@ export default defineComponent({
             loginAsync,
             message,
             isLoading,
-            authUser: response,
-            loginActionStore,
+            userToken,
+            authUser,
+            loginActionStore: auth.loginActionStore,
         };
     },
     methods: {
         async login(values: any) {
             await this.loginAsync(values.email, values.password);
-            
+
             if (this.message.type == ResponseTypeEnum.SUCCESS) {
                 setTimeout(() => {
-                    this.loginActionStore(this.authUser);
+                    this.loginActionStore(this.userToken);
+                    console.log('authUser after store login', this.authUser);
                     this.$router.push(`/${this.authUser.companyAlias}`);
                 }, 3000);
             }

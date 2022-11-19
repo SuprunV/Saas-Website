@@ -15,6 +15,13 @@ export default defineComponent({
         const companyStore = useCompanyStore();
         const { company } = storeToRefs(companyStore);
 
+        const route = useRoute();
+
+        console.log(
+            'companyAlias in public page component',
+            route.params['companyAlias'],
+        );
+
         companyStore.setCompanyPage();
 
         return { company, removeCompanyPage: companyStore.removeCompanyPage };
