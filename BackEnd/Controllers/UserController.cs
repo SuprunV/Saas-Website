@@ -82,7 +82,7 @@ namespace server.Controllers {
         }
         [HttpPost("reg-company")]
         public ActionResult<User> RegistrateCompany([FromBody] RegCompanyDTO company) {
-            if(UserExists(null, company.username) && _context.Companies.Any(x => x.companyName == company.companyName) &&  _context.Companies.Any(x => x.companyAlias == company.companyAlias)) {
+            if(UserExists(null, company.username) && _context.Companies.Any(x => x.companyName == company.companyName) ||  _context.Companies.Any(x => x.companyAlias == company.companyAlias)) {
                 return BadRequest("This user is already registred");
             }
 
@@ -115,7 +115,7 @@ namespace server.Controllers {
                 email = userData.login,
                 companyName = userData.Company.companyName,
                 img = userData.img,
-                name = $"Admin: {userData.Company.companyName}",
+                name = userData.Company.companyName,
                 role = userData.role 
             });
             return Ok(new { token = token });
