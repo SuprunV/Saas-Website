@@ -51,13 +51,13 @@ namespace server.Controllers {
 
         [HttpPost("reg-client")]
         public ActionResult<User> RegistrateClient([FromBody] RegClientDTO user) {
-            if(_context.Users.Any(u => u.login == user.email && u.companyId == user.companyId)) {
+            if(_context.Users.Any(u => u.login == user.login && u.companyId == user.companyId)) {
                 return BadRequest("This user is already registred");
             }
 
             var newUser = new User() {
                 Id = 0,
-                login = user.email,
+                login = user.login,
                 password = HashPassword(user.password),
                 companyId = user.companyId,
                 role = Role.CLIENT
@@ -66,7 +66,7 @@ namespace server.Controllers {
             _context.Users!.Add(newUser);
             _context.SaveChanges();
 
-            var dbClient = _context.Users.First(c => c.login == user.email && c.companyId== user.companyId);
+            var dbClient = _context.Users.First(c => c.login == user.login && c.companyId== user.companyId);
             var userToken = new UserToken() {
                 id = dbClient.Id,
                 companyAlias = dbClient?.Company?.companyAlias ?? "",

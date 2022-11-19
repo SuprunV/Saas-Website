@@ -79,7 +79,7 @@ export default defineComponent({
         <response-alert :message="message" :isLoading="isLoading" />
         <a-form-item
             label="Email"
-            name="email"
+            name="login"
             :rules="[
                 {
                     required: true,

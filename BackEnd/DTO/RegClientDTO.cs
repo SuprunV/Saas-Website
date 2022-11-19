@@ -8,7 +8,7 @@ namespace BackEnd.DTO
     public class RegClientDTO
     {
         public int companyId {get; set;}
-        public string email {get; set;}
+        public string login {get; set;}
         public string password {get; set;}
     }
 }
