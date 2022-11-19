@@ -11,7 +11,7 @@ export interface IUser {
 
 export enum RolesEnum {
     CLIENT = 'CLIENT',
-    COMPANY = 'COMPANY',
+    COMPANY = 'ADMIN',
     MASTER = 'MASTER',
 }
 

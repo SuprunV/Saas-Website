@@ -33,7 +33,7 @@ export const useCompanyStore = defineStore('company', {
                         type: ResponseTypeEnum.SUCCESS,
                     };
                 } catch (e: any) {
-                    console.log(e.message, alias);
+                    console.log('MESSAGE', e.message, alias);
                     this.company = {} as ICompany;
                     this.message = {
                         message: e.message,
