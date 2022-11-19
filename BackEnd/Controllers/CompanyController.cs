@@ -5,7 +5,6 @@ using server.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace server.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CompanyController: ControllerBase
@@ -146,6 +145,7 @@ namespace server.Controllers
             
             
         }
+        [Authorize]
         [HttpPut("{companyId}")]
         public IActionResult UpdateCompany(int companyId, Company company)
         {
@@ -164,6 +164,7 @@ namespace server.Controllers
 
             return Ok(company);
         }
+        [Authorize]
         [HttpDelete("{companyId}")]
         public ActionResult<Company> DeleteCompany(int companyId)
         {

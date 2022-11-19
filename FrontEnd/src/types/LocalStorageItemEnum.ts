@@ -1,3 +1,4 @@
 export enum LocalStorageItemEnum {
-    userJson = "userJson",
+    userJson = 'userJson',
+    token = 'token',
 }

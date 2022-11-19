@@ -19,7 +19,7 @@ export const useCompanyStore = defineStore('company', {
         async setCompanyPage(alias: string = '') {
             const route = useRoute();
             alias = alias ? alias : (route.params['companyAlias'] as string);
-            console.log(this.company.alias, alias);
+            console.log('companyAlias in store', this.company.alias, alias);
 
             if (this.company.alias !== alias) {
                 const router = useRouter();
@@ -33,7 +33,7 @@ export const useCompanyStore = defineStore('company', {
                         type: ResponseTypeEnum.SUCCESS,
                     };
                 } catch (e: any) {
-                    console.log(e.message, alias);
+                    console.log('MESSAGE', e.message, alias);
                     this.company = {} as ICompany;
                     this.message = {
                         message: e.message,

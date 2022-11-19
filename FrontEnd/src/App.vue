@@ -29,6 +29,7 @@ import { useAuthStore } from './store/useAuth';
 import { storeToRefs } from 'pinia';
 import { useCompanyStore } from './store/useCompany';
 import { useThemeStore } from './store/useTheme';
+import { useRoute, useRouter } from 'vue-router';
 
 export default defineComponent({
     data: () => ({
@@ -36,25 +37,46 @@ export default defineComponent({
     }),
     setup() {
         const auth = useAuthStore();
-        const { isAuth } = storeToRefs(auth);
+        const { isAuth, authUser } = storeToRefs(auth);
         const companyStore = useCompanyStore();
         const { isTotalLoading } = useThemeStore();
 
-        auth.setRoutes();
         auth.checkLoginStore();
-        auth.hasAccess();
 
         return {
             collapsed: ref<boolean>(false),
             isAuth,
             companyStore,
             isTotalLoading,
+            auth,
+            authUser,
         };
     },
     watch: {
-        isAuth() {
-            console.log('is Auth changes');
-            this.uniqAppKey += 1;
+        // isAuth() {
+        //     const companyAlias = this.authUser.companyAlias
+        //         ? this.authUser.companyAlias
+        //         : (this.$route.params['companyAlias'] as string);
+        //     this.auth.checkLoginStore().then(() => {
+        //         this.auth.setRoutes(companyAlias).then(() => {
+        //             this.auth.hasAccess(this.$route.path, this.$router);
+        //         });
+        //     });
+        // },
+        $route(to, from) {
+            console.log('authUser', this.authUser);
+            const companyAlias = this.authUser.companyAlias
+                ? this.authUser.companyAlias
+                : to.params['companyAlias'];
+
+            this.auth.checkLoginStore().then(() => {
+                this.auth.setRoutes(companyAlias).then(() => {
+                    this.auth.hasAccess(to.path, this.$router);
+                });
+            });
+
+            this.$forceUpdate();
+            this.uniqAppKey++;
         },
     },
     components: {

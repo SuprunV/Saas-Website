@@ -55,8 +55,8 @@ export class CompanyAPI {
 
     static async getCompanyMasters(companyId: number): Promise<IMaster[]> {
         try {
-            const response = await axios.get<IMaster[]>(
-                `${$host}/company/${companyId}/masters`,
+            const response = await $host.get<IMaster[]>(
+                `/company/${companyId}/masters`,
             );
             console.log('masters', response.data);
             return response.data;

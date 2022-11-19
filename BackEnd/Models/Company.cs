@@ -10,9 +10,8 @@ namespace server.Models
         public string? companyName { get; set; }
         public string? companyAlias { get; set; }
         public string? address { get; set; }
-   
         public string? img { get; set; }
-        
+
         [JsonIgnore]
         public virtual ICollection<User> CompanyUsers { get; set; } = new List<User>();
         [JsonIgnore]

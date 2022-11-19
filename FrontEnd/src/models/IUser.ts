@@ -11,11 +11,17 @@ export interface IUser {
 
 export enum RolesEnum {
     CLIENT = 'CLIENT',
-    COMPANY = 'COMPANY',
+    COMPANY = 'ADMIN',
     MASTER = 'MASTER',
 }
 
 export enum GenderEnum {
     Female = 'Female',
     Male = 'MaleY',
+}
+
+export interface IRegClientForm {
+    companyId: number;
+    login: string;
+    password: string;
 }
