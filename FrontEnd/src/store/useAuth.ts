@@ -40,9 +40,9 @@ export const useAuthStore = defineStore('auth', {
         },
         checkLoginStore() {
             // In future here must be create async request to BE to check, if this user is correct.
-            const json = localStorage.getItem(LocalStorageItemEnum.userJson);
-            if (json) {
-                const userData = JSON.parse(json);
+            const token = localStorage.getItem(LocalStorageItemEnum.token);
+            if (token) {
+                const userData = jwt_decode<IUser>(token);
                 this.isAuth = true;
                 this.authUser = userData;
                 this.setRoutes();
