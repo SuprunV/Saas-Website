@@ -1,7 +1,7 @@
 <script lang="ts">
 import LoginForm from '@/components/Auth/LoginForm.vue';
-import RegForm from '@/components/Auth/RegForm.vue';
 import RegCompanyForm from '@/components/Auth/RegCompanyForm.vue';
+import RegClientForm from '@/components/Auth/RegClientForm.vue';
 import { defineComponent } from 'vue';
 // import '@/styles/authPage.scss';
 import { useCompanyStore } from '@/store/useCompany';
@@ -21,7 +21,7 @@ export default defineComponent({
 
         return { company, removeCompanyPage: companyStore.removeCompanyPage };
     },
-    components: { LoginForm, RegForm, RegCompanyForm },
+    components: { LoginForm, RegCompanyForm, RegClientForm },
 });
 </script>
 
@@ -61,14 +61,14 @@ export default defineComponent({
                         <span v-else> Registration for your company</span>
                     </h4>
                     <div v-if="company.alias">
-                        <RegCompanyForm :alias="company.alias" />
+                        <RegClientForm :alias="company.alias" />
                     </div>
                     <div v-else>
                         <div v-if="company.alias">
-                            <RegForm :alias="company.alias" />
+                            <RegCompanyForm :alias="company.alias" />
                         </div>
                         <div v-else>
-                            <RegForm />
+                            <RegCompanyForm />
                         </div>
                     </div>
                 </div>

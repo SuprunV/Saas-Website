@@ -1,12 +1,18 @@
-import { IUser, RolesEnum } from '@/models/IUser';
+import { $host } from '@/config';
+import { IRegCompanyForm } from '@/models/ICompany';
+import { IRegClientForm, IUser, RolesEnum } from '@/models/IUser';
 import { LocalStorageItemEnum } from '@/types/LocalStorageItemEnum';
-
+import axios from 'axios';
 const companyImgUrl =
     'https://static8.depositphotos.com/1378583/1010/i/600/depositphotos_10108949-stock-photo-blue-flame-logo.jpg';
 const clientImgUrl =
     'https://static.javatpoint.com/difference/images/client-vs-server.png';
 const masterImgUrl =
     'https://thumbs.dreamstime.com/b/red-color-peel-sticker-label-word-master-gray-background-249615333.jpg';
+
+interface ITokenResponse {
+    token: string;
+}
 export class UserAPI {
     static demoUsers: IUser[] = [
         {
@@ -41,23 +47,38 @@ export class UserAPI {
         },
     ];
 
-    static async login(email: string, password: string): Promise<IUser> {
-        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-            let userIndex = this.demoUsers.findIndex((u) => u.email == email);
-            if (userIndex >= 0) {
-                const user = this.demoUsers[userIndex];
-                localStorage.setItem(
-                    LocalStorageItemEnum.userJson,
-                    JSON.stringify(user),
-                );
-                return user;
-            } else throw new Error('Incorrect demo email');
-        });
+    static async login(loginForm: IRegClientForm) {
+        const response = await $host.post<ITokenResponse>(
+            `/user/login`,
+            loginForm,
+        );
+
+        localStorage.setItem(LocalStorageItemEnum.token, response.data.token);
+        return response.data;
+    }
+    static async registeCompany(regForm: IRegCompanyForm) {
+        const response = await $host.post<ITokenResponse>(
+            `/user/reg-company`,
+            regForm,
+        );
+        localStorage.setItem(LocalStorageItemEnum.token, response.data.token);
+        return response.data;
+    }
+
+    static async registeUser(regForm: IRegClientForm) {
+        console.log('regForm to post', regForm);
+        const response = await $host.post<ITokenResponse>(
+            `/user/reg-client`,
+            regForm,
+        );
+        localStorage.setItem(LocalStorageItemEnum.token, response.data.token);
+        return response.data;
     }
 
     static async logout(userData: IUser) {
         // Here will be made request to remove token for this user (userData);
         localStorage.removeItem(LocalStorageItemEnum.userJson);
+        localStorage.removeItem(LocalStorageItemEnum.token);
     }
 
     static getPublicUsers(

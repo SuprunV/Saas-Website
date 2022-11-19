@@ -44,7 +44,7 @@ export default defineComponent({
         },
         logout() {
             UserAPI.logout(this.authUser);
-            this.logoutActionStore();
+            this.logoutActionStore  ();
         },
     },
     components: { MenuUnfoldOutlined, MenuFoldOutlined, UserOutlined },

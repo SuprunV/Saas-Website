@@ -1,50 +1,61 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 import { validWord } from '@/services/validWord';
-import { useFetching } from '@/hooks/useFetching';
-import axios from 'axios';
-import { UserAPI } from '@/api/UserAPI';
+import { RolesEnum } from '@/models/IUser';
 import { useAuthStore } from '@/store/useAuth';
-import { ResponseTypeEnum } from '@/types/FetchResponse';
 import { storeToRefs } from 'pinia';
-import { IRegCompanyForm } from '@/models/ICompany';
+import { useFetching } from '@/hooks/useFetching';
+import { UserAPI } from '@/api/UserAPI';
+import { ResponseTypeEnum } from '@/types/FetchResponse';
+import ARow from 'ant-design-vue/lib/grid/Row';
+import { useCompanyStore } from '@/store/useCompany';
 
+interface FormState {
+    companyId: number;
+    login: string;
+    password: string;
+}
 export default defineComponent({
+    props: {
+        alias: {
+            required: true,
+            type: String,
+        },
+    },
     setup() {
-        const auth = useAuthStore();
-        const { authUser } = storeToRefs(auth);
-
+        const authStore = useAuthStore();
+        const { authUser } = storeToRefs(authStore);
+        const companyStore = useCompanyStore();
+        const { company } = storeToRefs(companyStore);
+        const formState = reactive<FormState>({
+            companyId: company.value.id,
+            login: '',
+            password: '',
+        });
         const {
             isLoading,
             fetchData: regAsync,
             message,
             response: userToken,
-        } = useFetching(async (formState) => {
-            const user = await UserAPI.registeCompany(formState);
+        } = useFetching(async () => {
+            const user = await UserAPI.registeUser(formState);
             return user;
-        });
-
-        const formState = reactive<IRegCompanyForm>({
-            companyName: '',
-            companyAlias: '',
-            username: '',
-            password: '',
         });
 
         return {
             formState,
             regAsync,
-            message,
             isLoading,
-            authUser,
             userToken,
-            loginActionStore: auth.loginActionStore,
+            message,
+            authUser,
+            loginActionStore: authStore.loginActionStore,
         };
     },
     methods: {
         async onFinish(values: any) {
-            await this.regAsync(this.formState);
-            console.log('response', this.userToken, this.message);
+            await this.regAsync();
+            console.log('response', this.authUser, this.message);
             if (this.message.type == ResponseTypeEnum.SUCCESS) {
                 setTimeout(() => {
                     this.loginActionStore(this.userToken);
@@ -67,38 +78,17 @@ export default defineComponent({
     >
         <response-alert :message="message" :isLoading="isLoading" />
         <a-form-item
-            label="Company Name"
-            name="companyName"
+            label="Email"
+            name="login"
             :rules="[
                 {
                     required: true,
-                    message: 'Please input name of your company!',
+                    message: 'Please input your email!',
+                    type: 'email',
                 },
             ]"
         >
-            <a-input v-model:value="formState.companyName" />
-        </a-form-item>
-        <a-form-item
-            label="Company Alias (url)"
-            name="companyAlias"
-            :rules="[
-                {
-                    required: true,
-                    message: 'Please input name of your company!',
-                },
-            ]"
-        >
-            <a-input v-model:value="formState.companyAlias" />
-        </a-form-item>
-
-        <a-form-item
-            label="Username"
-            name="username"
-            :rules="[
-                { required: true, message: 'Please input your username!' },
-            ]"
-        >
-            <a-input v-model:value="formState.username" />
+            <a-input v-model:value="formState.login" />
         </a-form-item>
 
         <a-form-item

@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
+using BackEnd.DTO;
 
 namespace server.Controllers {
  
@@ -27,28 +29,98 @@ namespace server.Controllers {
         [HttpPost("login")]
         public IActionResult Login([FromBody] User login)
         {
-            var dbUser = _context.Users!.FirstOrDefault(user => user.login == login.login);
-
+            var dbUser = _context.Users!.Include(u => u.Company).FirstOrDefault(user => (user.login == login.login && user.role == Role.ADMIN) || (user.login == login.login && user.companyId == login.companyId));
             if (dbUser == null) return NotFound();
-            var test = HashPassword(dbUser.password);
+            
+            var test = HashPassword(login.password);
             if (dbUser.password != HashPassword(login.password)) return Unauthorized();
-
-            var token = GenerateJSONWebToken(dbUser);
+            var tokenData = new UserToken() {
+                id = dbUser.Id,
+                companyAlias = dbUser.Company.companyAlias,
+                companyId = dbUser.companyId,
+                email = dbUser.login,
+                companyName = dbUser.Company.companyName,
+                img = dbUser.img,
+                name = $"{dbUser.name} {dbUser.surname}",
+                role = dbUser.role 
+            };
+            var token = GenerateJSONWebToken(tokenData);
 
             return Ok(new {token = token});
         }
 
-        [HttpPost("reg")]
-        public ActionResult<User> CreateUser([FromBody] User user) {
-            if(UserExists(null, user.login)) {
+        [HttpPost("reg-client")]
+        public ActionResult<User> RegistrateClient([FromBody] RegClientDTO user) {
+            if(_context.Users.Any(u => u.login == user.login && u.companyId == user.companyId)) {
                 return BadRequest("This user is already registred");
             }
 
-            _context.Users!.Add(user);
+            var newUser = new User() {
+                Id = 0,
+                login = user.login,
+                password = HashPassword(user.password),
+                companyId = user.companyId,
+                role = Role.CLIENT
+            };
+
+            _context.Users!.Add(newUser);
             _context.SaveChanges();
-            var token = GenerateJSONWebToken(user);
-            return CreatedAtAction(nameof(getUser), new { id = user.Id, token = token,}, user);
+
+            var dbClient = _context.Users.Include(u => u.Company).First(c => c.login == user.login && c.companyId== user.companyId);
+            var userToken = new UserToken() {
+                id = dbClient.Id,
+                companyAlias = dbClient?.Company?.companyAlias ?? "",
+                companyId = dbClient?.companyId,
+                email = dbClient?.login,
+                companyName = dbClient?.Company?.companyName,
+                img = dbClient?.img,
+                name = $"Unknown",
+                role = dbClient?.role ?? Role.CLIENT 
+            };
+            var token = GenerateJSONWebToken(userToken);
+            return Ok(new { token = token});
         }
+        [HttpPost("reg-company")]
+        public ActionResult<User> RegistrateCompany([FromBody] RegCompanyDTO company) {
+            if(UserExists(null, company.username) && _context.Companies.Any(x => x.companyName == company.companyName) ||  _context.Companies.Any(x => x.companyAlias == company.companyAlias)) {
+                return BadRequest("This user is already registred");
+            }
+
+            var companyData = new Company() {
+                Id = 0,
+                companyAlias = company.companyAlias,
+                companyName = company.companyName
+            };
+            
+            
+            _context.Companies!.Add(companyData);
+            _context.SaveChanges();
+
+            var dbCompany = _context.Companies.First(c => c.companyAlias == companyData.companyAlias && c.address == companyData.address && c.companyName == companyData.companyName);
+
+            var userData = new User() {
+                Id = 0,
+                login = company.username,
+                password = HashPassword(company.password),
+                companyId = dbCompany.Id,
+                role = Role.ADMIN
+            };
+            _context.Users!.Add(userData);
+            _context.SaveChanges();
+
+            var token = GenerateJSONWebToken(new UserToken() {
+                id = userData.Id,
+                companyAlias = company.companyAlias,
+                companyId = userData.companyId,
+                email = userData.login,
+                companyName = company.companyName,
+                img = userData.img,
+                name = company.companyName,
+                role = userData.role 
+            });
+            return Ok(new { token = token });
+        }
+        
         [Authorize]
         [HttpGet("{id}")]
         public ActionResult<User> getUser(int id) {
@@ -67,7 +139,6 @@ namespace server.Controllers {
             return Ok(users);
         }
         [Authorize]
-        // !!!!
         [HttpPut("{id}")]
         public ActionResult<User> updateUser(int id, [FromBody] User user) {
             if (id != user.Id) {
@@ -113,20 +184,25 @@ namespace server.Controllers {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             return identity.FindFirst("roleId")!.Value;
         }
-             private string  GetCompanyId()
-        {
+        private string  GetCompanyId(){
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             return identity.FindFirst("companyId")!.Value;
         }
 
-        private string GenerateJSONWebToken(User user)
+        private string GenerateJSONWebToken(UserToken user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
+            var claims = new List<Claim>();
+
+            foreach(var keyPair in DictionaryFromType(user)) {
+                claims.Add(new Claim(keyPair.Key.ToString(), keyPair.Value?.ToString() ?? ""));
+            }
+
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
               _config["Jwt:Issuer"],
-              new List<Claim> { new Claim("roleId", user.role.ToString(),"companyId",user.companyId.ToString())},
+              claims,
               expires: DateTime.Now.AddMinutes(30),
               signingCredentials: credentials);
 
@@ -136,5 +212,18 @@ namespace server.Controllers {
         private bool UserExists(int? id, string? login = null) {
             return _context.Users!.Any(u => (id != null && u.Id == id) || (login != null && u.login == login));
         }
+
+        private static Dictionary<string, object> DictionaryFromType(object atype) {
+            if (atype == null) return new Dictionary<string, object>();
+            Type t = atype.GetType();
+            PropertyInfo[] props = t.GetProperties();
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            foreach (PropertyInfo prp in props)
+            {
+                object value = prp.GetValue(atype, new object[]{});
+                dict.Add(prp.Name, value);
+            }
+            return dict;
+}
     }
 }

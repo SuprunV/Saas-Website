@@ -9,6 +9,7 @@ namespace server.Db
         public DataContext(DbContextOptions options) : base(options) {  }       
         public DbSet<User>? Users { get; set; }
         public DbSet<Client>? Clients { get; set; }
+        public DbSet<Admin>? Admins { get; set; } 
         public DbSet<Master>? Masters { get; set; } 
         public DbSet<Company>? Companies { get; set; } 
         public DbSet<Service>? Services { get; set; } 
@@ -26,20 +27,16 @@ namespace server.Db
             .HasForeignKey(x => x.companyId);
             
             mb.Entity<Company>().ToTable("Companies").HasKey(x => x.Id);
-        
             
             mb.Entity<MasterService>().ToTable("Master&Service")
             .HasKey(key => new { key.masterId, key.serviceId });
 
             mb.Entity<Client>().ToTable("Clients").HasKey(x => x.Id);
-            mb.Entity<Client>().HasOne(x => x.User)
-            .WithMany(x => x.Clients)
-            .HasForeignKey(x => x.userId);
+            mb.Entity<Client>().HasOne(x => x.User);
+            mb.Entity<Admin>().ToTable("Admins").HasOne(x => x.User);
             
             mb.Entity<Master>().ToTable("Masters").HasKey(x => x.Id);
-            mb.Entity<Master>().HasOne(x => x.User)
-            .WithMany(x => x.Masters)
-            .HasForeignKey(x => x.userId);
+            mb.Entity<Master>().HasOne(x => x.User);
 
             mb.Entity<Service>().ToTable("Services").HasKey(x => x.Id);
             mb.Entity<Service>().HasOne(x => x.Company)
@@ -158,9 +155,11 @@ namespace server.Db
                 new User
                 {
                     Id = 1,
-                    login = "LinaM",
-                    password =  "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
-                    role = Role.Master,
+                    login = "KristinaK@gmail.com",
+                    name = "Kristina",
+                    surname = "K",
+                    password =  "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
+                    role = Role.MASTER,
                     img = "",
                     companyId = 2
            
@@ -168,9 +167,11 @@ namespace server.Db
                 new User
                 {
                     Id = 6,
-                    login = "KristinaK",
-                    password = "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
-                    role = Role.Master,
+                    name = "Levi",
+                    surname = "Ackerman",
+                    login = "levi-ackerman@gmail.com",
+                    password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
+                    role = Role.MASTER,
                     img = "",
                     companyId = 1
            
@@ -178,27 +179,32 @@ namespace server.Db
                 new User
                 {
                     Id = 2,
-                    login = "RonaldK",
-                    password = "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
-                    role = Role.Client,
+                    name = "Eren",
+                    surname = "Yeager",
+                    login = "eren-yeager@gmail.com",
+                    password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
+                    role = Role.CLIENT,
                     img = "",
                     companyId = 1
                 },
                 new User
                 {
                     Id = 5,
-                    login = "MariP",
-                    password = "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
-                    role = Role.Client,
+                    name = "Mari",
+                    surname = "Curie",
+                    login = "MariC@gmail.com",
+                    password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
+                    role = Role.CLIENT,
                     img = "",
                     companyId = 2
                 },
                 new User
                 {
                     Id = 3,
-                    login = "BeautySalonAdmin",
-                    password = "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
-                    role = Role.Admin,
+                    login = "BeautySalon@gmail.com",
+                    name = "Admin",
+                    password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
+                    role = Role.ADMIN,
                     img = "",
                     companyId = 1
                   
@@ -206,12 +212,12 @@ namespace server.Db
                 new User
                 {
                     Id = 4,
-                    login = "MassageSalonAdmin",
-                    password = "d5JnXs60a8KDwFzGR0XU3hxLwP8e1rot4IxFx+oQmqA=",
-                    role = Role.Admin,
+                    login = "MassageSalon@gmail.com",
+                    name = "MassageSalonAdmin",
+                    password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
+                    role = Role.ADMIN,
                     img = "",
                     companyId = 2
-      
                 }
                 
             );

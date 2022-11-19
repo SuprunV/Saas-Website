@@ -6,6 +6,7 @@
         "moduleResolution": "Node",
         "strict": true,
         "jsx": "preserve",
+        "allowJs": true,
         "sourceMap": true,
         "resolveJsonModule": true,
         "isolatedModules": true,
@@ -17,6 +18,12 @@
         "paths": { "@/*": ["src/*"] },
         "allowSyntheticDefaultImports": true
     },
-    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.d.ts",
+        "src/**/*.tsx",
+        "src/**/*.vue",
+        "src/api/index.js"
+, "src/config.js", "src/config.js"    ],
     "references": [{ "path": "./tsconfig.node.json" }]
 }

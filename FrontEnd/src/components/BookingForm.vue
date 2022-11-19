@@ -16,6 +16,7 @@ import { notification } from 'ant-design-vue';
 import dayjs from 'dayjs';
 import { useCompanyStore } from '@/store/useCompany';
 import { getDateDay } from '@/services/getDateDay';
+import { ResponseTypeEnum } from '@/types/FetchResponse';
 
 export interface MasterListItem {
     name: string;
@@ -156,7 +157,8 @@ export default defineComponent({
         const {
             isLoading,
             message,
-            fetchData: submitForm,
+            fetchData: addNewAppointment,
+            response: newAppointment,
         } = useFetching(async () => {
             const newEvent: IAppointment = {
                 Id: 0,
@@ -175,20 +177,6 @@ export default defineComponent({
                 new Date(newEvent.date).toString() != 'Invalid Date';
             if (isValid) {
                 await AppointmentAPI.addEvent(newEvent);
-                setTimeout(async () => {
-                    await uploadFreeAppointment();
-                    emit('update:show', false);
-                    selectedAppointment.value.masterId = '';
-                    selectedAppointment.value.time = '';
-                    selectedAppointment.value.clientEmail = authUser.value.email
-                        ? authUser.value.email
-                        : '';
-                    selectedAppointment.value.clientName = authUser.value.name
-                        ? authUser.value.name
-                        : '';
-                    step.value = 0;
-                    openNotification(newEvent);
-                }, 1500);
             } else if (!newEvent.clientId) {
                 throw Error('You have to stay your personal data OR authorize');
             } else if (!isValid) {
@@ -196,6 +184,8 @@ export default defineComponent({
             } else {
                 throw Error('Unexpected Error');
             }
+            console.log('return newEvent', newEvent);
+            return newEvent;
         });
 
         return {
@@ -212,7 +202,8 @@ export default defineComponent({
             selectedAppointment,
             step,
             masterList,
-            submitForm,
+            addNewAppointment,
+            newAppointment,
             authUser,
             isLoading,
             message,
@@ -234,6 +225,26 @@ export default defineComponent({
             const today = new Date();
             today.setDate(new Date().getDate() - 1);
             return currentDate.toDate() < today;
+        },
+        async submitForm() {
+            const newEvent = await this.addNewAppointment();
+            console.log('newAppointment in submit', this.newAppointment);
+            if (this.message.type == ResponseTypeEnum.SUCCESS) {
+                setTimeout(async () => {
+                    await this.uploadFreeAppointment();
+                    this.$emit('update:show', false);
+                    this.selectedAppointment.masterId = '';
+                    this.selectedAppointment.time = '';
+                    this.selectedAppointment.clientEmail = this.authUser.email
+                        ? this.authUser.email
+                        : '';
+                    this.selectedAppointment.clientName = this.authUser.name
+                        ? this.authUser.name
+                        : '';
+                    this.step = 0;
+                    this.openNotification(this.newAppointment);
+                }, 1500);
+            }
         },
     },
 });

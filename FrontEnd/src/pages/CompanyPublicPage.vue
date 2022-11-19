@@ -15,6 +15,8 @@ export default defineComponent({
         const companyStore = useCompanyStore();
         const { company } = storeToRefs(companyStore);
 
+        const route = useRoute();
+
         companyStore.setCompanyPage();
 
         return { company, removeCompanyPage: companyStore.removeCompanyPage };
