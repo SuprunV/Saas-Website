@@ -4,12 +4,14 @@ import { useFetching } from '@/hooks/useFetching';
 import { IUser, RolesEnum } from '@/models/IUser';
 import { AppRoutes } from '@/router/router';
 import { useAuthStore } from '@/store/useAuth';
+import { useCompanyStore } from '@/store/useCompany';
 import { ResponseTypeEnum } from '@/types/FetchResponse';
 import { storeToRefs } from 'pinia';
 import { defineComponent, reactive } from 'vue';
 
 interface FormState {
-    email: string;
+    companyId: number;
+    login: string;
     password: string;
 }
 
@@ -25,19 +27,23 @@ export default defineComponent({
         const auth = useAuthStore();
         const { authUser } = storeToRefs(auth);
 
+        const companyStore = useCompanyStore();
+        const { company } = storeToRefs(companyStore);
+
+        const formState = reactive<FormState>({
+            companyId: company.value.id,
+            login: '',
+            password: '',
+        });
+
         const {
             isLoading,
             fetchData: loginAsync,
             message,
             response: userToken,
-        } = useFetching(async (email: string, password: string) => {
-            const user = await UserAPI.login(email, password);
+        } = useFetching(async () => {
+            const user = await UserAPI.login(formState);
             return user;
-        });
-
-        const formState = reactive<FormState>({
-            email: '',
-            password: '',
         });
 
         return {
@@ -52,8 +58,7 @@ export default defineComponent({
     },
     methods: {
         async login(values: any) {
-            await this.loginAsync(values.email, values.password);
-
+            await this.loginAsync();
             if (this.message.type == ResponseTypeEnum.SUCCESS) {
                 setTimeout(() => {
                     this.loginActionStore(this.userToken);
@@ -63,15 +68,15 @@ export default defineComponent({
             }
         },
         putDemoData() {
-            this.formState.email = 'BeautySalonAdmin';
+            this.formState.login = 'BeautySalon@gmail.com';
             this.formState.password = '123';
         },
         putDemoClient() {
-            this.formState.email = 'eren-yeager@gmail.com';
+            this.formState.login = 'eren-yeager@gmail.com';
             this.formState.password = '123';
         },
         putDemoMaster() {
-            this.formState.email = 'levi-ackerman@gmail.com';
+            this.formState.login = 'levi-ackerman@gmail.com';
             this.formState.password = '123';
         },
     },
@@ -101,10 +106,15 @@ export default defineComponent({
         </a-row>
         <a-form-item
             label="Email"
-            name="email"
-            :rules="[{ required: true, message: 'Please input your email!' }]"
+            name="login"
+            :rules="[
+                {
+                    required: true,
+                    message: 'Please input your email!',
+                },
+            ]"
         >
-            <a-input v-model:value="formState.email" />
+            <a-input v-model:value="formState.login" />
         </a-form-item>
 
         <a-form-item

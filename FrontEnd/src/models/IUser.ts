@@ -20,8 +20,8 @@ export enum GenderEnum {
     Male = 'MaleY',
 }
 
-export interface    IRegClientForm {
+export interface IRegClientForm {
     companyId: number;
-    email: string;
+    login: string;
     password: string;
 }

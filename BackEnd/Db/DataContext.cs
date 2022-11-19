@@ -201,8 +201,8 @@ namespace server.Db
                 new User
                 {
                     Id = 3,
-                    login = "BeautySalonAdmin",
-                    name = "BeautySalonAdmin",
+                    login = "BeautySalon@gmail.com",
+                    name = "Admin",
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.ADMIN,
                     img = "",
@@ -212,7 +212,7 @@ namespace server.Db
                 new User
                 {
                     Id = 4,
-                    login = "MassageSalonAdmin",
+                    login = "MassageSalon@gmail.com",
                     name = "MassageSalonAdmin",
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.ADMIN,

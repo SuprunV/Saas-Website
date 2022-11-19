@@ -29,7 +29,7 @@ namespace server.Controllers {
         [HttpPost("login")]
         public IActionResult Login([FromBody] User login)
         {
-            var dbUser = _context.Users!.Include(u => u.Company).FirstOrDefault(user => user.login == login.login);
+            var dbUser = _context.Users!.Include(u => u.Company).FirstOrDefault(user => user.login == login.login && user.companyId == login.companyId);
             if (dbUser == null) return NotFound();
             
             var test = HashPassword(login.password);

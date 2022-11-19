@@ -47,10 +47,10 @@ export class UserAPI {
         },
     ];
 
-    static async login(email: string, password: string) {
+    static async login(loginForm: IRegClientForm) {
         const response = await axios.post<ITokenResponse>(
             `${$host}/user/login`,
-            { login: email, password },
+            loginForm,
         );
 
         localStorage.setItem(LocalStorageItemEnum.token, response.data.token);

@@ -12,7 +12,7 @@ import { useCompanyStore } from '@/store/useCompany';
 
 interface FormState {
     companyId: number;
-    email: string;
+    login: string;
     password: string;
 }
 export default defineComponent({
@@ -29,7 +29,7 @@ export default defineComponent({
         const { company } = storeToRefs(companyStore);
         const formState = reactive<FormState>({
             companyId: company.value.id,
-            email: '',
+            login: '',
             password: '',
         });
         const {
@@ -88,7 +88,7 @@ export default defineComponent({
                 },
             ]"
         >
-            <a-input v-model:value="formState.email" />
+            <a-input v-model:value="formState.login" />
         </a-form-item>
 
         <a-form-item
