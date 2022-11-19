@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace server.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
       public class AppointmentController : ControllerBase
@@ -29,6 +28,7 @@ namespace server.Controllers
             return Ok(appointment);
         }
 
+        [Authorize]
         [HttpGet("{Date}/events")]
         public ActionResult<IEnumerable<Appointment>> GetEventsByDate(string Date){
             var result = _context.Appointments?.Include(x => x.Client).Include(x => x.Master).Include(x => x.Service).AsQueryable();
@@ -37,6 +37,8 @@ namespace server.Controllers
             }
             return Ok(result);
         }
+        
+        [Authorize]
         [HttpGet("eventsByMonthAndYear")]
         public ActionResult<IEnumerable<Appointment>> GetEventsByMonthAndYear([FromQuery] string? month, string? year){
             var result = _context.Appointments?.AsQueryable();
@@ -50,6 +52,7 @@ namespace server.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpGet("{masterId}/masterDoneAppointments")]
         public ActionResult<IEnumerable<Appointment>> GetMasterDoneAppointmentsCount(int masterId){
             var appointments = _context.Appointments!.Where(a => a.masterId == masterId);  
@@ -59,6 +62,7 @@ namespace server.Controllers
             return Ok(masterEvents);
         }
 
+        [Authorize]
         [HttpGet("{companyId}/companyDoneAppointments")]
         public ActionResult<IEnumerable<Appointment>> GetCompanyDoneAppointmentsCount(int companyId){
          var  masters = _context.Masters!.Include(x => x.User).Where(m => m.User.companyId ==companyId).Select(x => x.Id).ToList();
@@ -79,6 +83,7 @@ namespace server.Controllers
             return CreatedAtAction(nameof(GetAppointment), new { appointmentId = appointment.Id }, appointment);
         }
 
+        [Authorize]
         [HttpDelete("{appointmentId}")]
         public ActionResult<Appointment> DeleteAppointment(int appointmentId){
             var appointment = _context.Appointments!.Find(appointmentId);

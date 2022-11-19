@@ -43,17 +43,15 @@ export class AppointmentAPI {
             return [];
         }
     }
-    static async addEvent(appointment: IAppointment): Promise<AxiosResponse> {
-        try {
-            console.log('new appointment', appointment);
-            const response = await $host.post<IAppointment[]>(
-                `/appointment`,
-                appointment,
-            );
-            return response;
-        } catch (e) {
-            return { status: 404 } as AxiosResponse;
-        }
+    static async addEvent(appointment: IAppointment) {
+        console.log('new appointment', appointment);
+        const response = await $host.post<IAppointment[]>(
+            `/appointment`,
+            appointment,
+        );
+
+        console.log('response new appointmnet', response);
+        return response.data;
     }
 
     static async getEventsByMonthAndYear(

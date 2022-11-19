@@ -12,36 +12,6 @@ const massage =
     'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/spa-woman-female-enjoying-massage-in-spa-centre-royalty-free-image-492676582-1549988720.jpg';
 
 export class ServiceAPI {
-    static demoServices: IService[] = [
-        {
-            id: 1,
-            img: nailsService,
-            name: 'Classic manicure',
-            description:
-                'You are always welcome to the Spa salon to put the problems of your day aside for a moment and enjoy our excellent care!',
-            duration: 30,
-            price: 25,
-        },
-        {
-            id: 2,
-            img: hairCut,
-            name: 'Scissor haircut for men',
-            description:
-                'We offer a wide selection of services, allowing you to conveniently receive all beauty services in a single place. Our skilled and creative employees love their work and will gladly help you figure out the best solution to suit your wishes and needs. Making your dreams come true is our greatest pleasure.',
-            duration: 40,
-            price: 27,
-        },
-        {
-            id: 3,
-            img: massage,
-            name: 'Therapeutic massage',
-            description:
-                'We specialize in massage services and you can book for them at our salons, hotel room, home or even at your office!',
-            duration: 60,
-            price: 40,
-        },
-    ];
-
     static async getPublicServices(
         companyAlias: string,
         limit: number,
@@ -71,22 +41,24 @@ export class ServiceAPI {
     }
     static getServiceById(id: number): Promise<IService> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-            const serviceIndex = this.demoServices.findIndex(
-                (c) => c.id === id,
-            );
-            if (serviceIndex >= 0) {
-                return this.demoServices[serviceIndex];
-            } else throw Error("this service doesn't exists!");
+            // const serviceIndex = this.demoServices.findIndex(
+            //     (c) => c.id === id,
+            // );
+            // if (serviceIndex >= 0) {
+            //     return this.demoServices[serviceIndex];
+            // } else
+            throw Error("this service doesn't exists!");
         });
     }
     static getServiceByName(name: string): Promise<IService> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-            const companyIndex = this.demoServices.findIndex(
-                (c) => c.name === name,
-            );
-            if (companyIndex >= 0) {
-                return this.demoServices[companyIndex];
-            } else throw Error("this company doesn't exists!");
+            // const companyIndex = this.demoServices.findIndex(
+            //     (c) => c.name === name,
+            // );
+            // if (companyIndex >= 0) {
+            //     return this.demoServices[companyIndex];
+            // } else
+            throw Error("this company doesn't exists!");
         });
     }
 }
