@@ -81,6 +81,20 @@ export class UserAPI {
         localStorage.removeItem(LocalStorageItemEnum.token);
     }
 
+    static async getUser(
+        userId: number
+        ): Promise<IUser[]> {
+        try {
+            const response = await $host.get<IUser[]>(
+                `/user/${userId}`,
+            );
+            console.log('user', response.data);
+            return response.data;
+        } catch (e) {
+            return [];
+        }
+    }
+
     static getPublicUsers(
         limit: number,
         page: number,

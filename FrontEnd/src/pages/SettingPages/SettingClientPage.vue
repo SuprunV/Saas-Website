@@ -2,6 +2,8 @@
 import { useAuthStore } from '@/store/useAuth';
 import { storeToRefs } from 'pinia';
 import { defineComponent, reactive, ref } from 'vue';
+import { UserAPI } from '@/api/UserAPI';
+import {IUser, RolesEnum} from '@/models/IUser';
 import ClientSettingForm from '@/components/ClientSettingForm.vue';
 import { ContactsOutlined } from '@ant-design/icons-vue';
 
@@ -13,6 +15,12 @@ export default defineComponent({
         const authStore = useAuthStore();
         const { authUser } = storeToRefs(authStore);
 
+        const selectedUser = ref<IUser[]>();
+        const getUsersInfo = async () => {
+            const response = await UserAPI.getUser(2);
+            selectedUser.value = response;
+        };
+        getUsersInfo();
         const validateMessages = {
             required: '${label} is required!',
             types: {
@@ -45,6 +53,7 @@ export default defineComponent({
             layout,
             validateMessages,
             authUser,
+            selectedUser
         };
     },
     methods: {
@@ -65,14 +74,16 @@ export default defineComponent({
                     <div class="space-align-container">
                         <div class="space-align-block">
                             <a-space align="start">
-                                <img class="settingImage" :width="200" :src="authUser.img" />
+                                <img class="settingImage" :width="200" :src="selectedUser?." />
                                 <div class="personInfo">
                                 <a-descriptions 
                                     title="Client Info"
                                     bordered="true"
                                 >
                                     <a-descriptions-item label="Name" :span="3"
-                                        >Eren</a-descriptions-item
+                                        >{{
+                                            selectedUser.name
+                                        }}</a-descriptions-item
                                     >
                                     <a-descriptions-item
                                         label="Surname"
