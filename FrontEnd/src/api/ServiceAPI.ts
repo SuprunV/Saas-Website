@@ -48,8 +48,8 @@ export class ServiceAPI {
         page: number,
     ): Promise<IService[]> {
         try {
-            const response = await axios.get<IService[]>(
-                `${$host}/company/alias-${companyAlias}/services`,
+            const response = await $host.get<IService[]>(
+                `/company/alias-${companyAlias}/services`,
             );
             return response.data;
         } catch (e) {

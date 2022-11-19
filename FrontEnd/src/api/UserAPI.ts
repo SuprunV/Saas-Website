@@ -48,8 +48,8 @@ export class UserAPI {
     ];
 
     static async login(loginForm: IRegClientForm) {
-        const response = await axios.post<ITokenResponse>(
-            `${$host}/user/login`,
+        const response = await $host.post<ITokenResponse>(
+            `/user/login`,
             loginForm,
         );
 
@@ -57,8 +57,8 @@ export class UserAPI {
         return response.data;
     }
     static async registeCompany(regForm: IRegCompanyForm) {
-        const response = await axios.post<ITokenResponse>(
-            `${$host}/user/reg-company`,
+        const response = await $host.post<ITokenResponse>(
+            `/user/reg-company`,
             regForm,
         );
         localStorage.setItem(LocalStorageItemEnum.token, response.data.token);
@@ -67,8 +67,8 @@ export class UserAPI {
 
     static async registeUser(regForm: IRegClientForm) {
         console.log('regForm to post', regForm);
-        const response = await axios.post<ITokenResponse>(
-            `${$host}/user/reg-client`,
+        const response = await $host.post<ITokenResponse>(
+            `/user/reg-client`,
             regForm,
         );
         localStorage.setItem(LocalStorageItemEnum.token, response.data.token);
@@ -78,6 +78,7 @@ export class UserAPI {
     static async logout(userData: IUser) {
         // Here will be made request to remove token for this user (userData);
         localStorage.removeItem(LocalStorageItemEnum.userJson);
+        localStorage.removeItem(LocalStorageItemEnum.token);
     }
 
     static getPublicUsers(

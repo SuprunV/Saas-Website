@@ -3,56 +3,11 @@ import { IAppointment } from '@/models/IAppointment';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
 export class AppointmentAPI {
-    static demoEvents: IAppointment[] = [
-        // {
-        //     Id: 1,
-        //     clientName: 'Nadja Tupikova',
-        //     masterName: 'Agnetta Puu',
-        //     date: new Date(2022, 9, 9, 15, 30),
-        //     serviceName: 'Nail extensions',
-        // },
-        // {
-        //     Id: 2,
-        //     clientName: 'Henri Kuuper',
-        //     date: new Date(2022, 9, 9, 17, 45),
-        //     masterName: 'Angetta Puu',
-        //     serviceName: 'Hand massage',
-        // },
-        // {
-        //     Id: 3,
-        //     clientName: 'Kerli Toiker',
-        //     date: new Date(2022, 9, 9, 19, 0),
-        //     masterName: 'Angetta Puu',
-        //     serviceName: 'Gel polish correction',
-        // },
-        // {
-        //     Id: 4,
-        //     clientName: 'Liina Illipe',
-        //     date: new Date(2022, 9, 15, 13, 20),
-        //     masterName: 'Angetta Puu',
-        //     serviceName: 'Gel polish correction',
-        // },
-        // {
-        //     Id: 5,
-        //     clientName: 'Sofia Senkiv',
-        //     date: new Date(2022, 9, 21, 16, 0),
-        //     masterName: 'Angetta Puu',
-        //     serviceName: 'Hand massage',
-        // },
-        // {
-        //     Id: 5,
-        //     clientName: 'Leonid Demidov',
-        //     date: new Date(2022, 9, 21, 17, 30),
-        //     masterName: 'Angetta Puu',
-        //     serviceName: 'Gel polish correction',
-        // },
-    ];
-
     static async getEvents(selectedDate: Date): Promise<IAppointment[]> {
         try {
             const date = selectedDate.toISOString().split('T')[0];
-            const response = await axios.get<IAppointment[]>(
-                `${$host}/appointment/${date}/events`,
+            const response = await $host.get<IAppointment[]>(
+                `/appointment/${date}/events`,
             );
             console.log('appointments', response.data);
             return response.data;
@@ -80,8 +35,8 @@ export class AppointmentAPI {
     ): Promise<IAppointment[]> {
         try {
             const date = selectedDate.toISOString().split('T')[0];
-            const response = await axios.get<IAppointment[]>(
-                `${$host}/company/${companyId}/free-appointments?date=${date}&serviceId=${serviceId}`,
+            const response = await $host.get<IAppointment[]>(
+                `/company/${companyId}/free-appointments?date=${date}&serviceId=${serviceId}`,
             );
             return response.data;
         } catch (e) {
@@ -91,8 +46,8 @@ export class AppointmentAPI {
     static async addEvent(appointment: IAppointment): Promise<AxiosResponse> {
         try {
             console.log('new appointment', appointment);
-            const response = await axios.post<IAppointment[]>(
-                `${$host}/appointment`,
+            const response = await $host.post<IAppointment[]>(
+                `/appointment`,
                 appointment,
             );
             return response;
@@ -106,8 +61,8 @@ export class AppointmentAPI {
         year: number,
     ): Promise<IAppointment[]> {
         try {
-            const response = await axios.get<IAppointment[]>(
-                `${$host}/appointment/eventsByMonthAndYear?month=${month.toString()}&year=${year.toString()}`,
+            const response = await $host.get<IAppointment[]>(
+                `/appointment/eventsByMonthAndYear?month=${month.toString()}&year=${year.toString()}`,
             );
 
             return response.data;
