@@ -75,10 +75,12 @@ namespace server.Controllers
 
         [HttpPost] 
         public ActionResult<Appointment> PostAppointment(Appointment appointment){
-           if(_context.Appointments!.Any(x => (x.date == appointment.date) && (x.masterId == appointment.masterId)) )
-            { return BadRequest();}
-
-            _context.Appointments!.Add(appointment);
+           if(_context.Appointments!.Any(x => (x.date == appointment.date) && (x.masterId == appointment.masterId)) ){ return BadRequest();}
+            if(appointment.clientId != null) {
+                var userDb = _context.Users.First(u => u.Id == appointment.clientId);
+                if(userDb == null) { return BadRequest();}
+            }
+            
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetAppointment), new { appointmentId = appointment.Id }, appointment);
         }
