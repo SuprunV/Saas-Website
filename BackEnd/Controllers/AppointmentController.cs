@@ -55,7 +55,7 @@ namespace server.Controllers
         [Authorize]
         [HttpGet("{masterId}/masterDoneAppointments")]
         public ActionResult<IEnumerable<Appointment>> GetMasterDoneAppointmentsCount(int masterId){
-            var appointments = _context.Appointments!.Where(a => a.masterUserId == masterId);  
+            var appointments = _context.Appointments!.Where(a => a.masterId == masterId);  
             var masterEvents = 0;
             foreach(var a in appointments) if(DateTime.Parse(a.date) < DateTime.Now) masterEvents++;
 
@@ -67,7 +67,7 @@ namespace server.Controllers
         public ActionResult<IEnumerable<Appointment>> GetCompanyDoneAppointmentsCount(int companyId){
          var  masters = _context.Users!.Where(m => m.companyId ==companyId && m.role == Enums.Role.MASTER).Select(x => x.Id).ToList();
       
-          var appointments = _context.Appointments!.Where(x => masters.Contains(x.masterUserId));  
+          var appointments = _context.Appointments!.Where(x => masters.Contains(x.masterId));  
           var masterEvents = 0;
          foreach(var a in appointments) if(DateTime.Parse(a.date) < DateTime.Now) masterEvents++;
          return Ok(masterEvents);
@@ -75,9 +75,9 @@ namespace server.Controllers
 
         [HttpPost] 
         public ActionResult<Appointment> PostAppointment(Appointment appointment){
-           if(_context.Appointments!.Any(x => (x.date == appointment.date) && (x.masterUserId == appointment.masterUserId)) ){ return BadRequest();}
-            if(appointment.clientUserId != null) {
-                var userDb = _context.Users.First(u => u.Id == appointment.clientUserId);
+           if(_context.Appointments!.Any(x => (x.date == appointment.date) && (x.masterId == appointment.masterId)) ){ return BadRequest();}
+            if(appointment.clientId != null) {
+                var userDb = _context.Users.First(u => u.Id == appointment.clientId);
                 if(userDb == null) { return BadRequest();}
             }
             

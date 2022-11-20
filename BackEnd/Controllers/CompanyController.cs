@@ -68,7 +68,7 @@ namespace server.Controllers
             var masters = _context.Users.Where(m => m.companyId == companyId && m.role == Enums.Role.MASTER);
             foreach(var master in masters) {
                 // get buzy appointments of this master.
-                var buzyAppointments = appointments.Where(a => a.masterUserId == master.Id);
+                var buzyAppointments = appointments.Where(a => a.masterId == master.Id);
                 if(buzyAppointments != null) {
                     // Example: we have buzy times: 10:15 + 60 and 15:30 + 45.
                     var buzyTimeEndings = new List<List<DateTime>>();
@@ -81,7 +81,7 @@ namespace server.Controllers
                     
                     foreach(var freeTime in freeTimes) {
                         freeAppointments.Add(new Appointment() {
-                            masterUserId = master.Id,
+                            masterId = master.Id,
                             MasterUser =  master,
                             serviceId = serviceId,
                             date = freeTime.ToString("o")
