@@ -8,7 +8,7 @@ namespace server.Db
     {
         public DataContext(DbContextOptions options) : base(options) {  }       
         public DbSet<User>? Users { get; set; }
-        public DbSet<Admin>? Admins { get; set; } 
+        // public DbSet<Admin>? Admins { get; set; } 
         public DbSet<Company>? Companies { get; set; } 
         public DbSet<Service>? Services { get; set; } 
         public DbSet<Appointment>? Appointments { get; set; } 
