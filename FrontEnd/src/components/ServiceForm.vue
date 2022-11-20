@@ -57,6 +57,8 @@
                     > <a-button 
                         class="ant-btn btn-success" 
                         html-type="submit" 
+                        @click="close"
+                       
                        >
                         <span>OK</span>
                     </a-button> 
@@ -74,6 +76,10 @@ import { Nullable } from 'primevue/ts-helpers';
 import { PropType } from 'vue-types/dist/types';
 import layout from 'ant-design-vue/lib/layout';
 import { describe } from 'node:test';
+import { useFetching } from '@/hooks/useFetching';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/store/useAuth';
+import {  onMounted } from 'vue';
 
 
 export default defineComponent({
@@ -82,6 +88,11 @@ export default defineComponent({
         changedServiceId: Object as PropType<number | undefined>
     },
     setup(props) {
+        const auth = useAuthStore();
+        const { authUser } = storeToRefs(auth);
+        const limit = ref<number>(5);
+        const page = ref<number>(1);
+
         const layout = {
             labelCol: { span: 8 },
             wrapperCol: { span: 16 },
@@ -101,10 +112,17 @@ export default defineComponent({
         async function updateService() {
             console.log('update serivce', formStateService);
             const service = await ServiceAPI.updateCompanyServices(formStateService.value.id, formStateService.value);
+
         }
-        
+        async function getService(){
+            const service = await ServiceAPI.getPublicServices(   auth.authUser.companyAlias,
+                limit.value,
+                page.value,);
+        }
+    
 
         const formStateService = ref<IService>({
+        
                 name: '',
                 price: 0,
                 description: '',
@@ -116,7 +134,9 @@ export default defineComponent({
             formStateService: formStateService,
             layout,
             validateMessages,
-            updateService
+            updateService, 
+            authUser,
+            getService
         };
     },
     watch: {
@@ -128,9 +148,6 @@ export default defineComponent({
 
             this.formStateService = serviceObject;
             }
-            else{
-
-            }
 
         }
     },
@@ -140,7 +157,15 @@ export default defineComponent({
         },
         submitForm() {
             console.log('submit started', this.formStateService);
+         
             this.updateService();
+            this.getService();
+            setTimeout(() => {
+                console.log('authUser after store login', this.authUser);
+                 //   this.$router.push(`/${this.authUser.companyAlias}/settings`);
+                    this.$router.push(`/${this.authUser.companyAlias}/settings`);
+                }, 3000);
+          
         },
     },
 });

@@ -41,16 +41,15 @@ export class ServiceAPI {
     //     // });
      }
 
-     static async postPublicServices(
-            companyAlias: string,
+     static async postNewService(
             limit: number,
             page: number,
         ): Promise<IService[]> {
             try {
                 const response = await $host.post<IService[]>(
-                    `/company/alias-${companyAlias}/services`,
+                    `/Service`,
                 );
-                return response.request;
+                return response.data;
             } catch (e) {
                 return [];
             }
@@ -67,6 +66,7 @@ export class ServiceAPI {
                 return [];
             }
         }
+        
         static async updateCompanyServices(id: number, item: IService): Promise<IService> {
                 const response = await $authHost.put<IService>(
                     `/Service/${id}`, item,
@@ -74,6 +74,7 @@ export class ServiceAPI {
                // console.log('masters', response.data);
                 return response.data;
         }
+       
 
     static async  getServiceById(serviceId: number): Promise<IService> {
         const response = await $authHost.get<IService>(
