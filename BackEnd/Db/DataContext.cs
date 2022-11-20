@@ -43,13 +43,13 @@ namespace server.Db
           
             mb.Entity<Appointment>().ToTable("Appointments").HasKey(x => x.Id);
             
-            mb.Entity<Appointment>().HasOne(x => x.ClientUser)
+            mb.Entity<Appointment>().HasOne(x => x.Client)
             .WithMany(x => x.AppointmentClient)
             .HasForeignKey(x => x.clientId);
             mb.Entity<Appointment>().HasOne(x => x.Service)
             .WithMany(x => x.AppointmentService)
             .HasForeignKey(x => x.serviceId);
-             mb.Entity<Appointment>().HasOne(x => x.MasterUser)
+             mb.Entity<Appointment>().HasOne(x => x.Master)
             .WithMany(x => x.AppointmentMaster)
             .HasForeignKey(x => x.masterId);
             mb.Entity<Company>().HasData(

@@ -45,7 +45,7 @@ namespace server.Controllers
         public ActionResult<IEnumerable<Appointment>> GetCompanyAppointmentsByDate(int companyId, [FromQuery] string date)
         {
             if(!CompanyExists(companyId)) return BadRequest();
-            var appointments = _context.Appointments!.Include(x => x.MasterUser).Where((x => x.date.Contains(date) && x.MasterUser.companyId == companyId));
+            var appointments = _context.Appointments!.Include(x => x.Master).Where((x => x.date.Contains(date) && x.Master.companyId == companyId));
             return Ok(appointments);
         }
         [HttpGet("{companyId}/free-appointments")]
@@ -53,7 +53,7 @@ namespace server.Controllers
         {
             if(!_context.Services!.Any(s => s.Id == serviceId)) return Conflict();
             if(!CompanyExists(companyId)) return BadRequest();
-            var appointments = _context.Appointments!.Include(x => x.MasterUser).Include(x => x.Service).Where((x => x.date.Contains(date) && x.MasterUser.companyId == companyId)).ToList();
+            var appointments = _context.Appointments!.Include(x => x.Master).Include(x => x.Service).Where((x => x.date.Contains(date) && x.Master.companyId == companyId)).ToList();
             
             // masterId:
             // master
@@ -82,7 +82,7 @@ namespace server.Controllers
                     foreach(var freeTime in freeTimes) {
                         freeAppointments.Add(new Appointment() {
                             masterId = master.Id,
-                            MasterUser =  master,
+                            Master =  master,
                             serviceId = serviceId,
                             date = freeTime.ToString("o")
                         });

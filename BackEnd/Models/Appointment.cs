@@ -20,9 +20,9 @@ namespace server.Models
         public virtual Service? Service { get; set; }
    
         // [JsonIgnore]
-        public virtual User? MasterUser { get; set; }
+        public virtual User? Master { get; set; }
 
         // [JsonIgnore]
-        public virtual User? ClientUser { get; set; }
+        public virtual User? Client { get; set; }
     }
 }
