@@ -1,7 +1,7 @@
 <script lang="ts">
 import { UserAPI } from '@/api/UserAPI';
 import { useFetching } from '@/hooks/useFetching';
-import { IUser, RolesEnum } from '@/models/IUser';
+import { IUserToken, RolesEnum } from '@/models/IUser';
 import { AppRoutes } from '@/router/router';
 import { useAuthStore } from '@/store/useAuth';
 import { useCompanyStore } from '@/store/useCompany';

@@ -1,4 +1,4 @@
-import { CompanyAPI } from '@/api/СompanyAPI';
+import { CompanyAPI } from '@/api/CompanyAPI';
 import { useFetching } from '@/hooks/useFetching';
 import { ICompany } from '@/models/ICompany';
 import { AppRoutes } from '@/router/router';
@@ -19,9 +19,9 @@ export const useCompanyStore = defineStore('company', {
         async setCompanyPage(alias: string = '') {
             const route = useRoute();
             alias = alias ? alias : (route.params['companyAlias'] as string);
-            console.log('companyAlias in store', this.company.alias, alias);
+            console.log('companyAlias in store', this.company.companyAlias, alias);
 
-            if (this.company.alias !== alias) {
+            if (this.company.companyAlias !== alias) {
                 const router = useRouter();
                 this.isLoadingCompany = true;
 

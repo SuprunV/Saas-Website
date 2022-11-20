@@ -124,7 +124,7 @@ namespace server.Controllers {
         [Authorize]
         [HttpGet("{id}")]
         public ActionResult<User> getUser(int id) {
-            var user = _context.Users?.FirstOrDefault(u => u.Id == id);
+            var user = _context.Users?.Include(u => u.Company).FirstOrDefault(u => u.Id == id);
             
             if(user == null)  return BadRequest("This user is not exists");
     
@@ -152,7 +152,7 @@ namespace server.Controllers {
             _context.Entry(user).State = EntityState.Modified;
             _context.SaveChanges();
 
-            return CreatedAtAction(nameof(getUser), new { id = user.Id }, user);
+            return CreatedAtAction(nameof(getUser), new { id = user.Id}, user);
         }
         [Authorize]
         [HttpDelete("{id}")]

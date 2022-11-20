@@ -2,17 +2,34 @@
 import { useAuthStore } from '@/store/useAuth';
 import { storeToRefs } from 'pinia';
 import { UserAPI } from '@/api/UserAPI';
+import { RolesEnum } from '@/models/IUser';
 import { defineComponent, reactive, ref } from 'vue';
-import MasterSettingForm from '@/components/MasterSettingForm.vue';
+
 import { LikeOutlined } from '@ant-design/icons-vue';
+import { useFetching } from '@/hooks/useFetching';
+import UserSettingForm from '@/components/UserSettingForm.vue';
 
 export default defineComponent({
+    data: () => ({
+        RolesEnum,
+    }),
     setup: () => {
         const changeRef = ref<any>(null);
         const isChangeModal = ref<boolean>(false);
 
         const authStore = useAuthStore();
         const { authUser } = storeToRefs(authStore);
+
+        const {
+            fetchData: getUsersInfo,
+            response: selectedUser,
+            isLoading,
+            message,
+        } = useFetching(async () => {
+            return await UserAPI.getUser(authUser.value.id);
+        
+        });
+        getUsersInfo();
 
         const validateMessages = {
             required: '${label} is required!',
@@ -29,78 +46,83 @@ export default defineComponent({
             labelCol: { span: 8 },
             wrapperCol: { span: 16 },
         };
-        const formState = reactive({
-            master: {
-                name: '',
-                surname: '',
-                age: undefined,
-                email: '',
-                gender: '',
-                companyName: '',
-            },
-        });
 
         return {
             changeRef,
             isChangeModal,
-            formState,
+            getUsersInfo,
             layout,
             validateMessages,
             authUser,
+            selectedUser,
+            isLoading,
+            message,
         };
     },
     methods: {
         showChangeModal() {
             this.isChangeModal = true;
         },
+        updateFinalAction() {
+            this.getUsersInfo();
+        }
     },
-    components: { LikeOutlined, MasterSettingForm },
+    components: { LikeOutlined, UserSettingForm },
 });
 </script>
 
 <template>
     <div>
-        <h1 class="text-center">Settings for master</h1>
+        <h1 class="text-center">Settings page</h1>
         <div>
+            <response-alert :message="message" :isLoading="isLoading" />
             <a-space size="middle">
                 <a-space direction="vertical" size="middle">
                     <div class="space-align-container">
                         <div class="space-align-block">
                             <a-space align="start">
-                                <img class="settingImage" :width="200" :src="authUser.img" />
+                                <img class="settingImage" :width="200" :src="selectedUser?.img" />
                                 <div class="personInfo">
                                 <a-descriptions
                                     title="Master Info"
                                     bordered="true"
                                 >
                                     <a-descriptions-item label="Name" :span="3"
-                                        >Levi</a-descriptions-item
+                                        >{{
+                                            selectedUser?.name
+                                        }}</a-descriptions-item
                                     >
                                     <a-descriptions-item
                                         label="Surname"
                                         :span="3"
-                                        >Ackerman</a-descriptions-item
+                                        >{{
+                                            selectedUser?.surname
+                                        }}</a-descriptions-item
                                     >
                                     <a-descriptions-item
                                         label="Gender"
                                         :span="3"
-                                        >Male</a-descriptions-item
+                                        >{{
+                                            selectedUser?.gender
+                                        }}</a-descriptions-item
                                     >
-                                    <a-descriptions-item label="Age" :span="3"
-                                        >16</a-descriptions-item
+                                    <a-descriptions-item label="Date of birth" :span="3"
+                                        >{{
+                                            selectedUser?.DoB
+                                        }}</a-descriptions-item
                                     >
                                     <a-descriptions-item
                                         label="Company"
                                         :span="3"
                                         >{{
-                                            authUser.companyName
+                                            selectedUser?.company?.companyName
                                         }}</a-descriptions-item
                                     >
                                     <a-descriptions-item
                                         label="Email"
                                         :span="3"
                                         >{{
-                                            authUser.email
+                                            selectedUser?.login
                                         }}</a-descriptions-item
                                     >
                                 </a-descriptions>
@@ -108,7 +130,7 @@ export default defineComponent({
                             </a-space>
                         </div>
                     </div>
-                    <a-row>
+                    <a-row v-if="authUser.role === RolesEnum.MASTER">
                         <a-col :span="5">
                             <div class="settingPageStatistic"> <a-statistic title="Done work" :value="2000" /></div>
                         </a-col>
@@ -124,6 +146,7 @@ export default defineComponent({
                         </div>
                         </a-col>
                     </a-row>
+
                     <a-button type="primary" @click="showChangeModal"
                         >Change data</a-button
                     >
@@ -131,8 +154,11 @@ export default defineComponent({
             </a-space>
         </div>
     </div>
-    <MasterSettingForm
+    <UserSettingForm
         v-model:show="isChangeModal"
+        @finalAction="updateFinalAction"
+        :editUser="selectedUser"
+        
         v-createModal="{ show: isChangeModal }"
     />
 </template>

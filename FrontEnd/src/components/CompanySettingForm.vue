@@ -1,6 +1,6 @@
 <template>
     <div v-createModal="{ show: show, width: 50 }">
-        <div class="main-cart" role="document">
+        <div class="main-cart">
             <a-form
                 :model="formState"
                 v-bind="layout"
@@ -8,22 +8,23 @@
                 :validate-messages="validateMessages"
                 @finish="submitForm"
             >
+            <response-alert :message="message" :isLoading="isLoading" />
                 <div class="ant-modal-body">
                     <a-form-item
-                        :name="['user', 'companyName']"
+                        name="companyName"
                         label="Company name"
                         :rules="[{ required: true }]"
                     >
                         <a-input
-                            v-model:value="formState.company.companyName"
+                            v-model:value="formState.companyName"
                         />
                     </a-form-item>
                     <a-form-item
-                        :name="['user', 'address']"
+                        name="address"
                         label="Address"
                         :rules="[{ required: true }]"
                     >
-                        <a-input v-model:value="formState.company.address" />
+                        <a-input v-model:value="formState.address" />
                     </a-form-item>
                 </div>
                 <div class="ant-modal-footer">
@@ -43,10 +44,19 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
+import { PropType } from 'vue-types/dist/types';
+import { useFetching } from '@/hooks/useFetching';
+import { CompanyAPI } from '@/api/CompanyAPI';
+import { useCompanyStore } from '@/store/useCompany';
+import { ICompany } from '@/models/ICompany';
+import { storeToRefs } from 'pinia';
+import { ResponseTypeEnum } from '@/types/FetchResponse';
+
 
 export default defineComponent({
     props: {
         show: Boolean,
+        editCompany: Object as PropType<ICompany>
     },
     setup(props) {
         const layout = {
@@ -54,30 +64,73 @@ export default defineComponent({
             wrapperCol: { span: 16 },
         };
 
+        const companyStore = useCompanyStore();
+        const { company } = storeToRefs(companyStore);
+
+        const {
+            fetchData: getCompanyInfo,
+            response: selectedCompany,
+        } = useFetching(async () => {
+            return await CompanyAPI.getCompany(company.value.id);
+        });
+
         const validateMessages = {
             required: '${label} is required!',
         };
 
-        const formState = reactive({
-            company: {
-                companyName: '',
-                address: '',
-            },
+        const formState = ref<ICompany>({
+            id: props.editCompany?.id ?? -1,
+            img: props.editCompany?.img ?? "",
+            companyName: props.editCompany?.companyName ?? "",
+            companyAlias: props.editCompany?.companyAlias ?? "",
+            address: props.editCompany?.address ?? "",
         });
+
+        const {fetchData: updateCompany,
+            isLoading,
+            message,} = useFetching(async () => {
+            return await CompanyAPI.updateCompany(company.value.id, formState.value)
+       });
 
         return {
             formState,
             layout,
             validateMessages,
+            updateCompany,
+            selectedCompany,
+            isLoading,
+            message,
+            getCompanyInfo,
+            company
         };
     },
     methods: {
         close() {
             this.$emit('update:show', false);
         },
-        submitForm() {
-            console.log('submit started', this.formState);
+        async submitForm() {
+            await this.updateCompany();
+            console.log('response', this.selectedCompany, this.message);
+            if (this.message.type == ResponseTypeEnum.SUCCESS) {
+                setTimeout(async () => {
+                    await this.getCompanyInfo();
+                    this.$emit('update:show', false);
+                    this.$emit('final');
+                }, 1500);
+            }
         },
     },
+    watch: {
+        editCompany() {
+            console.log("editCompany is updated");
+            this.formState = reactive<ICompany>({
+                id: this.editCompany?.id ?? -1,
+                img: this.editCompany?.img ?? "",
+                companyName: this.editCompany?.companyName ?? "",
+                companyAlias: this.editCompany?.companyAlias ?? "",
+                address: this.editCompany?.address ?? "",
+        });
+        }
+    }
 });
 </script>
