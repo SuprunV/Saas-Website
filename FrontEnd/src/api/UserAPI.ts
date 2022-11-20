@@ -1,4 +1,4 @@
-import { $host } from '@/config';
+import { $authHost, $host } from '@/config';
 import { IRegCompanyForm } from '@/models/ICompany';
 import { IRegClientForm, IUser, RolesEnum } from '@/models/IUser';
 import { LocalStorageItemEnum } from '@/types/LocalStorageItemEnum';
@@ -81,18 +81,10 @@ export class UserAPI {
         localStorage.removeItem(LocalStorageItemEnum.token);
     }
 
-    static async getUser(
-        userId: number
-        ): Promise<IUser[]> {
-        try {
-            const response = await $host.get<IUser[]>(
-                `/user/${userId}`,
-            );
-            console.log('user', response.data);
-            return response.data;
-        } catch (e) {
-            return [];
-        }
+    static async getUser(userId: number): Promise<IUser> {
+        const response = await $authHost.get<IUser>(`/user/${userId + 1}`);
+        console.log('user', response.data);
+        return response.data;
     }
 
     static getPublicUsers(

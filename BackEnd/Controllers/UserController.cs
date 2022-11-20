@@ -121,7 +121,7 @@ namespace server.Controllers {
             return Ok(new { token = token });
         }
         
-        //[Authorize]
+        [Authorize]
         [HttpGet("{id}")]
         public ActionResult<User> getUser(int id) {
             var user = _context.Users?.FirstOrDefault(u => u.Id == id);

@@ -3,9 +3,10 @@ import { useAuthStore } from '@/store/useAuth';
 import { storeToRefs } from 'pinia';
 import { defineComponent, reactive, ref } from 'vue';
 import { UserAPI } from '@/api/UserAPI';
-import {IUser, RolesEnum} from '@/models/IUser';
+import { IUser, RolesEnum } from '@/models/IUser';
 import ClientSettingForm from '@/components/ClientSettingForm.vue';
 import { ContactsOutlined } from '@ant-design/icons-vue';
+import { useFetching } from '@/hooks/useFetching';
 
 export default defineComponent({
     setup: () => {
@@ -15,11 +16,14 @@ export default defineComponent({
         const authStore = useAuthStore();
         const { authUser } = storeToRefs(authStore);
 
-        const selectedUser = ref<IUser[]>();
-        const getUsersInfo = async () => {
-            const response = await UserAPI.getUser(2);
-            selectedUser.value = response;
-        };
+        const {
+            fetchData: getUsersInfo,
+            response: selectedUser,
+            isLoading,
+            message,
+        } = useFetching(async () => {
+            return await UserAPI.getUser(authUser.value.id);
+        });
         getUsersInfo();
         const validateMessages = {
             required: '${label} is required!',
@@ -52,8 +56,10 @@ export default defineComponent({
             formState,
             layout,
             validateMessages,
+            message,
+            isLoading,
             authUser,
-            selectedUser
+            selectedUser,
         };
     },
     methods: {
@@ -69,43 +75,52 @@ export default defineComponent({
     <div>
         <h1 class="text-center">Settings for Client</h1>
         <div>
+            <response-alert :message="message" :isLoading="isLoading" />
             <a-space size="middle">
                 <a-space direction="vertical" size="middle">
                     <div class="space-align-container">
                         <div class="space-align-block">
                             <a-space align="start">
-                                <img class="settingImage" :width="200" :src="selectedUser?." />
+                                <img
+                                    class="settingImage"
+                                    :width="200"
+                                    :src="selectedUser?.img"
+                                />
                                 <div class="personInfo">
-                                <a-descriptions 
-                                    title="Client Info"
-                                    bordered="true"
-                                >
-                                    <a-descriptions-item label="Name" :span="3"
-                                        >{{
-                                            selectedUser.name
-                                        }}</a-descriptions-item
+                                    <a-descriptions
+                                        title="Client Info"
+                                        bordered="true"
                                     >
-                                    <a-descriptions-item
-                                        label="Surname"
-                                        :span="3"
-                                        >Yeager</a-descriptions-item
-                                    >
-                                    <a-descriptions-item
-                                        label="Gender"
-                                        :span="3"
-                                        >Male</a-descriptions-item
-                                    >
-                                    <a-descriptions-item label="Age" :span="3"
-                                        >15</a-descriptions-item
-                                    >
-                                    <a-descriptions-item
-                                        label="Email"
-                                        :span="3"
-                                        >{{
-                                            authUser.email
-                                        }}</a-descriptions-item
-                                    >
-                                </a-descriptions>
+                                        <a-descriptions-item
+                                            label="Name"
+                                            :span="3"
+                                            >{{
+                                                selectedUser?.name
+                                            }}</a-descriptions-item
+                                        >
+                                        <a-descriptions-item
+                                            label="Surname"
+                                            :span="3"
+                                            >Yeager</a-descriptions-item
+                                        >
+                                        <a-descriptions-item
+                                            label="Gender"
+                                            :span="3"
+                                            >Male</a-descriptions-item
+                                        >
+                                        <a-descriptions-item
+                                            label="Age"
+                                            :span="3"
+                                            >15</a-descriptions-item
+                                        >
+                                        <a-descriptions-item
+                                            label="Email"
+                                            :span="3"
+                                            >{{
+                                                authUser.email
+                                            }}</a-descriptions-item
+                                        >
+                                    </a-descriptions>
                                 </div>
                             </a-space>
                         </div>
