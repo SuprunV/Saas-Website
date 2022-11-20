@@ -1,6 +1,6 @@
 export interface IService{
     id: number;
-    img:string;
+    img?:string;
     name: string;
     description: string;
     duration: number;

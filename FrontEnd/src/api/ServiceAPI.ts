@@ -1,4 +1,5 @@
 import { $host } from '@/config';
+import { $authHost } from '@/config';
 import { IService } from '@/models/IService';
 import axios from 'axios';
 
@@ -46,7 +47,7 @@ export class ServiceAPI {
             page: number,
         ): Promise<IService[]> {
             try {
-                const response = await $host.delete<IService[]>(
+                const response = await $host.post<IService[]>(
                     `/company/alias-${companyAlias}/services`,
                 );
                 return response.request;
@@ -54,17 +55,34 @@ export class ServiceAPI {
                 return [];
             }
         }
-    static getServiceById(id: number): Promise<IService> {
-        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-            // const serviceIndex = this.demoServices.findIndex(
-            //     (c) => c.id === id,
-            // );
-            // if (serviceIndex >= 0) {
-            //     return this.demoServices[serviceIndex];
-            // } else
-            throw Error("this service doesn't exists!");
-        });
+
+        static async deleteCompanyServices(serviceId: number): Promise<IService[]> {
+            try {
+                const response = await $host.delete<IService[]>(
+                    `/Service/${serviceId}`,
+                );
+               // console.log('masters', response.data);
+                return response.data;
+            } catch (e) {
+                return [];
+            }
+        }
+        static async updateCompanyServices(id: number, item: IService): Promise<IService> {
+                const response = await $authHost.put<IService>(
+                    `/Service/${id}`, item,
+                );
+               // console.log('masters', response.data);
+                return response.data;
+        }
+
+    static async  getServiceById(serviceId: number): Promise<IService> {
+        const response = await $authHost.get<IService>(
+            `/Service/${serviceId}`,
+        );
+        console.log('masters', response.data);
+        return response.data;
     }
+
     static getServiceByName(name: string): Promise<IService> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
             // const companyIndex = this.demoServices.findIndex(

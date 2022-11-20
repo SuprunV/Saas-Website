@@ -14,49 +14,7 @@ interface ITokenResponse {
     token: string;
 }
 export class UserAPI {
-    static demoUsers: IUser[] = [
-        {
-            id: 1,
-            name: 'My first company',
-            email: 'admin@myfircom.com',
-            role: RolesEnum.COMPANY,
-            img: companyImgUrl,
-            companyName: 'My First Company',
-            companyAlias: 'myfircom',
-            companyId: 1,
-        },
-        {
-            id: 2,
-            name: 'Eren Yeager',
-            email: 'eren-yeager@myfircom.com',
-            role: RolesEnum.CLIENT,
-            img: clientImgUrl,
-            companyName: 'My First Company',
-            companyAlias: 'myfircom',
-            companyId: 1,
-        },
-        {
-            id: 3,
-            name: 'Levi ackerman',
-            email: 'levi-ackerman@myfircom.com',
-            role: RolesEnum.MASTER,
-            img: masterImgUrl,
-            companyName: 'My First Company',
-            companyAlias: 'myfircom',
-            companyId: 1,
-        },
-        {
-            id : 4,
-            name : 'Kristina K',
-            email : "KristinaK@gmail.com",
-            role : RolesEnum.MASTER, 
-            img: masterImgUrl,
-            companyName: 'My First Company',
-            companyAlias: 'myfircom',
-            companyId: 1,
-   
-        },
-    ];
+  
 
     static async login(loginForm: IRegClientForm) {
         const response = await $host.post<ITokenResponse>(
@@ -104,24 +62,25 @@ export class UserAPI {
             const count = limit * page;
             var demoUser: any;
             let users: IUser[] = [];
-            if (role != null) {
-                users = this.demoUsers.filter((c) => c.role === role);
-            } else {
-                for (let i = (page - 1) * limit + 1; i <= count; i++) {
-                    demoUser = this.demoUsers[i % 3];
-                    users.push({ ...demoUser, id: i });
-                }
-            }
+            // if (role != null) {
+            //     users = this.demoUsers.filter((c) => c.role === role);
+            // } else {
+            //     for (let i = (page - 1) * limit + 1; i <= count; i++) {
+            //         demoUser = this.demoUsers[i % 3];
+            //         users.push({ ...demoUser, id: i });
+            //     }
+            // }
             return users;
         });
     }
 
     static getUserByRole(role: RolesEnum): Promise<IUser> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-            const userIndex = this.demoUsers.findIndex((c) => c.role === role);
-            if (userIndex >= 0) {
-                return this.demoUsers[userIndex];
-            } else throw Error("this role doesn't exists!");
+            // const userIndex = this.demoUsers.findIndex((c) => c.role === role);
+            // if (userIndex >= 0) {
+            //     return this.demoUsers[userIndex];
+            // } else 
+            throw Error("this role doesn't exists!");
         });
     }
 }

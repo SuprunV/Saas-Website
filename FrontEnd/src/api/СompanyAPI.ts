@@ -1,4 +1,4 @@
-import { $host } from '@/config';
+import { $authHost, $host } from '@/config';
 import { ICompany } from '@/models/ICompany';
 import { IMaster } from '@/models/IMaster';
 import { IUser } from '@/models/IUser';
@@ -55,9 +55,9 @@ export class CompanyAPI {
 
   
 
-    static async getCompanyMasters(companyId: number): Promise<IMaster[]> {
+    static async getCompanyMasters(companyId: number): Promise<IUser[]> {
         try {
-            const response = await $host.get<IMaster[]>(
+            const response = await $host.get<IUser[]>(
                 `/Company/${companyId}/masters`,
             );
             console.log('masters', response.data);
@@ -78,10 +78,21 @@ export class CompanyAPI {
         //     return companies;
         // });
     }
-
-    static async postCompanyMasters(companyId: number): Promise<IMaster[]> {
+    static async deleteCompanyMasters(Id: number): Promise<IUser[]> {
         try {
-            const response = await $host.post<IMaster[]>(
+            const response = await $authHost.delete<IUser[]>(
+                `/User/${Id}`,
+            );
+            console.log('masters', response.data);
+            return response.data;
+        } catch (e) {
+            return [];
+        }
+    }
+
+    static async postCompanyMasters(companyId: number): Promise<IUser[]> {
+        try {
+            const response = await $host.post<IUser[]>(
                 `/Company/${companyId}/masters`,
             );
             console.log('masters', response.data);
