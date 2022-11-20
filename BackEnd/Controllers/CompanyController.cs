@@ -37,7 +37,7 @@ namespace server.Controllers
         [HttpGet("{companyId}/clients")]
         public ActionResult<int> GetCompanyClients(int companyId)
         {
-            var clientsInCompany = _context.Clients?.Where(x => x.User.companyId == companyId);
+            var clientsInCompany = _context.Users?.Where(x => x.companyId == companyId && x.role == Enums.Role.CLIENT);
             if(clientsInCompany == null) return Ok("No clients in company");
             else return Ok(clientsInCompany?.ToList());
         }
@@ -45,7 +45,7 @@ namespace server.Controllers
         public ActionResult<IEnumerable<Appointment>> GetCompanyAppointmentsByDate(int companyId, [FromQuery] string date)
         {
             if(!CompanyExists(companyId)) return BadRequest();
-            var appointments = _context.Appointments!.Include(x => x.Master).Where((x => x.date.Contains(date) && x.Master.User.companyId == companyId));
+            var appointments = _context.Appointments!.Include(x => x.MasterUser).Where((x => x.date.Contains(date) && x.MasterUser.companyId == companyId));
             return Ok(appointments);
         }
         [HttpGet("{companyId}/free-appointments")]
@@ -53,7 +53,7 @@ namespace server.Controllers
         {
             if(!_context.Services!.Any(s => s.Id == serviceId)) return Conflict();
             if(!CompanyExists(companyId)) return BadRequest();
-            var appointments = _context.Appointments!.Include(x => x.Master).Include(x => x.Service).Where((x => x.date.Contains(date) && x.Master.User.companyId == companyId)).ToList();
+            var appointments = _context.Appointments!.Include(x => x.MasterUser).Include(x => x.Service).Where((x => x.date.Contains(date) && x.MasterUser.companyId == companyId)).ToList();
             
             // masterId:
             // master
@@ -65,10 +65,10 @@ namespace server.Controllers
             var freeAppointments = new List<Appointment>();
             
             // get list of all masters in this company
-            var masters = _context.Masters.Include(m => m.User).Where(m => m.User.companyId == companyId);
+            var masters = _context.Users.Where(m => m.companyId == companyId && m.role == Enums.Role.MASTER);
             foreach(var master in masters) {
                 // get buzy appointments of this master.
-                var buzyAppointments = appointments.Where(a => a.masterId == master.Id);
+                var buzyAppointments = appointments.Where(a => a.masterUserId == master.Id);
                 if(buzyAppointments != null) {
                     // Example: we have buzy times: 10:15 + 60 and 15:30 + 45.
                     var buzyTimeEndings = new List<List<DateTime>>();
@@ -81,8 +81,8 @@ namespace server.Controllers
                     
                     foreach(var freeTime in freeTimes) {
                         freeAppointments.Add(new Appointment() {
-                            masterId = master.Id,
-                            Master =  master,
+                            masterUserId = master.Id,
+                            MasterUser =  master,
                             serviceId = serviceId,
                             date = freeTime.ToString("o")
                         });
@@ -94,10 +94,10 @@ namespace server.Controllers
         }
         
         [HttpGet("{companyId}/masters")]
-        public ActionResult<IEnumerable<Master>> GetCompanyMasters(int companyId)
+        public ActionResult<IEnumerable<User>> GetCompanyMasters(int companyId)
         {
             if(!CompanyExists(companyId)) return BadRequest();
-            var mastersInCompany = _context.Masters?.Where(x => x.User.companyId == companyId);
+            var mastersInCompany = _context.Users?.Where(x => x.companyId == companyId && x.role == Enums.Role.MASTER);
             
             return Ok(mastersInCompany);
         }
