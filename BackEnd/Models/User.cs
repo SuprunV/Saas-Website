@@ -20,6 +20,10 @@ namespace server.Models
 
         [JsonIgnore]
         public virtual Company? Company { get; set; }
+        [JsonIgnore]
+         public virtual ICollection<Appointment> AppointmentClient { get; set; } = new List<Appointment>();
+         [JsonIgnore]
+         public virtual ICollection<Appointment> AppointmentMaster { get; set; } = new List<Appointment>();
     }
     public class UserToken {
         public int id {get; set;}

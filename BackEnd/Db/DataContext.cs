@@ -8,9 +8,7 @@ namespace server.Db
     {
         public DataContext(DbContextOptions options) : base(options) {  }       
         public DbSet<User>? Users { get; set; }
-        public DbSet<Client>? Clients { get; set; }
         public DbSet<Admin>? Admins { get; set; } 
-        public DbSet<Master>? Masters { get; set; } 
         public DbSet<Company>? Companies { get; set; } 
         public DbSet<Service>? Services { get; set; } 
         public DbSet<Appointment>? Appointments { get; set; } 
@@ -28,15 +26,15 @@ namespace server.Db
             
             mb.Entity<Company>().ToTable("Companies").HasKey(x => x.Id);
             
-            mb.Entity<MasterService>().ToTable("Master&Service")
-            .HasKey(key => new { key.masterId, key.serviceId });
+            // mb.Entity<MasterService>().ToTable("Master&Service")
+            // .HasKey(key => new { key.masterId, key.serviceId });
 
-            mb.Entity<Client>().ToTable("Clients").HasKey(x => x.Id);
-            mb.Entity<Client>().HasOne(x => x.User);
-            mb.Entity<Admin>().ToTable("Admins").HasOne(x => x.User);
+            // mb.Entity<Client>().ToTable("Clients").HasKey(x => x.Id);
+            // mb.Entity<Client>().HasOne(x => x.User);
+            // mb.Entity<Admin>().ToTable("Admins").HasOne(x => x.User);
             
-            mb.Entity<Master>().ToTable("Masters").HasKey(x => x.Id);
-            mb.Entity<Master>().HasOne(x => x.User);
+            // mb.Entity<Master>().ToTable("Masters").HasKey(x => x.Id);
+            // mb.Entity<Master>().HasOne(x => x.User);
 
             mb.Entity<Service>().ToTable("Services").HasKey(x => x.Id);
             mb.Entity<Service>().HasOne(x => x.Company)
@@ -45,15 +43,15 @@ namespace server.Db
           
             mb.Entity<Appointment>().ToTable("Appointments").HasKey(x => x.Id);
             
-            mb.Entity<Appointment>().HasOne(x => x.Client)
+            mb.Entity<Appointment>().HasOne(x => x.ClientUser)
             .WithMany(x => x.AppointmentClient)
-            .HasForeignKey(x => x.clientId);
+            .HasForeignKey(x => x.clientUserId);
             mb.Entity<Appointment>().HasOne(x => x.Service)
             .WithMany(x => x.AppointmentService)
             .HasForeignKey(x => x.serviceId);
-             mb.Entity<Appointment>().HasOne(x => x.Master)
+             mb.Entity<Appointment>().HasOne(x => x.MasterUser)
             .WithMany(x => x.AppointmentMaster)
-            .HasForeignKey(x => x.masterId);
+            .HasForeignKey(x => x.masterUserId);
             mb.Entity<Company>().HasData(
                 new Company
                 {
@@ -130,24 +128,24 @@ namespace server.Db
                 new Appointment{
                     Id = 1,
                     date = "2022-10-27T12:15:00.942Z", 
-                    masterId = 1,
+                    clientUserId = 4,
                     serviceId = 1,
-                    clientId = 1
+                    masterUserId = 1
 
                 },
                 new Appointment{
                     Id = 2,
                     date = "2022-11-27T14:00:00.942Z",
-                    masterId = 2,
+                    clientUserId = 4,
                     serviceId = 2,
-                    clientId = 2,
+                    masterUserId = 2,
                 },
                   new Appointment{
                     Id = 3,
                     date = "2022-10-27T15:45:00.942Z", 
-                    masterId = 2,
+                    masterUserId = 2,
                     serviceId = 3,
-                    clientId = 2,
+                    clientUserId = 3,
 
                 }
             );
@@ -166,7 +164,7 @@ namespace server.Db
                 },
                 new User
                 {
-                    Id = 6,
+                    Id = 2,
                     name = "Levi",
                     surname = "Ackerman",
                     login = "levi-ackerman@gmail.com",
@@ -178,7 +176,7 @@ namespace server.Db
                 },
                 new User
                 {
-                    Id = 2,
+                    Id = 3,
                     name = "Eren",
                     surname = "Yeager",
                     login = "eren-yeager@gmail.com",
@@ -189,7 +187,7 @@ namespace server.Db
                 },
                 new User
                 {
-                    Id = 5,
+                    Id = 4,
                     name = "Mari",
                     surname = "Curie",
                     login = "MariC@gmail.com",
@@ -200,7 +198,7 @@ namespace server.Db
                 },
                 new User
                 {
-                    Id = 3,
+                    Id = 5,
                     login = "BeautySalon@gmail.com",
                     name = "Admin",
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
@@ -211,7 +209,7 @@ namespace server.Db
                 },
                 new User
                 {
-                    Id = 4,
+                    Id = 6,
                     login = "MassageSalon@gmail.com",
                     name = "MassageSalonAdmin",
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
@@ -221,48 +219,7 @@ namespace server.Db
                 }
                 
             );
-                mb.Entity<Client>().HasData(
-                new Client
-                {
-                    Id = 1,
-                    name = "Ronald",
-                    surname= "Kuusepuu",
-                    DoB = "1975-10-27T00:00:00.942Z",
-                    gender = Gender.Male,
-                    userId = 2
-            
-                },
-                new Client
-                {
-                    Id = 2,
-                    name = "Mari",
-                    surname= "Tallinn",
-                    DoB = "2010-11-27T00:00:00.942Z",
-                    gender = Gender.Female,
-                    userId = 5
-                }
-            );
-             mb.Entity<Master>().HasData(
-                new Master
-                {
-                    Id = 1,
-                    name = "Liina",
-                    surname= "Mets",
-                    DoB = "2001-12-13T00:00:00.942Z",
-                    gender = Gender.Female,
-                    userId = 1
-            
-                },
-                new Master
-                {
-                    Id = 2,
-                    name = "Kristina",
-                    surname= "Koh",
-                    DoB = "1989-10-21T00:00:00.942Z",
-                    gender = Gender.Female,
-                    userId = 6
-                }
-            );
+               
             mb.UseIdentityColumns();
         }
        
