@@ -1,12 +1,12 @@
-import axios from 'axios';
+import axios, { AxiosInstance, AxiosStatic } from 'axios';
 import { LocalStorageItemEnum } from './types/LocalStorageItemEnum';
 
 export let $baseUrl = '';
 
-export let $host = axios;
-export let $authHost = axios;
+export let $host: AxiosInstance = axios;
+export let $authHost: AxiosInstance = axios;
 
-export function setApiUrl(host) {
+export function setApiUrl(host: any) {
     $baseUrl = host;
     setHostAxios();
 }
@@ -20,7 +20,7 @@ export function setHostAxios() {
         baseURL: $baseUrl,
     });
 
-    const authInterceptor = (config) => {
+    const authInterceptor = (config: any) => {
         if (config.headers) {
             config.headers.authorization = `Bearer ${localStorage.getItem(
                 LocalStorageItemEnum.token,

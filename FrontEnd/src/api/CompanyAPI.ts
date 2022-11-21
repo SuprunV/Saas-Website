@@ -1,7 +1,7 @@
-import { $host } from '@/config';
+import { $authHost, $host } from '@/config';
 import { ICompany } from '@/models/ICompany';
 import { IMaster } from '@/models/IMaster';
-import { IUser } from '@/models/IUser';
+import { IUserToken } from '@/models/IUser';
 import axios from 'axios';
 
 const companyImgUrl =
@@ -18,20 +18,23 @@ export class CompanyAPI {
         {
             id: 1,
             img: companyImgUrl,
-            name: 'My First Company',
-            alias: 'myfircom',
+            companyName: 'My First Company',
+            companyAlias: 'myfircom',
+            address: ''
         },
         {
             id: 2,
             img: companyImgUrl2,
-            name: 'My Second Company',
-            alias: 'myseccom',
+            companyName: 'My Second Company',
+            companyAlias: 'myseccom',
+            address: ''
         },
         {
             id: 3,
             img: starplast,
-            name: 'Starplast',
-            alias: 'starplast',
+            companyName: 'Starplast',
+            companyAlias: 'starplast',
+            address: ''
         },
     ];
 
@@ -51,6 +54,17 @@ export class CompanyAPI {
             }
             return companies;
         });
+    }
+    static async getCompany(companyId: number): Promise<ICompany> {
+        const response = await $authHost.get<ICompany>(`/company/${companyId}`);
+        console.log('company', response.data);
+        return response.data;
+    }
+
+    static async updateCompany(companyId: number, company: ICompany): Promise<ICompany> {
+        const response = await $authHost.put<ICompany>(`/company/${companyId}`, company);
+        console.log('updated company', response.data);
+        return response.data;
     }
 
     static async getCompanyMasters(companyId: number): Promise<IMaster[]> {
@@ -89,7 +103,7 @@ export class CompanyAPI {
     static getCompanyByAlias(alias: string): Promise<ICompany> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
             const companyIndex = this.demoCompanies.findIndex(
-                (c) => c.alias === alias,
+                (c) => c.companyAlias === alias,
             );
             if (companyIndex >= 0) {
                 return this.demoCompanies[companyIndex];

@@ -5,7 +5,7 @@ import {
     AuditOutlined,
 } from '@ant-design/icons-vue';
 import { defineComponent, ref, onMounted, nextTick } from 'vue';
-import { CompanyAPI } from '@/api/СompanyAPI';
+import { CompanyAPI } from '@/api/CompanyAPI';
 import { ICompany } from '@/models/ICompany';
 import { useCompanyStore } from '@/store/useCompany';
 
@@ -196,7 +196,7 @@ export default defineComponent({
                     <template #actions>
                         <a-button
                             type="primary"
-                            @click="$router.push(item.alias)"
+                            @click="$router.push(item.companyAlias)"
                             >Visit</a-button
                         >
                     </template>
@@ -208,7 +208,7 @@ export default defineComponent({
                     >
                         <a-list-item-meta>
                             <template #title>
-                                <a :href="`${item.alias}`">{{ item.name }}</a>
+                                <a :href="`${item.companyAlias}`">{{ item.companyName }}</a>
                             </template>
                             <template #avatar>
                                 <a-avatar :src="item.img" />
