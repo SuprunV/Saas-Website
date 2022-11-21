@@ -12,6 +12,8 @@ import { ServiceAPI } from '@/api/ServiceAPI';
 import UserSettingForm from '@/components/UserSettingForm.vue';
 import { CompanyAPI } from '@/api/companyAPI';
 import { storeToRefs } from 'pinia';
+import { useFetching } from '@/hooks/useFetching';
+import { threadId } from 'worker_threads';
 export default defineComponent({
     components: {
     PlusCircleTwoTone,
@@ -38,21 +40,38 @@ export default defineComponent({
         const masterList = ref<IUserToken[]>([]);
         const auth = useAuthStore();
         const {authUser} = storeToRefs(auth);
+
+        const{
+            fetchData: getServices,
+            response : selectedService, 
+            isLoading,
+            message,
+        } = useFetching(async () => {
+            console.log('k', selectedService);
+            return await ServiceAPI.getService(formStateService.service.id);
+        });
+        getServices();
+      
+       
         onMounted(async () => {
             const services = await ServiceAPI.getPublicServices(
-                auth.authUser.companyAlias,
-                limit.value,
-                page.value,
+            auth.authUser.companyAlias,
+            limit.value,
+            page.value,
             );
-            const masters = await CompanyAPI.getCompanyMasters(
-                authUser.value.companyId,
-            );
-            initLoading.value = false;
-            dataService.value = services;
-            serviceList.value = services;
-            dataMaster.value = masters;
-            masterList.value = masters;
+        const masters = await CompanyAPI.getCompanyMasters(
+            authUser.value.companyId,
+        );
+    
+        initLoading.value = false;
+        dataService.value = services;
+        serviceList.value = services;
+        dataMaster.value = masters;
+        masterList.value = masters;
+
         });
+
+
 
         async function deleteUser(item : IUserToken )  {
             console.log('delete user', item);
@@ -87,12 +106,17 @@ export default defineComponent({
             isChangeModalService,
             deleteUser,
             deleteService,
+            getServices,
             serviceList,
             masterList,
             dataService,
             dataMaster,
             initLoading,
             loading,
+            isLoading, 
+            message, 
+            selectedService
+            
             
         };
     },
@@ -107,9 +131,13 @@ export default defineComponent({
             console.log('show user');
             this.isChangeModalUser = true;
         },
-        
+      
+        UpdateFinalAction(){
+            this.getServices();
+        }
 
     },
+  
 });
 
 const layout = {
@@ -129,10 +157,14 @@ const formState = reactive({
 
 const formStateService = reactive({
     service: {
+        id: 0,
         name: '',
         price: 0,
         description: '',
         duration: 0,
+     },
+    components: {
+        ServiceForm
     },
 });
 </script>
@@ -196,7 +228,7 @@ const formStateService = reactive({
                 <a-list
                     :loading="initLoading"
                     item-layout="horizontal"
-                    :data-source="serviceList"
+                    :data-source="selectedService.serviceList"
                 >
                     <template #renderItem="{ item }">
                         <a-list-item>
@@ -237,7 +269,7 @@ const formStateService = reactive({
                 </a-list>
             </div>
         </div>
-        <UserSettingForm v-model:show="isChangeModalUser" />
-        <ServiceForm v-model:show="isChangeModalService" v-model:changedServiceId="changedServiceId" />
+        <UserSettingForm @final="UpdateFinalAction" v-model:show="isChangeModalUser" />
+        <ServiceForm v-model:show="isChangeModalService" @finalAction="UpdateFinalAction" v-model:changedServiceId="changedServiceId" />
     </div>
 </template>

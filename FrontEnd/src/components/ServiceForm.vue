@@ -1,4 +1,5 @@
 <template >
+      <div class="">
     <div v-createModal="{ show: show, width: 50 }">
         <div class="main-cart" role="document">
             <a-form
@@ -8,6 +9,8 @@
                 :validate-messages="validateMessages"
                 @finish="submitForm"
             >
+            <response-alert :message="message" :isLoading="isLoading" />
+                
                 <div class="ant-modal-body">
                     <a-form-item
                         name="name"
@@ -57,7 +60,6 @@
                     > <a-button 
                         class="ant-btn btn-success" 
                         html-type="submit" 
-                        @click="close"
                        
                        >
                         <span>OK</span>
@@ -66,20 +68,19 @@
             </a-form>
         </div>
     </div>
+</div>
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
 import { ServiceAPI } from '@/api/ServiceAPI';
 import { IService } from '@/models/IService';
-import { number, object } from 'vue-types';
-import { Nullable } from 'primevue/ts-helpers';
 import { PropType } from 'vue-types/dist/types';
 import layout from 'ant-design-vue/lib/layout';
-import { describe } from 'node:test';
-import { useFetching } from '@/hooks/useFetching';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/store/useAuth';
-import {  onMounted } from 'vue';
+import { useFetching } from '@/hooks/useFetching';
+import { ResponseTypeEnum } from '@/types/FetchResponse';
+import { useCompanyStore } from '@/store/useCompany';
 
 
 export default defineComponent({
@@ -98,7 +99,6 @@ export default defineComponent({
             wrapperCol: { span: 16 },
         };
 
- 
         const validateMessages = {
             required: '${label} is required!',
             types: {
@@ -109,16 +109,23 @@ export default defineComponent({
             },
         };
 
-        async function updateService() {
+        const { fetchData: updateService, 
+            isLoading , message} = useFetching(async () => {
             console.log('update serivce', formStateService);
-            const service = await ServiceAPI.updateCompanyServices(formStateService.value.id, formStateService.value);
+            return await ServiceAPI.updateCompanyServices(formStateService.value.id, formStateService.value);
 
-        }
-        async function getService(){
-            const service = await ServiceAPI.getPublicServices(   auth.authUser.companyAlias,
-                limit.value,
-                page.value,);
-        }
+        });
+        // async function getService(){
+        //     const service = await ServiceAPI.getPublicServices(   auth.authUser.companyAlias,
+        //         limit.value,
+        //         page.value,);
+        // }
+        
+        const{ fetchData: getServices, 
+            response: selectedService,
+        } = useFetching(async () => {
+            return await ServiceAPI.getService( formStateService.value.id);
+        })
     
 
         const formStateService = ref<IService>({
@@ -129,6 +136,7 @@ export default defineComponent({
                 duration: 0,
                 id: 0
         });
+      
 
         return {
             formStateService: formStateService,
@@ -136,7 +144,10 @@ export default defineComponent({
             validateMessages,
             updateService, 
             authUser,
-            getService
+            getServices,
+            isLoading,
+            message,
+            selectedService
         };
     },
     watch: {
@@ -155,16 +166,17 @@ export default defineComponent({
         close() {
             this.$emit('update:show', false);
         },
-        submitForm() {
-            console.log('submit started', this.formStateService);
-         
-            this.updateService();
-            this.getService();
-            setTimeout(() => {
-                console.log('authUser after store login', this.authUser);
-                 //   this.$router.push(`/${this.authUser.companyAlias}/settings`);
-                    this.$router.push(`/${this.authUser.companyAlias}/settings`);
-                }, 3000);
+        async submitForm() {
+            await this.updateService();
+            console.log('submit started', this.formStateService, this.selectedService);
+            
+            if (this.message.type == ResponseTypeEnum.SUCCESS) {
+            setTimeout(async () => {
+                 await this.getServices();
+                    this.$emit('update:show', false);
+                    this.$emit('finalAction');
+                }, 1500);
+            }
           
         },
     },

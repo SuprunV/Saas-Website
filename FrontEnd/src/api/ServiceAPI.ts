@@ -41,6 +41,12 @@ export class ServiceAPI {
     //     // });
      }
 
+     static async getService(serviceId: number): Promise<IService> {
+        const response = await $authHost.get<IService>(`/Service/${serviceId}`);
+        console.log('service', response.data);
+        return response.data;
+    }
+
      static async postNewService(
             limit: number,
             page: number,

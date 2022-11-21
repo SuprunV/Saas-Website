@@ -69,9 +69,9 @@ export class CompanyAPI {
 
   
 
-    static async getCompanyMasters(companyId: number): Promise<IUser[]> {
+    static async getCompanyMasters(companyId: number): Promise<IUserToken[]> {
         try {
-            const response = await $host.get<IUser[]>(
+            const response = await $host.get<IUserToken[]>(
                 `/Company/${companyId}/masters`,
             );
             console.log('masters', response.data);
@@ -92,9 +92,9 @@ export class CompanyAPI {
         //     return companies;
         // });
     }
-    static async deleteCompanyMasters(Id: number): Promise<IUser[]> {
+    static async deleteCompanyMasters(Id: number): Promise<IUserToken[]> {
         try {
-            const response = await $authHost.delete<IUser[]>(
+            const response = await $authHost.delete<IUserToken[]>(
                 `/User/${Id}`,
             );
             console.log('masters', response.data);
@@ -104,9 +104,9 @@ export class CompanyAPI {
         }
     }
 
-    static async postCompanyMasters(companyId: number): Promise<IUser[]> {
+    static async postCompanyMasters(companyId: number): Promise<IUserToken[]> {
         try {
-            const response = await $host.post<IUser[]>(
+            const response = await $host.post<IUserToken[]>(
                 `/Company/${companyId}/masters`,
             );
             console.log('masters', response.data);
