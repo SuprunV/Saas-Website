@@ -2,29 +2,29 @@
 import { IService } from '@/models/IService';
 import { UserAPI } from '@/api/UserAPI';
 import { defineComponent, ref, reactive, onMounted } from 'vue';
-import { IUser, RolesEnum } from '@/models/IUser';
-import ClientSettingForm from '@/components/ClientSettingForm.vue';
+import {IUserToken, RolesEnum } from '@/models/IUser';
+
 import { PlusCircleTwoTone } from '@ant-design/icons-vue';
 import ServiceForm from '@/components/ServiceForm.vue';
 import { Item } from 'ant-design-vue/lib/menu';
 import { useAuthStore } from '@/store/useAuth';
 import { ServiceAPI } from '@/api/ServiceAPI';
-import { CompanyAPI } from '@/api/СompanyAPI';
+import UserSettingForm from '@/components/UserSettingForm.vue';
+import { CompanyAPI } from '@/api/companyAPI';
 import { storeToRefs } from 'pinia';
 export default defineComponent({
     components: {
-        PlusCircleTwoTone,
-        ClientSettingForm,
-        ServiceForm,
-
-    },
+    PlusCircleTwoTone,
+    ServiceForm,
+    UserSettingForm
+},
 
     data: () => ({
         clientCount: 0,
         companyCount: 0,
         masterCount: 0,
         services: [] as IService[],
-        masters: [] as IUser[],
+        masters: [] as IUserToken[],
         changedServiceId: undefined as undefined|number,
     }),
     setup() {
@@ -34,8 +34,8 @@ export default defineComponent({
         const page = ref<number>(1);
         const dataService = ref<IService[]>([]);
         const serviceList = ref<IService[]>([]);
-        const dataMaster = ref<IUser[]>([]);
-        const masterList = ref<IUser[]>([]);
+        const dataMaster = ref<IUserToken[]>([]);
+        const masterList = ref<IUserToken[]>([]);
         const auth = useAuthStore();
         const {authUser} = storeToRefs(auth);
         onMounted(async () => {
@@ -54,7 +54,7 @@ export default defineComponent({
             masterList.value = masters;
         });
 
-        async function deleteUser(item : IUser)  {
+        async function deleteUser(item : IUserToken )  {
             console.log('delete user', item);
             const master = await CompanyAPI.deleteCompanyMasters(item.id);
         }
@@ -237,7 +237,7 @@ const formStateService = reactive({
                 </a-list>
             </div>
         </div>
-        <ClientSettingForm v-model:show="isChangeModalUser" />
+        <UserSettingForm v-model:show="isChangeModalUser" />
         <ServiceForm v-model:show="isChangeModalService" v-model:changedServiceId="changedServiceId" />
     </div>
 </template>

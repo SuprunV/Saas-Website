@@ -18,7 +18,7 @@ namespace server.Models
         public string? img { get; set; }
         public int? companyId { get; set; }
 
-        [JsonIgnore]
+        // [JsonIgnore]
         public virtual Company? Company { get; set; }
     }
     public class UserToken {

@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import { IUser, RolesEnum } from '@/models/IUser';
+import { IUserToken, RolesEnum } from '@/models/IUser';
 import { defineStore } from 'pinia';
 import { LocalStorageItemEnum } from '@/types/LocalStorageItemEnum';
 import jwt_decode from 'jwt-decode';
@@ -19,7 +19,7 @@ export interface IAuth {
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         isAuth: false,
-        authUser: {} as IUser,
+        authUser: {} as IUserToken,
         accessRoutes: [] as IRoute[],
         redirectRoute: {} as IRoute,
         menuRoutes: [] as IRoute[],
@@ -27,11 +27,11 @@ export const useAuthStore = defineStore('auth', {
     getters: {},
     actions: {
         logoutActionStore() {
-            this.authUser = {} as IUser;
+            this.authUser = {} as IUserToken;
             this.isAuth = false;
         },
         loginActionStore(auth: IAuth) {
-            const user = jwt_decode<IUser>(auth.token);
+            const user = jwt_decode<IUserToken>(auth.token);
             this.authUser = user;
             // console.log('authUser', this.authUser);
             this.isAuth = true;
@@ -40,7 +40,7 @@ export const useAuthStore = defineStore('auth', {
             // In future here must be create async request to BE to check, if this user is correct.
             const token = localStorage.getItem(LocalStorageItemEnum.token);
             if (token) {
-                this.authUser = jwt_decode<IUser>(token);
+                this.authUser = jwt_decode<IUserToken>(token);
                 this.isAuth = true;
             }
         },

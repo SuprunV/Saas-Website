@@ -47,25 +47,25 @@ export default defineComponent({
                 >
                     <h4 class="text-center mb-4">
                         <span v-if="company.id">
-                            Authorization to {{ company.name }}
+                            Authorization to {{ company.companyName }}
                         </span>
                         <span v-else> Authorization to system! </span>
                     </h4>
-                    <LoginForm :alias="company.alias" />
+                    <LoginForm :alias="company.companyAlias" />
                 </div>
                 <div v-else v-appearAnimation="{ timeout: 200 }">
                     <h4 class="text-center mb-4">
                         <span v-if="company.id">
-                            Register account in {{ company.name }}
+                            Register account in {{ company.companyName }}
                         </span>
                         <span v-else> Registration for your company</span>
                     </h4>
-                    <div v-if="company.alias">
-                        <RegClientForm :alias="company.alias" />
+                    <div v-if="company.companyAlias">
+                        <RegClientForm :alias="company.companyAlias" />
                     </div>
                     <div v-else>
-                        <div v-if="company.alias">
-                            <RegCompanyForm :alias="company.alias" />
+                        <div v-if="company.companyAlias">
+                            <RegCompanyForm :alias="company.companyAlias" />
                         </div>
                         <div v-else>
                             <RegCompanyForm />

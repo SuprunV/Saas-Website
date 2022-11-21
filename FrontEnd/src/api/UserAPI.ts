@@ -1,6 +1,6 @@
-import { $host } from '@/config';
+import { $authHost, $host } from '@/config';
 import { IRegCompanyForm } from '@/models/ICompany';
-import { IRegClientForm, IUser, RolesEnum } from '@/models/IUser';
+import { IRegClientForm, IUserToken, IUser, RolesEnum } from '@/models/IUser';
 import { LocalStorageItemEnum } from '@/types/LocalStorageItemEnum';
 import axios from 'axios';
 const companyImgUrl =
@@ -14,7 +14,38 @@ interface ITokenResponse {
     token: string;
 }
 export class UserAPI {
-  
+    static demoUsers: IUserToken[] = [
+        {
+            id: 1,
+            name: 'My first company',
+            email: 'admin@myfircom.com',
+            role: RolesEnum.COMPANY,
+            img: companyImgUrl,
+            companyName: 'My First Company',
+            companyAlias: 'myfircom',
+            companyId: 1,
+        },
+        {
+            id: 2,
+            name: 'Eren Yeager',
+            email: 'eren-yeager@myfircom.com',
+            role: RolesEnum.CLIENT,
+            img: clientImgUrl,
+            companyName: 'My First Company',
+            companyAlias: 'myfircom',
+            companyId: 1,
+        },
+        {
+            id: 3,
+            name: 'Levi ackerman',
+            email: 'levi-ackerman@myfircom.com',
+            role: RolesEnum.MASTER,
+            img: masterImgUrl,
+            companyName: 'My First Company',
+            companyAlias: 'myfircom',
+            companyId: 1,
+        },
+    ];
 
     static async login(loginForm: IRegClientForm) {
         const response = await $host.post<ITokenResponse>(
@@ -44,17 +75,29 @@ export class UserAPI {
         return response.data;
     }
 
-    static async logout(userData: IUser) {
+    static async logout(userData: IUserToken) {
         // Here will be made request to remove token for this user (userData);
         localStorage.removeItem(LocalStorageItemEnum.userJson);
         localStorage.removeItem(LocalStorageItemEnum.token);
+    }
+
+    static async getUser(userId: number): Promise<IUser> {
+        const response = await $authHost.get<IUser>(`/user/${userId}`);
+        // console.log('user', response.data);
+        return response.data;
+    }
+
+    static async updateUser(userId: number, user: IUser): Promise<IUser> {
+        
+        const response = await $authHost.put<IUser>(`/user/${userId}`, {...user, doB: user.doB.toDate().toISOString()});
+        return response.data;
     }
 
     static getPublicUsers(
         limit: number,
         page: number,
         role?: RolesEnum,
-    ): Promise<IUser[]> {
+    ): Promise<IUserToken[]> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
             // create fake users
             // limit is 5. page is 1. neede to get 1,2,3,4,5
@@ -62,19 +105,19 @@ export class UserAPI {
             const count = limit * page;
             var demoUser: any;
             let users: IUser[] = [];
-            // if (role != null) {
-            //     users = this.demoUsers.filter((c) => c.role === role);
-            // } else {
-            //     for (let i = (page - 1) * limit + 1; i <= count; i++) {
-            //         demoUser = this.demoUsers[i % 3];
-            //         users.push({ ...demoUser, id: i });
-            //     }
-            // }
+            if (role != null) {
+                users = this.demoUsers.filter((c) => c.role === role);
+            } else {
+                for (let i = (page - 1) * limit + 1; i <= count; i++) {
+                    demoUser = this.demoUsers[i % 3];
+                    users.push({ ...demoUser, id: i });
+                }
+            }
             return users;
         });
     }
 
-    static getUserByRole(role: RolesEnum): Promise<IUser> {
+    static getUserByRole(role: RolesEnum): Promise<IUserToken> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
             // const userIndex = this.demoUsers.findIndex((c) => c.role === role);
             // if (userIndex >= 0) {

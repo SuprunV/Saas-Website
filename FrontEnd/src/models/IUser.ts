@@ -1,4 +1,7 @@
-export interface IUser {
+import dayjs from "ant-design-vue/lib/date-picker/dayjs";
+import { ICompany } from "./ICompany";
+
+export interface IUserToken {
     id: number;
     img?: string;
     name: string;
@@ -9,6 +12,21 @@ export interface IUser {
     companyId: number;
 }
 
+
+export interface IUser{ 
+    id: number;
+    login?: string;
+    password?: string;
+    name?: string;
+    surname?: string;
+    doB: any;
+    gender: GenderEnum;
+    role: RolesEnum;
+    img?: string;
+    companyId?: number;
+    company?: ICompany;
+}
+
 export enum RolesEnum {
     CLIENT = 'CLIENT',
     COMPANY = 'ADMIN',
@@ -17,7 +35,7 @@ export enum RolesEnum {
 
 export enum GenderEnum {
     Female = 'Female',
-    Male = 'MaleY',
+    Male = 'Male',
 }
 
 export interface IRegClientForm {
