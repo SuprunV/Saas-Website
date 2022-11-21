@@ -83,13 +83,13 @@ export class UserAPI {
 
     static async getUser(userId: number): Promise<IUser> {
         const response = await $authHost.get<IUser>(`/user/${userId}`);
-        console.log('user', response.data);
+        // console.log('user', response.data);
         return response.data;
     }
 
     static async updateUser(userId: number, user: IUser): Promise<IUser> {
-        const response = await $authHost.put<IUser>(`/user/${userId}`, user);
-        console.log('updated user', response.data);
+        
+        const response = await $authHost.put<IUser>(`/user/${userId}`, {...user, doB: user.doB.toDate().toISOString()});
         return response.data;
     }
 

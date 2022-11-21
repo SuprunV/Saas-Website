@@ -1,3 +1,4 @@
+import dayjs from "ant-design-vue/lib/date-picker/dayjs";
 import { ICompany } from "./ICompany";
 
 export interface IUserToken {
@@ -18,7 +19,7 @@ export interface IUser{
     password?: string;
     name?: string;
     surname?: string;
-    DoB: string;
+    doB: any;
     gender: GenderEnum;
     role: RolesEnum;
     img?: string;

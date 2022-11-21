@@ -44,11 +44,11 @@
                             </a-select>
                         </a-form-item>
                         <a-form-item
-                            name="DoB"
+                            name="doB"
                             label="Date of birth"
                             :rules="[{ required: false }]"
                         >
-                            <a-date-picker v-model:value="selectedDate" />
+                            <a-date-picker v-model:value="formState.doB" />
                         </a-form-item>
                         <a-form-item
                             name="email"
@@ -104,13 +104,6 @@ export default defineComponent({
         const auth = useAuthStore();
         const {authUser} = storeToRefs(auth);
 
-        const {
-            fetchData: getUsersInfo,
-            response: selectedUser
-        } = useFetching(async () => {
-            return await UserAPI.getUser(authUser.value.id);
-        
-        });
 
         const validateMessages = {
             required: '${label} is required!',
@@ -131,14 +124,14 @@ export default defineComponent({
                 name: props.editUser?.name ?? "",
                 surname: props.editUser?.surname ?? "",
                 role: props.editUser?.role ?? RolesEnum.CLIENT,
-                DoB: selectedDate.value.toString() ?? "",
+                doB: props.editUser?.doB ?? "",
                 gender: props.editUser?.gender ?? GenderEnum.Male,
                 companyId: props.editUser?.companyId ?? -1,
         });
 
         const {fetchData: updateUser,
             isLoading,
-            message,} = useFetching(async () => {
+            message} = useFetching(async () => {
             return await UserAPI.updateUser(authUser.value.id, formState.value)
        });
 
@@ -147,10 +140,8 @@ export default defineComponent({
             layout,
             updateUser,
             validateMessages,
-            selectedUser,
             isLoading,
             message,
-            getUsersInfo,
             authUser,
             selectedDate
         };
@@ -162,10 +153,9 @@ export default defineComponent({
         },
         async submitForm() {
             await this.updateUser();
-            console.log('response', this.selectedUser, this.message);
+            console.log('response', this.editUser, this.message);
             if (this.message.type == ResponseTypeEnum.SUCCESS) {
                 setTimeout(async () => {
-                    await this.getUsersInfo();
                     this.$emit('update:show', false);
                     this.$emit('finalAction');
                 }, 1500);
@@ -183,7 +173,7 @@ export default defineComponent({
                 name: this.editUser?.name ?? "",
                 surname: this.editUser?.surname ?? "",
                 role: this.editUser?.role ?? RolesEnum.CLIENT,
-                DoB: this.selectedDate.toString() ?? this.editUser?.DoB,
+                doB: this.editUser?.doB ?? "",
                 gender: this.editUser?.gender ?? GenderEnum.Male,
                 companyId: this.editUser?.companyId ?? -1,
         });

@@ -2,12 +2,13 @@
 import { useAuthStore } from '@/store/useAuth';
 import { storeToRefs } from 'pinia';
 import { UserAPI } from '@/api/UserAPI';
-import { RolesEnum } from '@/models/IUser';
+import { RolesEnum, IUser } from '@/models/IUser';
 import { defineComponent, reactive, ref } from 'vue';
 
 import { LikeOutlined } from '@ant-design/icons-vue';
 import { useFetching } from '@/hooks/useFetching';
 import UserSettingForm from '@/components/UserSettingForm.vue';
+import dayjs from 'dayjs';
 
 export default defineComponent({
     data: () => ({
@@ -19,15 +20,19 @@ export default defineComponent({
 
         const authStore = useAuthStore();
         const { authUser } = storeToRefs(authStore);
-
+        const changeUser = ref<IUser>({
+        } as IUser);
         const {
             fetchData: getUsersInfo,
             response: selectedUser,
             isLoading,
             message,
         } = useFetching(async () => {
-            return await UserAPI.getUser(authUser.value.id);
-        
+            var user = await UserAPI.getUser(authUser.value.id);
+            changeUser.value = JSON.parse(JSON.stringify(user));
+            changeUser.value.doB = dayjs(changeUser.value.doB ? new Date(user.doB) : new Date());
+            
+            return user;
         });
         getUsersInfo();
 
@@ -53,6 +58,7 @@ export default defineComponent({
             getUsersInfo,
             layout,
             validateMessages,
+            changeUser,
             authUser,
             selectedUser,
             isLoading,
@@ -108,7 +114,7 @@ export default defineComponent({
                                     >
                                     <a-descriptions-item label="Date of birth" :span="3"
                                         >{{
-                                            selectedUser?.DoB
+                                            selectedUser?.doB ? new Date(selectedUser?.doB).toLocaleDateString("ru-RU") : ""
                                         }}</a-descriptions-item
                                     >
                                     <a-descriptions-item
@@ -157,7 +163,7 @@ export default defineComponent({
     <UserSettingForm
         v-model:show="isChangeModal"
         @finalAction="updateFinalAction"
-        :editUser="selectedUser"
+        :editUser="changeUser"
         
         v-createModal="{ show: isChangeModal }"
     />
