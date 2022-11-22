@@ -31,7 +31,7 @@ export default defineComponent({
                 <img :src="company.img" alt="avatar" />
             </div>
             <h1 class="text-center mt-4" v-appearAnimation="{ timeout: 300 }">
-                {{ company.name }}
+                {{ company.companyName }}
             </h1>
             <div class="">
                 <em class="text-center">HERE MUST BE DATA OF THIS COMPANY</em>
