@@ -30,10 +30,13 @@ namespace server.Controllers
 
         [Authorize]
         [HttpGet("{Date}/events")]
-        public ActionResult<IEnumerable<Appointment>> GetEventsByDate(string Date){
+        public ActionResult<IEnumerable<Appointment>> GetEventsByDate(string Date, int? userId){
             var result = _context.Appointments?.Include(x => x.Client).Include(x => x.Master).Include(x => x.Service).AsQueryable();
             if(Date != null){
                 result = result?.Where(x => (x.date.Contains(Date)));
+            }
+            if(userId != null){
+                result = result?.Where(x => x.clientId == userId || x.masterId == userId );
             }
             return Ok(result);
         }

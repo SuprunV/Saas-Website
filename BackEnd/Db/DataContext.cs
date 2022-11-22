@@ -155,9 +155,10 @@ namespace server.Db
                     Id = 1,
                     login = "KristinaK@gmail.com",
                     name = "Kristina",
-                    surname = "K",
+                    surname = "Koring",
                     password =  "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.MASTER,
+                    DoB = "1999-10-27T12:15:00.942Z",
                     img = "",
                     companyId = 2
            
@@ -170,6 +171,7 @@ namespace server.Db
                     login = "levi-ackerman@gmail.com",
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.MASTER,
+                    DoB = "1975-10-27T12:15:00.942Z",
                     img = "",
                     companyId = 1
            
@@ -182,6 +184,7 @@ namespace server.Db
                     login = "eren-yeager@gmail.com",
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.CLIENT,
+                    DoB = "1999-10-27T12:15:00.942Z",
                     img = "",
                     companyId = 1
                 },
@@ -193,6 +196,7 @@ namespace server.Db
                     login = "MariC@gmail.com",
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.CLIENT,
+                    DoB = "2005-10-27T12:15:00.942Z",
                     img = "",
                     companyId = 2
                 },
@@ -203,6 +207,7 @@ namespace server.Db
                     name = "Admin",
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.ADMIN,
+                    DoB = "1960-10-27T12:15:00.942Z",
                     img = "",
                     companyId = 1
                   
@@ -214,6 +219,7 @@ namespace server.Db
                     name = "MassageSalonAdmin",
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.ADMIN,
+                    DoB = "1989-10-27T12:15:00.942Z",
                     img = "",
                     companyId = 2
                 }
