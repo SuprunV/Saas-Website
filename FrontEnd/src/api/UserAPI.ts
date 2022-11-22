@@ -1,6 +1,6 @@
-import { $host } from '@/config';
+import { $authHost, $host } from '@/config';
 import { IRegCompanyForm } from '@/models/ICompany';
-import { IRegClientForm, IUser, RolesEnum } from '@/models/IUser';
+import { IRegClientForm, IUserToken, IUser, RolesEnum } from '@/models/IUser';
 import { LocalStorageItemEnum } from '@/types/LocalStorageItemEnum';
 import axios from 'axios';
 const companyImgUrl =
@@ -14,7 +14,7 @@ interface ITokenResponse {
     token: string;
 }
 export class UserAPI {
-    static demoUsers: IUser[] = [
+    static demoUsers: IUserToken[] = [
         {
             id: 1,
             name: 'My first company',
@@ -75,24 +75,36 @@ export class UserAPI {
         return response.data;
     }
 
-    static async logout(userData: IUser) {
+    static async logout(userData: IUserToken) {
         // Here will be made request to remove token for this user (userData);
         localStorage.removeItem(LocalStorageItemEnum.userJson);
         localStorage.removeItem(LocalStorageItemEnum.token);
+    }
+
+    static async getUser(userId: number): Promise<IUser> {
+        const response = await $authHost.get<IUser>(`/user/${userId}`);
+        // console.log('user', response.data);
+        return response.data;
+    }
+
+    static async updateUser(userId: number, user: IUser): Promise<IUser> {
+        
+        const response = await $authHost.put<IUser>(`/user/${userId}`, {...user, doB: user.doB.toDate().toISOString()});
+        return response.data;
     }
 
     static getPublicUsers(
         limit: number,
         page: number,
         role?: RolesEnum,
-    ): Promise<IUser[]> {
+    ): Promise<IUserToken[]> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
             // create fake users
             // limit is 5. page is 1. neede to get 1,2,3,4,5
             // limit is 5. page is 2. neede to get 6,7,8,9,10
             const count = limit * page;
             var demoUser: any;
-            let users: IUser[] = [];
+            let users: IUserToken[] = [];
             if (role != null) {
                 users = this.demoUsers.filter((c) => c.role === role);
             } else {
@@ -105,7 +117,7 @@ export class UserAPI {
         });
     }
 
-    static getUserByRole(role: RolesEnum): Promise<IUser> {
+    static getUserByRole(role: RolesEnum): Promise<IUserToken> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
             const userIndex = this.demoUsers.findIndex((c) => c.role === role);
             if (userIndex >= 0) {

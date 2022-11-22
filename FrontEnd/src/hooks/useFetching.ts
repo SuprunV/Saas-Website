@@ -19,8 +19,9 @@ export const useFetching = (asyncFunc: (...params: any) => void) => {
                 type: ResponseTypeEnum.SUCCESS,
             };
         } catch (e: any) {
+            const errorMessage = e.response.data ? e.response.data : e.message;
             message.value = {
-                message: e.message,
+                message: errorMessage,
                 type: ResponseTypeEnum.FAIL,
             };
         } finally {

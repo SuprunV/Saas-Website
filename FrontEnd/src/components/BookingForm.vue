@@ -1,9 +1,9 @@
 <script lang="ts">
 import { defineComponent, reactive, ref, onMounted, h } from 'vue';
 import type { Dayjs } from 'dayjs';
-import { IUser, RolesEnum } from '@/models/IUser';
+import { IUserToken, RolesEnum } from '@/models/IUser';
 import { UserAPI } from '@/api/UserAPI';
-import { CompanyAPI } from '@/api/СompanyAPI';
+import { CompanyAPI } from '@/api/CompanyAPI';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/store/useAuth';
 import { IMaster } from '@/models/IMaster';

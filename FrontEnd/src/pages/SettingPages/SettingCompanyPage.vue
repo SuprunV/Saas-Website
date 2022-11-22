@@ -4,6 +4,8 @@ import { useCompanyStore } from '@/store/useCompany';
 import { storeToRefs } from 'pinia';
 import { LikeOutlined } from '@ant-design/icons-vue';
 import CompanySettingForm from '@/components/CompanySettingForm.vue';
+import { useFetching } from '@/hooks/useFetching';
+import { CompanyAPI } from '@/api/CompanyAPI';
 
 export default defineComponent({
     setup: () => {
@@ -13,6 +15,16 @@ export default defineComponent({
         const changeRef = ref<any>(null);
         const isChangeModal = ref<boolean>(false);
 
+        const {
+            fetchData: getCompanyInfo,
+            response: selectedCompany,
+            isLoading,
+            message,
+        } = useFetching(async () => {
+            return await CompanyAPI.getCompany(company.value.id);
+        });
+        getCompanyInfo();
+
         const validateMessages = {
             required: '${label} is required!',
         };
@@ -20,25 +32,25 @@ export default defineComponent({
             labelCol: { span: 8 },
             wrapperCol: { span: 16 },
         };
-        const formState = reactive({
-            company: {
-                companyName: '',
-                address: '',
-            },
-        });
         return {
             company,
             changeRef,
             isChangeModal,
-            formState,
             layout,
+            getCompanyInfo,
             validateMessages,
+            selectedCompany,
+            isLoading,
+            message,
         };
     },
     methods: {
         showChangeModal() {
             this.isChangeModal = true;
         },
+        updateFinalAction() {
+            this.getCompanyInfo();
+        }
     },
     components: {
         LikeOutlined,
@@ -49,13 +61,14 @@ export default defineComponent({
 
 <template>
     <div>
+        <response-alert :message="message" :isLoading="isLoading" />
         <h1 class="text-center">Settings for Company</h1>
         <a-space size="middle">
             <a-space direction="vertical" size="middle">
                 <div class="space-align-container">
                     <div class="space-align-block">
                         <a-space align="start">
-                            <img class="settingImage" :width="155" :src="company.img" />
+                            <img class="settingImage" :width="155" :src="selectedCompany?.img" />
                             <div class="personInfo">
                             <a-descriptions
                                 title="Company Info"
@@ -64,10 +77,10 @@ export default defineComponent({
                                 <a-descriptions-item
                                     label="Company name"
                                     :span="3"
-                                    >{{ company.name }}</a-descriptions-item
+                                    >{{ selectedCompany?.companyName }}</a-descriptions-item
                                 >
                                 <a-descriptions-item label="Address" :span="3"
-                                    >Liivalaia 7</a-descriptions-item
+                                    >{{ selectedCompany?.address }}</a-descriptions-item
                                 >
                             </a-descriptions>
                             </div>
@@ -114,7 +127,10 @@ export default defineComponent({
                 >
             </a-space>
         </a-space>
-        <CompanySettingForm v-model:show="isChangeModal" />
+        <CompanySettingForm 
+        v-model:show="isChangeModal" 
+        @final="updateFinalAction"
+        :editCompany="selectedCompany"/>
     </div>
 </template>
 

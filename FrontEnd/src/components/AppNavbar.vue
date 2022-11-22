@@ -89,15 +89,15 @@ export default defineComponent({
                     v-model:selectedKeys="selectedKeys"
                     mode="horizontal"
                 >
-                    <a-menu-item :key="`/${company.alias}`"
-                        ><router-link :to="`/${company.alias}`">{{
-                            company.name
+                    <a-menu-item :key="`/${company.companyAlias}`"
+                        ><router-link :to="`/${company.companyAlias}`">{{
+                            company.companyName
                         }}</router-link></a-menu-item
                     >
                     <a-menu-item
                         v-if="!isAuth"
-                        :key="`/${company.alias}/services`"
-                        ><router-link :to="`/${company.alias}/services`"
+                        :key="`/${company.companyAlias}/services`"
+                        ><router-link :to="`/${company.companyAlias}/services`"
                             >Our Services</router-link
                         ></a-menu-item
                     >
@@ -124,13 +124,13 @@ export default defineComponent({
                         @click="
                             $router.push(
                                 company.id
-                                    ? `/${company.alias}/auth`
+                                    ? `/${company.companyAlias}/auth`
                                     : AppRoutes.AUTH,
                             )
                         "
                     >
                         {{
-                            company.id ? `Log in to ${company.name}` : `Log in`
+                            company.id ? `Log in to ${company.companyName}` : `Log in`
                         }}
                     </a-button>
                 </a-col>
