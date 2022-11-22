@@ -80,6 +80,10 @@ import { RolesEnum } from '@/models/IUser';
 import { title } from 'process';
 import { useFetching } from '@/hooks/useFetching';
 import PageLoading from './PageLoading.vue';
+import { storeToRefs } from 'pinia';
+import { UserAPI } from '@/api/UserAPI';
+import { IUser } from '@/models/IUser';
+import { useAuthStore } from '@/store/useAuth';
 
 export default defineComponent({
     components: { PageLoading },
@@ -96,10 +100,15 @@ export default defineComponent({
         const selectedDayEvents = ref<IAppointment[]>([]);
         const currentMonthEvents = ref<IAppointment[]>([]);
         const eventSidebar = 'Events for today: ';
+        const authStore = useAuthStore();
+        const { authUser } = storeToRefs(authStore);
+        const changeUser = ref<IUser>({
+        } as IUser);
+      
 
         const GetEventsToSelectedDay = async () => {
             const response = await AppointmentAPI.getEvents(
-                selectedDay.value.toDate(),
+                selectedDay.value.toDate(), authUser.value.id
             );
             selectedDayEvents.value = response;
         };
@@ -111,6 +120,7 @@ export default defineComponent({
                 const response = await AppointmentAPI.getEventsByMonthAndYear(
                     date.getMonth() + 1,
                     date.getFullYear(),
+                    authUser.value.id
                 );
                 currentMonthEvents.value = response;
                 console.log('data is fetched', currentMonthEvents.value);
@@ -174,6 +184,7 @@ export default defineComponent({
             selectedDayEvents,
             selectedMonth,
             eventSidebar,
+            authUser,
             updateMonthEvents,
             columns,
         };

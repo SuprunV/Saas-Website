@@ -3,10 +3,10 @@ import { IAppointment } from '@/models/IAppointment';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
 export class AppointmentAPI {
-    static async getEvents(selectedDate: Date): Promise<IAppointment[]> {
+    static async getEvents(selectedDate: Date, userId: number): Promise<IAppointment[]> {
         const date = selectedDate.toISOString().split('T')[0];
         const response = await $authHost.get<IAppointment[]>(
-            `/appointment/${date}/events`,
+            `/appointment/${date}/events/${userId}`,
         );
         console.log('appointments', response.data);
         return response.data;
@@ -53,10 +53,11 @@ export class AppointmentAPI {
     static async getEventsByMonthAndYear(
         month: number,
         year: number,
+        userId: number,
     ): Promise<IAppointment[]> {
         try {
             const response = await $authHost.get<IAppointment[]>(
-                `/appointment/eventsByMonthAndYear?month=${month.toString()}&year=${year.toString()}`,
+                `/appointment/${userId}/eventsByMonthAndYear?month=${month.toString()}&year=${year.toString()}`,
             );
 
             return response.data;

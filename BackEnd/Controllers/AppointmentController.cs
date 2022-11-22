@@ -29,7 +29,7 @@ namespace server.Controllers
         }
 
         [Authorize]
-        [HttpGet("{Date}/events")]
+        [HttpGet("{Date}/events/{userId}")]
         public ActionResult<IEnumerable<Appointment>> GetEventsByDate(string Date, int? userId){
             var result = _context.Appointments?.Include(x => x.Client).Include(x => x.Master).Include(x => x.Service).AsQueryable();
             if(Date != null){
@@ -42,14 +42,18 @@ namespace server.Controllers
         }
         
         [Authorize]
-        [HttpGet("eventsByMonthAndYear")]
-        public ActionResult<IEnumerable<Appointment>> GetEventsByMonthAndYear([FromQuery] string? month, string? year){
+        [HttpGet("{userId}/eventsByMonthAndYear")]
+        public ActionResult<IEnumerable<Appointment>> GetEventsByMonthAndYear([FromQuery] string? month, string? year, int? userId){
             var result = _context.Appointments?.AsQueryable();
             if(month != null){
                 result = result?.Where(x => (x.date.Substring(5, 2) == month ));
             }
             if(year != null){
                 result = result?.Where(x => (x.date.Substring(0,4) == year));
+            }
+            if(userId != null)
+            {
+                result = result?.Where(x => x.clientId == userId || x.masterId == userId);
             }
             
             return Ok(result);
