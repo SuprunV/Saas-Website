@@ -2,7 +2,7 @@
 import { IService } from '@/models/IService';
 import { UserAPI } from '@/api/UserAPI';
 import { defineComponent, ref, reactive, onMounted } from 'vue';
-import {IUserToken, RolesEnum } from '@/models/IUser';
+import { IUserToken, RolesEnum } from '@/models/IUser';
 
 import { PlusCircleTwoTone } from '@ant-design/icons-vue';
 import ServiceForm from '@/components/ServiceForm.vue';
@@ -10,16 +10,16 @@ import { Item } from 'ant-design-vue/lib/menu';
 import { useAuthStore } from '@/store/useAuth';
 import { ServiceAPI } from '@/api/ServiceAPI';
 import UserSettingForm from '@/components/UserSettingForm.vue';
-import { CompanyAPI } from '@/api/companyAPI';
+import { CompanyAPI } from '@/api/CompanyAPI';
 import { storeToRefs } from 'pinia';
 import { useFetching } from '@/hooks/useFetching';
 import { threadId } from 'worker_threads';
 export default defineComponent({
     components: {
-    PlusCircleTwoTone,
-    ServiceForm,
-    UserSettingForm
-},
+        PlusCircleTwoTone,
+        ServiceForm,
+        UserSettingForm,
+    },
 
     data: () => ({
         clientCount: 0,
@@ -27,7 +27,7 @@ export default defineComponent({
         masterCount: 0,
         services: [] as IService[],
         masters: [] as IUserToken[],
-        changedServiceId: undefined as undefined|number,
+        changedServiceId: undefined as undefined | number,
     }),
     setup() {
         const initLoading = ref(true);
@@ -39,47 +39,50 @@ export default defineComponent({
         const dataMaster = ref<IUserToken[]>([]);
         const masterList = ref<IUserToken[]>([]);
         const auth = useAuthStore();
-        const {authUser} = storeToRefs(auth);
+        const { authUser } = storeToRefs(auth);
 
-        const{
+        const {
             fetchData: getServices,
             isLoading,
             message,
         } = useFetching(async () => {
-            const services = await ServiceAPI.getPublicServices(auth.authUser.companyAlias, limit.value, page.value);
+            const services = await ServiceAPI.getPublicServices(
+                auth.authUser.companyAlias,
+                limit.value,
+                page.value,
+            );
             serviceList.value = services;
             return services;
         });
-      
+
         getServices();
-       
+
         onMounted(async () => {
             // const services = await ServiceAPI.getPublicServices(
             // auth.authUser.companyAlias,
             // limit.value,
             // page.value,
             // );
-        const masters = await CompanyAPI.getCompanyMasters(
-            authUser.value.companyId,
-        );
-    
-        initLoading.value = false;
-        // dataService.value = services;
-        // serviceList.value = services;
-        dataMaster.value = masters;
-        masterList.value = masters;
+            const masters = await CompanyAPI.getCompanyMasters(
+                authUser.value.companyId,
+            );
 
+            initLoading.value = false;
+            // dataService.value = services;
+            // serviceList.value = services;
+            dataMaster.value = masters;
+            masterList.value = masters;
         });
 
-
-
-        async function deleteUser(item : IUserToken )  {
+        async function deleteUser(item: IUserToken) {
             console.log('delete user', item);
             const master = await CompanyAPI.deleteCompanyMasters(item.id);
         }
-        async function deleteService(serviceId : IService) {
+        async function deleteService(serviceId: IService) {
             console.log('delete serivce', serviceId);
-            const service = await ServiceAPI.deleteCompanyServices(serviceId.id);
+            const service = await ServiceAPI.deleteCompanyServices(
+                serviceId.id,
+            );
         }
 
         const changeRef = ref<any>(null);
@@ -112,15 +115,13 @@ export default defineComponent({
             dataMaster,
             initLoading,
             loading,
-            isLoading, 
-            message, 
-            serviceList
-            
-            
+            isLoading,
+            message,
+            serviceList,
         };
     },
     methods: {
-        showChangeModalService(id : number | undefined) {
+        showChangeModalService(id: number | undefined) {
             console.log('show service', id);
             this.isChangeModalService = true;
             this.changedServiceId = id;
@@ -130,13 +131,11 @@ export default defineComponent({
             console.log('show user');
             this.isChangeModalUser = true;
         },
-      
-        UpdateFinalAction(){
-            this.getServices();
-        }
 
+        UpdateFinalAction() {
+            this.getServices();
+        },
     },
-  
 });
 
 const layout = {
@@ -161,9 +160,9 @@ const formStateService = reactive({
         price: 0,
         description: '',
         duration: 0,
-     },
+    },
     components: {
-        ServiceForm
+        ServiceForm,
     },
 });
 </script>
@@ -196,8 +195,10 @@ const formStateService = reactive({
                                         <a href="./myfircom/management">{{
                                             item.name
                                         }}</a>
-                                        <a-button type="primary" danger
-                                        @click="() => deleteUser(item)"
+                                        <a-button
+                                            type="primary"
+                                            danger
+                                            @click="() => deleteUser(item)"
                                             >Delete</a-button
                                         >
                                         <a-button
@@ -218,13 +219,16 @@ const formStateService = reactive({
             </div>
         </div>
         <div class="col">
-            <a-button type="primary" @click="() => showChangeModalService(undefined)">
+            <a-button
+                type="primary"
+                @click="() => showChangeModalService(undefined)"
+            >
                 <template #icon><plus-circle-two-tone /></template>
                 Add new service
             </a-button>
             <div class="m-3">
                 <b>List of service:</b>
-                
+
                 <a-list
                     :loading="initLoading"
                     item-layout="horizontal"
@@ -247,13 +251,17 @@ const formStateService = reactive({
                                             item.description
                                         }}</small>
                                         <br />
-                                        <br /><a-button type="primary" danger
-                                        @click="deleteService(item)"
+                                        <br /><a-button
+                                            type="primary"
+                                            danger
+                                            @click="deleteService(item)"
                                             >Delete</a-button
                                         >
                                         <a-button
                                             type="primary"
-                                            @click="showChangeModalService(item.id)"
+                                            @click="
+                                                showChangeModalService(item.id)
+                                            "
                                             default
                                         >
                                             Update
@@ -269,7 +277,14 @@ const formStateService = reactive({
                 </a-list>
             </div>
         </div>
-        <UserSettingForm @final="UpdateFinalAction" v-model:show="isChangeModalUser" />
-        <ServiceForm v-model:show="isChangeModalService" @finalAction="UpdateFinalAction" v-model:changedServiceId="changedServiceId" />
+        <UserSettingForm
+            @final="UpdateFinalAction"
+            v-model:show="isChangeModalUser"
+        />
+        <ServiceForm
+            v-model:show="isChangeModalService"
+            @finalAction="UpdateFinalAction"
+            v-model:changedServiceId="changedServiceId"
+        />
     </div>
 </template>
