@@ -88,8 +88,10 @@ export class UserAPI {
     }
 
     static async updateUser(userId: number, user: IUser): Promise<IUser> {
-        
-        const response = await $authHost.put<IUser>(`/user/${userId}`, {...user, doB: user.doB.toDate().toISOString()});
+        const response = await $authHost.put<IUser>(`/user/${userId}`, {
+            ...user,
+            doB: user.doB.toDate().toISOString(),
+        });
         return response.data;
     }
 
@@ -102,18 +104,18 @@ export class UserAPI {
             // create fake users
             // limit is 5. page is 1. neede to get 1,2,3,4,5
             // limit is 5. page is 2. neede to get 6,7,8,9,10
-            const count = limit * page;
-            var demoUser: any;
-            let users: IUser[] = [];
-            if (role != null) {
-                users = this.demoUsers.filter((c) => c.role === role);
-            } else {
-                for (let i = (page - 1) * limit + 1; i <= count; i++) {
-                    demoUser = this.demoUsers[i % 3];
-                    users.push({ ...demoUser, id: i });
-                }
-            }
-            return users;
+            // const count = limit * page;
+            // var demoUser: any;
+            // let users: IUser[] = [];
+            // if (role != null) {
+            //     users = this.demoUsers.filter((c) => c.role === role);
+            // } else {
+            //     for (let i = (page - 1) * limit + 1; i <= count; i++) {
+            //         demoUser = this.demoUsers[i % 3];
+            //         users.push({ ...demoUser, id: i });
+            //     }
+            // }
+            return [];
         });
     }
 
@@ -122,7 +124,7 @@ export class UserAPI {
             // const userIndex = this.demoUsers.findIndex((c) => c.role === role);
             // if (userIndex >= 0) {
             //     return this.demoUsers[userIndex];
-            // } else 
+            // } else
             throw Error("this role doesn't exists!");
         });
     }
