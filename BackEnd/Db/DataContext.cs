@@ -160,7 +160,7 @@ namespace server.Db
                     role = Role.MASTER,
                     DoB = "1999-10-27T12:15:00.942Z",
                     img = "",
-                    companyId = 2
+                    companyId = 1
            
                 },
                 new User

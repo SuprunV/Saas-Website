@@ -98,7 +98,7 @@ namespace server.Controllers
         [HttpDelete("{serviceId}")]
         public ActionResult<Service> DeleteService(int serviceId)
         {
-            var service = _context.Services!.Find(serviceId);
+            var service = _context.Services!.First(u => u.Id == serviceId);
             if (service == null)
             {
                 return NotFound("Service does not exist");

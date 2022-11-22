@@ -476,7 +476,7 @@ export default defineComponent({
                                     >Previous</a-button
                                 >
                                 <a-button
-                                    v-if="step < steps.length - 1"
+                                    v-if="step < steps.length - 1" 
                                     :disabled="
                                         (selectedAppointment.time == '' &&
                                             step == 0) ||

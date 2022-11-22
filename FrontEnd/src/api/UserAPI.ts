@@ -104,7 +104,7 @@ export class UserAPI {
             // limit is 5. page is 2. neede to get 6,7,8,9,10
             const count = limit * page;
             var demoUser: any;
-            let users: IUserToken[] = [];
+            let users: IUser[] = [];
             if (role != null) {
                 users = this.demoUsers.filter((c) => c.role === role);
             } else {
@@ -119,10 +119,11 @@ export class UserAPI {
 
     static getUserByRole(role: RolesEnum): Promise<IUserToken> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-            const userIndex = this.demoUsers.findIndex((c) => c.role === role);
-            if (userIndex >= 0) {
-                return this.demoUsers[userIndex];
-            } else throw Error("this role doesn't exists!");
+            // const userIndex = this.demoUsers.findIndex((c) => c.role === role);
+            // if (userIndex >= 0) {
+            //     return this.demoUsers[userIndex];
+            // } else 
+            throw Error("this role doesn't exists!");
         });
     }
 }

@@ -50,7 +50,7 @@ namespace server.Controllers {
         }
 
         [HttpPost("reg-client")]
-        public ActionResult<User> RegistrateClient([FromBody] RegClientDTO user) {
+        public ActionResult<User> RegistrateClient([FromBody] User user) {
             if(_context.Users.Any(u => u.login == user.login && u.companyId == user.companyId)) {
                 return BadRequest("This user is already registred");
             }
@@ -158,7 +158,7 @@ namespace server.Controllers {
         [HttpDelete("{id}")]
         public ActionResult<User> deleteUser(int id) {
             
-            var user = _context.Users!.Find(id);
+            var user = _context.Users!.First(u => u.Id == id);
             if (user == null) {
                 return NotFound();
             }

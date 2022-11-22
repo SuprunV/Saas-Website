@@ -67,10 +67,12 @@ export class CompanyAPI {
         return response.data;
     }
 
-    static async getCompanyMasters(companyId: number): Promise<IMaster[]> {
+  
+
+    static async getCompanyMasters(companyId: number): Promise<IUserToken[]> {
         try {
-            const response = await $host.get<IMaster[]>(
-                `/company/${companyId}/masters`,
+            const response = await $host.get<IUserToken[]>(
+                `/Company/${companyId}/masters`,
             );
             console.log('masters', response.data);
             return response.data;
@@ -89,6 +91,29 @@ export class CompanyAPI {
         //     }
         //     return companies;
         // });
+    }
+    static async deleteCompanyMasters(Id: number): Promise<IUserToken[]> {
+        try {
+            const response = await $authHost.delete<IUserToken[]>(
+                `/User/${Id}`,
+            );
+            console.log('masters', response.data);
+            return response.data;
+        } catch (e) {
+            return [];
+        }
+    }
+
+    static async postCompanyMasters(companyId: number): Promise<IUserToken[]> {
+        try {
+            const response = await $host.post<IUserToken[]>(
+                `/Company/${companyId}/masters`,
+            );
+            console.log('masters', response.data);
+            return response.data;
+        } catch (e) {
+            return [];
+        }
     }
     static getCompanyById(id: number): Promise<ICompany> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
