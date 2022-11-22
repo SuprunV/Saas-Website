@@ -80,7 +80,8 @@ namespace server.Controllers
                 var userDb = _context.Users.First(u => u.Id == appointment.clientId);
                 if(userDb == null) { return BadRequest();}
             }
-            
+
+            _context.Appointments.Add(appointment);
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetAppointment), new { appointmentId = appointment.Id }, appointment);
         }
