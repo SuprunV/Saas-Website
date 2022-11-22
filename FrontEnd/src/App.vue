@@ -53,26 +53,26 @@ export default defineComponent({
         };
     },
     watch: {
-        // isAuth() {
-        //     const companyAlias = this.authUser.companyAlias
-        //         ? this.authUser.companyAlias
-        //         : (this.$route.params['companyAlias'] as string);
-        //     this.auth.checkLoginStore().then(() => {
-        //         this.auth.setRoutes(companyAlias).then(() => {
-        //             this.auth.hasAccess(this.$route.path, this.$router);
-        //         });
-        //     });
-        // },
+        isAuth() {
+            const companyAlias = this.authUser.companyAlias
+                ? this.authUser.companyAlias
+                : (this.$route.params['companyAlias'] as string);
+
+            this.auth.checkLoginStore().then(() => {
+                this.auth.setRoutes(companyAlias).then(() => {
+                    this.auth.hasAccess(this.$route.path, this.$router);
+                });
+            });
+
+            this.$forceUpdate();
+            this.uniqAppKey++;
+        },
         $route(to, from) {
-            console.log('===========START CHECKING===========');
-            console.log('authUser', this.authUser);
-            console.log('params', to.params['companyAlias']);
             const companyAlias = this.authUser.companyAlias
                 ? this.authUser.companyAlias
                 : to.params['companyAlias'];
 
             this.auth.checkLoginStore().then(() => {
-                console.log('companyAlias to set', companyAlias);
                 this.auth.setRoutes(companyAlias).then(() => {
                     this.auth.hasAccess(to.path, this.$router);
                 });
