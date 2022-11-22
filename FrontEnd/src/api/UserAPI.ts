@@ -1,5 +1,5 @@
 import { $authHost, $host } from '@/config';
-import { IRegCompanyForm } from '@/models/ICompany';
+import { ICompany, IRegCompanyForm } from '@/models/ICompany';
 import { IRegClientForm, IUserToken, IUser, RolesEnum } from '@/models/IUser';
 import { LocalStorageItemEnum } from '@/types/LocalStorageItemEnum';
 import axios from 'axios';
@@ -86,6 +86,7 @@ export class UserAPI {
         // console.log('user', response.data);
         return response.data;
     }
+  
 
     static async updateUser(userId: number, user: IUser): Promise<IUser> {
         const response = await $authHost.put<IUser>(`/user/${userId}`, {
@@ -104,20 +105,23 @@ export class UserAPI {
             // create fake users
             // limit is 5. page is 1. neede to get 1,2,3,4,5
             // limit is 5. page is 2. neede to get 6,7,8,9,10
-            // const count = limit * page;
-            // var demoUser: any;
-            // let users: IUser[] = [];
-            // if (role != null) {
-            //     users = this.demoUsers.filter((c) => c.role === role);
-            // } else {
-            //     for (let i = (page - 1) * limit + 1; i <= count; i++) {
-            //         demoUser = this.demoUsers[i % 3];
-            //         users.push({ ...demoUser, id: i });
-            //     }
-            // }
-            return [];
+
+            const count = limit * page;
+            var demoUser: any;
+            let users: IUserToken[] = [];
+            if (role != null) {
+                users = this.demoUsers.filter((c) => c.role === role);
+            } else {
+                for (let i = (page - 1) * limit + 1; i <= count; i++) {
+                    demoUser = this.demoUsers[i % 3];
+                    users.push({ ...demoUser, id: i });
+                }
+            }
+            return users;
         });
     }
+
+    
 
     static getUserByRole(role: RolesEnum): Promise<IUserToken> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {

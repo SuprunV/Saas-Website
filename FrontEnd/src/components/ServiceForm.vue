@@ -9,7 +9,9 @@
                 :validate-messages="validateMessages"
                 @finish="submitForm"
             >
-            <response-alert :message="message" :isLoading="isLoading" />
+        
+            <response-alert :message="AddMessage" :isLoading="isAddingLoading" />
+            <response-alert :message="UpdateMessage" :isLoading="isUpdateLoading" />
                 
                 <div class="ant-modal-body">
                     <a-form-item
@@ -86,7 +88,8 @@ import { useCompanyStore } from '@/store/useCompany';
 export default defineComponent({
     props: {
         show: Boolean,
-        changedServiceId: Object as PropType<number | undefined>
+        changedServiceId: Object as PropType<number | undefined>,
+        newServiceId: Object as PropType<number | undefined>
     },
     setup(props) {
         const auth = useAuthStore();
@@ -109,17 +112,44 @@ export default defineComponent({
             },
         };
 
-        const { fetchData: updateService, 
-            isLoading , message} = useFetching(async () => {
+        const { 
+            fetchData: updateService,
+            isLoading: isUpdateLoading, 
+            message: UpdateMessage,
+            } = useFetching(async () => {
             console.log('update serivce', formStateService);
             return await ServiceAPI.updateCompanyServices(formStateService.value.id, formStateService.value);
 
         });
-        // async function getService(){
-        //     const service = await ServiceAPI.getPublicServices(   auth.authUser.companyAlias,
-        //         limit.value,
-        //         page.value,);
-        // }
+
+        const{ 
+            fetchData: addService,
+            isLoading: isAddingLoading,
+            message: AddMessage,
+             response: newService} 
+        = useFetching(async () => {
+            console.log('add service', formStateService);
+            const newService: IService ={
+                id: 0, 
+                name: formStateService.value.name,
+                price: formStateService.value.price,
+                description: formStateService.value.description,
+                duration: formStateService.value.duration,
+                companyId: formStateService.value.companyId,
+            };
+            const isValid = 
+                newService.price > 0 &&
+                newService.duration > 0 ;
+            if(isValid){
+                await ServiceAPI.addService(newService);
+            }
+            else if( !isValid){
+                throw Error('You have to fill all fields!');
+            }
+            console.log('return newService', newService);
+            return newService;
+        })
+
         
         const{ fetchData: getServices, 
             response: selectedService,
@@ -129,12 +159,12 @@ export default defineComponent({
     
 
         const formStateService = ref<IService>({
-        
                 name: '',
                 price: 0,
                 description: '',
                 duration: 0,
-                id: 0
+                id: 0,
+                companyId: authUser.value.companyId
         });
       
 
@@ -145,9 +175,13 @@ export default defineComponent({
             updateService, 
             authUser,
             getServices,
-            isLoading,
-            message,
-            selectedService
+            isAddingLoading,
+            AddMessage,
+            UpdateMessage,
+            isUpdateLoading,
+            selectedService,
+            addService,
+            newService
         };
     },
     watch: {
@@ -159,24 +193,46 @@ export default defineComponent({
 
             this.formStateService = serviceObject;
             }
-
-        }
+        },
+        // async newServiceId(){
+        //     console.log('new data', this.newServiceId)
+        //     if(this.newServiceId != undefined){
+        //         const serviceObject = await ServiceAPI.addService(this.formStateService);
+        //         this.formStateService = serviceObject;
+        //     }
+        // }
     },
     methods: {
         close() {
             this.$emit('update:show', false);
         },
         async submitForm() {
-            await this.updateService();
-            console.log('submit started', this.formStateService, this.selectedService);
+
+            console.log('changedServiceId', this.changedServiceId);
             
-            if (this.message.type == ResponseTypeEnum.SUCCESS) {
+            if(this.changedServiceId != undefined) {
+            await this.updateService();
+            }
+            else
+            {
+            await this.addService();
+            }
+            
+            if (this.AddMessage.type == ResponseTypeEnum.SUCCESS) {
             setTimeout(async () => {
-                 await this.getServices();
+                    await this.getServices();
                     this.$emit('update:show', false);
                     this.$emit('finalAction');
                 }, 1500);
             }
+            else if (this.UpdateMessage.type == ResponseTypeEnum.SUCCESS) {
+            setTimeout(async () => {
+                //  await this.getServices();
+                    this.$emit('update:show', false);
+                    this.$emit('finalAction');
+                }, 1500);
+            }
+            
           
         },
     },

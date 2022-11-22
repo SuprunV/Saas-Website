@@ -100,6 +100,7 @@ namespace server.Controllers
         {
             var service = _context.Services!.First(u => u.Id == serviceId);
             var appointments = _context.Appointments!.Where(x=>x.serviceId == serviceId);
+
             if (service == null)
             {
                 return NotFound("Service does not exist");
