@@ -120,6 +120,8 @@ export default defineComponent({
         async function deleteUser(item : IUserToken )  {
             console.log('delete user', item);
             const master = await CompanyAPI.deleteCompanyMasters(item.id);
+            
+            getUsersInfo();
         }
         
      
@@ -147,6 +149,7 @@ export default defineComponent({
             formStateService,
             isChangeModalService,
             deleteService,
+            deleteUser,
             getServices,
             masterList,
             dataService,
@@ -241,6 +244,7 @@ const formStateService = reactive({
                                             item.name
                                         }}</a>
                                         <a-button type="primary" danger 
+                                        @click="deleteUser(item)"
                                             >Delete</a-button
                                         >
                                         <a-button
