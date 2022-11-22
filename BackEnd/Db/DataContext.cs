@@ -158,6 +158,7 @@ namespace server.Db
                     surname = "Koring",
                     password =  "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.MASTER,
+                    gender = Gender.Female,
                     DoB = "1999-10-27T12:15:00.942Z",
                     img = "",
                     companyId = 1
@@ -173,7 +174,8 @@ namespace server.Db
                     role = Role.MASTER,
                     DoB = "1975-10-27T12:15:00.942Z",
                     img = "",
-                    companyId = 1
+                    companyId = 1,
+                    gender = Gender.Male,
            
                 },
                 new User
@@ -186,7 +188,8 @@ namespace server.Db
                     role = Role.CLIENT,
                     DoB = "1999-10-27T12:15:00.942Z",
                     img = "",
-                    companyId = 1
+                    companyId = 1,
+                    gender = Gender.Male,
                 },
                 new User
                 {
@@ -198,7 +201,8 @@ namespace server.Db
                     role = Role.CLIENT,
                     DoB = "2005-10-27T12:15:00.942Z",
                     img = "",
-                    companyId = 2
+                    companyId = 2,
+                    gender = Gender.Female,
                 },
                 new User
                 {
@@ -209,7 +213,7 @@ namespace server.Db
                     role = Role.ADMIN,
                     DoB = "1960-10-27T12:15:00.942Z",
                     img = "",
-                    companyId = 1
+                    companyId = 1,
                   
                 },
                 new User
