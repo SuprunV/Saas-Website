@@ -2,6 +2,7 @@ import { $host } from '@/config';
 import { $authHost } from '@/config';
 import { IService } from '@/models/IService';
 import axios from 'axios';
+import { serialize } from 'v8';
 
 const nailsService =
     'https://s3.amazonaws.com/salonclouds-uploads/blog/blog_1575589880234492352.png';
@@ -41,36 +42,23 @@ export class ServiceAPI {
     //     // });
      }
 
-     static async getService(serviceId: number): Promise<IService> {
-        const response = await $authHost.get<IService>(`/Service/${serviceId}`);
-        console.log('service', response.data);
+     static async addService(service: IService) {
+        console.log('new service', service);
+        const response = await $authHost.post<IService[]>(
+            `/Service`,
+            service,
+        );
+        console.log('response new service', response);
         return response.data;
     }
+    
 
-     static async postNewService(
-            limit: number,
-            page: number,
-        ): Promise<IService[]> {
-            try {
-                const response = await $host.post<IService[]>(
-                    `/Service`,
+        static async deleteCompanyService(id: number): Promise<IService> {
+                const response = await $authHost.delete<IService>(
+                    `/Service/${id}`, 
                 );
+            // console.log('services', response.data);
                 return response.data;
-            } catch (e) {
-                return [];
-            }
-        }
-
-        static async deleteCompanyServices(serviceId: number): Promise<IService[]> {
-            try {
-                const response = await $host.delete<IService[]>(
-                    `/Service/${serviceId}`,
-                );
-               // console.log('masters', response.data);
-                return response.data;
-            } catch (e) {
-                return [];
-            }
         }
         
         static async updateCompanyServices(id: number, item: IService): Promise<IService> {

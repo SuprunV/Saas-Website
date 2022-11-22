@@ -489,7 +489,7 @@ export default defineComponent({
                                     >Next</a-button
                                 >
                                 <a-button
-                                    v-if="step == steps.length - 1"
+                                      v-if="step == steps.length - 1"
                                     class="ant-btn btn-success"
                                     html-type="submit"
                                     :loading="isLoading"

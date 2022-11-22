@@ -1,5 +1,5 @@
 import { $authHost, $host } from '@/config';
-import { IRegCompanyForm } from '@/models/ICompany';
+import { ICompany, IRegCompanyForm } from '@/models/ICompany';
 import { IRegClientForm, IUserToken, IUser, RolesEnum } from '@/models/IUser';
 import { LocalStorageItemEnum } from '@/types/LocalStorageItemEnum';
 import axios from 'axios';
@@ -86,6 +86,7 @@ export class UserAPI {
         // console.log('user', response.data);
         return response.data;
     }
+  
 
     static async updateUser(userId: number, user: IUser): Promise<IUser> {
         
@@ -104,7 +105,7 @@ export class UserAPI {
             // limit is 5. page is 2. neede to get 6,7,8,9,10
             const count = limit * page;
             var demoUser: any;
-            let users: IUser[] = [];
+            let users: IUserToken[] = [];
             if (role != null) {
                 users = this.demoUsers.filter((c) => c.role === role);
             } else {
@@ -116,6 +117,8 @@ export class UserAPI {
             return users;
         });
     }
+
+    
 
     static getUserByRole(role: RolesEnum): Promise<IUserToken> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {

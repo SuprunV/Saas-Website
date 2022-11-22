@@ -99,11 +99,12 @@ namespace server.Controllers
         public ActionResult<Service> DeleteService(int serviceId)
         {
             var service = _context.Services!.First(u => u.Id == serviceId);
+            var appointments = _context.Appointments!.Where(u => u.serviceId == serviceId);
             if (service == null)
             {
                 return NotFound("Service does not exist");
             }
-
+            _context.Appointments!.RemoveRange(appointments);
             _context.Services!.Remove(service);
             _context.SaveChanges();
 

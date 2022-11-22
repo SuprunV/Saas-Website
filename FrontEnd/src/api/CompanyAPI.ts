@@ -67,7 +67,6 @@ export class CompanyAPI {
         return response.data;
     }
 
-  
 
     static async getCompanyMasters(companyId: number): Promise<IUserToken[]> {
         try {
