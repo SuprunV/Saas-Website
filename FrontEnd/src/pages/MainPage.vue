@@ -196,7 +196,7 @@ export default defineComponent({
                     <template #actions>
                         <a-button
                             type="primary"
-                            @click="$router.push(item.companyAlias)"
+                            @click="$router.push(`/${item.companyAlias}`)"
                             >Visit</a-button
                         >
                     </template>
@@ -208,7 +208,9 @@ export default defineComponent({
                     >
                         <a-list-item-meta>
                             <template #title>
-                                <a :href="`${item.companyAlias}`">{{ item.companyName }}</a>
+                                <a :href="`${item.companyAlias}`">{{
+                                    item.companyName
+                                }}</a>
                             </template>
                             <template #avatar>
                                 <a-avatar :src="item.img" />

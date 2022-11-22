@@ -64,12 +64,15 @@ export default defineComponent({
         //     });
         // },
         $route(to, from) {
+            console.log('===========START CHECKING===========');
             console.log('authUser', this.authUser);
+            console.log('params', to.params['companyAlias']);
             const companyAlias = this.authUser.companyAlias
                 ? this.authUser.companyAlias
                 : to.params['companyAlias'];
 
             this.auth.checkLoginStore().then(() => {
+                console.log('companyAlias to set', companyAlias);
                 this.auth.setRoutes(companyAlias).then(() => {
                     this.auth.hasAccess(to.path, this.$router);
                 });
