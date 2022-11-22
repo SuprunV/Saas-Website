@@ -52,13 +52,16 @@
                                 </template>
                                 <template
                                     v-if="
-                                        column.key === 'client' ||
-                                        column.key === 'master'
-                                    "
-                                >
+                                        column.key === 'client' && record['client'] != null ||
+                                        column.key === 'master' 
+                                    " >
                                     {{ record[column.key].name }}
                                     {{ record[column.key].surname }}
                                 </template>
+                                <template v-if="record.clientId == null &&  column.key === 'client'">
+                                    {{ record.clientName }}
+                                </template>
+                              
                                 <template v-if="column.key === 'service'">
                                     {{ record[column.key].name }}
                                 </template>
