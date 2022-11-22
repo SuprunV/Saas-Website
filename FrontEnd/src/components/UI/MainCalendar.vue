@@ -120,6 +120,7 @@ export default defineComponent({
                 const response = await AppointmentAPI.getEventsByMonthAndYear(
                     date.getMonth() + 1,
                     date.getFullYear(),
+                    authUser.value.id
                 );
                 currentMonthEvents.value = response;
                 console.log('data is fetched', currentMonthEvents.value);

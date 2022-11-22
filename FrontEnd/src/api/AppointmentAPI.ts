@@ -53,10 +53,11 @@ export class AppointmentAPI {
     static async getEventsByMonthAndYear(
         month: number,
         year: number,
+        userId: number,
     ): Promise<IAppointment[]> {
         try {
             const response = await $authHost.get<IAppointment[]>(
-                `/appointment/eventsByMonthAndYear?month=${month.toString()}&year=${year.toString()}`,
+                `/appointment/${userId}/eventsByMonthAndYear?month=${month.toString()}&year=${year.toString()}`,
             );
 
             return response.data;
