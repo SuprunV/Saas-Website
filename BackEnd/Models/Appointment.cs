@@ -9,20 +9,20 @@ namespace server.Models
         public int Id { get; set; }
         public string? date { get; set; }
 
-        public int? clientId { get; set; }
         public string? clientName {get; set;}
         public string? clientEmail {get; set;}
         public int? serviceId { get; set; }
         public int masterId { get; set; }
+        public int? clientId { get; set; }
 
   
         // [JsonIgnore]
-        public virtual Client? Client { get; set; }
-        
-        // [JsonIgnore]
         public virtual Service? Service { get; set; }
+   
+        // [JsonIgnore]
+        public virtual User? Master { get; set; }
 
         // [JsonIgnore]
-        public virtual Master? Master { get; set; }
+        public virtual User? Client { get; set; }
     }
 }

@@ -65,7 +65,7 @@ namespace server.Controllers
         [Authorize]
         [HttpGet("{companyId}/companyDoneAppointments")]
         public ActionResult<IEnumerable<Appointment>> GetCompanyDoneAppointmentsCount(int companyId){
-         var  masters = _context.Masters!.Include(x => x.User).Where(m => m.User.companyId ==companyId).Select(x => x.Id).ToList();
+         var  masters = _context.Users!.Where(m => m.companyId ==companyId && m.role == Enums.Role.MASTER).Select(x => x.Id).ToList();
       
           var appointments = _context.Appointments!.Where(x => masters.Contains(x.masterId));  
           var masterEvents = 0;
