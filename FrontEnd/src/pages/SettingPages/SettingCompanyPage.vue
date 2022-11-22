@@ -6,6 +6,7 @@ import { LikeOutlined } from '@ant-design/icons-vue';
 import CompanySettingForm from '@/components/CompanySettingForm.vue';
 import { useFetching } from '@/hooks/useFetching';
 import { CompanyAPI } from '@/api/CompanyAPI';
+import { useAuthStore } from '@/store/useAuth';
 
 export default defineComponent({
     setup: () => {
@@ -14,6 +15,9 @@ export default defineComponent({
 
         const changeRef = ref<any>(null);
         const isChangeModal = ref<boolean>(false);
+        const auth = useAuthStore();
+        const {authUser} = storeToRefs(auth);
+
 
         const {
             fetchData: getCompanyInfo,
@@ -21,7 +25,7 @@ export default defineComponent({
             isLoading,
             message,
         } = useFetching(async () => {
-            return await CompanyAPI.getCompany(company.value.id);
+            return await CompanyAPI.getCompany(authUser.value.companyId);
         });
         getCompanyInfo();
 
