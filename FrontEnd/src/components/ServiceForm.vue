@@ -124,7 +124,7 @@ export default defineComponent({
         const{ fetchData: getServices, 
             response: selectedService,
         } = useFetching(async () => {
-            return await ServiceAPI.getService( formStateService.value.id);
+            return await ServiceAPI.getPublicServices( auth.authUser.companyAlias, limit.value, page.value);
         })
     
 

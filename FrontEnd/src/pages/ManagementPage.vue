@@ -43,29 +43,29 @@ export default defineComponent({
 
         const{
             fetchData: getServices,
-            response : selectedService, 
             isLoading,
             message,
         } = useFetching(async () => {
-            console.log('k', selectedService);
-            return await ServiceAPI.getService(formStateService.service.id);
+            const services = await ServiceAPI.getPublicServices(auth.authUser.companyAlias, limit.value, page.value);
+            serviceList.value = services;
+            return services;
         });
-        getServices();
       
+        getServices();
        
         onMounted(async () => {
-            const services = await ServiceAPI.getPublicServices(
-            auth.authUser.companyAlias,
-            limit.value,
-            page.value,
-            );
+            // const services = await ServiceAPI.getPublicServices(
+            // auth.authUser.companyAlias,
+            // limit.value,
+            // page.value,
+            // );
         const masters = await CompanyAPI.getCompanyMasters(
             authUser.value.companyId,
         );
     
         initLoading.value = false;
-        dataService.value = services;
-        serviceList.value = services;
+        // dataService.value = services;
+        // serviceList.value = services;
         dataMaster.value = masters;
         masterList.value = masters;
 
@@ -107,7 +107,6 @@ export default defineComponent({
             deleteUser,
             deleteService,
             getServices,
-            serviceList,
             masterList,
             dataService,
             dataMaster,
@@ -115,7 +114,7 @@ export default defineComponent({
             loading,
             isLoading, 
             message, 
-            selectedService
+            serviceList
             
             
         };
@@ -225,10 +224,11 @@ const formStateService = reactive({
             </a-button>
             <div class="m-3">
                 <b>List of service:</b>
+                
                 <a-list
                     :loading="initLoading"
                     item-layout="horizontal"
-                    :data-source="selectedService.serviceList"
+                    :data-source="serviceList"
                 >
                     <template #renderItem="{ item }">
                         <a-list-item>
