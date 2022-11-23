@@ -16,6 +16,11 @@ import dayjs from 'dayjs';
 import { CompanyAPI } from '@/api/CompanyAPI';
 
 export default defineComponent({
+    components: {
+        PlusCircleTwoTone,
+        ServiceForm,
+        UserSettingForm,
+    },
 
     data: () => ({
         RolesEnum,
@@ -67,11 +72,15 @@ export default defineComponent({
             isLoading: isServiceLoading,
             message: ServiceMessage,
         } = useFetching(async () => {
-            const services = await ServiceAPI.getPublicServices(auth.authUser.companyAlias, limit.value, page.value);
+            const services = await ServiceAPI.getPublicServices(
+                auth.authUser.companyAlias,
+                limit.value,
+                page.value,
+            );
             serviceList.value = services;
             return services;
         });
-      
+
         getServices();
 
 
@@ -96,6 +105,15 @@ export default defineComponent({
         initLoading.value = false;
         });
 
+
+
+        async function deleteUser(item : IUserToken )  {
+            console.log('delete user', item);
+            const master = await CompanyAPI.deleteCompanyMasters(item.id);
+            
+            getUsersInfo();
+        }
+        
      
 
         const changeRef = ref<any>(null);
@@ -121,6 +139,7 @@ export default defineComponent({
             formStateService,
             isChangeModalService,
             deleteService,
+            deleteUser,
             getServices,
             masterList,
             dataService,
@@ -140,7 +159,7 @@ export default defineComponent({
         };
     },
     methods: {
-        showChangeModalService(id : number | undefined) {
+        showChangeModalService(id: number | undefined) {
             console.log('show service', id);
             this.isChangeModalService = true;
             this.changedServiceId = id;
@@ -194,9 +213,9 @@ const formStateService = reactive({
         price: 0,
         description: '',
         duration: 0,
-     },
+    },
     components: {
-        ServiceForm
+        ServiceForm,
     },
 });
 </script>
@@ -263,7 +282,7 @@ const formStateService = reactive({
             </a-button>
             <div class="m-3">
                 <b>List of service:</b>
-                
+
                 <a-list
                     :loading="initLoading"
                     item-layout="horizontal"
@@ -292,7 +311,9 @@ const formStateService = reactive({
                                         >
                                         <a-button
                                             type="primary"
-                                            @click="showChangeModalService(item.id)"
+                                            @click="
+                                                showChangeModalService(item.id)
+                                            "
                                             default
                                         >
                                             Update
