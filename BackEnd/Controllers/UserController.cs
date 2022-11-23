@@ -154,7 +154,7 @@ namespace server.Controllers {
 
             return CreatedAtAction(nameof(getUser), new { id = user.Id}, user);
         }
-        [Authorize]
+       // [Authorize]
         [HttpDelete("{id}")]
         public ActionResult<User> deleteUser(int id) {
             

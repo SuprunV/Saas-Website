@@ -137,7 +137,7 @@ export default defineComponent({
         } = useFetching(async () => {
             console.log('update user', formState);
           
-            return await UserAPI.updateUser(formState.value.id, formState.value);
+            return await UserAPI.updateUser(authUser.value.id, formState.value);
        });
 
        const{ fetchData: getUser, 

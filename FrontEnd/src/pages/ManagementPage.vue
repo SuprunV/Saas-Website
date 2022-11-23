@@ -16,12 +16,7 @@ import dayjs from 'dayjs';
 import { CompanyAPI } from '@/api/CompanyAPI';
 
 export default defineComponent({
-    components: {
-        PlusCircleTwoTone,
-        ServiceForm,
-        UserSettingForm,
-    },
-
+   
     data: () => ({
         RolesEnum,
         clientCount: 0,
@@ -104,16 +99,6 @@ export default defineComponent({
         // );
         initLoading.value = false;
         });
-
-
-
-        async function deleteUser(item : IUserToken )  {
-            console.log('delete user', item);
-            const master = await CompanyAPI.deleteCompanyMasters(item.id);
-            
-            getUsersInfo();
-        }
-        
      
 
         const changeRef = ref<any>(null);
@@ -152,8 +137,8 @@ export default defineComponent({
             getUsersInfo,
             isServiceLoading,
             ServiceMessage,
-            changeUser,
-            deleteUser
+            changeUser
+            
             
             
         };
@@ -180,8 +165,8 @@ export default defineComponent({
     },
     components: {
     PlusCircleTwoTone,
-    ServiceForm,
-    UserForm
+    UserForm,
+    UserSettingForm
 },
    
   
@@ -329,7 +314,7 @@ const formStateService = reactive({
                 </a-list>
             </div>
         </div>
-        <UserForm @finalAction="UpdateFinalAction" v-model:show="isChangeModalUser"  :editUser="changeUser"  v-createModal="{ show: isChangeModalUser } "/>
+        <UserForm @finalAction="UpdateFinalAction" v-model:show="isChangeModalUser"  :changedUserId="changedUserId"  v-createModal="{ show: isChangeModalUser } "/>
         <ServiceForm v-model:show="isChangeModalService" @finalAction="UpdateFinalAction" v-model:changedServiceId="changedServiceId" />
     </div>
 </template>
