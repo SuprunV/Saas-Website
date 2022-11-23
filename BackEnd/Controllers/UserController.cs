@@ -138,7 +138,7 @@ namespace server.Controllers {
 
             return Ok(users);
         }
-        [Authorize]
+        // [Authorize]
         [HttpPut("{id}")]
         public ActionResult<User> updateUser(int id, [FromBody] User user) {
             if (id != user.Id) {
