@@ -150,11 +150,11 @@ export default defineComponent({
         },
 
 
-        showModalUser(id: number | undefined) {
+       async  showModalUser(id: number) {
             console.log('show user');
             this.isChangeModalUser = true;
             this.changedUserId = id;
-        },
+           },
       
         UpdateFinalAction(){
             console.log("UpdateFinalAction");
@@ -207,7 +207,7 @@ const formStateService = reactive({
 <template>
     <div class="row">
         <div class="col">
-            <a-button type="primary"  @click="() => showModalUser(undefined)">
+            <a-button type="primary"  @click="() => showModalUser(0)">
                 <template #icon><plus-circle-two-tone /></template>
                 Add new personnel
             </a-button>
@@ -313,7 +313,7 @@ const formStateService = reactive({
                 </a-list>
             </div>
         </div>
-        <UserForm @finalAction="UpdateFinalAction" v-model:show="isChangeModalUser"  :editUser="changeUser"  v-model:changedUserId="changedUserId"  v-createModal="{ show: isChangeModalUser } "/>
+        <UserForm @finalAction="UpdateFinalAction" v-model:show="isChangeModalUser" v-model:changedUserId="changedUserId"  v-createModal="{ show: isChangeModalUser } "/>
         <ServiceForm v-model:show="isChangeModalService" @finalAction="UpdateFinalAction" v-model:changedServiceId="changedServiceId" />
     </div>
 </template>

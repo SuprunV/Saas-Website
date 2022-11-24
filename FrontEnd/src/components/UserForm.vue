@@ -28,7 +28,6 @@
                         <a-form-item
                             name="gender"
                             label="Gender"
-                            has-feedback
                             :rules="[{ required: false, message: 'Gender' }]"
                         >
                             <a-select
@@ -51,12 +50,13 @@
                             <a-date-picker v-model:value="formState.doB" />
                         </a-form-item>
                         <a-form-item
-                            name="email"
-                            label="Email"
-                            :rules="[{ type: 'email' }]"
+                            name="login"
+                            label="login"
+                            :rules="[{ required: true }]"
                         >
                             <a-input v-model:value="formState.login" />
                         </a-form-item>
+                        
                     </div>
                     <div class="ant-modal-footer">
                         <button
@@ -93,7 +93,6 @@ export default defineComponent({
     props: {
         show: Boolean,
         changedUserId: Object as PropType<number | undefined>,
-        editUser: Object as PropType<IUser>
     },
     setup(props) {
 
@@ -117,12 +116,36 @@ export default defineComponent({
             },
         };
 
-   
+        const changeUser = ref<IUser>({
+        } as IUser);
+
+        const{ fetchData: getUser, 
+            response: selectedUser,
+        } = useFetching(async () => {
+            changeUser.value = JSON.parse(JSON.stringify(selectedUser));
+            changeUser.value.doB = dayjs(changeUser.value.doB ? new Date(selectedUser.doB) : new Date());
+        
+           return  await CompanyAPI.getCompanyMasters(authUser.value.companyId);
+         });
+
+         const {fetchData: updateUser,
+            isLoading,
+            message
+        } = useFetching(async () => {
+            console.log('update user', formState);
+          
+            const user =  await UserAPI.updateUser(formState.value.id, formState.value);
+        //    changeUser.value = JSON.parse(JSON.stringify(user));
+        //    changeUser.value.doB = dayjs(changeUser.value.doB ? new Date(user.doB) : new Date());
+        
+            return user;
+        });
+
 
         const formState = ref<IUser>({
                 id: 0,
                 img: "",
-                login:   props.editUser?.login ??  "",
+                login:   "" ,
                 password: "",
                 name: "",
                 surname: "",
@@ -132,28 +155,7 @@ export default defineComponent({
                 companyId: authUser.value.companyId,
         });
 
-        const changeUser = ref<IUser>({
-        } as IUser);
-
-        const {fetchData: updateUser,
-            isLoading,
-            message
-        } = useFetching(async () => {
-            console.log('update user', formState);
-          
-            const user =  await UserAPI.updateUser(authUser.value.id, formState.value);
-            changeUser.value = JSON.parse(JSON.stringify(user));
-            changeUser.value.doB = dayjs(changeUser.value.doB ? new Date(user.doB) : new Date());
-        
-            return user;
-        });
-
-       const{ fetchData: getUser, 
-            response: selectedUser,
-        } = useFetching(async () => {
-            await CompanyAPI.getCompanyMasters(authUser.value.companyId);
-            })
-
+       
         return {
             formState: formState,
             layout,
@@ -173,11 +175,13 @@ export default defineComponent({
             console.log('data changed', this.changedUserId);
             if(this.changedUserId != undefined){
             const userObject = await UserAPI.getUser(this.changedUserId);
-            console.log('data changed', userObject);
-
+            console.log('data userObject', userObject);
+            
             this.formState = userObject;
+            console.log('data formState', this.formState);
             }
         },
+        
     },
     methods: {
         close() {
