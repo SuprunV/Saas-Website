@@ -121,7 +121,7 @@ namespace server.Controllers {
             return Ok(new { token = token });
         }
         
-        [Authorize]
+     //   [Authorize]
         [HttpGet("{id}")]
         public ActionResult<User> getUser(int id) {
             var user = _context.Users?.Include(u => u.Company).FirstOrDefault(u => u.Id == id);
@@ -130,7 +130,7 @@ namespace server.Controllers {
     
             return Ok(user);
         }
-         [Authorize]
+     //    [Authorize]
         // !!!! This EndPoint must be in CompanyController
         [HttpGet("company/{companyId}/{role}")]
         public ActionResult<User> getCompanyUsersByRole(int companyId, Role role) {

@@ -82,7 +82,6 @@ import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/store/useAuth';
 import { useFetching } from '@/hooks/useFetching';
 import { ResponseTypeEnum } from '@/types/FetchResponse';
-import { useCompanyStore } from '@/store/useCompany';
 
 
 export default defineComponent({

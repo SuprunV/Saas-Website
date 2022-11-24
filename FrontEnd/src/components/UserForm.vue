@@ -92,19 +92,20 @@ import { CompanyAPI } from '@/api/CompanyAPI';
 export default defineComponent({
     props: {
         show: Boolean,
-        changedUserId: Object as PropType<number | undefined>
+        changedUserId: Object as PropType<number | undefined>,
+        editUser: Object as PropType<IUser>
     },
     setup(props) {
+
+        const selectedDate = ref<Dayjs>(dayjs(new Date()));
+        const auth = useAuthStore();
+        const {authUser} = storeToRefs(auth);
+
         const layout = {
             labelCol: { span: 8 },
             wrapperCol: { span: 16 },
         };
-        const selectedDate = ref<Dayjs>(dayjs(new Date()));
-
-        const auth = useAuthStore();
-        const {authUser} = storeToRefs(auth);
-
-
+      
         const validateMessages = {
             required: '${label} is required!',
             types: {
@@ -119,17 +120,20 @@ export default defineComponent({
    
 
         const formState = ref<IUser>({
-                id: authUser.value.id,
+                id: 0,
                 img: "",
-                login: "",
+                login:   props.editUser?.login ??  "",
                 password: "",
                 name: "",
                 surname: "",
                 role: RolesEnum.MASTER,
-                doB: "",
+                doB:  "",
                 gender: GenderEnum.Male,
                 companyId: authUser.value.companyId,
         });
+
+        const changeUser = ref<IUser>({
+        } as IUser);
 
         const {fetchData: updateUser,
             isLoading,
@@ -137,8 +141,12 @@ export default defineComponent({
         } = useFetching(async () => {
             console.log('update user', formState);
           
-            return await UserAPI.updateUser(authUser.value.id, formState.value);
-       });
+            const user =  await UserAPI.updateUser(authUser.value.id, formState.value);
+            changeUser.value = JSON.parse(JSON.stringify(user));
+            changeUser.value.doB = dayjs(changeUser.value.doB ? new Date(user.doB) : new Date());
+        
+            return user;
+        });
 
        const{ fetchData: getUser, 
             response: selectedUser,
@@ -156,7 +164,8 @@ export default defineComponent({
             authUser,
             selectedDate, 
             getUser, 
-            selectedUser
+            selectedUser,
+            changeUser
         };
     },
     watch: {
@@ -176,6 +185,8 @@ export default defineComponent({
             console.log('close in form', this.show);
         },
         async submitForm() {
+            console.log('changedUserId', this.changedUserId);
+          
             await this.updateUser();
             console.log('response', this.changedUserId, this.message);
             if (this.message.type == ResponseTypeEnum.SUCCESS) {

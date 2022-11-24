@@ -23,7 +23,7 @@ export default defineComponent({
         companyCount: 0,
         masterCount: 0,
         services: [] as IService[],
-        masters: [] as IUserToken[],
+        masters: [] as IUser[],
         changedServiceId: undefined as undefined|number,
         changedUserId: undefined as undefined|number,
     }),
@@ -35,8 +35,8 @@ export default defineComponent({
         const role = ref<RolesEnum>(RolesEnum.MASTER);
         const dataService = ref<IService[]>([]);
         const serviceList = ref<IService[]>([]);
-        const dataMaster = ref<IUserToken[]>([]);
-        const masterList = ref<IUserToken[]>([]);
+        const dataMaster = ref<IUser[]>([]);
+        const masterList = ref<IUser[]>([]);
         
         const auth = useAuthStore();
         const {authUser} = storeToRefs(auth);
@@ -54,10 +54,9 @@ export default defineComponent({
             message: UserMessage
         } = useFetching(async () => {
             const users = await CompanyAPI.getCompanyMasters(authUser.value.companyId);
-          
-            changeUser.value = JSON.parse(JSON.stringify(users));
-           //changeUser.value.doB = dayjs(changeUser.value.doB ? new Date(users.doB) : new Date());
+           
            masterList.value = users;
+
             return users;
         });
         getUsersInfo();
@@ -314,7 +313,7 @@ const formStateService = reactive({
                 </a-list>
             </div>
         </div>
-        <UserForm @finalAction="UpdateFinalAction" v-model:show="isChangeModalUser"  :changedUserId="changedUserId"  v-createModal="{ show: isChangeModalUser } "/>
+        <UserForm @finalAction="UpdateFinalAction" v-model:show="isChangeModalUser"  :editUser="changeUser"  v-model:changedUserId="changedUserId"  v-createModal="{ show: isChangeModalUser } "/>
         <ServiceForm v-model:show="isChangeModalService" @finalAction="UpdateFinalAction" v-model:changedServiceId="changedServiceId" />
     </div>
 </template>
