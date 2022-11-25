@@ -15,15 +15,15 @@ export interface IUserToken {
 
 export interface IUser{ 
     id: number;
-    login?: string;
-    password?: string;
+    login: string;
+    password: string;
     name?: string;
     surname?: string;
     doB: any;
     gender: GenderEnum;
     role: RolesEnum;
     img?: string;
-    companyId?: number;
+    companyId: number;
     company?: ICompany;
 }
 
@@ -39,6 +39,12 @@ export enum GenderEnum {
 }
 
 export interface IRegClientForm {
+    companyId: number;
+    login: string;
+    password: string;
+}
+
+export interface IRegMasterForm {
     companyId: number;
     login: string;
     password: string;

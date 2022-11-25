@@ -136,7 +136,7 @@ export default defineComponent({
             getUsersInfo,
             isServiceLoading,
             ServiceMessage,
-            changeUser
+            changeUser,
             
             
             
@@ -165,7 +165,7 @@ export default defineComponent({
     components: {
     PlusCircleTwoTone,
     UserForm,
-    UserSettingForm
+    ServiceForm
 },
    
   
@@ -184,6 +184,10 @@ const formState = reactive({
         email: '',
         gender: '',
         role: RolesEnum.MASTER,
+        img: "",
+        login:   "" ,
+        password: "",
+        doB:  "",
     },
     components:{
         UserForm

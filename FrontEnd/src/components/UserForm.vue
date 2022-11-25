@@ -9,8 +9,9 @@
                     :validate-messages="validateMessages"
                     @finish="submitForm"
                 >
-                <response-alert :message="message" :isLoading="isLoading" />
-                    <div class="ant-modal-body">
+                <response-alert :message="AddUserMessage" :isLoading="isAddingUserLoading" />
+            <response-alert :message="UpdateUserMessage" :isLoading="isUpdateUserLoading" />
+              <div class="ant-modal-body">
                         <a-form-item
                             name="name"
                             label="Name"
@@ -56,6 +57,13 @@
                         >
                             <a-input v-model:value="formState.login" />
                         </a-form-item>
+                        <a-form-item
+                            name="password"
+                            label="password"
+                            :rules="[{ required: true }]"
+                        >
+                            <a-input v-model:value="formState.password" />
+                        </a-form-item>
                         
                     </div>
                     <div class="ant-modal-footer">
@@ -88,6 +96,7 @@ import { PropType } from 'vue-types/dist/types';
 import dayjs, { Dayjs } from 'dayjs';
 import { ResponseTypeEnum } from '@/types/FetchResponse';
 import { CompanyAPI } from '@/api/CompanyAPI';
+import { IMaster } from '@/models/IMaster';
 
 export default defineComponent({
     props: {
@@ -99,6 +108,7 @@ export default defineComponent({
         const selectedDate = ref<Dayjs>(dayjs(new Date()));
         const auth = useAuthStore();
         const {authUser} = storeToRefs(auth);
+        const changeUser = ref<IUser>({ } as IUser);
 
         const layout = {
             labelCol: { span: 8 },
@@ -116,10 +126,42 @@ export default defineComponent({
             },
         };
 
-        const changeUser = ref<IUser>({
-        } as IUser);
+         const {
+            fetchData: updateUser,
+            isLoading: isUpdateUserLoading,
+            message: UpdateUserMessage,
+        } = useFetching(async () => {
+            console.log('update user', formState);
+            const user =  await UserAPI.updateUser(formState.value.id, formState.value);
+            return user;
+        });
 
-        const{ fetchData: getUser, 
+        const{ 
+            fetchData: addMaster,
+            isLoading: isAddingUserLoading,
+            message: AddUserMessage,
+             response: newMaster} 
+        = useFetching(async () => {
+            console.log('add master', formState);
+            const newMaster:  IUser={
+                id: 0, 
+                name: formState.value.name,
+                surname: formState.value.surname,
+                gender: formState.value.gender,
+                login: formState.value.login,
+                password: formState.value.password,
+                role: formState.value.role,
+                doB: formState.value.doB,
+                companyId: formState.value.companyId
+            };
+            await UserAPI.registerMaster(newMaster);
+          
+            console.log('return newService', newMaster);
+            return newMaster;
+        });
+
+        const{ 
+            fetchData: getUser, 
             response: selectedUser,
         } = useFetching(async () => {
             changeUser.value = JSON.parse(JSON.stringify(selectedUser));
@@ -127,19 +169,6 @@ export default defineComponent({
         
            return  await CompanyAPI.getCompanyMasters(authUser.value.companyId);
          });
-
-         const {fetchData: updateUser,
-            isLoading,
-            message
-        } = useFetching(async () => {
-            console.log('update user', formState);
-          
-            const user =  await UserAPI.updateUser(formState.value.id, formState.value);
-        //    changeUser.value = JSON.parse(JSON.stringify(user));
-        //    changeUser.value.doB = dayjs(changeUser.value.doB ? new Date(user.doB) : new Date());
-        
-            return user;
-        });
 
 
         const formState = ref<IUser>({
@@ -161,13 +190,18 @@ export default defineComponent({
             layout,
             updateUser,
             validateMessages,
-            isLoading,
-            message,
+            isUpdateUserLoading,
+            UpdateUserMessage,
+            isAddingUserLoading,
             authUser,
             selectedDate, 
             getUser, 
             selectedUser,
-            changeUser
+            changeUser,
+            addMaster,
+            newMaster,
+            AddUserMessage
+
         };
     },
     watch: {
@@ -190,10 +224,22 @@ export default defineComponent({
         },
         async submitForm() {
             console.log('changedUserId', this.changedUserId);
+
+            if(this.changedUserId != undefined){
+                await this.updateUser();
+            }
+            else{
+                await this.addMaster();
+            }
           
-            await this.updateUser();
-            console.log('response', this.changedUserId, this.message);
-            if (this.message.type == ResponseTypeEnum.SUCCESS) {
+            console.log('response', this.changedUserId, this.UpdateUserMessage);
+            if (this.UpdateUserMessage.type == ResponseTypeEnum.SUCCESS) {
+                setTimeout(async () => {
+                    this.$emit('update:show', false);
+                    this.$emit('finalAction');
+                }, 1500);
+            }
+            else if(this.AddUserMessage.type == ResponseTypeEnum.SUCCESS) {
                 setTimeout(async () => {
                     this.$emit('update:show', false);
                     this.$emit('finalAction');

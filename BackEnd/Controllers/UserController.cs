@@ -80,6 +80,39 @@ namespace server.Controllers {
             var token = GenerateJSONWebToken(userToken);
             return Ok(new { token = token});
         }
+
+          [HttpPost("reg-master")]
+        public ActionResult<User> RegistrateMaster([FromBody] User user) {
+            if(_context.Users.Any(u => u.login == user.login && u.companyId == user.companyId)) {
+                return BadRequest("This user is already registred");
+            }
+
+            var newUser = new User() {
+                Id = 0,
+                login = user.login,
+                password = HashPassword(user.password),
+                companyId = user.companyId,
+                role = Role.MASTER
+            };
+
+            _context.Users!.Add(newUser);
+            _context.SaveChanges();
+
+            var dbMaster = _context.Users.Include(u => u.Company).First(c => c.login == user.login && c.companyId== user.companyId);
+            var userToken = new UserToken() {
+                id = dbMaster.Id,
+                companyAlias = dbMaster?.Company?.companyAlias ?? "",
+                companyId = dbMaster?.companyId,
+                email = dbMaster?.login,
+                companyName = dbMaster?.Company?.companyName,
+                img = dbMaster?.img,
+                name = $"Unknown",
+                role = dbMaster?.role ?? Role.MASTER 
+            };
+            var token = GenerateJSONWebToken(userToken);
+            return Ok(new { token = token});
+        }
+
         [HttpPost("reg-company")]
         public ActionResult<User> RegistrateCompany([FromBody] RegCompanyDTO company) {
             if(UserExists(null, company.username) && _context.Companies.Any(x => x.companyName == company.companyName) ||  _context.Companies.Any(x => x.companyAlias == company.companyAlias)) {
@@ -148,6 +181,8 @@ namespace server.Controllers {
             if (!UserExists(user.Id, user.login)) {
                 return NotFound();
             }
+
+            user.password = HashPassword(user.password);
 
             _context.Entry(user).State = EntityState.Modified;
             _context.SaveChanges();

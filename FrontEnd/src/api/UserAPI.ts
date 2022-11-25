@@ -4,6 +4,7 @@ import { IRegClientForm, IUserToken, IUser, RolesEnum } from '@/models/IUser';
 import { LocalStorageItemEnum } from '@/types/LocalStorageItemEnum';
 import dayjs from 'dayjs';
 import axios from 'axios';
+import { IRegMasterForm } from '@/models/IUser';
 const companyImgUrl =
     'https://static8.depositphotos.com/1378583/1010/i/600/depositphotos_10108949-stock-photo-blue-flame-logo.jpg';
 const clientImgUrl =
@@ -70,6 +71,15 @@ export class UserAPI {
         console.log('regForm to post', regForm);
         const response = await $host.post<ITokenResponse>(
             `/user/reg-client`,
+            regForm,
+        );
+        localStorage.setItem(LocalStorageItemEnum.token, response.data.token);
+        return response.data;
+    }
+
+    static async registerMaster(regForm: IRegMasterForm) {
+        const response = await $authHost.post<ITokenResponse>(
+            `/user/reg-master`,
             regForm,
         );
         localStorage.setItem(LocalStorageItemEnum.token, response.data.token);
