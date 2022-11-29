@@ -76,18 +76,9 @@ namespace server.Controllers {
     }
       private string GetImagebyUserId(int userId)
     {
-        string ImageUrl = string.Empty;
         string HostUrl = "https://localhost:8080";
-        string Filepath = GetFilePath(userId.ToString());
-        string Imagepath = Filepath + "\\image.png";
-        if (!System.IO.File.Exists(Imagepath))
-        {
-            ImageUrl = HostUrl + "/uploads/common/noimage.png";
-        }
-        else
-        {
-            ImageUrl = HostUrl + "/Uploads/UserImages/" + userId.ToString() + "/profileImage.png";
-        }
+        string ImageUrl = HostUrl + "/Uploads/UserImages/" + userId.ToString() + "/profileImage.png";
+        
         return ImageUrl;
 
     }
@@ -180,7 +171,7 @@ namespace server.Controllers {
                 companyId = userData.companyId,
                 email = userData.login,
                 companyName = company.companyName,
-                img = userData.img,
+                img = GetImagebyUserId(userData.Id),
                 name = company.companyName,
                 role = userData.role 
             });
