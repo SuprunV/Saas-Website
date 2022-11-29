@@ -48,9 +48,10 @@ export class ServiceAPI {
         serviceId: number,
         serviceMasters: IServiceMasters,
     ) {
+        const masterIds = serviceMasters.masters.map((m) => m.masterId);
         const response = await $authHost.post(
             `/service/${serviceId}/update-masters`,
-            serviceMasters.masters,
+            masterIds,
         );
         return response.data;
     }
