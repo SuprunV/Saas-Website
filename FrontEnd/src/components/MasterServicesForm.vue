@@ -212,9 +212,7 @@ export default defineComponent({
             );
 
             console.log('now', this.formStateService);
-            if (this.formStateService.length > 0) {
-                await this.updateServiceMasters();
-            }
+            await this.updateServiceMasters();
             if (
                 this.messageUpdatingServiceMasters.type ==
                 ResponseTypeEnum.SUCCESS
