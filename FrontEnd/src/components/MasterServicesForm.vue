@@ -8,6 +8,11 @@
                     :model="formStateService"
                     @finish="submitForm"
                 >
+                    <response-alert
+                        :message="messageUpdatingServiceMasters"
+                        :isLoading="isLoadingUpdatingServiceMasters"
+                    />
+
                     <a-space
                         style="width: 100%"
                         v-for="(master, index) in formStateService.masters"
@@ -23,7 +28,6 @@
                         >
                             <a-select
                                 v-model:value="master.masterId"
-                                @change="submitForm"
                                 placeholder="Select Master"
                             >
                                 <a-select-option
@@ -36,9 +40,11 @@
                                 </a-select-option>
                             </a-select>
                         </a-form-item>
-                        <MinusCircleOutlined
-                            @click="removeMaster(master.masterId)"
-                        />
+                        <a-form-item>
+                            <MinusCircleOutlined
+                                @click="removeMaster(master.masterId)"
+                            />
+                        </a-form-item>
                     </a-space>
                     <a-form-item>
                         <a-button type="dashed" @click="addMaster">
@@ -47,6 +53,13 @@
                         </a-button>
                     </a-form-item>
                     <a-form-item>
+                        <button
+                            class="ant-btn ant-btn-danger"
+                            type="button"
+                            @click="close"
+                        >
+                            <span>Cancel</span>
+                        </button>
                         <a-button type="primary" html-type="submit"
                             >Submit</a-button
                         >
@@ -58,7 +71,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
-import { ServiceAPI } from '@/api/ServiceAPI';
+import { IServiceMasters, ServiceAPI } from '@/api/ServiceAPI';
 import { IService } from '@/models/IService';
 import { PropType } from 'vue-types/dist/types';
 import layout from 'ant-design-vue/lib/layout';
@@ -71,17 +84,15 @@ import { IMaster } from '@/models/IMaster';
 import { IUser } from '@/models/IUser';
 import { UserAPI } from '@/api/UserAPI';
 import { CompanyAPI } from '@/api/CompanyAPI';
-
-export interface IMasterServices {
-    serviceId: number;
-    masters: { masterId: number | undefined }[];
-}
+import { MinusCircleOutlined } from '@ant-design/icons-vue/lib/icons';
+import { uniqByKeepFirst } from '@/services/filterByKey';
 
 export default defineComponent({
     props: {
         show: Boolean,
         serviceId: Object as PropType<number | undefined>,
     },
+    components: { MinusCircleOutlined },
     setup(props) {
         const auth = useAuthStore();
         const masters = ref<IUser[]>([]);
@@ -107,13 +118,27 @@ export default defineComponent({
                 );
             });
 
-        const formStateService = ref<IMasterServices>({
+        const {
+            fetchData: updateServiceMasters,
+            message: messageUpdatingServiceMasters,
+            isLoading: isLoadingUpdatingServiceMasters,
+        } = useFetching(async () => {
+            return await ServiceAPI.addServiceMasters(
+                formStateService.value.serviceId,
+                formStateService.   value,
+            );
+        });
+
+        const formStateService = ref<IServiceMasters>({
             serviceId: 1,
             masters: [],
         });
 
         return {
             masters,
+            updateServiceMasters,
+            isLoadingUpdatingServiceMasters,
+            messageUpdatingServiceMasters,
             formStateService,
             fetchedMasters,
             layout,
@@ -144,7 +169,7 @@ export default defineComponent({
         close() {
             this.$emit('update:show', false);
         },
-        removeMaster(masterId: number) {
+        removeMaster(masterId: number | undefined) {
             this.formStateService.masters =
                 this.formStateService.masters.filter(
                     (m) => m.masterId != masterId,
@@ -154,26 +179,27 @@ export default defineComponent({
             this.formStateService.masters.push({ masterId: undefined });
         },
         async submitForm() {
-            console.log(this.formStateService);
-            // console.log('changedServiceId', this.changedServiceId);
-            // if (this.changedServiceId != undefined) {
-            //     await this.updateService();
-            // } else {
-            //     await this.addService();
-            // }
-            // if (this.AddMessage.type == ResponseTypeEnum.SUCCESS) {
-            //     setTimeout(async () => {
-            //         await this.getServices();
-            //         this.$emit('update:show', false);
-            //         this.$emit('finalAction');
-            //     }, 1500);
-            // } else if (this.UpdateMessage.type == ResponseTypeEnum.SUCCESS) {
-            //     setTimeout(async () => {
-            //         //  await this.getServices();
-            //         this.$emit('update:show', false);
-            //         this.$emit('finalAction');
-            //     }, 1500);
-            // }
+            console.log('was', this.formStateService);
+            this.formStateService.masters =
+                this.formStateService.masters.filter((item) => item);
+            this.formStateService.masters = uniqByKeepFirst<{
+                masterId: number | undefined;
+            }>(this.formStateService.masters, (item) => item.masterId);
+
+            console.log('now', this.formStateService);
+            if (this.formStateService.masters.length > 0) {
+                await this.updateServiceMasters();
+            }
+            if (
+                this.messageUpdatingServiceMasters.type ==
+                ResponseTypeEnum.SUCCESS
+            ) {
+                setTimeout(async () => {
+                    //  await this.getServices();
+                    this.$emit('update:show', false);
+                    this.$emit('finalAction');
+                }, 1500);
+            }
         },
     },
     async mounted() {
