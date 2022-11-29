@@ -105,7 +105,7 @@ namespace server.Controllers {
                 companyId = dbUser.companyId,
                 email = dbUser.login,
                 companyName = dbUser.Company.companyName,
-                img = GetImagebyProduct(dbUser.Id),
+                img = GetImagebyUserId(dbUser.Id),
                 name = $"{dbUser.name} {dbUser.surname}",
                 role = dbUser.role 
             };
@@ -138,7 +138,7 @@ namespace server.Controllers {
                 companyId = dbClient?.companyId,
                 email = dbClient?.login,
                 companyName = dbClient?.Company?.companyName,
-                img = GetImagebyProduct(dbClient.Id),
+                img = GetImagebyUserId(dbClient.Id),
                 name = $"Unknown",
                 role = dbClient?.role ?? Role.CLIENT 
             };
@@ -165,7 +165,7 @@ namespace server.Controllers {
 
             var userData = new User() {
                 Id = 0,
-                img = GetImagebyProduct(dbCompany.Id),
+                img = GetImagebyUserId(dbCompany.Id),
                 login = company.username,
                 password = HashPassword(company.password),
                 companyId = dbCompany.Id,
