@@ -15,11 +15,11 @@
 
                     <a-space
                         style="width: 100%"
-                        v-for="(master, index) in formStateService.masters"
+                        v-for="(master, index) in formStateService"
                         :key="master.masterId"
                     >
                         <a-form-item
-                            :name="['masters', index, 'masterId']"
+                            :name="[index, 'masterId']"
                             label="Master"
                             :rules="{
                                 required: true,
@@ -72,7 +72,7 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
 import { IServiceMasters, ServiceAPI } from '@/api/ServiceAPI';
-import { IService } from '@/models/IService';
+import { IService, IServiceMaster } from '@/models/IService';
 import { PropType } from 'vue-types/dist/types';
 import layout from 'ant-design-vue/lib/layout';
 import { storeToRefs } from 'pinia';
@@ -123,16 +123,17 @@ export default defineComponent({
             message: messageUpdatingServiceMasters,
             isLoading: isLoadingUpdatingServiceMasters,
         } = useFetching(async () => {
-            return await ServiceAPI.addServiceMasters(
-                formStateService.value.serviceId,
-                formStateService.   value,
-            );
+            if (props.serviceId) {
+                return await ServiceAPI.addServiceMasters(
+                    props.serviceId,
+                    formStateService.value,
+                );
+            } else {
+                throw Error('invalid service');
+            }
         });
 
-        const formStateService = ref<IServiceMasters>({
-            serviceId: 1,
-            masters: [],
-        });
+        const formStateService = ref<IServiceMaster[]>([]);
 
         return {
             masters,
@@ -167,27 +168,35 @@ export default defineComponent({
     },
     methods: {
         close() {
+            this.formStateService = [];
             this.$emit('update:show', false);
         },
         removeMaster(masterId: number | undefined) {
-            this.formStateService.masters =
-                this.formStateService.masters.filter(
-                    (m) => m.masterId != masterId,
-                );
+            this.formStateService = this.formStateService.filter(
+                (m) => m.masterId != masterId,
+            );
         },
         addMaster(master: IUser) {
-            this.formStateService.masters.push({ masterId: undefined });
+            if (this.serviceId) {
+                this.formStateService.push({
+                    Id: 0,
+                    masterId: undefined,
+                    serviceId: this.serviceId,
+                });
+            }
         },
         async submitForm() {
             console.log('was', this.formStateService);
-            this.formStateService.masters =
-                this.formStateService.masters.filter((item) => item);
-            this.formStateService.masters = uniqByKeepFirst<{
-                masterId: number | undefined;
-            }>(this.formStateService.masters, (item) => item.masterId);
+            this.formStateService = this.formStateService.filter(
+                (item) => item.masterId,
+            );
+            this.formStateService = uniqByKeepFirst<IServiceMaster>(
+                this.formStateService,
+                (item) => item.masterId,
+            );
 
             console.log('now', this.formStateService);
-            if (this.formStateService.masters.length > 0) {
+            if (this.formStateService.length > 0) {
                 await this.updateServiceMasters();
             }
             if (
@@ -196,7 +205,7 @@ export default defineComponent({
             ) {
                 setTimeout(async () => {
                     //  await this.getServices();
-                    this.$emit('update:show', false);
+                    this.close();
                     this.$emit('finalAction');
                 }, 1500);
             }

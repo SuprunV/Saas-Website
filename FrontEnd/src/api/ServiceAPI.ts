@@ -1,6 +1,6 @@
 import { $host } from '@/config';
 import { $authHost } from '@/config';
-import { IService } from '@/models/IService';
+import { IService, IServiceMaster } from '@/models/IService';
 import axios from 'axios';
 import { serialize } from 'v8';
 export interface IServiceMasters {
@@ -46,12 +46,11 @@ export class ServiceAPI {
 
     static async addServiceMasters(
         serviceId: number,
-        serviceMasters: IServiceMasters,
+        serviceMasters: IServiceMaster[],
     ) {
-        const masterIds = serviceMasters.masters.map((m) => m.masterId);
         const response = await $authHost.post(
             `/service/${serviceId}/update-masters`,
-            masterIds,
+            serviceMasters,
         );
         return response.data;
     }
