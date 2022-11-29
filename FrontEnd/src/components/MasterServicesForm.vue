@@ -133,10 +133,24 @@ export default defineComponent({
             }
         });
 
+        const { fetchData: fetchServiceMasters } = useFetching(async () => {
+            if (props.serviceId) {
+                const dbServiceMasters = await ServiceAPI.getServiceMasters(
+                    props.serviceId,
+                );
+                formStateService.value = dbServiceMasters;
+                return dbServiceMasters;
+            } else {
+                throw Error('invalid service');
+            }
+        });
+        fetchServiceMasters();
+
         const formStateService = ref<IServiceMaster[]>([]);
 
         return {
             masters,
+            fetchServiceMasters,
             updateServiceMasters,
             isLoadingUpdatingServiceMasters,
             messageUpdatingServiceMasters,
@@ -148,8 +162,9 @@ export default defineComponent({
         };
     },
     watch: {
-        async changedServiceId() {
-            // console.log('data changed', this.changedServiceId);
+        async serviceId() {
+            console.log('data changed', this.serviceId);
+            this.fetchServiceMasters();
             // if (this.changedServiceId != undefined) {
             //     const serviceObject = await ServiceAPI.getServiceById(
             //         this.changedServiceId,
@@ -169,6 +184,7 @@ export default defineComponent({
     methods: {
         close() {
             this.formStateService = [];
+            this.$emit('update:serviceId', undefined);
             this.$emit('update:show', false);
         },
         removeMaster(masterId: number | undefined) {

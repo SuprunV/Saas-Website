@@ -55,6 +55,11 @@ export class ServiceAPI {
         return response.data;
     }
 
+    static async getServiceMasters(serviceId: number) {
+        const response = await $authHost.get(`/service/${serviceId}/masters`);
+        return response.data;
+    }
+
     static async deleteCompanyService(id: number): Promise<IService> {
         const response = await $authHost.delete<IService>(`/Service/${id}`);
         // console.log('services', response.data);
