@@ -32,6 +32,14 @@ namespace server.Controllers
             return Ok(service);
         }
 
+        [HttpGet("{serviceId}/masters")]
+        public ActionResult<Service> GetServiceMasters(int serviceId)
+        {
+            var serviceMasters = _context.ServiceMaster.Where(sm => sm.serviceId == serviceId);
+            return Ok(serviceMasters.ToArray());
+        }
+
+
         [HttpGet("{companyId}/servicecount")]
         public ActionResult<int> GetCompanyServiceCount(int companyId)
         {
