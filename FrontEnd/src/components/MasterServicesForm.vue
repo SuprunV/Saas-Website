@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <div v-createModal="{ show: show, width: 50 }">
+        <div v-createModal="{ show: show, width: 20 }">
             <div class="main-cart" role="document">
                 <a-form
                     ref="formRef"
@@ -9,28 +9,32 @@
                     @finish="submitForm"
                 >
                     <a-space
+                        style="width: 100%"
                         v-for="(master, index) in formStateService.masters"
                         :key="master.masterId"
-                        style="display: flex; margin-bottom: 8px"
-                        align="baseline"
                     >
                         <a-form-item
-                            :name="['sights', index, 'value']"
-                            label="Sight"
+                            :name="['masters', index, 'masterId']"
+                            label="Master"
                             :rules="{
                                 required: true,
-                                message: 'Missing sight',
+                                message: 'Missing master',
                             }"
                         >
-                            <!-- <a-select
-                                v-model:value="sight.value"
-                                :options="
-                                    (
-                                        sights[dynamicValidateForm.area] || []
-                                    ).map((a) => ({ value: a }))
-                                "
-                                style="width: 130px"
-                            ></a-select> -->
+                            <a-select
+                                v-model:value="master.masterId"
+                                @change="submitForm"
+                                placeholder="Select Master"
+                            >
+                                <a-select-option
+                                    v-for="masterData in masters"
+                                    :key="masterData.id"
+                                    :value="masterData.id"
+                                >
+                                    {{ masterData.name }}
+                                    {{ masterData.surname }}
+                                </a-select-option>
+                            </a-select>
                         </a-form-item>
                         <MinusCircleOutlined
                             @click="removeMaster(master.masterId)"
@@ -65,10 +69,12 @@ import { ResponseTypeEnum } from '@/types/FetchResponse';
 import { useCompanyStore } from '@/store/useCompany';
 import { IMaster } from '@/models/IMaster';
 import { IUser } from '@/models/IUser';
+import { UserAPI } from '@/api/UserAPI';
+import { CompanyAPI } from '@/api/CompanyAPI';
 
 export interface IMasterServices {
     serviceId: number;
-    masters: { masterId: number }[];
+    masters: { masterId: number | undefined }[];
 }
 
 export default defineComponent({
@@ -78,6 +84,7 @@ export default defineComponent({
     },
     setup(props) {
         const auth = useAuthStore();
+        const masters = ref<IUser[]>([]);
         const layout = {
             labelCol: { span: 8 },
             wrapperCol: { span: 16 },
@@ -93,15 +100,25 @@ export default defineComponent({
             },
         };
 
+        const { response: fetchedMasters, fetchData: fetchMasters } =
+            useFetching(async () => {
+                return await CompanyAPI.getCompanyMasters(
+                    auth.authUser.companyId,
+                );
+            });
+
         const formStateService = ref<IMasterServices>({
             serviceId: 1,
             masters: [],
         });
 
         return {
+            masters,
             formStateService,
+            fetchedMasters,
             layout,
             validateMessages,
+            fetchMasters,
         };
     },
     watch: {
@@ -134,9 +151,10 @@ export default defineComponent({
                 );
         },
         addMaster(master: IUser) {
-            this.formStateService.masters.push({ masterId: -1 });
+            this.formStateService.masters.push({ masterId: undefined });
         },
         async submitForm() {
+            console.log(this.formStateService);
             // console.log('changedServiceId', this.changedServiceId);
             // if (this.changedServiceId != undefined) {
             //     await this.updateService();
@@ -157,6 +175,10 @@ export default defineComponent({
             //     }, 1500);
             // }
         },
+    },
+    async mounted() {
+        await this.fetchMasters();
+        this.masters = this.fetchedMasters;
     },
 });
 </script>

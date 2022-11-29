@@ -46,8 +46,7 @@ using (var context = scope.ServiceProvider.GetService<DataContext>()) {
 }
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+if (app.Environment.IsDevelopment()){
     app.UseSwagger();
     app.UseSwaggerUI();
     
