@@ -10,11 +10,66 @@ import { useFetching } from '@/hooks/useFetching';
 import UserSettingForm from '@/components/UserSettingForm.vue';
 import dayjs from 'dayjs';
 
+import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue';
+import type { UploadChangeParam, UploadProps } from 'ant-design-vue';
+
+
+function getBase64(img: Blob, callback: (base64Url: string) => void) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result as string));
+  reader.readAsDataURL(img);
+}
+
+
 export default defineComponent({
     data: () => ({
         RolesEnum,
     }),
     setup: () => {
+
+        const fileList = ref([]);
+    const loadingPhoto = ref<boolean>(false);
+    const imageUrl = ref<string>('');
+
+    const handleChange = (info: UploadChangeParam) => {
+      if (info.file.status === 'uploading') {
+        loadingPhoto.value = true;
+        return;
+      }
+      if (info.file.status === 'done') {
+        // Get this url from response in real world.
+        getBase64(info.file.originFileObj, (base64Url: string) => {
+          imageUrl.value = base64Url;
+          loadingPhoto.value = false;
+        });
+      }
+      if (info.file.status === 'error') {
+        loadingPhoto.value = false;
+        message.value.message = ('upload error');
+      }
+    };
+
+    const beforeUpload = (file: UploadProps['fileList'][number]) => {
+      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+      if (!isJpgOrPng) {
+        message.value.message = 'You can only upload JPG file!';
+      }
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        message.value.message = ('Image must smaller than 2MB!');
+      }
+      return isJpgOrPng && isLt2M;
+    };
+
+
+
+ 
+
+
+
+
+
+
         const changeRef = ref<any>(null);
         const isChangeModal = ref<boolean>(false);
 
@@ -73,10 +128,24 @@ export default defineComponent({
             this.getUsersInfo();
         }
     },
-    components: { LikeOutlined, UserSettingForm },
+    components: { LikeOutlined, UserSettingForm, LoadingOutlined,PlusOutlined, },
 });
 </script>
+<style>
+.avatar-uploader > .ant-upload {
+  width: 128px;
+  height: 128px;
+}
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
 
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
+}
+</style>
 <template>
     <div>
         <h1 class="text-center">Settings page</h1>
@@ -87,7 +156,23 @@ export default defineComponent({
                     <div class="space-align-container">
                         <div class="space-align-block">
                             <a-space align="start">
-                                <img class="settingImage" :width="200" :src="selectedUser?.img" />
+                                <a-upload
+    v-model:file-list="fileList"
+    name="avatar"
+    list-type="picture-card"
+    class="avatar-uploader"
+    :show-upload-list="false"
+    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+    :before-upload="beforeUpload"
+    @change="handleChange"
+  >
+    <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+    <div v-else>
+      <loading-outlined v-if="loadingPhoto"></loading-outlined>
+      <plus-outlined v-else></plus-outlined>
+      <div class="ant-upload-text">Upload</div>
+    </div>
+  </a-upload>
                                 <div class="personInfo">
                                 <a-descriptions
                                     title="Master Info"
@@ -168,5 +253,4 @@ export default defineComponent({
         v-createModal="{ show: isChangeModal }"
     />
 </template>
-
 <style scoped></style>
