@@ -107,7 +107,7 @@ export default defineComponent({
                 <a-row type="flex" justify="end" v-if="isAuth && authUser">
                     <a-col>
                         <a-button type="text">
-                            <a-avatar src="https://joeschmoe.io/api/v1/random">
+                            <a-avatar :src="authUser.img">
                             </a-avatar>
                         </a-button>
                     </a-col>

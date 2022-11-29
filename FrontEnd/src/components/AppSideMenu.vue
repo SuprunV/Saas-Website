@@ -32,10 +32,10 @@ export default defineComponent({
             v-if="collapsed"
             class="logo-sidebar d-flex justify-content-center align-items-center"
         >
-            <a-avatar src="https://joeschmoe.io/api/v1/random"> </a-avatar>
+            <a-avatar :src = "authUser.img"> </a-avatar>
         </div>
         <div v-else class="logo-sidebar">
-            <a-avatar src="https://joeschmoe.io/api/v1/random"> </a-avatar>
+            <a-avatar :src = "authUser.img" > </a-avatar>
             <p>
                 {{ authUser.role }}
             </p>

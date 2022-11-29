@@ -173,7 +173,7 @@ namespace server.Db
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.MASTER,
                     DoB = "1975-10-27T12:15:00.942Z",
-                    img = "",
+                    img = "https://localhost:8080/Uploads/UserImages/2/profileImage.png",
                     companyId = 1,
                     gender = Gender.Male,
            

@@ -20,12 +20,77 @@ namespace server.Controllers {
 
         private readonly DataContext _context;
         private IConfiguration _config;
+        public static IWebHostEnvironment _environment;
 
-        public UserController(IConfiguration config, DataContext context) {
+        public UserController(IConfiguration config, DataContext context, IWebHostEnvironment environment) {
             _context = context;
             _config = config;
+            _environment = environment;
         }
-        
+        public class FileUploadAPI{
+        public IFormFile files {get;set;}
+       
+        }
+        [HttpPost("ImageUpload")]
+        public async Task<ActionResult> PostFile([FromForm] FileUploadAPI objFile, int? userId){
+            {
+      bool Results = false;
+        try
+        {
+            var _uploadedfiles = Request.Form.Files;
+            foreach (IFormFile source in _uploadedfiles)
+            {
+                string Filename = source.FileName;
+                string Filepath = GetFilePath(userId.ToString());
+
+                if (!System.IO.Directory.Exists(Filepath))
+                {
+                    System.IO.Directory.CreateDirectory(Filepath);
+                }
+
+                string imagepath = Filepath + "\\profileImage.png";
+
+                if (System.IO.File.Exists(imagepath))
+                {
+                    System.IO.File.Delete(imagepath);
+                }
+                using (FileStream stream = System.IO.File.Create(imagepath))
+                {
+                    await source.CopyToAsync(stream);
+                    Results = true;
+                }
+
+
+            }
+        }
+        catch (Exception ex)
+        {
+
+        }
+        return Ok(Results);
+            }
+        }
+    private string GetFilePath(string FileName)
+    {
+        return _environment.WebRootPath + "\\Uploads\\UserImages\\" + FileName;
+    }
+      private string GetImagebyUserId(int userId)
+    {
+        string ImageUrl = string.Empty;
+        string HostUrl = "https://localhost:8080";
+        string Filepath = GetFilePath(userId.ToString());
+        string Imagepath = Filepath + "\\image.png";
+        if (!System.IO.File.Exists(Imagepath))
+        {
+            ImageUrl = HostUrl + "/uploads/common/noimage.png";
+        }
+        else
+        {
+            ImageUrl = HostUrl + "/Uploads/UserImages/" + userId.ToString() + "/profileImage.png";
+        }
+        return ImageUrl;
+
+    }
         [HttpPost("login")]
         public IActionResult Login([FromBody] User login)
         {
@@ -40,7 +105,7 @@ namespace server.Controllers {
                 companyId = dbUser.companyId,
                 email = dbUser.login,
                 companyName = dbUser.Company.companyName,
-                img = dbUser.img,
+                img = GetImagebyProduct(dbUser.Id),
                 name = $"{dbUser.name} {dbUser.surname}",
                 role = dbUser.role 
             };
@@ -73,7 +138,7 @@ namespace server.Controllers {
                 companyId = dbClient?.companyId,
                 email = dbClient?.login,
                 companyName = dbClient?.Company?.companyName,
-                img = dbClient?.img,
+                img = GetImagebyProduct(dbClient.Id),
                 name = $"Unknown",
                 role = dbClient?.role ?? Role.CLIENT 
             };
@@ -100,6 +165,7 @@ namespace server.Controllers {
 
             var userData = new User() {
                 Id = 0,
+                img = GetImagebyProduct(dbCompany.Id),
                 login = company.username,
                 password = HashPassword(company.password),
                 companyId = dbCompany.Id,
