@@ -53,7 +53,9 @@ namespace server.Controllers
         {
             if(!_context.Services!.Any(s => s.Id == serviceId)) return Conflict();
             if(!CompanyExists(companyId)) return BadRequest();
-            var appointments = _context.Appointments!.Include(x => x.Master).Include(x => x.Service).Where((x => x.date.Contains(date) && x.Master.companyId == companyId)).ToList();
+
+            var serviceMasters = _context.ServiceMaster.Where(sm => sm.serviceId == serviceId).Select(sm => sm.masterId);
+            var appointments = _context.Appointments!.Include(x => x.Master).Include(x => x.Service).Where((x => x.date.Contains(date) && x.Master.companyId == companyId && serviceMasters.Contains(x.Master.Id))).ToList();
             
             // masterId:
             // master
