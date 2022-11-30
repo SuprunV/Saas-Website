@@ -57,6 +57,19 @@
                         >
                             <a-input v-model:value="formState.login" />
                         </a-form-item>
+                        <a-form-item name="upload" label="Upload" >
+                        <a-upload
+                            v-model:fileList="formState.img"
+                            name="img"
+                            action="/upload.do"
+                            list-type="picture"
+                        >
+                            <a-button>
+                            <template #icon><UploadOutlined /></template>
+                            Click to upload
+                            </a-button>
+                        </a-upload>
+                        </a-form-item>
                     </div>
                     <div class="ant-modal-footer">
                         <button

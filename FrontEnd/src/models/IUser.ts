@@ -3,7 +3,7 @@ import { ICompany } from "./ICompany";
 
 export interface IUserToken {
     id: number;
-    img?: string;
+    img?: any;
     name: string;
     email: string;
     role: RolesEnum;
@@ -22,7 +22,7 @@ export interface IUser{
     doB: any;
     gender: GenderEnum;
     role: RolesEnum;
-    img?: string;
+    img?: any;
     companyId?: number;
     company?: ICompany;
 }
