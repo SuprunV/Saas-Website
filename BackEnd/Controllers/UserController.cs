@@ -27,61 +27,43 @@ namespace server.Controllers {
             _config = config;
             _environment = environment;
         }
-        public class FileUploadAPI{
-        public IFormFile files {get;set;}
+        public class FileUploadAPI : User{
+             public IFormFile? files {get;set;}
        
         }
-        [HttpPost("ImageUpload")]
-        public async Task<ActionResult> PostFile([FromForm] FileUploadAPI objFile, int? userId){
+        private string PostFile(int? userId, [FromForm]FileUploadAPI objFile){
+            string Filepath = string.Empty;
+             string HostUrl = "https://localhost:8080";
             {
-      bool Results = false;
         try
         {
-            var _uploadedfiles = Request.Form.Files;
-            foreach (IFormFile source in _uploadedfiles)
-            {
-                string Filename = source.FileName;
-                string Filepath = GetFilePath(userId.ToString());
-
-                if (!System.IO.Directory.Exists(Filepath))
+                if (!System.IO.Directory.Exists(_environment.WebRootPath +"\\Uploads\\UserProfileImages\\"))
                 {
-                    System.IO.Directory.CreateDirectory(Filepath);
+                    System.IO.Directory.CreateDirectory(_environment.WebRootPath +"\\Uploads\\UserProfileImages\\");
                 }
+              
+                 Filepath = _environment.WebRootPath +"\\Uploads\\UserProfileImages\\" + objFile.files.FileName;
+                
+            
 
-                string imagepath = Filepath + "\\profileImage.png";
 
-                if (System.IO.File.Exists(imagepath))
+                using (FileStream stream = System.IO.File.Create(Filepath))
                 {
-                    System.IO.File.Delete(imagepath);
+                    objFile.files.CopyTo(stream);
+                    stream.Flush();
+                    return HostUrl + "/Uploads/UserProfileImages/" + objFile.files.FileName;
                 }
-                using (FileStream stream = System.IO.File.Create(imagepath))
-                {
-                    await source.CopyToAsync(stream);
-                    Results = true;
-                }
-
-
-            }
+            
         }
         catch (Exception ex)
         {
-
+       
         }
-        return Ok(Results);
+          return "Error";
             }
         }
-    private string GetFilePath(string FileName)
-    {
-        return _environment.WebRootPath + "\\Uploads\\UserImages\\" + FileName;
-    }
-      private string GetImagebyUserId(int userId)
-    {
-        string HostUrl = "https://localhost:8080";
-        string ImageUrl = HostUrl + "/Uploads/UserImages/" + userId.ToString() + "/profileImage.png";
-        
-        return ImageUrl;
 
-    }
+
         [HttpPost("login")]
         public IActionResult Login([FromBody] User login)
         {
@@ -96,7 +78,7 @@ namespace server.Controllers {
                 companyId = dbUser.companyId,
                 email = dbUser.login,
                 companyName = dbUser.Company.companyName,
-                img = GetImagebyUserId(dbUser.Id),
+                img = dbUser.img,
                 name = $"{dbUser.name} {dbUser.surname}",
                 role = dbUser.role 
             };
@@ -129,7 +111,7 @@ namespace server.Controllers {
                 companyId = dbClient?.companyId,
                 email = dbClient?.login,
                 companyName = dbClient?.Company?.companyName,
-                img = GetImagebyUserId(dbClient.Id),
+                img = dbClient.img,
                 name = $"Unknown",
                 role = dbClient?.role ?? Role.CLIENT 
             };
@@ -156,7 +138,7 @@ namespace server.Controllers {
 
             var userData = new User() {
                 Id = 0,
-                img = GetImagebyUserId(dbCompany.Id),
+                img =dbCompany.img,
                 login = company.username,
                 password = HashPassword(company.password),
                 companyId = dbCompany.Id,
@@ -171,7 +153,7 @@ namespace server.Controllers {
                 companyId = userData.companyId,
                 email = userData.login,
                 companyName = company.companyName,
-                img = GetImagebyUserId(userData.Id),
+                img = userData.img,
                 name = company.companyName,
                 role = userData.role 
             });
@@ -195,9 +177,9 @@ namespace server.Controllers {
 
             return Ok(users);
         }
-        [Authorize]
+        //[Authorize]
         [HttpPut("{id}")]
-        public ActionResult<User> updateUser(int id, [FromBody] User user) {
+        public ActionResult<User> updateUser(int id, [FromForm] FileUploadAPI user ) {
             if (id != user.Id) {
                 return BadRequest();
             }
@@ -205,6 +187,12 @@ namespace server.Controllers {
             if (!UserExists(user.Id, user.login)) {
                 return NotFound();
             }
+            if(user.files.Length>0){
+            var fileName = PostFile(user.Id, user);
+            user.img = fileName.ToString();
+            }
+
+           
 
             _context.Entry(user).State = EntityState.Modified;
             _context.SaveChanges();
