@@ -14,6 +14,7 @@ export interface IUserToken {
 
 
 export interface IUser{ 
+    files?:any;
     id: number;
     login?: string;
     password?: string;

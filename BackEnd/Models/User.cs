@@ -1,6 +1,8 @@
 using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 using server.Enums;
+using server.Models;
 
 namespace server.Models
 {
@@ -17,6 +19,8 @@ namespace server.Models
         public Role role { get; set; }
         public string? img { get; set; }
         public int? companyId { get; set; }
+
+
 
         // [JsonIgnore]
         public virtual Company? Company { get; set; }

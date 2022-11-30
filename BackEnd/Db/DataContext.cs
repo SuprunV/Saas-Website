@@ -160,7 +160,6 @@ namespace server.Db
                     role = Role.MASTER,
                     gender = Gender.Female,
                     DoB = "1999-10-27T12:15:00.942Z",
-                    img = "",
                     companyId = 1
            
                 },
@@ -173,7 +172,6 @@ namespace server.Db
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.MASTER,
                     DoB = "1975-10-27T12:15:00.942Z",
-                    img = "https://localhost:8080/Uploads/UserImages/2/profileImage.png",
                     companyId = 1,
                     gender = Gender.Male,
            
@@ -187,7 +185,6 @@ namespace server.Db
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.CLIENT,
                     DoB = "1999-10-27T12:15:00.942Z",
-                    img = "",
                     companyId = 1,
                     gender = Gender.Male,
                 },
@@ -200,7 +197,6 @@ namespace server.Db
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.CLIENT,
                     DoB = "2005-10-27T12:15:00.942Z",
-                    img = "",
                     companyId = 2,
                     gender = Gender.Female,
                 },
@@ -212,7 +208,6 @@ namespace server.Db
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.ADMIN,
                     DoB = "1960-10-27T12:15:00.942Z",
-                    img = "",
                     companyId = 1,
                   
                 },
@@ -224,7 +219,6 @@ namespace server.Db
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.ADMIN,
                     DoB = "1989-10-27T12:15:00.942Z",
-                    img = "",
                     companyId = 2
                 }
                 

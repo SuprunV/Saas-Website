@@ -33,7 +33,6 @@ namespace server.Controllers {
         }
         private string PostFile(int? userId, [FromForm]FileUploadAPI objFile){
             string Filepath = string.Empty;
-             string HostUrl = "https://localhost:8080";
             {
         try
         {
@@ -51,7 +50,8 @@ namespace server.Controllers {
                 {
                     objFile.files.CopyTo(stream);
                     stream.Flush();
-                    return HostUrl + "/Uploads/UserProfileImages/" + objFile.files.FileName;
+                    var req = Request;
+                    return "https://" + Request.Host + "/Uploads/UserProfileImages/" + objFile.files.FileName;
                 }
             
         }
@@ -59,7 +59,7 @@ namespace server.Controllers {
         {
        
         }
-          return "Error";
+          return "https://" + Request.Host + "/Uploads/UserProfileImages/Noimage.png";
             }
         }
 
@@ -98,7 +98,8 @@ namespace server.Controllers {
                 login = user.login,
                 password = HashPassword(user.password),
                 companyId = user.companyId,
-                role = Role.CLIENT
+                role = Role.CLIENT,
+                img = "https://" + Request.Host + "/Uploads/UserProfileImages/Noimage.png"
             };
 
             _context.Users!.Add(newUser);
@@ -162,7 +163,7 @@ namespace server.Controllers {
         
         [Authorize]
         [HttpGet("{id}")]
-        public ActionResult<User> getUser(int id) {
+        public ActionResult<FileUploadAPI> getUser(int id) {
             var user = _context.Users?.Include(u => u.Company).FirstOrDefault(u => u.Id == id);
             
             if(user == null)  return BadRequest("This user is not exists");
@@ -177,28 +178,33 @@ namespace server.Controllers {
 
             return Ok(users);
         }
-        [Authorize]
+       
+        //[Authorize]
         [HttpPut("{id}")]
-        public ActionResult<User> updateUser(int id, [FromForm] FileUploadAPI user ) {
+        public ActionResult<FileUploadAPI> updateUser(int id, [FromForm] FileUploadAPI user ) {
             if (id != user.Id) {
                 return BadRequest();
             }
 
             if (!UserExists(user.Id, user.login)) {
                 return NotFound();
-            }
-            if(user.files.Length>0){
+        }
+            if(user.files != null){
             var fileName = PostFile(user.Id, user);
             user.img = fileName.ToString();
             }
-
-           
+            else{
+                 var oldUser = _context.Users.Find(id);
+               user.img =  oldUser.img;
+              _context.ChangeTracker.Clear();
+            }
 
             _context.Entry(user).State = EntityState.Modified;
             _context.SaveChanges();
 
             return CreatedAtAction(nameof(getUser), new { id = user.Id}, user);
         }
+
         [Authorize]
         [HttpDelete("{id}")]
         public ActionResult<User> deleteUser(int id) {

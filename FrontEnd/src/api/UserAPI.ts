@@ -89,10 +89,17 @@ export class UserAPI {
   
 
     static async updateUser(userId: number, user: IUser): Promise<IUser> {
-        const response = await $authHost.put<IUser>(`/user/${userId}`, {
-            ...user,
-            doB: user.doB.toDate().toISOString(),
-        });
+        console.log("formstate to update", user);
+        const newUser = new FormData();
+        newUser.append('id', user.id.toString());
+        newUser.append('name', user.name ?? "");
+        newUser.append('surname', user.surname?? "");
+        newUser.append('doB', user.doB.toDate().toISOString());
+        newUser.append('login', user.login?? "");
+        newUser.append('gender', user.gender);
+        newUser.append('files', user.files, "test.ph");
+
+        const response = await $authHost.put<IUser>(`/user/${userId}`, newUser);
         return response.data;
     }
 

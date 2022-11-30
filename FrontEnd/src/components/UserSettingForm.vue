@@ -59,14 +59,15 @@
                         </a-form-item>
                         <a-form-item name="upload" label="Upload" >
                         <a-upload
-                            v-model:fileList="formState.img"
+                            v-model:file="formState.files"
                             name="img"
+                            maxCount="1"
                             action="/upload.do"
                             list-type="picture"
                         >
                             <a-button>
                             <template #icon><UploadOutlined /></template>
-                            Click to upload
+                           Choose image
                             </a-button>
                         </a-upload>
                         </a-form-item>
@@ -130,6 +131,7 @@ export default defineComponent({
         };
 
         const formState = ref<IUser>({
+                files: props.editUser?.files, 
                 id: props.editUser?.id ?? -1,
                 img: props.editUser?.img ?? "",
                 login: props.editUser?.login ?? "",
@@ -179,6 +181,7 @@ export default defineComponent({
         editUser() {
             console.log("editUser is updated");
             this.formState = reactive<IUser>({
+                files: this.editUser?.files, 
                 id: this.editUser?.id ?? -1,
                 img: this.editUser?.img ?? "",
                 login: this.editUser?.login ?? "",
@@ -189,6 +192,7 @@ export default defineComponent({
                 doB: this.editUser?.doB ?? "",
                 gender: this.editUser?.gender ?? GenderEnum.Male,
                 companyId: this.editUser?.companyId ?? -1,
+
         });
         }
     }
