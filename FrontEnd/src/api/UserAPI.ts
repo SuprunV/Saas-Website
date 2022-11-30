@@ -86,21 +86,40 @@ export class UserAPI {
         // console.log('user', response.data);
         return response.data;
     }
-  
 
-    static async updateUser(userId: number, user: IUser): Promise<IUser> {
-        console.log("formstate to update", user);
-        const newUser = new FormData();
-        newUser.append('id', user.id.toString());
-        newUser.append('name', user.name ?? "");
-        newUser.append('surname', user.surname?? "");
-        newUser.append('doB', user.doB.toDate().toISOString());
-        newUser.append('login', user.login?? "");
-        newUser.append('gender', user.gender);
-        newUser.append('files', user.files, "test.ph");
+    static async updateUser(
+        userId: number,
+        user: IUser,
+        formData: FormData,
+    ): Promise<IUser> {
+        // formData.append('userId', user.id.toString());
+        // formData.append('name', user.name ?? '');
+        // formData.append('surname', user.surname ?? '');
+        // formData.append('doB', user.doB.toDate().toISOString());
+        // formData.append('login', user.login ?? '');
+        // formData.append('gender', user.gender);
 
-        const response = await $authHost.put<IUser>(`/user/${userId}`, newUser);
+        var newFormData = new FormData();
+        console.log(user.files);
+        newFormData.append('files', user.files);
+        const config = {
+            headers: {
+                'Content-type': 'multipart/form-data',
+            },
+        };
+
+        const response = await $authHost.post<IUser>(
+            `/user/${userId}/post-photo`,
+            formData,
+            config,
+        );
         return response.data;
+
+        // const response = await $authHost.put<IUser>(
+        //     `/user/${userId}`,
+        //     formData,
+        // );
+        // return response.data;
     }
 
     static getPublicUsers(
@@ -127,8 +146,6 @@ export class UserAPI {
             return users;
         });
     }
-
-    
 
     static getUserByRole(role: RolesEnum): Promise<IUserToken> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {

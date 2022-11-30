@@ -6,10 +6,11 @@
                     :model="formState"
                     v-bind="layout"
                     name="nest-messages"
+                    id="userSettingForm"
                     :validate-messages="validateMessages"
                     @finish="submitForm"
                 >
-                <response-alert :message="message" :isLoading="isLoading" />
+                    <response-alert :message="message" :isLoading="isLoading" />
                     <div class="ant-modal-body">
                         <a-form-item
                             name="name"
@@ -57,19 +58,20 @@
                         >
                             <a-input v-model:value="formState.login" />
                         </a-form-item>
-                        <a-form-item name="upload" label="Upload" >
-                        <a-upload
-                            v-model:file="formState.files"
-                            name="img"
-                            maxCount="1"
-                            action="/upload.do"
-                            list-type="picture"
-                        >
-                            <a-button>
-                            <template #icon><UploadOutlined /></template>
-                           Choose image
-                            </a-button>
-                        </a-upload>
+                        <a-form-item name="upload" label="Upload">
+                            <a-upload
+                                v-model:fileList="formState.files"
+                                name="files"
+                                maxCount="1"
+                                list-type="picture"
+                            >
+                                <a-button>
+                                    <template #icon
+                                        ><UploadOutlined
+                                    /></template>
+                                    Choose image
+                                </a-button>
+                            </a-upload>
                         </a-form-item>
                     </div>
                     <div class="ant-modal-footer">
@@ -105,7 +107,7 @@ import { ResponseTypeEnum } from '@/types/FetchResponse';
 export default defineComponent({
     props: {
         show: Boolean,
-        editUser: Object as PropType<IUser>
+        editUser: Object as PropType<IUser>,
     },
     setup(props) {
         const layout = {
@@ -116,8 +118,7 @@ export default defineComponent({
         const selectedDate = ref<Dayjs>(dayjs(new Date()));
 
         const auth = useAuthStore();
-        const {authUser} = storeToRefs(auth);
-
+        const { authUser } = storeToRefs(auth);
 
         const validateMessages = {
             required: '${label} is required!',
@@ -131,24 +132,30 @@ export default defineComponent({
         };
 
         const formState = ref<IUser>({
-                files: props.editUser?.files, 
-                id: props.editUser?.id ?? -1,
-                img: props.editUser?.img ?? "",
-                login: props.editUser?.login ?? "",
-                password: props.editUser?.password ?? "",
-                name: props.editUser?.name ?? "",
-                surname: props.editUser?.surname ?? "",
-                role: props.editUser?.role ?? RolesEnum.CLIENT,
-                doB: props.editUser?.doB ?? "",
-                gender: props.editUser?.gender ?? GenderEnum.Male,
-                companyId: props.editUser?.companyId ?? -1,
+            files: props.editUser?.files,
+            id: props.editUser?.id ?? -1,
+            img: props.editUser?.img ?? '',
+            login: props.editUser?.login ?? '',
+            password: props.editUser?.password ?? '',
+            name: props.editUser?.name ?? '',
+            surname: props.editUser?.surname ?? '',
+            role: props.editUser?.role ?? RolesEnum.CLIENT,
+            doB: props.editUser?.doB ?? '',
+            gender: props.editUser?.gender ?? GenderEnum.Male,
+            companyId: props.editUser?.companyId ?? -1,
         });
 
-        const {fetchData: updateUser,
+        const {
+            fetchData: updateUser,
             isLoading,
-            message} = useFetching(async () => {
-            return await UserAPI.updateUser(authUser.value.id, formState.value)
-       });
+            message,
+        } = useFetching(async (formData: FormData) => {
+            return await UserAPI.updateUser(
+                authUser.value.id,
+                formState.value,
+                formData,
+            );
+        });
 
         return {
             formState,
@@ -158,7 +165,7 @@ export default defineComponent({
             isLoading,
             message,
             authUser,
-            selectedDate
+            selectedDate,
         };
     },
     methods: {
@@ -167,7 +174,15 @@ export default defineComponent({
             console.log('close in form', this.show);
         },
         async submitForm() {
-            await this.updateUser();
+            var userSettingForm = document.querySelector(
+                '#userSettingForm',
+            ) as HTMLFormElement;
+            if (userSettingForm) {
+                userSettingForm
+                    .querySelector('#nest-messages_upload')
+                    ?.setAttribute('name', 'files');
+                await this.updateUser(new FormData(userSettingForm));
+            }
             console.log('response', this.editUser, this.message);
             if (this.message.type == ResponseTypeEnum.SUCCESS) {
                 setTimeout(async () => {
@@ -179,22 +194,21 @@ export default defineComponent({
     },
     watch: {
         editUser() {
-            console.log("editUser is updated");
+            console.log('editUser is updated');
             this.formState = reactive<IUser>({
-                files: this.editUser?.files, 
+                files: this.editUser?.files,
                 id: this.editUser?.id ?? -1,
-                img: this.editUser?.img ?? "",
-                login: this.editUser?.login ?? "",
-                password: this.editUser?.password ?? "",
-                name: this.editUser?.name ?? "",
-                surname: this.editUser?.surname ?? "",
+                img: this.editUser?.img ?? '',
+                login: this.editUser?.login ?? '',
+                password: this.editUser?.password ?? '',
+                name: this.editUser?.name ?? '',
+                surname: this.editUser?.surname ?? '',
                 role: this.editUser?.role ?? RolesEnum.CLIENT,
-                doB: this.editUser?.doB ?? "",
+                doB: this.editUser?.doB ?? '',
                 gender: this.editUser?.gender ?? GenderEnum.Male,
                 companyId: this.editUser?.companyId ?? -1,
-
-        });
-        }
-    }
+            });
+        },
+    },
 });
 </script>

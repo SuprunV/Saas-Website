@@ -27,11 +27,16 @@ namespace server.Controllers {
             _config = config;
             _environment = environment;
         }
+        public class Media
+        {
+            public string? FileName { get; set; }
+            public IFormFile? MediaFile { get; set; }
+        }
         public class FileUploadAPI : User{
-             public IFormFile? files {get;set;}
+             public List<IFormFile>? files {get;set;}
        
         }
-        private string PostFile(int? userId, [FromForm]FileUploadAPI objFile){
+        private string PostFile(int? userId, [FromForm]IFormFile objFile){
             string Filepath = string.Empty;
             {
         try
@@ -41,17 +46,17 @@ namespace server.Controllers {
                     System.IO.Directory.CreateDirectory(_environment.WebRootPath +"\\Uploads\\UserProfileImages\\");
                 }
               
-                 Filepath = _environment.WebRootPath +"\\Uploads\\UserProfileImages\\" + objFile.files.FileName;
+                 Filepath = _environment.WebRootPath +"\\Uploads\\UserProfileImages\\" + objFile.FileName;
                 
             
 
 
                 using (FileStream stream = System.IO.File.Create(Filepath))
                 {
-                    objFile.files.CopyTo(stream);
+                    objFile.CopyTo(stream);
                     stream.Flush();
                     var req = Request;
-                    return "https://" + Request.Host + "/Uploads/UserProfileImages/" + objFile.files.FileName;
+                    return "https://" + Request.Host + "/Uploads/UserProfileImages/" + objFile.FileName;
                 }
             
         }
@@ -178,31 +183,62 @@ namespace server.Controllers {
 
             return Ok(users);
         }
-       
+        [HttpPost("{id}/post-photo")]
+        //[FromForm] int userId, [FromForm] string name,[FromForm] string surname,[FromForm] string doB,[FromForm] string login,[FromForm] Gender gender, [FromForm] 
+        public ActionResult<FileUploadAPI> uploadUserPhoto(int id, [FromForm] IFormFile files) {
+            // if(files.Count() > 0) {
+            //     var photoPath = PostFile(id, files.ElementAt(0));
+            //     return Ok();
+            // }
+            return BadRequest();
+        //     if (id != user.Id) {
+        //         return BadRequest();
+        //     }
+
+        //     if (!UserExists(user.Id, user.login)) {
+        //         return NotFound();
+        // }
+        //     if(user.files != null){
+        //     var fileName = PostFile(user.Id, user);
+        //     user.img = fileName.ToString();
+        //     }
+        //     else{
+        //          var oldUser = _context.Users.Find(id);
+        //        user.img =  oldUser.img;
+        //       _context.ChangeTracker.Clear();
+        //     }
+
+        //     _context.Entry(user).State = EntityState.Modified;
+        //     _context.SaveChanges();
+
+        //     return CreatedAtAction(nameof(getUser), new { id = user.Id}, user);
+        }
         //[Authorize]
         [HttpPut("{id}")]
-        public ActionResult<FileUploadAPI> updateUser(int id, [FromForm] FileUploadAPI user ) {
-            if (id != user.Id) {
-                return BadRequest();
-            }
+        //[FromForm] int userId, [FromForm] string name,[FromForm] string surname,[FromForm] string doB,[FromForm] string login,[FromForm] Gender gender, [FromForm] 
+        public ActionResult<FileUploadAPI> updateUser(int id, [FromForm] FileUploadAPI user, [FromForm] List<IFormFile> files) {
+        //     if (id != user.Id) {
+        //         return BadRequest();
+        //     }
 
-            if (!UserExists(user.Id, user.login)) {
-                return NotFound();
-        }
-            if(user.files != null){
-            var fileName = PostFile(user.Id, user);
-            user.img = fileName.ToString();
-            }
-            else{
-                 var oldUser = _context.Users.Find(id);
-               user.img =  oldUser.img;
-              _context.ChangeTracker.Clear();
-            }
+        //     if (!UserExists(user.Id, user.login)) {
+        //         return NotFound();
+        // }
+        //     if(user.files != null){
+        //     var fileName = PostFile(user.Id, user);
+        //     user.img = fileName.ToString();
+        //     }
+        //     else{
+        //          var oldUser = _context.Users.Find(id);
+        //        user.img =  oldUser.img;
+        //       _context.ChangeTracker.Clear();
+        //     }
 
-            _context.Entry(user).State = EntityState.Modified;
-            _context.SaveChanges();
+        //     _context.Entry(user).State = EntityState.Modified;
+        //     _context.SaveChanges();
 
-            return CreatedAtAction(nameof(getUser), new { id = user.Id}, user);
+        //     return CreatedAtAction(nameof(getUser), new { id = user.Id}, user);
+            return Ok();
         }
 
         [Authorize]
