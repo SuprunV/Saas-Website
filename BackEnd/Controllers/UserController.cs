@@ -177,7 +177,7 @@ namespace server.Controllers {
 
             return Ok(users);
         }
-        //[Authorize]
+        [Authorize]
         [HttpPut("{id}")]
         public ActionResult<User> updateUser(int id, [FromForm] FileUploadAPI user ) {
             if (id != user.Id) {
