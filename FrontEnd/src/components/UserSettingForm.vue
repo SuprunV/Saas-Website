@@ -58,12 +58,11 @@
                         >
                             <a-input v-model:value="formState.login" />
                         </a-form-item>
-                        <a-form-item name="upload" label="Upload">
+                        <a-form-item label="Upload">
                             <a-upload
-                                v-model:fileList="formState.files"
-                                name="files"
                                 maxCount="1"
                                 list-type="picture"
+                                :before-upload="beforeUpload"
                             >
                                 <a-button>
                                     <template #icon
@@ -149,12 +148,8 @@ export default defineComponent({
             fetchData: updateUser,
             isLoading,
             message,
-        } = useFetching(async (formData: FormData) => {
-            return await UserAPI.updateUser(
-                authUser.value.id,
-                formState.value,
-                formData,
-            );
+        } = useFetching(async () => {
+            return await UserAPI.updateUser(authUser.value.id, formState.value);
         });
 
         return {
@@ -169,21 +164,15 @@ export default defineComponent({
         };
     },
     methods: {
+        beforeUpload(file: any) {
+            this.formState.files = file;
+            return false;
+        },
         close() {
             this.$emit('update:show', false);
-            console.log('close in form', this.show);
         },
         async submitForm() {
-            var userSettingForm = document.querySelector(
-                '#userSettingForm',
-            ) as HTMLFormElement;
-            if (userSettingForm) {
-                userSettingForm
-                    .querySelector('#nest-messages_upload')
-                    ?.setAttribute('name', 'files');
-                await this.updateUser(new FormData(userSettingForm));
-            }
-            console.log('response', this.editUser, this.message);
+            await this.updateUser();
             if (this.message.type == ResponseTypeEnum.SUCCESS) {
                 setTimeout(async () => {
                     this.$emit('update:show', false);

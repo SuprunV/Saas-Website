@@ -87,39 +87,17 @@ export class UserAPI {
         return response.data;
     }
 
-    static async updateUser(
-        userId: number,
-        user: IUser,
-        formData: FormData,
-    ): Promise<IUser> {
-        // formData.append('userId', user.id.toString());
-        // formData.append('name', user.name ?? '');
-        // formData.append('surname', user.surname ?? '');
-        // formData.append('doB', user.doB.toDate().toISOString());
-        // formData.append('login', user.login ?? '');
-        // formData.append('gender', user.gender);
+    static async updateUser(userId: number, user: IUser): Promise<IUser> {
+        var formData = new FormData();
 
-        var newFormData = new FormData();
-        console.log(user.files);
-        newFormData.append('files', user.files);
-        const config = {
-            headers: {
-                'Content-type': 'multipart/form-data',
-            },
-        };
-
-        const response = await $authHost.post<IUser>(
+        formData.append('files', user.files);
+        const uploadFile = await $authHost.post<string>(
             `/user/${userId}/post-photo`,
             formData,
-            config,
         );
+        user.img = uploadFile.data;
+        const response = await $authHost.put<IUser>(`/user/${userId}`, user);
         return response.data;
-
-        // const response = await $authHost.put<IUser>(
-        //     `/user/${userId}`,
-        //     formData,
-        // );
-        // return response.data;
     }
 
     static getPublicUsers(
