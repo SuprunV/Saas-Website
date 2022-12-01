@@ -185,6 +185,7 @@ namespace server.Db
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.CLIENT,
                     DoB = "1999-10-27T12:15:00.942Z",
+                    img = "/Uploads/UserProfileImages/photo_2022-02-18_08-30-03.jpg",
                     companyId = 1,
                     gender = Gender.Male,
                 },

@@ -54,7 +54,7 @@ namespace server.Controllers {
                     objFile.CopyTo(stream);
                     stream.Flush();
                     var req = Request;
-                    return "https://" + Request.Host + "/Uploads/UserProfileImages/" + objFile.FileName;
+                    return "/Uploads/UserProfileImages/" + objFile.FileName;
                 }
             
         }
@@ -166,7 +166,8 @@ namespace server.Controllers {
             var user = _context.Users?.Include(u => u.Company).FirstOrDefault(u => u.Id == id);
             
             if(user == null)  return BadRequest("This user is not exists");
-    
+
+            user.img = "https://" + Request.Host + user.img;
             return Ok(user);
         }
         //  [Authorize]
