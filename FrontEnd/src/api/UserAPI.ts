@@ -91,11 +91,15 @@ export class UserAPI {
         var formData = new FormData();
 
         formData.append('files', user.files);
-        const uploadFile = await $authHost.post<string>(
-            `/user/${userId}/post-photo`,
-            formData,
-        );
-        user.img = uploadFile.data;
+        try {
+            const uploadFile = await $authHost.post<string>(
+                `/user/${userId}/post-photo`,
+                formData,
+            );
+            user.img = uploadFile.data;
+        } catch(e) {
+            user.img = null;
+        }
         const response = await $authHost.put<IUser>(`/user/${userId}`, user);
         return response.data;
     }

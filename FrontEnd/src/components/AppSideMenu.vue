@@ -3,6 +3,7 @@ import { useAuthStore } from '@/store/useAuth';
 import { IconsEnum } from '@/types/Theme';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { storeToRefs } from 'pinia';
+import { RolesEnum } from '@/models/IUser';
 
 import { defineComponent, ref } from 'vue';
 export default defineComponent({
@@ -15,6 +16,7 @@ export default defineComponent({
     data: () => ({
         selectedKeys: ['2'],
         IconsEnum,
+        RolesEnum,
     }),
     props: {
         collapsed: {
@@ -35,7 +37,7 @@ export default defineComponent({
             <a-avatar :src = "authUser.img"> </a-avatar>
         </div>
         <div v-else class="logo-sidebar">
-            <a-avatar :src = "authUser.img" > </a-avatar>
+            <a-avatar :src = "authUser.img" v-if="authUser.role != RolesEnum.COMPANY"> </a-avatar>
             <p>
                 {{ authUser.role }}
             </p>

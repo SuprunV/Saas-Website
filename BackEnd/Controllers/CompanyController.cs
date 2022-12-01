@@ -10,8 +10,36 @@ namespace server.Controllers
     public class CompanyController: ControllerBase
     {
         private readonly DataContext _context;
-        public CompanyController(DataContext context) {
+        public static IWebHostEnvironment _environment;
+        public CompanyController(DataContext context, IWebHostEnvironment environment) {
             _context = context;
+            _environment = environment;
+        }
+        public class FileUploadAPI : Company{
+        public List<IFormFile>? files {get;set;}
+       
+        }
+        private string PostFile(int? userId, [FromForm]IFormFile objFile){
+            string Filepath = string.Empty;
+            try {
+                    if (!System.IO.Directory.Exists(_environment.WebRootPath +"\\Uploads\\CompanyProfileImages\\"))
+                    {
+                        System.IO.Directory.CreateDirectory(_environment.WebRootPath +"\\Uploads\\CompanyProfileImages\\");
+                    }
+              
+                 Filepath = _environment.WebRootPath +"\\Uploads\\CompanyProfileImages\\" + objFile.FileName;
+
+                using (FileStream stream = System.IO.File.Create(Filepath))
+                {
+                    objFile.CopyTo(stream);
+                    stream.Flush();
+                    var req = Request;
+                    return "/Uploads/CompanyProfileImages/" + objFile.FileName;
+                }
+            
+        }
+        catch (Exception ex) {}
+            return "/Uploads/Noimage.png";
         }
         [HttpGet("{companyId}")]
         public ActionResult<Company> GetCompany(int companyId)
@@ -22,7 +50,7 @@ namespace server.Controllers
             {
                 return NotFound("Provided company does not exist");
             }
-
+            company.img = "https://" + Request.Host + company.img;
             return Ok(company);
         }
         [HttpGet("count")]
@@ -146,8 +174,19 @@ namespace server.Controllers
             
         }
         [Authorize]
+        [HttpPost("{id}/post-photo")]
+        public ActionResult<FileUploadAPI> uploadCompanyPhoto(int id, [FromForm] List<IFormFile> files) {
+            if(files.Count() > 0) {
+                var photoPath = PostFile(id, files.ElementAt(0));
+                return Ok(photoPath);
+            }
+            return BadRequest();
+        }
+
+
+        [Authorize]
         [HttpPut("{companyId}")]
-        public IActionResult UpdateCompany(int companyId, Company company)
+        public ActionResult<FileUploadAPI> UpdateCompany(int companyId, [FromBody] Company company)
         {
             if (companyId != company.Id)
             {
@@ -158,11 +197,15 @@ namespace server.Controllers
             {
                 return NotFound();
             }
+            if(company.img == null){
+                 var oldCompany = _context.Companies.Find(companyId);
+               company.img =  oldCompany.img;
+              _context.ChangeTracker.Clear();
+            }
 
             _context.Entry(company).State = EntityState.Modified;
             _context.SaveChanges();
-
-            return Ok(company);
+            return CreatedAtAction(nameof(GetCompany), new { companyId = company.Id}, company);
         }
         [Authorize]
         [HttpDelete("{companyId}")]

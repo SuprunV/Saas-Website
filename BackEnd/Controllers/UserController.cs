@@ -12,11 +12,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using BackEnd.DTO;
 
-namespace server.Controllers {
- 
+namespace server.Controllers
+{
+
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase {
+    public partial class UserController : ControllerBase {
 
         private readonly DataContext _context;
         private IConfiguration _config;
@@ -26,11 +27,6 @@ namespace server.Controllers {
             _context = context;
             _config = config;
             _environment = environment;
-        }
-        public class Media
-        {
-            public string? FileName { get; set; }
-            public IFormFile? MediaFile { get; set; }
         }
         public class FileUploadAPI : User{
              public List<IFormFile>? files {get;set;}
@@ -59,7 +55,7 @@ namespace server.Controllers {
             
         }
         catch (Exception ex) {}
-            return "https://" + Request.Host + "/Uploads/UserProfileImages/Noimage.png";
+            return "/Uploads/Noimage.png";
         }
 
 
@@ -77,7 +73,7 @@ namespace server.Controllers {
                 companyId = dbUser.companyId,
                 email = dbUser.login,
                 companyName = dbUser.Company.companyName,
-                img = dbUser.img,
+                img = "https://" + Request.Host + dbUser.img,
                 name = $"{dbUser.name} {dbUser.surname}",
                 role = dbUser.role 
             };
@@ -98,7 +94,7 @@ namespace server.Controllers {
                 password = HashPassword(user.password),
                 companyId = user.companyId,
                 role = Role.CLIENT,
-                img = "https://" + Request.Host + "/Uploads/UserProfileImages/Noimage.png"
+                img = "/Uploads/Noimage.png"
             };
 
             _context.Users!.Add(newUser);
@@ -111,7 +107,7 @@ namespace server.Controllers {
                 companyId = dbClient?.companyId,
                 email = dbClient?.login,
                 companyName = dbClient?.Company?.companyName,
-                img = dbClient.img,
+                img = "https://" + Request.Host + dbClient.img,
                 name = $"Unknown",
                 role = dbClient?.role ?? Role.CLIENT 
             };
@@ -127,7 +123,7 @@ namespace server.Controllers {
             var companyData = new Company() {
                 Id = 0,
                 companyAlias = company.companyAlias,
-                companyName = company.companyName
+                companyName = company.companyName,
             };
             
             
@@ -138,7 +134,7 @@ namespace server.Controllers {
 
             var userData = new User() {
                 Id = 0,
-                img =dbCompany.img,
+                img =  dbCompany.img,
                 login = company.username,
                 password = HashPassword(company.password),
                 companyId = dbCompany.Id,
@@ -153,7 +149,7 @@ namespace server.Controllers {
                 companyId = userData.companyId,
                 email = userData.login,
                 companyName = company.companyName,
-                img = userData.img,
+                img = "https://" + Request.Host + userData.img,
                 name = company.companyName,
                 role = userData.role 
             });
@@ -167,6 +163,7 @@ namespace server.Controllers {
             
             if(user == null)  return BadRequest("This user is not exists");
 
+
             user.img = "https://" + Request.Host + user.img;
             return Ok(user);
         }
@@ -179,7 +176,7 @@ namespace server.Controllers {
             return Ok(users);
         }
 
-        //[FromForm] int userId, [FromForm] string name,[FromForm] string surname,[FromForm] string doB,[FromForm] string login,[FromForm] Gender gender, [FromForm] 
+        [Authorize]
         [HttpPost("{id}/post-photo")]
         public ActionResult<FileUploadAPI> uploadUserPhoto(int id, [FromForm] List<IFormFile> files) {
             if(files.Count() > 0) {
@@ -188,8 +185,7 @@ namespace server.Controllers {
             }
             return BadRequest();
         }
-        //[Authorize]
-        //[FromForm] int userId, [FromForm] string name,[FromForm] string surname,[FromForm] string doB,[FromForm] string login,[FromForm] Gender gender, [FromForm] 
+        [Authorize]
         [HttpPut("{id}")]
         public ActionResult<FileUploadAPI> updateUser(int id, [FromBody] User user) {
             if (id != user.Id) {
@@ -204,6 +200,7 @@ namespace server.Controllers {
                user.img =  oldUser.img;
               _context.ChangeTracker.Clear();
             }
+      
 
             _context.Entry(user).State = EntityState.Modified;
             _context.SaveChanges();
