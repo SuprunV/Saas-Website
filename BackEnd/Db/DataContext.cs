@@ -37,8 +37,8 @@ namespace server.Db
             // mb.Entity<Master>().ToTable("Masters").HasKey(x => x.Id);
             // mb.Entity<Master>().HasOne(x => x.User);
 
-            mb.Entity<ServiceMaster>().ToTable("ServiceMaster").HasIndex(p => new {p.masterId, p.serviceId}).IsUnique();;
-
+            mb.Entity<ServiceMaster>().ToTable("ServiceMaster").HasIndex(p => new {p.masterId, p.serviceId}).IsUnique();
+            mb.Entity<ServiceMaster>().ToTable("ServiceMaster").HasKey(x => x.Id);
             mb.Entity<Service>().ToTable("Services").HasKey(x => x.Id);
             mb.Entity<Service>().HasOne(x => x.Company)
             .WithMany(x => x.CompanyServices)

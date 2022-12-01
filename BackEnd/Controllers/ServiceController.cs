@@ -85,7 +85,7 @@ namespace server.Controllers
                 if(!_context.ServiceMaster!.Any(sm => sm.masterId == serviceMaster.masterId && sm.serviceId == serviceMaster.serviceId)) {
                     _context.ServiceMaster!.Add(serviceMaster);
                     _context.SaveChanges();
-                }
+                }   
             }
             return Ok();
         }

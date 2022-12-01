@@ -67,7 +67,7 @@ namespace server.Controllers
             var freeAppointments = new List<Appointment>();
             
             // get list of all masters in this company
-            var masters = _context.Users.Where(m => m.companyId == companyId && m.role == Enums.Role.MASTER);
+            var masters = _context.Users.Where(m => m.companyId == companyId && m.role == Enums.Role.MASTER && serviceMasters.Contains(m.Id));
             foreach(var master in masters) {
                 // get buzy appointments of this master.
                 var buzyAppointments = appointments.Where(a => a.masterId == master.Id);
