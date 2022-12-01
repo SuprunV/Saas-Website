@@ -17,13 +17,13 @@ namespace server.Controllers
         public ServiceController(DataContext context, IWebHostEnvironment environment)
         {
             _context = context;
-             _environment = environment;
+            _environment = environment;
         }
         public class FileUploadAPI : Service{
         public List<IFormFile>? files {get;set;}
        
         }
-        private string PostFile(int? userId, [FromForm]IFormFile objFile){
+        private string PostFile(int? serviceId, [FromForm]IFormFile objFile){
             string Filepath = string.Empty;
             try {
                     if (!System.IO.Directory.Exists(_environment.WebRootPath +"\\Uploads\\ServiceImages\\"))
@@ -102,7 +102,7 @@ namespace server.Controllers
             _context.SaveChanges();
             return Ok(service);
         }
-        [Authorize]
+       [Authorize]
         [HttpPost("{id}/post-photo")]
         public ActionResult<FileUploadAPI> uploadServicePhoto(int id, [FromForm] List<IFormFile> files) {
             if(files.Count() > 0) {
@@ -111,7 +111,7 @@ namespace server.Controllers
             }
             return BadRequest();
         }
-
+        [Authorize]
         [HttpPut("{id}")]
         public ActionResult<FileUploadAPI> UpdateService(int id, [FromBody] Service service)
         {

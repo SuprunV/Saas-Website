@@ -50,6 +50,20 @@
                             v-model:value="formStateService.duration"
                         />
                     </a-form-item>
+                    <a-form-item label="Upload">
+                            <a-upload
+                                maxCount="1"
+                                list-type="picture"
+                                :before-upload="beforeUpload"
+                            >
+                                <a-button>
+                                    <template #icon
+                                        ><UploadOutlined
+                                    /></template>
+                                    Choose image
+                                </a-button>
+                            </a-upload>
+                        </a-form-item>
                 </div>
               
                 <div class="ant-modal-footer">
@@ -136,6 +150,7 @@ export default defineComponent({
                 description: formStateService.value.description,
                 duration: formStateService.value.duration,
                 companyId: formStateService.value.companyId,
+                files: formStateService.value.files,
             };
             const isValid = 
                 newService.price > 0 &&
@@ -164,7 +179,8 @@ export default defineComponent({
                 description: '',
                 duration: 0,
                 id: 0,
-                companyId: authUser.value.companyId
+                companyId: authUser.value.companyId,
+                files: null,
         });
       
 
@@ -203,6 +219,10 @@ export default defineComponent({
         // }
     },
     methods: {
+        beforeUpload(file: any) {
+            this.formStateService.files = file;
+            return false;
+        },
         close() {
             this.$emit('update:show', false);
         },
