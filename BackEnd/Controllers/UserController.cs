@@ -91,8 +91,12 @@ namespace server.Controllers {
                 Id = 0,
                 login = user.login,
                 password = HashPassword(user.password),
+                name = user.name,
+                surname = user.surname,
+                DoB = user.DoB,
+                gender = user.gender,
                 companyId = user.companyId,
-                role = Role.MASTER
+                role = Role.MASTER,
             };
 
             _context.Users!.Add(newUser);
@@ -106,7 +110,8 @@ namespace server.Controllers {
                 email = dbMaster?.login,
                 companyName = dbMaster?.Company?.companyName,
                 img = dbMaster?.img,
-                name = $"Unknown",
+                name = dbMaster.name,
+                
                 role = dbMaster?.role ?? Role.MASTER 
             };
             var token = GenerateJSONWebToken(userToken);
@@ -177,9 +182,22 @@ namespace server.Controllers {
             if (id != user.Id) {
                 return BadRequest();
             }
-
             if (!UserExists(user.Id, user.login)) {
                 return NotFound();
+            }
+
+            if(_context.Users.Any(u => u.login == user.login && u.companyId == user.companyId )) {
+                var login = _context.Users!.FirstOrDefault(u => u.login == user.login);
+                if (login != null) {
+                    return BadRequest("This user login is already in use");
+                }
+            }
+            else if(_context.Users.Any( x => x.login == user.login)) {
+                var login = _context.Users!.First(u => u.login == user.login);
+                if (login != null) {
+                    return BadRequest("This user login is already in use");
+                }
+              
             }
 
             user.password = HashPassword(user.password);

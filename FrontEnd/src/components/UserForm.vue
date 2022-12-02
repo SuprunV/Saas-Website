@@ -58,13 +58,20 @@
                             <a-input v-model:value="formState.login" />
                         </a-form-item>
                         <a-form-item
+                            v-if="( changedUserId == undefined)" :rules="[ {  required: true }]"
                             name="password"
                             label="password"
-                            :rules="[{ required: true }]"
-                        >
+                        > 
                             <a-input v-model:value="formState.password" />
                         </a-form-item>
-                        
+                        <a-form-item
+                            v-else-if="( changedUserId != undefined)" :rules="[ {  required: false }]"
+                            name="password"
+                            label="password"
+                        > 
+                            <a-input v-model = "formState.password"
+                            :true-value="'' " />
+                        </a-form-item>
                     </div>
                     <div class="ant-modal-footer">
                         <button
@@ -173,13 +180,13 @@ export default defineComponent({
 
         const formState = ref<IUser>({
                 id: 0,
-                img: "",
-                login:   "" ,
-                password: "",
-                name: "",
-                surname: "",
+                img: '',
+                login:   '' ,
+                password: '',
+                name: '',
+                surname: '',
                 role: RolesEnum.MASTER,
-                doB:  "",
+                doB:  '',
                 gender: GenderEnum.Male,
                 companyId: authUser.value.companyId,
         });
@@ -207,7 +214,7 @@ export default defineComponent({
     watch: {
         async changedUserId(){
             console.log('data changed', this.changedUserId);
-            if(this.changedUserId != undefined){
+            if(this.changedUserId != undefined ){
             const userObject = await UserAPI.getUser(this.changedUserId);
             console.log('data userObject', userObject);
             

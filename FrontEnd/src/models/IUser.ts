@@ -17,8 +17,8 @@ export interface IUser{
     id: number;
     login: string;
     password: string;
-    name?: string;
-    surname?: string;
+    name: string;
+    surname: string;
     doB: any;
     gender: GenderEnum;
     role: RolesEnum;
@@ -44,8 +44,8 @@ export interface IRegClientForm {
     password: string;
 }
 
-export interface IRegMasterForm {
-    companyId: number;
-    login: string;
-    password: string;
-}
+// export interface IRegMasterForm {
+//     companyId: number;
+//     login: string;
+//     password: string;
+// }
