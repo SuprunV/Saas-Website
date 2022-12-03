@@ -20,8 +20,6 @@ namespace server.Models
         public string? img { get; set; }
         public int? companyId { get; set; }
 
-
-
         // [JsonIgnore]
         public virtual Company? Company { get; set; }
         [JsonIgnore]
