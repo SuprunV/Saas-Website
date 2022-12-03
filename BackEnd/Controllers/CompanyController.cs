@@ -53,7 +53,9 @@ namespace server.Controllers
         {
             if(!_context.Services!.Any(s => s.Id == serviceId)) return Conflict();
             if(!CompanyExists(companyId)) return BadRequest();
-            var appointments = _context.Appointments!.Include(x => x.Master).Include(x => x.Service).Where((x => x.date.Contains(date) && x.Master.companyId == companyId)).ToList();
+
+            var serviceMasters = _context.ServiceMaster.Where(sm => sm.serviceId == serviceId).Select(sm => sm.masterId);
+            var appointments = _context.Appointments!.Include(x => x.Master).Include(x => x.Service).Where((x => x.date.Contains(date) && x.Master.companyId == companyId && serviceMasters.Contains(x.Master.Id))).ToList();
             
             // masterId:
             // master
@@ -65,7 +67,7 @@ namespace server.Controllers
             var freeAppointments = new List<Appointment>();
             
             // get list of all masters in this company
-            var masters = _context.Users.Where(m => m.companyId == companyId && m.role == Enums.Role.MASTER);
+            var masters = _context.Users.Where(m => m.companyId == companyId && m.role == Enums.Role.MASTER && serviceMasters.Contains(m.Id));
             foreach(var master in masters) {
                 // get buzy appointments of this master.
                 var buzyAppointments = appointments.Where(a => a.masterId == master.Id);

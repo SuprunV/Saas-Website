@@ -1,8 +1,7 @@
 <script lang="ts">
 import { IService } from '@/models/IService';
-import { UserAPI } from '@/api/UserAPI';
 import { defineComponent, ref, reactive, onMounted } from 'vue';
-import {IUserToken, RolesEnum, IUser } from '@/models/IUser';
+import { IUserToken, RolesEnum, IUser } from '@/models/IUser';
 import { PlusCircleTwoTone } from '@ant-design/icons-vue';
 import ServiceForm from '@/components/ServiceForm.vue';
 import { useAuthStore } from '@/store/useAuth';
@@ -39,14 +38,12 @@ export default defineComponent({
         const masterList = ref<IUser[]>([]);
         
         const auth = useAuthStore();
-        const {authUser} = storeToRefs(auth);
+        const { authUser } = storeToRefs(auth);
 
         const companyStore = useCompanyStore();
         const { company } = storeToRefs(companyStore);
 
-        const changeUser = ref<IUser>({
-        } as IUser);
-
+        const changeUser = ref<IUser>({} as IUser);
 
         const {
             fetchData: getUsersInfo,
@@ -61,7 +58,7 @@ export default defineComponent({
         });
         getUsersInfo();
 
-        const{
+        const {
             fetchData: getServices,
             isLoading: isServiceLoading,
             message: ServiceMessage,
@@ -102,6 +99,7 @@ export default defineComponent({
 
         const changeRef = ref<any>(null);
         const isChangeModalService = ref<boolean>(false);
+        const isSetMasterServicesModal = ref<boolean>(false);
         const isChangeModalUser = ref<boolean>(false);
         const validateMessages = {
             required: '${label} is required!',
@@ -121,6 +119,7 @@ export default defineComponent({
             layout,
             validateMessages,
             formStateService,
+            isSetMasterServicesModal,
             isChangeModalService,
             deleteService,
             deleteUser,
@@ -148,6 +147,10 @@ export default defineComponent({
             this.isChangeModalService = true;
             this.changedServiceId = id;
         },
+        showSetMasterServicesModal(id: number | undefined) {
+            this.isSetMasterServicesModal = true;
+            this.changedServiceId = id;
+        },
 
 
        showModalUser(id: number | undefined) {
@@ -160,7 +163,7 @@ export default defineComponent({
             console.log("UpdateFinalAction");
             this.getServices();
             this.getUsersInfo();
-        }
+        },
     },
     components: {
     PlusCircleTwoTone,
@@ -237,8 +240,10 @@ const formStateService = reactive({
                                         <a href="./myfircom/management">{{
                                             item.name
                                         }}</a>
-                                        <a-button type="primary" danger 
-                                        @click="deleteUser(item)"
+                                        <a-button
+                                            type="primary"
+                                            danger
+                                            @click="deleteUser(item)"
                                             >Delete</a-button
                                         >
                                         <a-button
@@ -259,13 +264,11 @@ const formStateService = reactive({
             </div>
         </div>
         <div class="col">
-            <a-button 
-                type="primary" 
+            <a-button
+                type="primary"
                 @click="() => showChangeModalService(undefined)"
-               >
-                <template #icon><plus-circle-two-tone />
-                
-                </template>
+            >
+                <template #icon><plus-circle-two-tone /> </template>
                 Add new service
             </a-button>
             <div class="m-3">
@@ -293,7 +296,9 @@ const formStateService = reactive({
                                             item.description
                                         }}</small>
                                         <br />
-                                        <br /><a-button type="primary" danger
+                                        <br /><a-button
+                                            type="primary"
+                                            danger
                                             @click="deleteService(item)"
                                             >Delete</a-button
                                         >
@@ -305,6 +310,18 @@ const formStateService = reactive({
                                             default
                                         >
                                             Update
+                                        </a-button>
+                                        <a-button
+                                            type="danger"
+                                            @click="
+                                                () =>
+                                                    showSetMasterServicesModal(
+                                                        item.id,
+                                                    )
+                                            "
+                                            default
+                                        >
+                                            Set Masters
                                         </a-button>
                                     </template>
                                     <template #avatar>
