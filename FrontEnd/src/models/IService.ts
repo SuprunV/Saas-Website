@@ -1,4 +1,4 @@
-export interface IService{
+export interface IService {
     id: number;
     img?:any;
     files?:any;
@@ -8,4 +8,9 @@ export interface IService{
     price: number;
     companyId?: number;
 }
-    
+
+export interface IServiceMaster {
+    Id: number;
+    masterId: number | undefined;
+    serviceId: number;
+}

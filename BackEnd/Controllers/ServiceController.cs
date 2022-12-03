@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using server.Db;
 using server.Models;
 using Microsoft.AspNetCore.Authorization;
+using BackEnd.DTO;
 
 namespace server.Controllers
 {
@@ -58,6 +59,14 @@ namespace server.Controllers
             return Ok(service);
         }
 
+        [HttpGet("{serviceId}/masters")]
+        public ActionResult<Service> GetServiceMasters(int serviceId)
+        {
+            var serviceMasters = _context.ServiceMaster.Where(sm => sm.serviceId == serviceId);
+            return Ok(serviceMasters.ToArray());
+        }
+
+
         [HttpGet("{companyId}/servicecount")]
         public ActionResult<int> GetCompanyServiceCount(int companyId)
         {
@@ -82,14 +91,31 @@ namespace server.Controllers
             .First(x => x.Id == companyId)
             .CompanyServices;
 
-            if(companyServices == null)
-            {
+            if(companyServices == null) {
                 return NotFound("No services in this company");
             }
 
             return Ok(companyServices);
         }
 
+        [HttpPost("{serviceId}/update-masters")]
+        public ActionResult<Service> UpdateServiceMasters(int serviceId, [FromBody] ServiceMaster[] serviceMasters)
+        {
+            if(!ServiceExists(serviceId)) return NotFound("Service is not founded");
+
+            // If we make updating, that means that previous service-master pairs we remove and override them by new pairs got by FE
+            var existedPairs = _context.ServiceMaster.Where(sm => sm.serviceId == serviceId);
+            _context.RemoveRange(existedPairs);
+            _context.SaveChanges();
+
+            foreach(var serviceMaster in serviceMasters) {
+                if(!_context.ServiceMaster!.Any(sm => sm.masterId == serviceMaster.masterId && sm.serviceId == serviceMaster.serviceId)) {
+                    _context.ServiceMaster!.Add(serviceMaster);
+                    _context.SaveChanges();
+                }   
+            }
+            return Ok();
+        }
         [HttpPost]
         public ActionResult<Service> CreateService(Service service)
         {
