@@ -7,4 +7,7 @@ export interface IMaster {
     DoB: string;
     gender: GenderEnum;
     userId: number;
+    companyId?: number;
+    login?: string;
+    password?: string;
 }

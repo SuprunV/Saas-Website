@@ -82,14 +82,12 @@ import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/store/useAuth';
 import { useFetching } from '@/hooks/useFetching';
 import { ResponseTypeEnum } from '@/types/FetchResponse';
-import { useCompanyStore } from '@/store/useCompany';
 
 
 export default defineComponent({
     props: {
         show: Boolean,
         changedServiceId: Object as PropType<number | undefined>,
-        newServiceId: Object as PropType<number | undefined>
     },
     setup(props) {
         const auth = useAuthStore();
@@ -194,13 +192,7 @@ export default defineComponent({
             this.formStateService = serviceObject;
             }
         },
-        // async newServiceId(){
-        //     console.log('new data', this.newServiceId)
-        //     if(this.newServiceId != undefined){
-        //         const serviceObject = await ServiceAPI.addService(this.formStateService);
-        //         this.formStateService = serviceObject;
-        //     }
-        // }
+
     },
     methods: {
         close() {

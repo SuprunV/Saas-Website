@@ -80,6 +80,44 @@ namespace server.Controllers {
             var token = GenerateJSONWebToken(userToken);
             return Ok(new { token = token});
         }
+
+          [HttpPost("reg-master")]
+        public ActionResult<User> RegistrateMaster([FromBody] User user) {
+            if(_context.Users.Any(u => u.login == user.login && u.companyId == user.companyId)) {
+                return BadRequest("This user is already registred");
+            }
+
+            var newUser = new User() {
+                Id = 0,
+                login = user.login,
+                password = HashPassword(user.password),
+                name = user.name,
+                surname = user.surname,
+                DoB = user.DoB,
+                gender = user.gender,
+                companyId = user.companyId,
+                role = Role.MASTER,
+            };
+
+            _context.Users!.Add(newUser);
+            _context.SaveChanges();
+
+            var dbMaster = _context.Users.Include(u => u.Company).First(c => c.login == user.login && c.companyId== user.companyId);
+            var userToken = new UserToken() {
+                id = dbMaster.Id,
+                companyAlias = dbMaster?.Company?.companyAlias ?? "",
+                companyId = dbMaster?.companyId,
+                email = dbMaster?.login,
+                companyName = dbMaster?.Company?.companyName,
+                img = dbMaster?.img,
+                name = dbMaster.name,
+                
+                role = dbMaster?.role ?? Role.MASTER 
+            };
+            var token = GenerateJSONWebToken(userToken);
+            return Ok(new { token = token});
+        }
+
         [HttpPost("reg-company")]
         public ActionResult<User> RegistrateCompany([FromBody] RegCompanyDTO company) {
             if(UserExists(null, company.username) && _context.Companies.Any(x => x.companyName == company.companyName) ||  _context.Companies.Any(x => x.companyAlias == company.companyAlias)) {
@@ -121,7 +159,7 @@ namespace server.Controllers {
             return Ok(new { token = token });
         }
         
-        [Authorize]
+     //   [Authorize]
         [HttpGet("{id}")]
         public ActionResult<User> getUser(int id) {
             var user = _context.Users?.Include(u => u.Company).FirstOrDefault(u => u.Id == id);
@@ -130,7 +168,7 @@ namespace server.Controllers {
     
             return Ok(user);
         }
-         [Authorize]
+     //    [Authorize]
         // !!!! This EndPoint must be in CompanyController
         [HttpGet("company/{companyId}/{role}")]
         public ActionResult<User> getCompanyUsersByRole(int companyId, Role role) {
@@ -138,23 +176,38 @@ namespace server.Controllers {
 
             return Ok(users);
         }
-        [Authorize]
+        // [Authorize]
         [HttpPut("{id}")]
         public ActionResult<User> updateUser(int id, [FromBody] User user) {
             if (id != user.Id) {
                 return BadRequest();
             }
-
             if (!UserExists(user.Id, user.login)) {
                 return NotFound();
             }
+
+            if(_context.Users.Any(u => u.login == user.login && u.companyId == user.companyId )) {
+                var login = _context.Users!.FirstOrDefault(u => u.login == user.login);
+                if (login != null) {
+                    return BadRequest("This user login is already in use");
+                }
+            }
+            else if(_context.Users.Any( x => x.login == user.login)) {
+                var login = _context.Users!.First(u => u.login == user.login);
+                if (login != null) {
+                    return BadRequest("This user login is already in use");
+                }
+              
+            }
+
+            user.password = HashPassword(user.password);
 
             _context.Entry(user).State = EntityState.Modified;
             _context.SaveChanges();
 
             return CreatedAtAction(nameof(getUser), new { id = user.Id}, user);
         }
-        [Authorize]
+       // [Authorize]
         [HttpDelete("{id}")]
         public ActionResult<User> deleteUser(int id) {
             

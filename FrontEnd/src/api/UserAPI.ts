@@ -2,6 +2,7 @@ import { $authHost, $host } from '@/config';
 import { ICompany, IRegCompanyForm } from '@/models/ICompany';
 import { IRegClientForm, IUserToken, IUser, RolesEnum } from '@/models/IUser';
 import { LocalStorageItemEnum } from '@/types/LocalStorageItemEnum';
+import dayjs from 'dayjs';
 import axios from 'axios';
 const companyImgUrl =
     'https://static8.depositphotos.com/1378583/1010/i/600/depositphotos_10108949-stock-photo-blue-flame-logo.jpg';
@@ -75,6 +76,14 @@ export class UserAPI {
         return response.data;
     }
 
+    static async registerMaster(regForm: IUser) {
+        const response = await $authHost.post<ITokenResponse>(
+            `/user/reg-master`,
+            regForm,
+        );
+        return response.data;
+    }
+
     static async logout(userData: IUserToken) {
         // Here will be made request to remove token for this user (userData);
         localStorage.removeItem(LocalStorageItemEnum.userJson);
@@ -83,6 +92,7 @@ export class UserAPI {
 
     static async getUser(userId: number): Promise<IUser> {
         const response = await $authHost.get<IUser>(`/user/${userId}`);
+        response.data.doB = dayjs(response.data.doB ? new Date(response.data.doB) : new Date());
         // console.log('user', response.data);
         return response.data;
     }
@@ -121,6 +131,7 @@ export class UserAPI {
         });
     }
 
+ 
     
 
     static getUserByRole(role: RolesEnum): Promise<IUserToken> {
@@ -133,3 +144,4 @@ export class UserAPI {
         });
     }
 }
+
