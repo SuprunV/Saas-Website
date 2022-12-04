@@ -1,7 +1,7 @@
 import { $authHost, $host } from '@/config';
 import { ICompany } from '@/models/ICompany';
 import { IMaster } from '@/models/IMaster';
-import { IUserToken } from '@/models/IUser';
+import { IUser, IUserToken } from '@/models/IUser';
 import axios from 'axios';
 
 const companyImgUrl= null;
@@ -79,9 +79,9 @@ export class CompanyAPI {
     }
 
 
-    static async getCompanyMasters(companyId: number): Promise<IUserToken[]> {
+    static async getCompanyMasters(companyId: number): Promise<IUser[]> {
         try {
-            const response = await $host.get<IUserToken[]>(
+            const response = await $host.get<IUser[]>(
                 `/Company/${companyId}/masters`,
             );
             console.log('masters', response.data);

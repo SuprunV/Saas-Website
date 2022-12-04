@@ -10,8 +10,8 @@ namespace server.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string? login { get; set; }
-        public string? password { get; set; }
+        public string login { get; set; }
+        public string password { get; set; }
         public string? name { get; set; }
         public string? surname { get; set; }
         public string? DoB { get; set; }

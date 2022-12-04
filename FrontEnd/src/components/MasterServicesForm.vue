@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <div v-createModal="{ show: show, width: 20 }">
+        <div v-createModal="{ show: show, width: 50 }">
             <div class="main-cart" role="document">
                 <a-form
                     ref="formRef"
