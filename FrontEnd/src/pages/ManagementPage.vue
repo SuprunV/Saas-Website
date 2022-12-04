@@ -6,6 +6,7 @@ import { PlusCircleTwoTone } from '@ant-design/icons-vue';
 import ServiceForm from '@/components/ServiceForm.vue';
 import { useAuthStore } from '@/store/useAuth';
 import { ServiceAPI } from '@/api/ServiceAPI';
+import MasterServicesForm from '@/components/MasterServicesForm.vue';
 import UserSettingForm from '@/components/UserSettingForm.vue';
 import UserForm from '@/components/UserForm.vue';
 import { useCompanyStore } from '@/store/useCompany';
@@ -15,7 +16,6 @@ import dayjs from 'dayjs';
 import { CompanyAPI } from '@/api/CompanyAPI';
 
 export default defineComponent({
-   
     data: () => ({
         RolesEnum,
         clientCount: 0,
@@ -23,8 +23,8 @@ export default defineComponent({
         masterCount: 0,
         services: [] as IService[],
         masters: [] as IUser[],
-        changedServiceId: undefined as undefined|number,
-        changedUserId: undefined as undefined|number,
+        changedServiceId: undefined as undefined | number,
+        changedUserId: undefined as undefined | number,
     }),
     setup() {
         const initLoading = ref(true);
@@ -36,7 +36,7 @@ export default defineComponent({
         const serviceList = ref<IService[]>([]);
         const dataMaster = ref<IUser[]>([]);
         const masterList = ref<IUser[]>([]);
-        
+
         const auth = useAuthStore();
         const { authUser } = storeToRefs(auth);
 
@@ -47,12 +47,14 @@ export default defineComponent({
 
         const {
             fetchData: getUsersInfo,
-            isLoading: isUserLoading, 
-            message: UserMessage
+            isLoading: isUserLoading,
+            message: UserMessage,
         } = useFetching(async () => {
-            const users = await CompanyAPI.getCompanyMasters(authUser.value.companyId);
-           
-           masterList.value = users;
+            const users = await CompanyAPI.getCompanyMasters(
+                authUser.value.companyId,
+            );
+
+            masterList.value = users;
 
             return users;
         });
@@ -74,28 +76,24 @@ export default defineComponent({
 
         getServices();
 
-
-        async function deleteService(serviceId : IService) {
+        async function deleteService(serviceId: IService) {
             console.log('delete serivce', serviceId);
             const service = await ServiceAPI.deleteCompanyService(serviceId.id);
 
             getServices();
         }
-        async function deleteUser(item : IUserToken )  {
+        async function deleteUser(item: IUserToken) {
             console.log('delete user', item);
             const master = await CompanyAPI.deleteCompanyMasters(item.id);
             getUsersInfo();
         }
-        
-     
-       
+
         onMounted(async () => {
-        // const masters = await CompanyAPI.getCompanyMasters(
-        //     authUser.value.companyId,
-        // );
-        initLoading.value = false;
+            // const masters = await CompanyAPI.getCompanyMasters(
+            //     authUser.value.companyId,
+            // );
+            initLoading.value = false;
         });
-     
 
         const changeRef = ref<any>(null);
         const isChangeModalService = ref<boolean>(false);
@@ -129,16 +127,13 @@ export default defineComponent({
             dataMaster,
             initLoading,
             loading,
-            isUserLoading, 
+            isUserLoading,
             UserMessage,
             serviceList,
             getUsersInfo,
             isServiceLoading,
             ServiceMessage,
             changeUser,
-            
-            
-            
         };
     },
     methods: {
@@ -152,26 +147,24 @@ export default defineComponent({
             this.changedServiceId = id;
         },
 
-
-       showModalUser(id: number | undefined) {
+        showModalUser(id: number | undefined) {
             console.log('show user', id);
             this.isChangeModalUser = true;
             this.changedUserId = id;
-           },
-      
-        UpdateFinalAction(){
-            console.log("UpdateFinalAction");
+        },
+
+        UpdateFinalAction() {
+            console.log('UpdateFinalAction');
             this.getServices();
             this.getUsersInfo();
         },
     },
     components: {
-    PlusCircleTwoTone,
-    UserForm,
-    ServiceForm
-},
-   
-  
+        PlusCircleTwoTone,
+        UserForm,
+        MasterServicesForm,
+        ServiceForm,
+    },
 });
 
 const layout = {
@@ -187,13 +180,13 @@ const formState = reactive({
         email: '',
         gender: '',
         role: RolesEnum.MASTER,
-        img:'',
-        login:   '' ,
-        password: " ",
-        doB:  '',
+        img: '',
+        login: '',
+        password: ' ',
+        doB: '',
     },
-    components:{
-        UserForm
+    components: {
+        UserForm,
     },
 });
 
@@ -205,16 +198,13 @@ const formStateService = reactive({
         description: '',
         duration: 0,
     },
-    components: {
-        ServiceForm,
-    },
 });
 </script>
 
 <template>
     <div class="row">
         <div class="col">
-            <a-button type="primary"  @click="() => showModalUser(undefined)">
+            <a-button type="primary" @click="() => showModalUser(undefined)">
                 <template #icon><plus-circle-two-tone /></template>
                 Add new personnel
             </a-button>
@@ -226,8 +216,7 @@ const formStateService = reactive({
                     item-layout="horizontal"
                     :data-source="masterList"
                 >
-                
-                      <template #renderItem="{ item }">
+                    <template #renderItem="{ item }">
                         <a-list-item>
                             <a-skeleton
                                 avatar
@@ -334,7 +323,19 @@ const formStateService = reactive({
                 </a-list>
             </div>
         </div>
-        <UserForm v-model:show="isChangeModalUser" @finalAction="UpdateFinalAction"  v-model:changedUserId="changedUserId" />
-        <ServiceForm v-model:show="isChangeModalService" @finalAction="UpdateFinalAction" v-model:changedServiceId="changedServiceId" />
+        <UserForm
+            v-model:show="isChangeModalUser"
+            @finalAction="UpdateFinalAction"
+            v-model:changedUserId="changedUserId"
+        />
+        <ServiceForm
+            v-model:show="isChangeModalService"
+            @finalAction="UpdateFinalAction"
+            v-model:changedServiceId="changedServiceId"
+        />
+        <MasterServicesForm
+            v-model:show="isSetMasterServicesModal"
+            v-model:serviceId="changedServiceId"
+        />
     </div>
 </template>
