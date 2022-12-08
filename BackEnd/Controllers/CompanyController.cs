@@ -219,6 +219,16 @@ namespace server.Controllers
             }
 
             var company = _context.Companies!.Find(companyId);
+            var  user = new User();
+            try{
+             user = _context.Users?.First(x=>x.companyId == companyId);
+            }
+            catch{
+                _context.Companies!.Remove(company);
+                 _context.SaveChanges();
+                 return company;
+            }
+            _context.Users!.Remove(user);
             _context.Companies!.Remove(company);
             _context.SaveChanges();
 

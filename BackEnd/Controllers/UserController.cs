@@ -131,6 +131,7 @@ namespace server.Controllers
                 gender = user.gender,
                 companyId = user.companyId,
                 role = Role.MASTER,
+                img = "/Uploads/Noimage.png"
             };
 
             _context.Users!.Add(newUser);
@@ -143,7 +144,7 @@ namespace server.Controllers
                 companyId = dbMaster?.companyId,
                 email = dbMaster?.login,
                 companyName = dbMaster?.Company?.companyName,
-                img = dbMaster?.img,
+                img = "https://" + Request.Host + dbMaster?.img,
                 name = dbMaster.name,
                 
                 role = dbMaster?.role ?? Role.MASTER 
@@ -162,6 +163,7 @@ namespace server.Controllers
                 Id = 0,
                 companyAlias = company.companyAlias,
                 companyName = company.companyName,
+                img = "/Uploads/Noimage.png",
             };
             
             
@@ -265,7 +267,7 @@ namespace server.Controllers
         [HttpDelete("{id}")]
         public ActionResult<User> deleteUser(int id) {
             
-            var user = _context.Users!.First(u => u.Id == id);
+            var user = _context.Users?.Find(id);
             if (user == null) {
                 return NotFound();
             }
