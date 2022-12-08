@@ -37,20 +37,65 @@ export class ServiceAPI {
         //     // });
     }
 
-    static async addService(service: IService) {
+     static async addService(service: IService) {
+        var formData = new FormData();
+
+        formData.append('files', service.files);
+
+        try {
+            const uploadFile = await $authHost.post<string>(
+                `/Service/${service.id}/post-photo`,
+                formData,
+            );
+            service.img = uploadFile.data;
+        } catch(e) {
+            service.img = null;
+        }
+
+
+
         console.log('new service', service);
         const response = await $authHost.post<IService[]>(`/Service`, service);
         console.log('response new service', response);
         return response.data;
     }
 
-    static async addServiceMasters(
-        serviceId: number,
-        serviceMasters: IServiceMaster[],
-    ) {
-        const response = await $authHost.post(
-            `/service/${serviceId}/update-masters`,
-            serviceMasters,
+        static async deleteCompanyService(id: number): Promise<IService> {
+                const response = await $authHost.delete<IService>(
+                    `/Service/${id}`, 
+                );
+            // console.log('services', response.data);
+                return response.data;
+        }
+        
+        static async updateCompanyServices(id: number, item: IService): Promise<IService> {
+            var formData = new FormData();
+
+            formData.append('files', item.files);
+
+            try {
+                const uploadFile = await $authHost.post<string>(
+                    `/Service/${id}/post-photo`,
+                    formData,
+                );
+                item.img = uploadFile.data;
+            } catch(e) {
+                item.img = null;
+            }
+
+
+
+                const response = await $authHost.put<IService>(
+                    `/Service/${id}`, item,
+                );
+               // console.log('masters', response.data);
+                return response.data;
+        }
+       
+
+    static async  getServiceById(serviceId: number): Promise<IService> {
+        const response = await $authHost.get<IService>(
+            `/Service/${serviceId}`,
         );
         return response.data;
     }

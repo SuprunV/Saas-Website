@@ -96,13 +96,21 @@ export class UserAPI {
         // console.log('user', response.data);
         return response.data;
     }
-  
 
     static async updateUser(userId: number, user: IUser): Promise<IUser> {
-        const response = await $authHost.put<IUser>(`/user/${userId}`, {
-            ...user,
-            doB: user.doB.toDate().toISOString(),
-        });
+        var formData = new FormData();
+
+        formData.append('files', user.files);
+        try {
+            const uploadFile = await $authHost.post<string>(
+                `/user/${userId}/post-photo`,
+                formData,
+            );
+            user.img = uploadFile.data;
+        } catch(e) {
+            user.img = null;
+        }
+        const response = await $authHost.put<IUser>(`/user/${userId}`, user);
         return response.data;
     }
 

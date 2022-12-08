@@ -13,12 +13,39 @@ namespace server.Controllers
     public class ServiceController : ControllerBase
     {
         private readonly DataContext _context;
+        public static IWebHostEnvironment _environment;
 
-        public ServiceController(DataContext context)
+        public ServiceController(DataContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
+        public class FileUploadAPI : Service{
+        public List<IFormFile>? files {get;set;}
+       
+        }
+        private string PostFile(int? serviceId, [FromForm]IFormFile objFile){
+            string Filepath = string.Empty;
+            try {
+                    if (!System.IO.Directory.Exists(_environment.WebRootPath +"\\Uploads\\ServiceImages\\"))
+                    {
+                        System.IO.Directory.CreateDirectory(_environment.WebRootPath +"\\Uploads\\ServiceImages\\");
+                    }
+              
+                 Filepath = _environment.WebRootPath +"\\Uploads\\ServiceImages\\" + objFile.FileName;
 
+                using (FileStream stream = System.IO.File.Create(Filepath))
+                {
+                    objFile.CopyTo(stream);
+                    stream.Flush();
+                    var req = Request;
+                    return "/Uploads/ServiceImages/" + objFile.FileName;
+                }
+            
+        }
+        catch (Exception ex) {}
+            return "/Uploads/Noimage.png";
+        }
         [HttpGet("{serviceId}")]
         public ActionResult<Service> GetService(int serviceId)
         {
@@ -28,7 +55,7 @@ namespace server.Controllers
             {
                 return NotFound("No service with this id");
             }
-
+            service.img = "https://" + Request.Host + service.img;
             return Ok(service);
         }
 
@@ -101,9 +128,18 @@ namespace server.Controllers
             _context.SaveChanges();
             return Ok(service);
         }
-
+       [Authorize]
+        [HttpPost("{id}/post-photo")]
+        public ActionResult<FileUploadAPI> uploadServicePhoto(int id, [FromForm] List<IFormFile> files) {
+            if(files.Count() > 0) {
+                var photoPath = PostFile(id, files.ElementAt(0));
+                return Ok(photoPath);
+            }
+            return BadRequest();
+        }
+        [Authorize]
         [HttpPut("{id}")]
-        public IActionResult UpdateService(int id, Service service)
+        public ActionResult<FileUploadAPI> UpdateService(int id, [FromBody] Service service)
         {
             if (id != service.Id)
             {
@@ -114,6 +150,12 @@ namespace server.Controllers
             {
                 return NotFound("Service does not exist");
             }
+            if(service.img == null){
+                 var oldService = _context.Services.Find(id);
+               service.img =  oldService.img;
+              _context.ChangeTracker.Clear();
+            }
+
 
             _context.Entry(service).State = EntityState.Modified;
             _context.SaveChanges();

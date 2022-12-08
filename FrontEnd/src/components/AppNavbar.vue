@@ -8,10 +8,12 @@ import { useCompanyStore } from '@/store/useCompany';
 import { storeToRefs } from 'pinia';
 import { AppRoutes } from '@/router/router';
 import { UserAPI } from '@/api/UserAPI';
+import { RolesEnum } from '@/models/IUser';
 
 export default defineComponent({
     data: () => ({
         AppRoutes,
+        RolesEnum
     }),
     props: {
         collapsed: {
@@ -106,8 +108,12 @@ export default defineComponent({
             <a-col :span="6">
                 <a-row type="flex" justify="end" v-if="isAuth && authUser">
                     <a-col>
-                        <a-button type="text">
-                            <a-avatar src="https://joeschmoe.io/api/v1/random">
+                        <a-button type="text" v-if="authUser.role != RolesEnum.COMPANY">
+                            <a-avatar :src="authUser.img" >
+                            </a-avatar>
+                        </a-button>
+                        <a-button type="text" v-if="authUser.role == RolesEnum.COMPANY">
+                            <a-avatar :src="authUser.img" >
                             </a-avatar>
                         </a-button>
                     </a-col>

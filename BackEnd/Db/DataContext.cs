@@ -62,7 +62,7 @@ namespace server.Db
                     companyName = "BeautySalon",
                     companyAlias = "myfircom",
                     address = "Maleva 6",
-                    img = "https://img.freepik.com/free-vector/company-concept-illustration_114360-2581.jpg?w=2000",
+                    img = "/Uploads/Noimage.png",
                 
             
                 },
@@ -71,7 +71,7 @@ namespace server.Db
                     Id = 2,
                     companyName = "MassageSalon",
                     address = "Kadaka 45",
-                    img = "https://img.freepik.com/free-vector/company-concept-illustration_114360-2581.jpg?w=2000",
+                    img = "/Uploads/Noimage.png",
                  
                 }
             );
@@ -83,7 +83,7 @@ namespace server.Db
                     price = 35,
                     duration = 120,
                     description = "Manicure with massage without nail polish or with base polish",
-                    img = "https://img.freepik.com/free-photo/manicurist-master-makes-manicure-woman-s-hands-spa-treatment-concept_186202-7769.jpg?w=2000",
+                    img = "/Uploads/Noimage.png",
                     companyId = 1
                 },
                 new Service
@@ -93,7 +93,7 @@ namespace server.Db
                     price = 45,
                     duration = 60,
                     description = "Pedicure with massage without nail polish or with base polish",
-                    img = "https://img.freepik.com/premium-photo/pedicure-moisturizing-cram-after-foot-rasp_79295-4791.jpg?w=2000",
+                    img = "/Uploads/Noimage.png",
                     companyId = 1
                 },
                 new Service
@@ -103,7 +103,7 @@ namespace server.Db
                     price = 35,
                     duration = 110,
                     description = "Lashes extension - 2D, 3D",
-                    img = "https://publish.purewow.net/wp-content/uploads/sites/2/2022/02/types-of-eyelash-extensions.jpg?fit=728%2C524",
+                    img = "/Uploads/Noimage.png",
                     companyId = 1
                 },
                 new Service
@@ -113,7 +113,7 @@ namespace server.Db
                     price = 15,
                     duration = 20,
                     description = "Hand massage",
-                    img = "https://opt.toiimg.com/recuperator/img/toi/m-75196048/75196048.jpg&width=500&resizemode=4",
+                    img = "/Uploads/Noimage.png",
                     companyId = 2
                 },
                 new Service
@@ -123,7 +123,7 @@ namespace server.Db
                     price = 50,
                     duration = 60,
                     description = "Body massage",
-                    img = "http://www.alexanderworks.org.uk/wp-content/uploads/2020/06/Body-Massage-at-Home.jpg",
+                    img = "/Uploads/Noimage.png",
                     companyId = 2
                 }
             );
@@ -161,9 +161,9 @@ namespace server.Db
                     surname = "Koring",
                     password =  "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.MASTER,
+                    img = "/Uploads/Noimage.png",
                     gender = Gender.Female,
                     DoB = "1999-10-27T12:15:00.942Z",
-                    img = "",
                     companyId = 1
            
                 },
@@ -176,8 +176,8 @@ namespace server.Db
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.MASTER,
                     DoB = "1975-10-27T12:15:00.942Z",
-                    img = "",
                     companyId = 1,
+                    img = "/Uploads/Noimage.png",
                     gender = Gender.Male,
            
                 },
@@ -190,7 +190,7 @@ namespace server.Db
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.CLIENT,
                     DoB = "1999-10-27T12:15:00.942Z",
-                    img = "",
+                    img = "/Uploads/UserProfileImages/photo_2022-02-18_08-30-03.jpg",
                     companyId = 1,
                     gender = Gender.Male,
                 },
@@ -203,8 +203,8 @@ namespace server.Db
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.CLIENT,
                     DoB = "2005-10-27T12:15:00.942Z",
-                    img = "",
                     companyId = 2,
+                    img = "/Uploads/Noimage.png",
                     gender = Gender.Female,
                 },
                 new User
@@ -215,7 +215,7 @@ namespace server.Db
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.ADMIN,
                     DoB = "1960-10-27T12:15:00.942Z",
-                    img = "",
+                    img = "/Uploads/Noimage.png",
                     companyId = 1,
                   
                 },
@@ -226,8 +226,8 @@ namespace server.Db
                     name = "MassageSalonAdmin",
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.ADMIN,
+                    img = "/Uploads/Noimage.png",
                     DoB = "1989-10-27T12:15:00.942Z",
-                    img = "",
                     companyId = 2
                 }
                 

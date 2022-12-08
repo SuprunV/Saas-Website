@@ -12,20 +12,53 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using BackEnd.DTO;
 
-namespace server.Controllers {
- 
+namespace server.Controllers
+{
+
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase {
+    public partial class UserController : ControllerBase {
 
         private readonly DataContext _context;
         private IConfiguration _config;
+        public static IWebHostEnvironment _environment;
 
-        public UserController(IConfiguration config, DataContext context) {
+        public UserController(IConfiguration config, DataContext context, IWebHostEnvironment environment) {
             _context = context;
             _config = config;
+            _environment = environment;
         }
-        
+        public class FileUploadAPI : User{
+             public List<IFormFile>? files {get;set;}
+       
+        }
+        private string PostFile(int? userId, [FromForm]IFormFile objFile){
+            string Filepath = string.Empty;
+            try {
+                    if (!System.IO.Directory.Exists(_environment.WebRootPath +"\\Uploads\\UserProfileImages\\"))
+                    {
+                        System.IO.Directory.CreateDirectory(_environment.WebRootPath +"\\Uploads\\UserProfileImages\\");
+                    }
+              
+                 Filepath = _environment.WebRootPath +"\\Uploads\\UserProfileImages\\" + objFile.FileName;
+                
+            
+
+
+                using (FileStream stream = System.IO.File.Create(Filepath))
+                {
+                    objFile.CopyTo(stream);
+                    stream.Flush();
+                    var req = Request;
+                    return "/Uploads/UserProfileImages/" + objFile.FileName;
+                }
+            
+        }
+        catch (Exception ex) {}
+            return "/Uploads/Noimage.png";
+        }
+
+
         [HttpPost("login")]
         public IActionResult Login([FromBody] User login)
         {
@@ -40,7 +73,7 @@ namespace server.Controllers {
                 companyId = dbUser.companyId,
                 email = dbUser.login,
                 companyName = dbUser.Company.companyName,
-                img = dbUser.img,
+                img = "https://" + Request.Host + dbUser.img,
                 name = $"{dbUser.name} {dbUser.surname}",
                 role = dbUser.role 
             };
@@ -60,7 +93,8 @@ namespace server.Controllers {
                 login = user.login,
                 password = HashPassword(user.password),
                 companyId = user.companyId,
-                role = Role.CLIENT
+                role = Role.CLIENT,
+                img = "/Uploads/Noimage.png"
             };
 
             _context.Users!.Add(newUser);
@@ -73,7 +107,7 @@ namespace server.Controllers {
                 companyId = dbClient?.companyId,
                 email = dbClient?.login,
                 companyName = dbClient?.Company?.companyName,
-                img = dbClient?.img,
+                img = "https://" + Request.Host + dbClient.img,
                 name = $"Unknown",
                 role = dbClient?.role ?? Role.CLIENT 
             };
@@ -127,7 +161,7 @@ namespace server.Controllers {
             var companyData = new Company() {
                 Id = 0,
                 companyAlias = company.companyAlias,
-                companyName = company.companyName
+                companyName = company.companyName,
             };
             
             
@@ -138,6 +172,7 @@ namespace server.Controllers {
 
             var userData = new User() {
                 Id = 0,
+                img =  dbCompany.img,
                 login = company.username,
                 password = HashPassword(company.password),
                 companyId = dbCompany.Id,
@@ -152,7 +187,7 @@ namespace server.Controllers {
                 companyId = userData.companyId,
                 email = userData.login,
                 companyName = company.companyName,
-                img = userData.img,
+                img = "https://" + Request.Host + userData.img,
                 name = company.companyName,
                 role = userData.role 
             });
@@ -161,11 +196,13 @@ namespace server.Controllers {
         
      //   [Authorize]
         [HttpGet("{id}")]
-        public ActionResult<User> getUser(int id) {
+        public ActionResult<FileUploadAPI> getUser(int id) {
             var user = _context.Users?.Include(u => u.Company).FirstOrDefault(u => u.Id == id);
             
             if(user == null)  return BadRequest("This user is not exists");
-    
+
+
+            user.img = "https://" + Request.Host + user.img;
             return Ok(user);
         }
      //    [Authorize]
@@ -176,15 +213,31 @@ namespace server.Controllers {
 
             return Ok(users);
         }
-        // [Authorize]
+
+        [Authorize]
+        [HttpPost("{id}/post-photo")]
+        public ActionResult<FileUploadAPI> uploadUserPhoto(int id, [FromForm] List<IFormFile> files) {
+            if(files.Count() > 0) {
+                var photoPath = PostFile(id, files.ElementAt(0));
+                return Ok(photoPath);
+            }
+            return BadRequest();
+        }
+        [Authorize]
         [HttpPut("{id}")]
-        public ActionResult<User> updateUser(int id, [FromBody] User user) {
+        public ActionResult<FileUploadAPI> updateUser(int id, [FromBody] User user) {
             if (id != user.Id) {
                 return BadRequest();
             }
             if (!UserExists(user.Id, user.login)) {
                 return NotFound();
+        }
+            if(user.img == null){
+                 var oldUser = _context.Users.Find(id);
+               user.img =  oldUser.img;
+              _context.ChangeTracker.Clear();
             }
+      
 
             if(_context.Users.Any(u => u.login == user.login && u.companyId == user.companyId )) {
                 var login = _context.Users!.FirstOrDefault(u => u.login == user.login);
@@ -207,7 +260,8 @@ namespace server.Controllers {
 
             return CreatedAtAction(nameof(getUser), new { id = user.Id}, user);
         }
-       // [Authorize]
+
+        [Authorize]
         [HttpDelete("{id}")]
         public ActionResult<User> deleteUser(int id) {
             
