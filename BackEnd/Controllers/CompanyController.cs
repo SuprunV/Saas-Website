@@ -172,6 +172,10 @@ namespace server.Controllers
             if(!_context.Companies!.Any(c => c.companyAlias == companyAlias)) return BadRequest();
 
             var mastersInCompany = _context.Users!.Include(x => x.Company).Where(s => s.Company.companyAlias == companyAlias && s.role == Enums.Role.MASTER);
+            foreach (User master in mastersInCompany)
+            {
+                master.img = "https://" + Request.Host + master.img;
+            }
             
             return Ok(mastersInCompany);
         }

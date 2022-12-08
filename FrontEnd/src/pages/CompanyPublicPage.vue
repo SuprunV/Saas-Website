@@ -17,8 +17,8 @@ import {
     LikeOutlined
 } from '@ant-design/icons-vue';
 import { IMaster } from '@/models/IMaster';
-import { IUserToken, RolesEnum } from '@/models/IUser';
-import { number } from 'vue-types';
+import { IUser, RolesEnum } from '@/models/IUser';
+import { message } from 'ant-design-vue';
 
 export default defineComponent({
     components: { ShoppingOutlined, IdcardOutlined, TeamOutlined, ScheduleOutlined, LikeOutlined },
@@ -32,8 +32,8 @@ export default defineComponent({
         const doneAppointmentsCount = ref<number>();
         const limit = ref<number>(5);
         const page = ref<number>(1);
-        const masterData = ref<IUserToken[]>([]);
-        const masterList = ref<IUserToken[]>([]);
+        const masterData = ref<IUser[]>([]);
+        const masterList = ref<IUser[]>([]);
         const companyStore = useCompanyStore();
 
         const companyAlias = route.params['companyAlias'] as string;
@@ -47,11 +47,18 @@ export default defineComponent({
 
         const {
             fetchData: getCompanyMasters,
-            response: masters
+            response: companyMasters
         } = useFetching(async () => {
-            return await CompanyAPI.getCompanyMastersByAlias(companyAlias);
+            const masters = await CompanyAPI.getCompanyMastersByAlias(companyAlias);
+            masterList.value = masters;
+            return masters;
         });
         getCompanyMasters();
+
+        initLoading.value = false;
+        //masterData.value = masters;
+        
+        companyStore.setCompanyPage(companyAlias);
 
         const {
             fetchData: getInfo,
@@ -74,11 +81,6 @@ export default defineComponent({
             return countS;
         });
         getInfo();
-        
-        initLoading.value = false;
-        masterData.value = masters;
-        masterList.value = masters;
-        companyStore.setCompanyPage(companyAlias);
         
         // const onLoadMore = async () => {
         //     page.value++;
@@ -244,11 +246,10 @@ export default defineComponent({
                 </a-col>
             </a-row>
             <h2 class="text-center mt-3 mb-3">Our masters</h2>
-            <!-- <a-list
-            :loading="initLoading"
-            item-layout="horizontal"
-            :data-source="masterList" -->
-        >
+            <a-list
+                item-layout="horizontal"
+                :data-source="masterList"
+            >   
             <!-- <template #loadMore>
                 <div
                     v-if="!initLoading && !loading"
@@ -263,29 +264,26 @@ export default defineComponent({
                         >load more</a-button
                     >
                 </div>
-            </template> -->
-            <!-- <template #renderItem="{ item }">
+            </template>  -->
+            <template #renderItem="{ item }">
                 <a-list-item class="antList">
-                    <a-skeleton
+                    <!-- <a-skeleton
                         avatar
                         :title="false"
-                        :loading="!!item.loading"
                         active
-                    >
-                        <a-list-item-meta 
-                            description="Master services: manicure, pedicure, lashes extension" 
-                        >
+                    > -->
+                        <a-list-item-meta >
                             <template #title>
-                                <a>{{ item.name }}</a>
+                                <a>{{ item.name }} {{ item.surname }}</a>
                             </template>
                             <template #avatar>
                                 <a-avatar :src="item.img" />
                             </template>
                         </a-list-item-meta>
-                    </a-skeleton>
+                    <!-- </a-skeleton> -->
                 </a-list-item>
-            </template> -->
-        <!-- </a-list> -->
+            </template> 
+        </a-list>
         </div>
     </div>
 </template>
