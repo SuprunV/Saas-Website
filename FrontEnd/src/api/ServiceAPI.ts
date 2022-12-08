@@ -60,13 +60,7 @@ export class ServiceAPI {
         return response.data;
     }
 
-        static async deleteCompanyService(id: number): Promise<IService> {
-                const response = await $authHost.delete<IService>(
-                    `/Service/${id}`, 
-                );
-            // console.log('services', response.data);
-                return response.data;
-        }
+
         
         static async updateCompanyServices(id: number, item: IService): Promise<IService> {
             var formData = new FormData();
@@ -104,6 +98,15 @@ export class ServiceAPI {
         const response = await $authHost.get(`/service/${serviceId}/masters`);
         return response.data;
     }
+  
+    static async addServiceMasters(
+        serviceId: number,
+        serviceMasters: IServiceMaster[],
+    ) {
+        const response = await $authHost.post(
+            `/service/${serviceId}/update-masters`,
+            serviceMasters,)
+        }
 
     static async deleteCompanyService(id: number): Promise<IService> {
         const response = await $authHost.delete<IService>(`/Service/${id}`);
@@ -111,20 +114,6 @@ export class ServiceAPI {
         return response.data;
     }
 
-    static async updateCompanyServices(
-        id: number,
-        item: IService,
-    ): Promise<IService> {
-        const response = await $authHost.put<IService>(`/Service/${id}`, item);
-        // console.log('masters', response.data);
-        return response.data;
-    }
-
-    static async getServiceById(serviceId: number): Promise<IService> {
-        const response = await $authHost.get<IService>(`/Service/${serviceId}`);
-        console.log('masters', response.data);
-        return response.data;
-    }
 
     static getServiceByName(name: string): Promise<IService> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
