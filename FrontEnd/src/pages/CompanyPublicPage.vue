@@ -227,6 +227,7 @@ export default defineComponent({
                 <a-list-item class="antList">
                     <a-card
                         v-appearAnimation="{ timeout: 250 }"
+                        class="masterCard"
                         align="center"
                         :bordered="false"
                         justify="center"
