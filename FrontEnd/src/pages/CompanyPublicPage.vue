@@ -221,7 +221,6 @@ export default defineComponent({
             <h2 class="text-center mt-3 mb-3">Our masters</h2>
             <a-list
                 :grid="{ gutter: 70, column: 6 }"
-                :bordered="false"
                 :data-source="masterList"
             >   
             <template #renderItem="{ item }">
@@ -229,6 +228,7 @@ export default defineComponent({
                     <a-card
                         v-appearAnimation="{ timeout: 250 }"
                         align="center"
+                        :bordered="false"
                         justify="center"
                     >
                         <img class="masterImage" :src="item.img" />
