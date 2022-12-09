@@ -207,7 +207,19 @@ namespace server.Controllers
             user.img = "https://" + Request.Host + user.img;
             return Ok(user);
         }
-     //    [Authorize]
+
+        [HttpGet("publicClients/count")]
+        public ActionResult<User> getPublicClientsCount() {
+            var clients = _context.Users!.Where(u => u.role == Role.CLIENT).ToList();
+            return Ok(clients.Count);
+        }
+        [HttpGet("publicMasters/count")]
+        public ActionResult<User> getPublicMastersCount() {
+            var masters = _context.Users!.Where(u => u.role == Role.MASTER).ToList();
+            return Ok(masters.Count);
+        }
+
+         [Authorize]
         // !!!! This EndPoint must be in CompanyController
         [HttpGet("company/{companyId}/{role}")]
         public ActionResult<User> getCompanyUsersByRole(int companyId, Role role) {

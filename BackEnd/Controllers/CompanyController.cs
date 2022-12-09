@@ -53,6 +53,14 @@ namespace server.Controllers
             company.img = "https://" + Request.Host + company.img;
             return Ok(company);
         }
+        [HttpGet]
+        public ActionResult<Company> GetPublicCompanies()
+        {
+            var companies = _context.Companies!;
+
+            return Ok(companies);
+        }
+
         [HttpGet("count")]
         public ActionResult<int> GetCompaniesCount()
         {
