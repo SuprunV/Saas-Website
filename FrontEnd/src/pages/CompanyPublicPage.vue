@@ -82,38 +82,11 @@ export default defineComponent({
         });
         getInfo();
         
-        // const onLoadMore = async () => {
-        //     page.value++;
-        //     loading.value = true;
-        //     masterList.value = masterData.value.concat(
-        //         [...new Array(limit.value)].map(() => ({
-        //             loading: true,
-        //             img: '',
-        //             name: '',
-        //             alias: '',
-        //         })) as any,
-        //     );
-        //     const newMasters = await UserAPI.getPublicUsers(
-        //         limit.value,
-        //         page.value,
-        //         RolesEnum.MASTER
-        //     );
-        //     const newData = masterData.value.concat(newMasters);
-
-        //     loading.value = false;
-        //     masterData.value = newData;
-        //     masterList.value = newData;
-        //     nextTick(() => {
-        //         window.dispatchEvent(new Event('resize'));
-        //     });
-        // };
-
         return { 
             removeCompanyPage: companyStore.removeCompanyPage,
             loading,
             initLoading,
             masterList,
-            //onLoadMore,
             selectedCompany,
             getCompanyInfo,
             getInfo,
@@ -152,7 +125,7 @@ export default defineComponent({
                     </a-statistic>
                 </a-col>
             </a-row>
-            <a-row :gutter="16" type="flex" justify="space-between">
+            <a-row :gutter="30" type="flex" justify="space-between">
                 <a-col :span="6">
                     <a-card
                         v-appearAnimation="{ timeout: 250 }"
@@ -247,40 +220,28 @@ export default defineComponent({
             </a-row>
             <h2 class="text-center mt-3 mb-3">Our masters</h2>
             <a-list
-                item-layout="horizontal"
+                :grid="{ gutter: 70, column: 6 }"
+                :bordered="false"
                 :data-source="masterList"
             >   
-            <!-- <template #loadMore>
-                <div
-                    v-if="!initLoading && !loading"
-                    :style="{
-                        textAlign: 'center',
-                        marginTop: '12px',
-                        height: '32px',
-                        lineHeight: '32px',
-                    }"
-                >
-                    <a-button type="secondary" @click="onLoadMore"
-                        >load more</a-button
-                    >
-                </div>
-            </template>  -->
             <template #renderItem="{ item }">
                 <a-list-item class="antList">
-                    <!-- <a-skeleton
-                        avatar
-                        :title="false"
-                        active
-                    > -->
-                        <a-list-item-meta >
+                    <a-card
+                        v-appearAnimation="{ timeout: 250 }"
+                        align="center"
+                        justify="center"
+                    >
+                        <img class="masterImage" :src="item.img" />
+                        <h5 class="text-center mt-3">{{ item.name }} {{ item.surname }}</h5>
+                    </a-card>
+                        <!-- <a-list-item-meta >
                             <template #title>
                                 <a>{{ item.name }} {{ item.surname }}</a>
                             </template>
                             <template #avatar>
                                 <a-avatar :src="item.img" />
                             </template>
-                        </a-list-item-meta>
-                    <!-- </a-skeleton> -->
+                        </a-list-item-meta> -->
                 </a-list-item>
             </template> 
         </a-list>
