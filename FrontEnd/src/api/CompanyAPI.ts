@@ -44,7 +44,7 @@ export class CompanyAPI {
     ): Promise<ICompany[]> {
         try {
             const response = await $host.get<ICompany[]>(
-                `/company?limit=${limit}`,
+                `/company`,
             );
             return response.data;
         } catch (e) {
