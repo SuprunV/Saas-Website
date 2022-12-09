@@ -80,7 +80,7 @@ namespace server.Controllers
          return Ok(masterEvents);
         }
 
-        [HttpGet("alias-{companyAlias}/companyDoneAppointments")]
+        [HttpGet("alias-{companyAlias}/companyDoneAppointmentsCount")]
         public ActionResult<IEnumerable<Appointment>    > GetCompanyDoneAppointmentsCount(string companyAlias){
          var  masters = _context.Users!.Include(x => x.Company).Where(m => m.Company.companyAlias == companyAlias && m.role == Enums.Role.MASTER).Select(x => x.Id).ToList();
       

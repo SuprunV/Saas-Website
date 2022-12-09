@@ -153,9 +153,20 @@ export class CompanyAPI {
     static async getCompanyDoneAppointmentsCount(companyAlias: string): Promise<number> {
         try {
             const response = await $host.get<number>(
-                `/appointment/alias-${companyAlias}/companyDoneAppointments`,
+                `/appointment/alias-${companyAlias}/companyDoneAppointmentsCount`,
             );
             console.log('companyDoneAppointments', response.data);
+            return response.data;
+        } catch (e) {
+            return -1;
+        }
+    }
+    static async getCompanyIncome(companyAlias: string): Promise<number> {
+        try {
+            const response = await $host.get<number>(
+                `/company/alias-${companyAlias}/companyIncome`,
+            );
+            console.log('companyIncome', response.data);
             return response.data;
         } catch (e) {
             return -1;

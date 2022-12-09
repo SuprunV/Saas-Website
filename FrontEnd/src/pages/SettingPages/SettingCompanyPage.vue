@@ -7,6 +7,8 @@ import CompanySettingForm from '@/components/CompanySettingForm.vue';
 import { useFetching } from '@/hooks/useFetching';
 import { CompanyAPI } from '@/api/CompanyAPI';
 import { useAuthStore } from '@/store/useAuth';
+import { useRoute, useRouter } from 'vue-router';
+import { ICompany } from '@/models/ICompany';
 
 export default defineComponent({
     setup: () => {
@@ -17,17 +19,36 @@ export default defineComponent({
         const isChangeModal = ref<boolean>(false);
         const auth = useAuthStore();
         const {authUser} = storeToRefs(auth);
+        const route = useRoute();
+        const servicesCount = ref<number>();
+        const mastersCount = ref<number>();
+        const selectedCompany = ref<ICompany>();
+        const companyIncome = ref<number>()
+
+        const companyAlias = route.params['companyAlias'] as string;
 
 
         const {
-            fetchData: getCompanyInfo,
-            response: selectedCompany,
+            fetchData: getInfo,
+            response: companyInfo,
             isLoading,
             message,
         } = useFetching(async () => {
-            return await CompanyAPI.getCompany(authUser.value.companyId);
+            const company = await CompanyAPI.getCompany(authUser.value.companyId);
+            selectedCompany.value = company;
+
+            const countS = await CompanyAPI.getCompanyServicesCount(companyAlias);
+            servicesCount.value = countS;
+
+            const countM = await CompanyAPI.getCompanyMastersCount(companyAlias);
+            mastersCount.value = countM;
+
+            const income = await CompanyAPI.getCompanyIncome(companyAlias);
+            companyIncome.value = income;
+            
+            return company;
         });
-        getCompanyInfo();
+        getInfo();
 
         const validateMessages = {
             required: '${label} is required!',
@@ -41,11 +62,14 @@ export default defineComponent({
             changeRef,
             isChangeModal,
             layout,
-            getCompanyInfo,
+            getInfo,
             validateMessages,
             selectedCompany,
             isLoading,
             message,
+            mastersCount,
+            servicesCount,
+            companyIncome
         };
     },
     methods: {
@@ -53,7 +77,7 @@ export default defineComponent({
             this.isChangeModal = true;
         },
         updateFinalAction() {
-            this.getCompanyInfo();
+            this.getInfo();
         }
     },
     components: {
@@ -66,6 +90,7 @@ export default defineComponent({
 <template>
     <div>
         <response-alert :message="message" :isLoading="isLoading" />
+        <div v-if="(!isLoading)">
         <h1 class="text-center">Settings for Company</h1>
         <a-space size="middle">
             <a-space direction="vertical" size="middle">
@@ -94,12 +119,12 @@ export default defineComponent({
                 <a-row>
                     <a-col :span="5">
                         <div class="settingPageStatistic">
-                              <a-statistic title="Masters" :value="100" />
+                              <a-statistic title="Masters" :value="mastersCount" />
                         </div>
                     </a-col>
                     <a-col :span="5">
                         <div class="settingPageStatistic">
-                        <a-statistic title="Services" :value="70" />
+                        <a-statistic title="Services" :value="servicesCount" />
                         </div>
                     </a-col>
                 </a-row>
@@ -109,7 +134,7 @@ export default defineComponent({
                         <a-statistic
                             title="Income (EUR)"
                             :precision="2"
-                            :value="200000"
+                            :value="companyIncome"
                         />
                         </div>
                     </a-col>
@@ -135,6 +160,7 @@ export default defineComponent({
         v-model:show="isChangeModal" 
         @final="updateFinalAction"
         :editCompany="selectedCompany"/>
+    </div>
     </div>
 </template>
 

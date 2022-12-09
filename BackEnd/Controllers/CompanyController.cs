@@ -216,6 +216,23 @@ namespace server.Controllers
             return Ok(services.Count);
         }
 
+        [HttpGet("alias-{companyAlias}/companyIncome")]
+        public ActionResult<decimal> GetCompanyDoneAppointmentsCount(string companyAlias){
+         var  masters = _context.Users!.Include(x => x.Company).Where(m => m.Company.companyAlias == companyAlias && m.role == Enums.Role.MASTER).Select(x => x.Id).ToList();
+      
+          var appointments = _context.Appointments!.Include(x => x.Service).Where(x => masters.Contains(x.masterId));  
+          decimal companyIncome = 0;
+        foreach(var a in appointments) 
+        {
+            if(DateTime.Parse(a.date) < DateTime.Now) {
+                var price = a.Service?.price ?? 0;
+                companyIncome = companyIncome + price;
+            }
+        }
+
+         return Ok(companyIncome);
+        }
+
         [HttpPost]
         public ActionResult<Company> CreateCompany([FromBody] Company company) {
             var dbCompany = _context.Companies!.Find(company.Id);
