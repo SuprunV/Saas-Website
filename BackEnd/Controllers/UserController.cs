@@ -130,6 +130,18 @@ namespace server.Controllers {
     
             return Ok(user);
         }
+
+        [HttpGet("publicClients/count")]
+        public ActionResult<User> getPublicClientsCount() {
+            var clients = _context.Users!.Where(u => u.role == Role.CLIENT).ToList();
+            return Ok(clients.Count);
+        }
+        [HttpGet("publicMasters/count")]
+        public ActionResult<User> getPublicMastersCount() {
+            var masters = _context.Users!.Where(u => u.role == Role.MASTER).ToList();
+            return Ok(masters.Count);
+        }
+
          [Authorize]
         // !!!! This EndPoint must be in CompanyController
         [HttpGet("company/{companyId}/{role}")]

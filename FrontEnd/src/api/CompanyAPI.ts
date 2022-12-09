@@ -38,25 +38,28 @@ export class CompanyAPI {
         },
     ];
 
-    static getPublicCompanies(
+    static async getPublicCompanies(
         limit: number,
-        page: number,
+        page: number
     ): Promise<ICompany[]> {
-        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-            // create fake companies
-            // limit is 5. page is 1. neede to get 1,2,3,4,5
-            // limit is 5. page is 2. neede to get 6,7,8,9,10
-            const count = limit * page;
-            let companies: ICompany[] = [];
-            for (let i = (page - 1) * limit + 1; i <= count; i++) {
-                var demoCompany = this.demoCompanies[i % 3];
-                companies.push({ ...demoCompany, id: i });
-            }
-            return companies;
-        });
+        try {
+            const response = await $host.get<ICompany[]>(
+                `/company?limit=${limit}`,
+            );
+            return response.data;
+        } catch (e) {
+            return [];
+        }
+  
     }
     static async getCompany(companyId: number): Promise<ICompany> {
         const response = await $authHost.get<ICompany>(`/company/${companyId}`);
+        console.log('company', response.data);
+        return response.data;
+    }
+
+    static async getCompaniesCount(): Promise<number> {
+        const response = await $host.get<number>(`/company/count`);
         console.log('company', response.data);
         return response.data;
     }
