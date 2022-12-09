@@ -50,6 +50,20 @@
                             v-model:value="formStateService.duration"
                         />
                     </a-form-item>
+                    <a-form-item label="Upload">
+                            <a-upload
+                                maxCount="1"
+                                list-type="picture"
+                                :before-upload="beforeUpload"
+                            >
+                                <a-button>
+                                    <template #icon
+                                        ><UploadOutlined
+                                    /></template>
+                                    Choose image
+                                </a-button>
+                            </a-upload>
+                        </a-form-item>
                 </div>
               
                 <div class="ant-modal-footer">
@@ -82,14 +96,12 @@ import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/store/useAuth';
 import { useFetching } from '@/hooks/useFetching';
 import { ResponseTypeEnum } from '@/types/FetchResponse';
-import { useCompanyStore } from '@/store/useCompany';
 
 
 export default defineComponent({
     props: {
         show: Boolean,
         changedServiceId: Object as PropType<number | undefined>,
-        newServiceId: Object as PropType<number | undefined>
     },
     setup(props) {
         const auth = useAuthStore();
@@ -136,6 +148,7 @@ export default defineComponent({
                 description: formStateService.value.description,
                 duration: formStateService.value.duration,
                 companyId: formStateService.value.companyId,
+                files: formStateService.value.files,
             };
             const isValid = 
                 newService.price > 0 &&
@@ -164,7 +177,8 @@ export default defineComponent({
                 description: '',
                 duration: 0,
                 id: 0,
-                companyId: authUser.value.companyId
+                companyId: authUser.value.companyId,
+                files: null,
         });
       
 
@@ -194,15 +208,13 @@ export default defineComponent({
             this.formStateService = serviceObject;
             }
         },
-        // async newServiceId(){
-        //     console.log('new data', this.newServiceId)
-        //     if(this.newServiceId != undefined){
-        //         const serviceObject = await ServiceAPI.addService(this.formStateService);
-        //         this.formStateService = serviceObject;
-        //     }
-        // }
+
     },
     methods: {
+        beforeUpload(file: any) {
+            this.formStateService.files = file;
+            return false;
+        },
         close() {
             this.$emit('update:show', false);
         },

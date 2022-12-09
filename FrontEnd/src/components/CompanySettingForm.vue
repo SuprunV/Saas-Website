@@ -26,6 +26,20 @@
                     >
                         <a-input v-model:value="formState.address" />
                     </a-form-item>
+                    <a-form-item label="Upload">
+                            <a-upload
+                                maxCount="1"
+                                list-type="picture"
+                                :before-upload="beforeUpload"
+                            >
+                                <a-button>
+                                    <template #icon
+                                        ><UploadOutlined
+                                    /></template>
+                                    Choose image
+                                </a-button>
+                            </a-upload>
+                        </a-form-item>
                 </div>
                 <div class="ant-modal-footer">
                     <button
@@ -79,6 +93,7 @@ export default defineComponent({
         };
 
         const formState = ref<ICompany>({
+            files: props.editCompany?.files,
             id: props.editCompany?.id ?? -1,
             img: props.editCompany?.img ?? "",
             companyName: props.editCompany?.companyName ?? "",
@@ -105,6 +120,10 @@ export default defineComponent({
         };
     },
     methods: {
+        beforeUpload(file: any) {
+            this.formState.files = file;
+            return false;
+        },
         close() {
             this.$emit('update:show', false);
         },
@@ -124,6 +143,7 @@ export default defineComponent({
         editCompany() {
             console.log("editCompany is updated");
             this.formState = reactive<ICompany>({
+                files: this.editCompany?.files,
                 id: this.editCompany?.id ?? -1,
                 img: this.editCompany?.img ?? "",
                 companyName: this.editCompany?.companyName ?? "",

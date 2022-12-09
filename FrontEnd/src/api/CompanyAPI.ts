@@ -1,11 +1,10 @@
 import { $authHost, $host } from '@/config';
 import { ICompany } from '@/models/ICompany';
 import { IMaster } from '@/models/IMaster';
-import { IUserToken } from '@/models/IUser';
+import { IUser, IUserToken } from '@/models/IUser';
 import axios from 'axios';
 
-const companyImgUrl =
-    'https://static8.depositphotos.com/1378583/1010/i/600/depositphotos_10108949-stock-photo-blue-flame-logo.jpg';
+const companyImgUrl= null;
 
 const companyImgUrl2 =
     'https://www.logodesign.net/logo/bar-graph-with-swooshes-arrow-168ld.png';
@@ -65,15 +64,27 @@ export class CompanyAPI {
     }
 
     static async updateCompany(companyId: number, company: ICompany): Promise<ICompany> {
+        var formData = new FormData();
+        formData.append('files', company.files);
+        try{
+            const uploadFile = await $authHost.post<string>(
+                `/company/${companyId}/post-photo`,
+                formData,);
+                company.img = uploadFile.data;
+        }
+        catch(e){
+            company.img = null;
+        }
+
         const response = await $authHost.put<ICompany>(`/company/${companyId}`, company);
         console.log('updated company', response.data);
         return response.data;
     }
 
 
-    static async getCompanyMasters(companyId: number): Promise<IUserToken[]> {
+    static async getCompanyMasters(companyId: number): Promise<IUser[]> {
         try {
-            const response = await $host.get<IUserToken[]>(
+            const response = await $host.get<IUser[]>(
                 `/Company/${companyId}/masters`,
             );
             console.log('masters', response.data);

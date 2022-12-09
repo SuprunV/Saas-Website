@@ -10,6 +10,9 @@ import { useFetching } from '@/hooks/useFetching';
 import UserSettingForm from '@/components/UserSettingForm.vue';
 import dayjs from 'dayjs';
 
+
+
+
 export default defineComponent({
     data: () => ({
         RolesEnum,
@@ -76,7 +79,21 @@ export default defineComponent({
     components: { LikeOutlined, UserSettingForm },
 });
 </script>
+<style>
+.avatar-uploader > .ant-upload {
+  width: 128px;
+  height: 128px;
+}
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
 
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
+}
+</style>
 <template>
     <div>
         <h1 class="text-center">Settings page</h1>
@@ -168,5 +185,4 @@ export default defineComponent({
         v-createModal="{ show: isChangeModal }"
     />
 </template>
-
 <style scoped></style>

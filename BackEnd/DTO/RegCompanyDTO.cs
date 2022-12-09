@@ -9,6 +9,7 @@ namespace BackEnd.DTO
     {
         public string companyName {get; set;}
         public string companyAlias {get; set;}
+         public string? img {get; set;}
         public string username {get; set;}
         public string password {get; set;}
     }

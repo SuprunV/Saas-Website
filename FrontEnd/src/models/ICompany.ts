@@ -1,9 +1,10 @@
 export interface ICompany {
     id: number;
-    img: string;
+    img?: any;
     companyName: string;
     companyAlias: string;
     address: string;
+    files?:any;
 }
 
 export interface IRegCompanyForm {
