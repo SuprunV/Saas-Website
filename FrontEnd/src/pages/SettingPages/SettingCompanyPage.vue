@@ -9,7 +9,10 @@ import { useFetching } from '@/hooks/useFetching';
 import { CompanyAPI } from '@/api/CompanyAPI';
 import { useAuthStore } from '@/store/useAuth';
 import { ICompany } from '@/models/ICompany';
-import { ITimetable } from '@/models/ITimetable';
+import { ITimetable, Weekday } from '@/models/ITimetable';
+import { makeEnum } from '@/services/makeEnum';
+import { TimetableAPI } from '@/api/TimetableAPI';
+import { Dayjs } from 'dayjs';
 
 export default defineComponent({
     setup: () => {
@@ -22,7 +25,8 @@ export default defineComponent({
         const auth = useAuthStore();
         const { authUser } = storeToRefs(auth);
         const selectedCompany = ref<ICompany>();
-        const timetable = ref<ITimetable[]>();
+        const timetable = ref<ITimetable[]>([]);
+        const workingTime = ref<string[]>([]);
         const {
             fetchData: getCompanyInfo,
             isLoading,
@@ -31,6 +35,17 @@ export default defineComponent({
             selectedCompany.value = await CompanyAPI.getCompany(
                 authUser.value.companyId,
             );
+            timetable.value = await TimetableAPI.getTimetableByCompanyId(
+                authUser.value.companyId,
+            );
+            if (timetable.value.length > 0) {
+                workingTime.value = [
+                    timetable.value[0].startTime,
+                    timetable.value[0].endTime,
+                ];
+            } else {
+                workingTime.value = [];
+            }
         });
         getCompanyInfo();
 
@@ -44,19 +59,27 @@ export default defineComponent({
         return {
             company,
             changeRef,
+            workingTime,
             isChangeModal,
             isChangeWeekdayModal,
             layout,
+            makeEnum,
             getCompanyInfo,
             validateMessages,
+            timetable,
             selectedCompany,
             isLoading,
+            Weekday,
             message,
         };
     },
     methods: {
         showChangeModal() {
             this.isChangeModal = true;
+        },
+        isSelected(weekday: Weekday): boolean {
+            var findedTime = this.timetable.find((t) => t.weekday == weekday);
+            return !!findedTime;
         },
         showChangeWeekdayModal() {
             console.log('asdasdsad');
@@ -111,33 +134,30 @@ export default defineComponent({
                                     <a-descriptions-item
                                         label="Working time"
                                         :span="3"
-                                        >10:00 -
-                                        18:00(demo)</a-descriptions-item
+                                    >
+                                        <div
+                                            class=""
+                                            v-if="workingTime.length == 2"
+                                        ></div>
+                                        {{ workingTime[0] }} -
+                                        {{
+                                            workingTime[1]
+                                        }}</a-descriptions-item
                                     >
                                     <a-descriptions-item
                                         label="Working days"
                                         :span="3"
                                     >
-                                        <div class="ant-avatar weekday-circle">
-                                            Mo
-                                        </div>
-                                        <div class="ant-avatar weekday-circle">
-                                            Tu
-                                        </div>
-                                        <div class="ant-avatar weekday-circle">
-                                            We
-                                        </div>
-                                        <div class="ant-avatar weekday-circle">
-                                            Th
-                                        </div>
-                                        <div class="ant-avatar weekday-circle">
-                                            Fi
-                                        </div>
-                                        <div class="ant-avatar weekday-circle">
-                                            Sa
-                                        </div>
-                                        <div class="ant-avatar weekday-circle">
-                                            Su
+                                        <div
+                                            v-for="weekday in makeEnum(Weekday)"
+                                            :key="weekday"
+                                            :class="`ant-avatar weekday-circle ${
+                                                isSelected(weekday)
+                                                    ? 'weekday-circle-active'
+                                                    : ''
+                                            }`"
+                                        >
+                                            {{ weekday }}
                                         </div>
                                     </a-descriptions-item>
                                     <a-row

@@ -13,13 +13,12 @@ export class TimetableAPI {
         return response.data;
     }
 
-    //Return to it
-    // static async getTimetableByCompanyId(
-    //     companyId: number,
-    // ): Promise<ITimetable[]> {
-    // const response = await $authHost.get<ITimetable[]>(
-    //     `/Service/${companyId}`,
-    // );
-    // return response.data;
-    // }
+    static async getTimetableByCompanyId(
+        companyId: number,
+    ): Promise<ITimetable[]> {
+        const response = await $authHost.get<ITimetable[]>(
+            `/company/${companyId}/timetables`,
+        );
+        return response.data;
+    }
 }

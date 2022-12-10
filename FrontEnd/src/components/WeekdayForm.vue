@@ -52,11 +52,12 @@ import { IUser } from '@/models/IUser';
 import { MinusCircleOutlined } from '@ant-design/icons-vue/lib/icons';
 import { ITimetable, Weekday } from '@/models/ITimetable';
 import { makeEnum } from '@/services/makeEnum';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { useFetching } from '@/hooks/useFetching';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/store/useAuth';
 import { TimetableAPI } from '@/api/TimetableAPI';
+import { addZero } from '@/services/addZero';
 
 export default defineComponent({
     props: {
@@ -83,8 +84,12 @@ export default defineComponent({
             message,
         } = useFetching(async () => {
             const companyId = authUser.value.companyId;
-            const startTime = `${selectedTimeRange.value[0].hour()}:${selectedTimeRange.value[0].minute()}`;
-            const endTime = `${selectedTimeRange.value[1].hour()}:${selectedTimeRange.value[1].minute()}`;
+            const startTime = `${addZero(
+                selectedTimeRange.value[0].hour(),
+            )}:${addZero(selectedTimeRange.value[0].minute())}`;
+            const endTime = `${addZero(
+                selectedTimeRange.value[1].hour(),
+            )}:${addZero(selectedTimeRange.value[1].minute())}`;
             timetables.value = timetables.value.map((t) => ({
                 ...t,
                 id: 0,
@@ -95,10 +100,30 @@ export default defineComponent({
             return await TimetableAPI.addTimetable(companyId, timetables.value);
         });
 
+        const { fetchData: getTimetable } = useFetching(async () => {
+            const companyId = authUser.value.companyId;
+            timetables.value = await TimetableAPI.getTimetableByCompanyId(
+                companyId,
+            );
+            if (timetables.value.length > 0) {
+                var startTime = timetables.value[0].startTime.split(':');
+                var endTime = timetables.value[0].endTime.split(':');
+
+                selectedTimeRange.value = [
+                    dayjs(new Date(0, 0, 0, +startTime[0], +startTime[1])),
+                    dayjs(new Date(0, 0, 0, +endTime[0], +endTime[1])),
+                ];
+            } else {
+                selectedTimeRange.value = [];
+            }
+        });
+        getTimetable();
+
         return {
             makeEnum,
             selectedTimeRange,
             timetables,
+            getTimetable,
             isLoading,
             message,
             updateTimetable,
@@ -106,9 +131,9 @@ export default defineComponent({
         };
     },
     watch: {
-        async serviceId() {
+        async show() {
             console.log('data changed', this.serviceId);
-            // this.fetchServiceMasters();
+            this.getTimetable();
         },
     },
     methods: {
@@ -160,32 +185,13 @@ export default defineComponent({
                     this.timetables.length == 0)
             ) {
                 await this.updateTimetable();
-                close();
+                setTimeout(async () => {
+                    //  await this.getServices();
+                    this.close();
+                    this.$emit('final');
+                }, 1500);
             }
-            // this.formStateService = this.formStateService.filter(
-            //     (item) => item.masterId,
-            // );
-            // this.formStateService = uniqByKeepFirst<IServiceMaster>(
-            //     this.formStateService,
-            //     (item) => item.masterId,
-            // );
-            // console.log('now', this.formStateService);
-            // await this.updateServiceMasters();
-            // if (
-            //     this.messageUpdatingServiceMasters.type ==
-            //     ResponseTypeEnum.SUCCESS
-            // ) {
-            //     setTimeout(async () => {
-            //         //  await this.getServices();
-            //         this.close();
-            //         this.$emit('finalAction');
-            //     }, 1500);
-            // }
         },
-    },
-    async mounted() {
-        // await this.fetchMasters();
-        // this.masters = this.fetchedMasters;
     },
 });
 </script>
