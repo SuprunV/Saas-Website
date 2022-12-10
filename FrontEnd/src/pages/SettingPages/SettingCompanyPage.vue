@@ -4,10 +4,12 @@ import { useCompanyStore } from '@/store/useCompany';
 import { storeToRefs } from 'pinia';
 import { LikeOutlined } from '@ant-design/icons-vue';
 import CompanySettingForm from '@/components/CompanySettingForm.vue';
+import WeekdayForm from '@/components/WeekdayForm.vue';
 import { useFetching } from '@/hooks/useFetching';
 import { CompanyAPI } from '@/api/CompanyAPI';
 import { useAuthStore } from '@/store/useAuth';
 import { ICompany } from '@/models/ICompany';
+import { ITimetable } from '@/models/ITimetable';
 
 export default defineComponent({
     setup: () => {
@@ -16,6 +18,7 @@ export default defineComponent({
 
         const changeRef = ref<any>(null);
         const isChangeModal = ref<boolean>(false);
+        const isChangeWeekdayModal = ref<boolean>(false);
         const auth = useAuthStore();
         const { authUser } = storeToRefs(auth);
         const selectedCompany = ref<ICompany>();
@@ -42,6 +45,7 @@ export default defineComponent({
             company,
             changeRef,
             isChangeModal,
+            isChangeWeekdayModal,
             layout,
             getCompanyInfo,
             validateMessages,
@@ -54,12 +58,17 @@ export default defineComponent({
         showChangeModal() {
             this.isChangeModal = true;
         },
+        showChangeWeekdayModal() {
+            console.log('asdasdsad');
+            this.isChangeWeekdayModal = true;
+        },
         updateFinalAction() {
             this.getCompanyInfo();
         },
     },
     components: {
         LikeOutlined,
+        WeekdayForm,
         CompanySettingForm,
     },
 });
@@ -131,6 +140,19 @@ export default defineComponent({
                                             Su
                                         </div>
                                     </a-descriptions-item>
+                                    <a-row
+                                        type="flex"
+                                        justify="end"
+                                        class="mt-4"
+                                    >
+                                        <a-button
+                                            size="large"
+                                            type="primary"
+                                            html-type="submit"
+                                            @click="showChangeWeekdayModal"
+                                            >Change TimeTable</a-button
+                                        >
+                                    </a-row>
                                 </a-descriptions>
                             </div>
                         </a-space>
@@ -175,6 +197,11 @@ export default defineComponent({
         </a-space>
         <CompanySettingForm
             v-model:show="isChangeModal"
+            @final="updateFinalAction"
+            :editCompany="selectedCompany"
+        />
+        <WeekdayForm
+            v-model:show="isChangeWeekdayModal"
             @final="updateFinalAction"
             :editCompany="selectedCompany"
         />

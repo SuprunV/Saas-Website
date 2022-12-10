@@ -45,5 +45,13 @@
 
 .weekday-circle {
     border: 100%;
+    width: 35px;
+    height: 35px;
     margin: 0 5px;
+    cursor: pointer;
+    &-active {
+        transform: scale(1.2);
+        background-color: $gold-color-light;
+        color: $black-color;
+    }
 }

@@ -1,4 +1,4 @@
-export interface IAppointment {
+export interface ITimetable {
     id: number;
     companyId: number;
     startTime: string;
