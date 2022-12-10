@@ -209,6 +209,27 @@ namespace server.Controllers
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetCompany), new { companyId = company.Id}, company);
         }
+         [Authorize]
+        [HttpPut("{companyId}/timetables")]
+        public ActionResult<FileUploadAPI> UpdateCompanyTimetables(int companyId, [FromBody] Timetable[] timetables)
+        {
+            if (timetables.Any(t => t.companyId != companyId)) {
+                return BadRequest("Incorrect timetables");
+            }
+            if (!CompanyExists(companyId)) {
+                return NotFound("Company doesn't exists");
+            }
+
+            var oldTimetables = _context.Timetables.Where(t => t.companyId == companyId);
+            _context.Timetables.RemoveRange(oldTimetables);
+            _context.SaveChanges();
+
+            _context.Timetables.AddRange(timetables);
+            _context.SaveChanges();
+
+            return Ok();
+        }
+        
         [Authorize]
         [HttpDelete("{companyId}")]
         public ActionResult<Company> DeleteCompany(int companyId)
