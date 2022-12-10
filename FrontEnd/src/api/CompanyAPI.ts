@@ -57,8 +57,8 @@ export class CompanyAPI {
         return response.data;
     }
 
-    static async getCompaniesCount(): Promise<number> {
-        const response = await $host.get<number>(`/company/count`);
+    static async getCompanyWithAlias(companyAlias: string): Promise<ICompany> {
+        const response = await $host.get<ICompany>(`/company/alias-${companyAlias}`);
         console.log('company', response.data);
         return response.data;
     }
@@ -81,6 +81,47 @@ export class CompanyAPI {
         return response.data;
     }
 
+    static async getCompanyServicesCount(companyAlias: string): Promise<number> {
+        try {
+            const response = await $host.get<number>(
+                `/company/alias-${companyAlias}/servicesCount`,
+            );
+            console.log('servicesCount', response.data);
+            return response.data;
+        } catch (e) {
+            return -1;
+        }
+    }
+
+    static async getCompanyMastersCount(companyAlias: string): Promise<number> {
+        try {
+            const response = await $host.get<number>(
+                `/company/alias-${companyAlias}/mastersCount`,
+            );
+            console.log('mastersCount', response.data);
+            return response.data;
+        } catch (e) {
+            return -1;
+        }
+    }
+
+    static async getCompanyClientsCount(companyAlias: string): Promise<number> {
+        try {
+            const response = await $host.get<number>(
+                `/company/alias-${companyAlias}/clientsCount`,
+            );
+            console.log('clientsCount', response.data);
+            return response.data;
+        } catch (e) {
+            return -1;
+        }
+    }
+
+    static async getCompanyMastersByAlias(companyAlias: string): Promise<IUser[]> {
+        const response = await $host.get<IUser[]>(`/company/alias-${companyAlias}/masters`);
+        console.log('company masters', response.data);
+        return response.data;
+    }
 
     static async getCompanyMasters(companyId: number): Promise<IUser[]> {
         try {
@@ -105,6 +146,30 @@ export class CompanyAPI {
         //     return companies;
         // });
     }
+
+    static async getCompanyDoneAppointmentsCount(companyAlias: string): Promise<number> {
+        try {
+            const response = await $host.get<number>(
+                `/appointment/alias-${companyAlias}/companyDoneAppointmentsCount`,
+            );
+            console.log('companyDoneAppointments', response.data);
+            return response.data;
+        } catch (e) {
+            return -1;
+        }
+    }
+    static async getCompanyIncome(companyAlias: string): Promise<number> {
+        try {
+            const response = await $host.get<number>(
+                `/company/alias-${companyAlias}/companyIncome`,
+            );
+            console.log('companyIncome', response.data);
+            return response.data;
+        } catch (e) {
+            return -1;
+        }
+    }
+
     static async deleteCompanyMasters(Id: number): Promise<IUserToken[]> {
         try {
             const response = await $authHost.delete<IUserToken[]>(
@@ -128,6 +193,8 @@ export class CompanyAPI {
             return [];
         }
     }
+
+
     static getCompanyById(id: number): Promise<ICompany> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
             const companyIndex = this.demoCompanies.findIndex(
