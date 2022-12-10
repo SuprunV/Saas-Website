@@ -3,10 +3,7 @@
         <div v-createModal="{ show: show, width: 30 }">
             <div class="main-cart" role="document">
                 <a-form ref="formRef" name="dynamic_form_nest_item">
-                    <!-- <response-alert
-                        :message="messageUpdatingServiceMasters"
-                        :isLoading="isLoadingUpdatingServiceMasters"
-                    /> -->
+                    <response-alert :message="message" :isLoading="isLoading" />
                     <a-form-item label="Working days:">
                         <div
                             v-for="weekday in makeEnum(Weekday)"
@@ -22,7 +19,11 @@
                         </div>
                     </a-form-item>
                     <a-form-item label="From-to working time:">
-                        <a-time-range-picker format="HH:mm" :minute-step="15" />
+                        <a-time-range-picker
+                            format="HH:mm"
+                            :minute-step="15"
+                            v-model:value="selectedTimeRange"
+                        />
                     </a-form-item>
                     <a-form-item>
                         <button
@@ -46,23 +47,16 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
-import { IServiceMasters, ServiceAPI } from '@/api/ServiceAPI';
-import { IService, IServiceMaster } from '@/models/IService';
 import { PropType } from 'vue-types/dist/types';
-import layout from 'ant-design-vue/lib/layout';
-import { storeToRefs } from 'pinia';
-import { useAuthStore } from '@/store/useAuth';
-import { useFetching } from '@/hooks/useFetching';
-import { ResponseTypeEnum } from '@/types/FetchResponse';
-import { useCompanyStore } from '@/store/useCompany';
-import { IMaster } from '@/models/IMaster';
 import { IUser } from '@/models/IUser';
-import { UserAPI } from '@/api/UserAPI';
-import { CompanyAPI } from '@/api/CompanyAPI';
 import { MinusCircleOutlined } from '@ant-design/icons-vue/lib/icons';
-import { uniqByKeepFirst } from '@/services/filterByKey';
 import { ITimetable, Weekday } from '@/models/ITimetable';
 import { makeEnum } from '@/services/makeEnum';
+import { Dayjs } from 'dayjs';
+import { useFetching } from '@/hooks/useFetching';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/store/useAuth';
+import { TimetableAPI } from '@/api/TimetableAPI';
 
 export default defineComponent({
     props: {
@@ -71,9 +65,7 @@ export default defineComponent({
     },
     components: { MinusCircleOutlined },
     setup(props) {
-        // const {authUser} = storeToRefs(useAuthStore());
-        const masters = ref<IUser[]>([]);
-
+        const { authUser } = storeToRefs(useAuthStore());
         const timetables = ref<ITimetable[]>([
             {
                 companyId: 0,
@@ -83,10 +75,33 @@ export default defineComponent({
                 weekday: Weekday.Sat,
             },
         ]);
+        const selectedTimeRange = ref<Dayjs[]>([]);
+
+        const {
+            fetchData: updateTimetable,
+            isLoading,
+            message,
+        } = useFetching(async () => {
+            const companyId = authUser.value.companyId;
+            const startTime = `${selectedTimeRange.value[0].hour()}:${selectedTimeRange.value[0].minute()}`;
+            const endTime = `${selectedTimeRange.value[1].hour()}:${selectedTimeRange.value[1].minute()}`;
+            timetables.value = timetables.value.map((t) => ({
+                ...t,
+                id: 0,
+                companyId,
+                endTime,
+                startTime,
+            }));
+            return await TimetableAPI.addTimetable(companyId, timetables.value);
+        });
+
         return {
             makeEnum,
-            masters,
+            selectedTimeRange,
             timetables,
+            isLoading,
+            message,
+            updateTimetable,
             Weekday,
         };
     },
@@ -137,7 +152,16 @@ export default defineComponent({
             }
         },
         async submitForm() {
+            console.log('selectedTimeRange', this.selectedTimeRange);
             console.log('was', this.timetables);
+            if (
+                this.selectedTimeRange.length == 2 ||
+                (this.selectedTimeRange.length == 0 &&
+                    this.timetables.length == 0)
+            ) {
+                await this.updateTimetable();
+                close();
+            }
             // this.formStateService = this.formStateService.filter(
             //     (item) => item.masterId,
             // );
