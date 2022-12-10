@@ -251,7 +251,7 @@ namespace server.Controllers
                user.img =  oldUser.img;
               _context.ChangeTracker.Clear();
             }
-            
+
             // if(_context.Users.Any(u => u.login == user.login && u.companyId == user.companyId )) {
             //     var login = _context.Users!.Where(u => u.login == user.login);
             //     if (login != null) {
@@ -266,11 +266,24 @@ namespace server.Controllers
             //  }
 
             user.password = HashPassword(user.password);
-           // var token = GenerateJSONWebToken(tokenData);
+
             _context.Entry(user).State = EntityState.Modified;
             _context.SaveChanges();
+            //     var dbMaster = _context.Users.Include(u => u.Company).First(c => c.login == user.login && c.companyId== user.companyId);
+            //     var userToken = new UserToken() {
+            //         id = dbMaster.Id,
+            //         companyAlias = dbMaster?.Company?.companyAlias ?? "",
+            //         companyId = dbMaster?.companyId,
+            //         email = dbMaster?.login,
+            //         companyName = dbMaster?.Company?.companyName,
+            //         img = "https://" + Request.Host + dbMaster?.img,
+            //         name = dbMaster.name,
+                    
+            //         role = dbMaster?.role ?? Role.MASTER 
+            //      };
 
-            return CreatedAtAction(nameof(getUser), new { id = user.Id}, user);
+            //  var token = GenerateJSONWebToken(userToken);
+            return CreatedAtAction(nameof(getUser), new { id = user.Id}, user );
         }
 
         [Authorize]

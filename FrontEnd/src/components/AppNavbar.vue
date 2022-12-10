@@ -121,11 +121,11 @@ export default defineComponent({
                         </a-button>
                     </a-col>
                     <a-col> 
-                        <a-button type="text"  danger @click=" logout" > Log Out
+                        <a-button type="text"  danger @click="logout" > Log Out
                             <!-- <router-link :to="`/${company.companyAlias}`">Log out</router-link>  -->
                         </a-button>
 
-                    <!-- <a-col v-if="logout != null">
+                    <!-- <a-col v-if="logout() != null">
                         <router-link :to="`/${company.companyAlias}`"></router-link> 
                     </a-col> -->
                        
