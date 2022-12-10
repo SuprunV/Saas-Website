@@ -169,6 +169,12 @@ export class CompanyAPI {
             return -1;
         }
     }
+    static async getCompaniesCount(): Promise<number> {
+        const response = await $host.get<number>(`/company/count`);
+        console.log('company', response.data);
+        return response.data;
+    }
+
 
     static async deleteCompanyMasters(Id: number): Promise<IUserToken[]> {
         try {
