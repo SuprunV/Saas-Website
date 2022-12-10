@@ -280,10 +280,27 @@ namespace server.Controllers
             var endMin = Int16.Parse(end[1]);
             var timetable = new List<DateTime>();
             var date = DateTime.Parse(dateDays);
+            var step = 30;
             for(var h = startHour; h <= endHour; h++) {
                 for(var m = 0; m < 2; m++) {
-                    var time = new DateTime(date.Year, date.Month, date.Day, h, m*30,0);
-                    timetable.Add(TimeZoneInfo.ConvertTimeToUtc(time));
+                    int? minute = null;
+                    
+                    if(h == startHour) {
+                        if(m * step >= startMin) {
+                            minute = m * step;
+                        }
+                    } else if(h == endHour) {
+                        if(m * step <= endMin) {
+                            minute = m * step;
+                        }
+                    } else {
+                        minute = m * step;
+                    }
+                    if(minute != null) {
+                        var time = new DateTime(date.Year, date.Month, date.Day, h, (int)minute,0);
+                        timetable.Add(TimeZoneInfo.ConvertTimeToUtc(time));
+                    }
+
                 }
             }
 

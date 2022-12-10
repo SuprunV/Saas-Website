@@ -21,7 +21,7 @@
                     <a-form-item label="From-to working time:">
                         <a-time-range-picker
                             format="HH:mm"
-                            :minute-step="15"
+                            :minute-step="30"
                             v-model:value="selectedTimeRange"
                         />
                     </a-form-item>
