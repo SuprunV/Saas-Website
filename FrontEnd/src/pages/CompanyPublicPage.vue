@@ -197,7 +197,8 @@ export default defineComponent({
             item-layout="horizontal"
             :data-source="masterList"
         >
-            <template #loadMore>
+        <!-- Load more button -->
+            <!-- <template #loadMore>
                 <div
                     v-if="!initLoading && !loading"
                     :style="{
@@ -211,7 +212,7 @@ export default defineComponent({
                         >load more</a-button
                     >
                 </div>
-            </template>
+            </template> -->
             <template #renderItem="{ item }">
                 <a-list-item class="antList">
                     <a-skeleton

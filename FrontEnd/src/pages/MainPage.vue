@@ -14,13 +14,9 @@ import { UserAPI } from '@/api/UserAPI';
 export default defineComponent({
     components: { UsergroupAddOutlined, IdcardOutlined, AuditOutlined },
     data: () => ({
-        masterCount: 0,
         companies: [] as ICompany[],
     }),
     mounted() {
-        setTimeout(() => {
-            this.masterCount = 100;
-        }, 1500);
     },
 
     setup() {
@@ -193,7 +189,8 @@ export default defineComponent({
             item-layout="horizontal"
             :data-source="companyList"
         >
-            <template #loadMore>
+        <!-- Load more button -->
+            <!-- <template #loadMore>
                 <div
                     v-if="!initLoading && !loading"
                     :style="{
@@ -207,7 +204,7 @@ export default defineComponent({
                         >load more</a-button
                     >
                 </div>
-            </template>
+            </template> -->
             <template #renderItem="{ item }">
                 <a-list-item>
                     <template #actions>
