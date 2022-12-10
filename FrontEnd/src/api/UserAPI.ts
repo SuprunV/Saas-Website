@@ -114,6 +114,17 @@ export class UserAPI {
         return response.data;
     }
 
+    static async getClientsCount(): Promise<number> {
+        const response = await $host.get<number>(`/user/publicClients/count`);
+        console.log('clients count', response.data);
+        return response.data;
+    }
+    static async getMastersCount(): Promise<number> {
+        const response = await $host.get<number>(`/user/publicMasters/count`);
+        console.log('masters count', response.data);
+        return response.data;
+    }
+
     static getPublicUsers(
         limit: number,
         page: number,

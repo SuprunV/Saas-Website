@@ -41,6 +41,15 @@ namespace server.Controllers
         catch (Exception ex) {}
             return "/Uploads/Noimage.png";
         }
+
+        [HttpGet]
+        public ActionResult<Company> GetPublicCompanies()
+        {
+            var companies = _context.Companies!;
+
+            return Ok(companies);
+        }
+
         [HttpGet("{companyId}")]
         public ActionResult<Company> GetCompany(int companyId)
         {
@@ -53,6 +62,20 @@ namespace server.Controllers
             company.img = "https://" + Request.Host + company.img;
             return Ok(company);
         }
+
+        [HttpGet("alias-{companyAlias}")]
+        public ActionResult<Company> GetCompany(string companyAlias)
+        {
+            var company = _context.Companies!.First(c => c.companyAlias == companyAlias);
+
+            if (company == null)
+            {
+                return NotFound("Provided company does not exist");
+            }
+            company.img = "https://" + Request.Host + company.img;
+            return Ok(company);
+        }
+
         [HttpGet("count")]
         public ActionResult<int> GetCompaniesCount()
         {
@@ -69,6 +92,27 @@ namespace server.Controllers
             if(clientsInCompany == null) return Ok("No clients in company");
             else return Ok(clientsInCompany?.ToList());
         }
+
+        [HttpGet("alias-{companyAlias}/clients")]
+        public ActionResult<IEnumerable<User>> GetCompanyClients(string companyAlias)
+        {
+            if(!_context.Companies!.Any(c => c.companyAlias == companyAlias)) return BadRequest();
+
+            var companyClients = _context.Users!.Include(x => x.Company).Where(s => s.Company.companyAlias == companyAlias && s.role == Enums.Role.CLIENT);
+            
+            return Ok(companyClients);
+        }
+
+        [HttpGet("alias-{companyAlias}/clientsCount")]
+        public ActionResult<int> GetCompanyClientsCount(string companyAlias)
+        {
+            if(!_context.Companies!.Any(c => c.companyAlias == companyAlias)) return BadRequest();
+
+            var companyClients = _context.Users!.Include(x => x.Company).Where(s => s.Company.companyAlias == companyAlias && s.role == Enums.Role.CLIENT).ToList();
+            
+            return Ok(companyClients.Count);
+        }
+
         [HttpGet("{companyId}/appointments")]
         public ActionResult<IEnumerable<Appointment>> GetCompanyAppointmentsByDate(int companyId, [FromQuery] string date)
         {
@@ -136,6 +180,29 @@ namespace server.Controllers
             
             return Ok(mastersInCompany);
         }
+        [HttpGet("alias-{companyAlias}/masters")]
+        public ActionResult<IEnumerable<User>> GetCompanyMasters(string companyAlias)
+        {
+            if(!_context.Companies!.Any(c => c.companyAlias == companyAlias)) return BadRequest();
+
+            var mastersInCompany = _context.Users!.Include(x => x.Company).Where(s => s.Company.companyAlias == companyAlias && s.role == Enums.Role.MASTER);
+            foreach (User master in mastersInCompany)
+            {
+                master.img = "https://" + Request.Host + master.img;
+            }
+            
+            return Ok(mastersInCompany);
+        }
+
+        [HttpGet("alias-{companyAlias}/mastersCount")]
+        public ActionResult<int> GetCompanyMastersCount(string companyAlias)
+        {
+            if(!_context.Companies!.Any(c => c.companyAlias == companyAlias)) return BadRequest();
+
+            var mastersInCompany = _context.Users!.Include(x => x.Company).Where(s => s.Company.companyAlias == companyAlias && s.role == Enums.Role.MASTER).ToList();
+            
+            return Ok(mastersInCompany.Count);
+        }
         
         [HttpGet("{companyId}/services")]
         public ActionResult<IEnumerable<Service>> GetCompanyServices(int companyId) {
@@ -153,6 +220,31 @@ namespace server.Controllers
             var services = _context.Services!.Include(x => x.Company).Where(s => s.Company.companyAlias == companyAlias);
 
             return Ok(services);
+        }
+        [HttpGet("alias-{companyAlias}/servicesCount")]
+        public ActionResult<int> GetCompanyServicesCount(string companyAlias) {
+            if(!_context.Companies!.Any(c => c.companyAlias == companyAlias)) return BadRequest();
+
+            var services = _context.Services!.Include(x => x.Company).Where(s => s.Company.companyAlias == companyAlias).ToList();
+
+            return Ok(services.Count);
+        }
+
+        [HttpGet("alias-{companyAlias}/companyIncome")]
+        public ActionResult<decimal> GetCompanyDoneAppointmentsCount(string companyAlias){
+         var  masters = _context.Users!.Include(x => x.Company).Where(m => m.Company.companyAlias == companyAlias && m.role == Enums.Role.MASTER).Select(x => x.Id).ToList();
+      
+          var appointments = _context.Appointments!.Include(x => x.Service).Where(x => masters.Contains(x.masterId));  
+          decimal companyIncome = 0;
+        foreach(var a in appointments) 
+        {
+            if(DateTime.Parse(a.date) < DateTime.Now) {
+                var price = a.Service?.price ?? 0;
+                companyIncome = companyIncome + price;
+            }
+        }
+
+         return Ok(companyIncome);
         }
 
         [HttpPost]

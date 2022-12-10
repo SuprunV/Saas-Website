@@ -8,32 +8,30 @@ import { defineComponent, ref, onMounted, nextTick } from 'vue';
 import { CompanyAPI } from '@/api/CompanyAPI';
 import { ICompany } from '@/models/ICompany';
 import { useCompanyStore } from '@/store/useCompany';
+import ARow from 'ant-design-vue/lib/grid/Row';
+import { UserAPI } from '@/api/UserAPI';
 
 export default defineComponent({
     components: { UsergroupAddOutlined, IdcardOutlined, AuditOutlined },
     data: () => ({
-        clientCount: 0,
-        companyCount: 0,
         masterCount: 0,
         companies: [] as ICompany[],
     }),
     mounted() {
         setTimeout(() => {
-            this.clientCount = 1000;
-        }, 500);
-        setTimeout(() => {
-            this.companyCount = 20;
-        }, 1000);
-        setTimeout(() => {
             this.masterCount = 100;
         }, 1500);
     },
+
     setup() {
         const initLoading = ref(true);
         const loading = ref(false);
         const limit = ref<number>(5);
         const page = ref<number>(1);
         const data = ref<ICompany[]>([]);
+        const companyCount = ref<number>(0);
+        const clientCount = ref<number>(0);
+        const masterCount = ref<number>(0);
         const companyList = ref<ICompany[]>([]);
 
         const companyStore = useCompanyStore();
@@ -42,12 +40,27 @@ export default defineComponent({
         onMounted(async () => {
             const companies = await CompanyAPI.getPublicCompanies(
                 limit.value,
-                page.value,
+                page.value
             );
             initLoading.value = false;
             data.value = companies;
             companyList.value = companies;
         });
+
+        async function getCounts(){
+            const companies = await CompanyAPI.getCompaniesCount();
+            const clients = await UserAPI.getClientsCount();
+            const masters = await UserAPI.getMastersCount();
+
+            console.log('companies count', companies);
+            console.log('clients count', clients);
+            console.log('masters count', masters);
+
+            companyCount.value = companies;
+            clientCount.value = clients;
+            masterCount.value = masters;
+        }
+        getCounts();
 
         const onLoadMore = async () => {
             page.value++;
@@ -62,7 +75,7 @@ export default defineComponent({
             );
             const new_companies = await CompanyAPI.getPublicCompanies(
                 limit.value,
-                page.value,
+                page.value
             );
             const newData = data.value.concat(new_companies);
 
@@ -73,6 +86,7 @@ export default defineComponent({
                 window.dispatchEvent(new Event('resize'));
             });
         };
+     
 
         return {
             loading,
@@ -80,6 +94,10 @@ export default defineComponent({
             data,
             companyList,
             onLoadMore,
+            getCount: getCounts,
+            companyCount,
+            clientCount,
+            masterCount
         };
     },
 });
@@ -167,9 +185,8 @@ export default defineComponent({
                 </a-card>
             </a-col>
         </a-row>
-        <h2 class="text-center mt-3 mb-3">List of some companies</h2>
+        <h2 class="text-center mt-3 mb-3">List of companies</h2>
         <p class="text-center mt-3 mb-3">
-            <em>here are companies, that want to be shown</em>
         </p>
         <a-list
             :loading="initLoading"
@@ -186,7 +203,7 @@ export default defineComponent({
                         lineHeight: '32px',
                     }"
                 >
-                    <a-button type="secondary" @click="onLoadMore"
+                    <a-button  type="secondary" @click="onLoadMore"
                         >load more</a-button
                     >
                 </div>
