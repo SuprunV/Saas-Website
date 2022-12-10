@@ -41,6 +41,15 @@ namespace server.Controllers
         catch (Exception ex) {}
             return "/Uploads/Noimage.png";
         }
+
+        [HttpGet]
+        public ActionResult<Company> GetPublicCompanies()
+        {
+            var companies = _context.Companies!;
+
+            return Ok(companies);
+        }
+
         [HttpGet("{companyId}")]
         public ActionResult<Company> GetCompany(int companyId)
         {
