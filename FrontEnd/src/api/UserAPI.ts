@@ -88,6 +88,7 @@ export class UserAPI {
         // Here will be made request to remove token for this user (userData);
         localStorage.removeItem(LocalStorageItemEnum.userJson);
         localStorage.removeItem(LocalStorageItemEnum.token);
+
     }
 
     static async getUser(userId: number): Promise<IUser> {

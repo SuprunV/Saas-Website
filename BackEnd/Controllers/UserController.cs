@@ -251,21 +251,19 @@ namespace server.Controllers
                user.img =  oldUser.img;
               _context.ChangeTracker.Clear();
             }
-      
-
-            if(_context.Users.Any(u => u.login == user.login && u.companyId == user.companyId )) {
-                var login = _context.Users!.FirstOrDefault(u => u.login == user.login);
-                if (login != null) {
-                    return BadRequest("This user login is already in use");
-                }
-            }
-            else if(_context.Users.Any( x => x.login == user.login)) {
-                var login = _context.Users!.First(u => u.login == user.login);
-                if (login != null) {
-                    return BadRequest("This user login is already in use");
-                }
-              
-            }
+            
+            // if(_context.Users.Any(u => u.login == user.login && u.companyId == user.companyId )) {
+            //     var login = _context.Users!.Where(u => u.login == user.login);
+            //     if (login != null) {
+            //         return BadRequest("This user login is already in use");
+            //     }
+            // }
+            // else if(_context.Users.Any( x => x.login == user.login)) {
+            //     var login = _context.Users!.First(u => u.login == user.login);
+            //     if (login != null) {
+            //         return BadRequest("This user login is already in use");
+            //     }
+            //  }
 
             user.password = HashPassword(user.password);
            // var token = GenerateJSONWebToken(tokenData);

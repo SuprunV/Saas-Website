@@ -50,24 +50,34 @@
                         >
                             <a-date-picker v-model:value="formState.doB" />
                         </a-form-item>
-                        <a-form-item
+                         <a-form-item
+                           v-if="( changedUserId == undefined)" :rules="[ {  required: true }]"
                             name="login"
-                            label="login"
-                            :rules="[{ required: true }]"
+                            label="Login"
                         >
                             <a-input v-model:value="formState.login" />
                         </a-form-item>
+                        
+                        <a-form-item
+                            v-if="( changedUserId != undefined)" :rules="[ {  required: false }]"
+                            name="login"
+                            label="Login">
+                            <a >{{
+                                formState.login
+                            }}</a>
+                        </a-form-item>
+
                         <a-form-item
                             v-if="( changedUserId == undefined)" :rules="[ {  required: true }]"
                             name="password"
-                            label="password"
+                            label="Password"
                         > 
                             <a-input v-model:value="formState.password" />
                         </a-form-item>
                         <a-form-item
                             v-else-if="( changedUserId != undefined)" :rules="[ {  required: false }]"
                             name="password"
-                            label="password"
+                            label="Password"
                         > 
                             <a-input v-model = "formState.password"
                             :true-value="'' " />

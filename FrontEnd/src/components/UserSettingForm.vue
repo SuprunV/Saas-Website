@@ -56,7 +56,9 @@
                             label="Email"
                             :rules="[{ type: 'email' }]"
                         >
-                            <a-input v-model:value="formState.login" />
+                        <a >
+                            {{formState.login}}
+                        </a>
                         </a-form-item>
                         <a-form-item label="Upload">
                             <a-upload

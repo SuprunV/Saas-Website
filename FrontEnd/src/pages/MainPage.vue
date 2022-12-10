@@ -189,22 +189,6 @@ export default defineComponent({
             item-layout="horizontal"
             :data-source="companyList"
         >
-        <!-- Load more button -->
-            <!-- <template #loadMore>
-                <div
-                    v-if="!initLoading && !loading"
-                    :style="{
-                        textAlign: 'center',
-                        marginTop: '12px',
-                        height: '32px',
-                        lineHeight: '32px',
-                    }"
-                >
-                    <a-button  type="secondary" @click="onLoadMore"
-                        >load more</a-button
-                    >
-                </div>
-            </template> -->
             <template #renderItem="{ item }">
                 <a-list-item>
                     <template #actions>
