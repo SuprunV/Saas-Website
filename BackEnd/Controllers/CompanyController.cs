@@ -89,7 +89,12 @@ namespace server.Controllers
             // master
             // id: any
             // date: generated
-            var timetable = generateTimeTable(8, 16, date);
+            var weekday = (int)DateTime.Parse(date).DayOfWeek;
+            var dbTimetable = _context.Timetables.FirstOrDefault(t => t.companyId == companyId && (int)t.weekday == weekday);
+            if(dbTimetable == null) return Ok(new List<Appointment>());
+            var startTime = dbTimetable.startTime.Split(":");
+            var endTime = dbTimetable.endTime.Split(":");
+            var timetable = generateTimeTable(startTime, endTime, date);
             
             var serviceDuration = _context.Services!.First(s => s.Id == serviceId).duration ?? 0;
             var freeAppointments = new List<Appointment>();
@@ -268,12 +273,16 @@ namespace server.Controllers
             return company;
         }
 
-        private List<DateTime> generateTimeTable(int start, int end, string dateDays) {
+        private List<DateTime> generateTimeTable(string[] start, string[] end, string dateDays) {
+            var startHour = Int16.Parse(start[0]);
+            var startMin = Int16.Parse(start[1]);
+            var endHour = Int16.Parse(end[0]);
+            var endMin = Int16.Parse(end[1]);
             var timetable = new List<DateTime>();
             var date = DateTime.Parse(dateDays);
-            for(var h = start; h <= end; h++) {
+            for(var h = startHour; h <= endHour; h++) {
                 for(var m = 0; m < 2; m++) {
-                    var time = new DateTime(date.Year, date.Month, date.Day, h,m*30,0);
+                    var time = new DateTime(date.Year, date.Month, date.Day, h, m*30,0);
                     timetable.Add(TimeZoneInfo.ConvertTimeToUtc(time));
                 }
             }
