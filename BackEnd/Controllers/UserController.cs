@@ -256,7 +256,7 @@ namespace server.Controllers
             }
 
             user.password = HashPassword(user.password);
-
+           // var token = GenerateJSONWebToken(tokenData);
             _context.Entry(user).State = EntityState.Modified;
             _context.SaveChanges();
 

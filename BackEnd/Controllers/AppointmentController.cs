@@ -38,7 +38,7 @@ namespace server.Controllers
             if(userId != null){
                 result = result?.Where(x => x.clientId == userId || x.masterId == userId );
             }
-            return Ok(result);
+            return Ok(result.OrderBy(x => x.date));
         }
         
         [Authorize]

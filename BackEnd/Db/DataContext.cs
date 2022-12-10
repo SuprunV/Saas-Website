@@ -130,7 +130,7 @@ namespace server.Db
              mb.Entity<Appointment>().HasData(
                 new Appointment{
                     Id = 1,
-                    date = "2022-10-27T12:15:00.942Z", 
+                    date = "2022-12-27T12:15:00.942Z", 
                     clientId = 4,
                     serviceId = 1,
                     masterId = 1
@@ -138,14 +138,14 @@ namespace server.Db
                 },
                 new Appointment{
                     Id = 2,
-                    date = "2022-11-27T14:00:00.942Z",
-                    clientId = 4,
+                    date = "2022-12-7T12:00:00.942Z",
+                    clientId = 3,
                     serviceId = 2,
                     masterId = 2,
                 },
                   new Appointment{
                     Id = 3,
-                    date = "2022-10-27T15:45:00.942Z", 
+                    date = "2022-12-7T15:00:00.942Z", 
                     masterId = 2,
                     serviceId = 3,
                     clientId = 3,
