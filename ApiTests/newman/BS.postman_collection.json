@@ -552,13 +552,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 201\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Updated user\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.login).to.be.equal(\"aaaaaaaa@gmail.com\"); \r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
 									""
@@ -582,13 +577,52 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"Id\": 8,\r\n    \"login\": \"aaaaaaaa@gmail.com\",\r\n    \"password\": \"123454321\",\r\n    \"role\": \"CLIENT\",\r\n    \"companyId\": 1\r\n}",
+							"raw": "{\r\n    \"Id\": 8,\r\n    \"login\": \"forTestOnlyMaster@gmail.com\",\r\n    \"name\": \"test\",\r\n    \"password\": \"123454321\",\r\n    \"role\": \"CLIENT\",\r\n    \"companyId\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
+						"url": {
+							"raw": "{{url}}/api/user/8",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check changings",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Updated user\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.name).to.be.equal(\"test\"); \r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
 						"url": {
 							"raw": "{{url}}/api/user/8",
 							"host": [
@@ -1636,7 +1670,7 @@
 								"exec": [
 									"\r",
 									"pm.test(\"ID järgi tagastab appointmenti\", function () {\r",
-									"    pm.expect(pm.response.text()).to.include(\"\\\"date\\\":\\\"2022-10-27T12:15:00.942Z\\\"\");\r",
+									"    pm.expect(pm.response.text()).to.include(\"\\\"date\\\":\\\"2022-12-27T12:15:00.942Z\\\"\");\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Status code is 200\", function () {\r",
@@ -1721,14 +1755,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/Appointment/{{date}}/events/2",
+							"raw": "{{url}}/api/Appointment/2022-12-7T12:00:00.942Z/events/2",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"Appointment",
-								"{{date}}",
+								"2022-12-7T12:00:00.942Z",
 								"events",
 								"2"
 							]
@@ -1772,7 +1806,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/Appointment/1/eventsByMonthAndYear?month=10&year=2022",
+							"raw": "{{url}}/api/Appointment/1/eventsByMonthAndYear?month=12&year=2022",
 							"host": [
 								"{{url}}"
 							],
@@ -1785,7 +1819,7 @@
 							"query": [
 								{
 									"key": "month",
-									"value": "10"
+									"value": "12"
 								},
 								{
 									"key": "year",
@@ -1807,9 +1841,9 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Appointments count is 1\", function () {\r",
+									"pm.test(\"Appointments count is 2\", function () {\r",
 									"    var appointment = pm.response.json();\r",
-									"    pm.expect(appointment.length).to.be.equal(1); \r",
+									"    pm.expect(appointment.length).to.be.equal(2); \r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1830,7 +1864,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/Appointment/2/eventsByMonthAndYear?month=11&year=2022",
+							"raw": "{{url}}/api/Appointment/2/eventsByMonthAndYear?month=12&year=2022",
 							"host": [
 								"{{url}}"
 							],
@@ -1843,7 +1877,7 @@
 							"query": [
 								{
 									"key": "month",
-									"value": "11"
+									"value": "12"
 								},
 								{
 									"key": "year",
@@ -1866,7 +1900,7 @@
 									"});\r",
 									"\r",
 									"pm.test(\"Body is correct\", function () {\r",
-									"    pm.response.to.have.body('1');\r",
+									"    pm.response.to.have.body('2');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1887,14 +1921,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/Appointment/1/masterDoneAppointments",
+							"raw": "{{url}}/api/Appointment/2/masterDoneAppointments",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"Appointment",
-								"1",
+								"2",
 								"masterDoneAppointments"
 							]
 						}
@@ -1960,7 +1994,7 @@
 									"});\r",
 									"\r",
 									"pm.test(\"Body is correct\", function () {\r",
-									"    pm.response.to.have.body('3');\r",
+									"    pm.response.to.have.body('2');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2129,14 +2163,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/Appointment/1/masterDoneAppointments",
+							"raw": "{{url}}/api/Appointment/2/masterDoneAppointments",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"Appointment",
-								"1",
+								"2",
 								"masterDoneAppointments"
 							]
 						}
@@ -2155,7 +2189,7 @@
 									"});\r",
 									"\r",
 									"pm.test(\"Body is correct\", function () {\r",
-									"    pm.response.to.have.body('4');\r",
+									"    pm.response.to.have.body('3');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2290,7 +2324,7 @@
 									"});\r",
 									"\r",
 									"pm.test(\"Body is correct\", function () {\r",
-									"    pm.response.to.have.body('3');\r",
+									"    pm.response.to.have.body('2');\r",
 									"});"
 								],
 								"type": "text/javascript"
