@@ -52,7 +52,7 @@ export default defineComponent({
             return company;
 
            });
-      
+           getInfo();
         const {
             fetchData: getCompanyInfo,
             isLoading,
