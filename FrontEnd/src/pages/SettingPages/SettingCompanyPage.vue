@@ -11,6 +11,7 @@ import { useAuthStore } from '@/store/useAuth';
 import { ICompany } from '@/models/ICompany';
 import { ITimetable, Weekday } from '@/models/ITimetable';
 import { makeEnum } from '@/services/makeEnum';
+import { useRoute, useRouter } from 'vue-router';
 import { TimetableAPI } from '@/api/TimetableAPI';
 import { Dayjs } from 'dayjs';
 
@@ -25,8 +26,33 @@ export default defineComponent({
         const auth = useAuthStore();
         const { authUser } = storeToRefs(auth);
         const selectedCompany = ref<ICompany>();
+        const route = useRoute();
+        const servicesCount = ref<number>();
+        const mastersCount = ref<number>();
+        const companyIncome = ref<number>()
         const timetable = ref<ITimetable[]>([]);
         const workingTime = ref<string[]>([]);
+        const companyAlias = route.params['companyAlias'] as string;
+        const {
+            fetchData: getInfo,
+            response: companyInfo,
+        } = useFetching(async () => {
+            const company = await CompanyAPI.getCompany(authUser.value.companyId);
+            selectedCompany.value = company;
+
+            const countS = await CompanyAPI.getCompanyServicesCount(companyAlias);
+            servicesCount.value = countS;
+
+            const countM = await CompanyAPI.getCompanyMastersCount(companyAlias);
+            mastersCount.value = countM;
+
+            const income = await CompanyAPI.getCompanyIncome(companyAlias);
+            companyIncome.value = income;
+            
+            return company;
+
+           });
+      
         const {
             fetchData: getCompanyInfo,
             isLoading,
@@ -61,6 +87,10 @@ export default defineComponent({
             changeRef,
             workingTime,
             isChangeModal,
+            mastersCount,
+            servicesCount,
+            companyIncome,
+            getInfo,
             isChangeWeekdayModal,
             layout,
             makeEnum,
@@ -100,6 +130,7 @@ export default defineComponent({
 <template>
     <div>
         <response-alert :message="message" :isLoading="isLoading" />
+        <div v-if="(!isLoading)">
         <h1 class="text-center">Settings for Company</h1>
         <a-space size="middle">
             <a-space direction="vertical" size="middle">
@@ -181,23 +212,23 @@ export default defineComponent({
                 <a-row>
                     <a-col :span="5">
                         <div class="settingPageStatistic">
-                            <a-statistic title="Masters" :value="100" />
+                            <a-statistic title="Masters" :value="mastersCount" />
                         </div>
                     </a-col>
                     <a-col :span="5">
                         <div class="settingPageStatistic">
-                            <a-statistic title="Services" :value="70" />
+                            <a-statistic title="Services" :value="servicesCount" />
                         </div>
                     </a-col>
                 </a-row>
                 <a-row>
                     <a-col :span="5">
                         <div class="settingPageStatistic">
-                            <a-statistic
-                                title="Income (EUR)"
-                                :precision="2"
-                                :value="200000"
-                            />
+                        <a-statistic
+                            title="Income (EUR)"
+                            :precision="2"
+                            :value="companyIncome"
+                        />
                         </div>
                     </a-col>
                     <a-col :span="5">
@@ -226,6 +257,7 @@ export default defineComponent({
             :editCompany="selectedCompany"
         />
     </div>
+</div>
 </template>
 
 <style scoped></style>
