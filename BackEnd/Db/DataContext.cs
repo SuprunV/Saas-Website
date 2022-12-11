@@ -13,6 +13,7 @@ namespace server.Db
         public DbSet<Service>? Services { get; set; } 
         public DbSet<ServiceMaster>? ServiceMaster { get; set; } 
         public DbSet<Appointment>? Appointments { get; set; } 
+        public DbSet<Timetable>? Timetables { get; set; } 
         protected override void OnModelCreating(ModelBuilder mb)
         {
             base.OnModelCreating(mb);
@@ -27,15 +28,11 @@ namespace server.Db
             
             mb.Entity<Company>().ToTable("Companies").HasKey(x => x.Id);
             
-            // mb.Entity<MasterService>().ToTable("Master&Service")
-            // .HasKey(key => new { key.masterId, key.serviceId });
-
-            // mb.Entity<Client>().ToTable("Clients").HasKey(x => x.Id);
-            // mb.Entity<Client>().HasOne(x => x.User);
-            // mb.Entity<Admin>().ToTable("Admins").HasOne(x => x.User);
+            mb.Entity<Timetable>().ToTable("Timetables").HasKey(x => x.Id);
+              mb.Entity<Timetable>().HasOne(x => x.Company)
+            .WithMany(x => x.CompanyTimetable)
+            .HasForeignKey(x => x.companyId);
             
-            // mb.Entity<Master>().ToTable("Masters").HasKey(x => x.Id);
-            // mb.Entity<Master>().HasOne(x => x.User);
 
             mb.Entity<ServiceMaster>().ToTable("ServiceMaster").HasIndex(p => new {p.masterId, p.serviceId}).IsUnique();
             mb.Entity<ServiceMaster>().ToTable("ServiceMaster").HasKey(x => x.Id);
@@ -61,8 +58,8 @@ namespace server.Db
                     Id = 1,
                     companyName = "BeautySalon",
                     companyAlias = "myfircom",
-                    address = "Maleva 6",
-                    img = "/Uploads/Noimage.png",
+                    address = "Maleva 6, 11711 Tallinn",
+                    img = "/Uploads/CompanyProfileImages/4.jpg",
                 
             
                 },
@@ -70,7 +67,7 @@ namespace server.Db
                 {
                     Id = 2,
                     companyName = "MassageSalon",
-                    address = "Kadaka 45",
+                    address = "Kadaka tee 45, 12915 Tallinn",
                     img = "/Uploads/Noimage.png",
                  
                 }
@@ -83,7 +80,7 @@ namespace server.Db
                     price = 35,
                     duration = 120,
                     description = "Manicure with massage without nail polish or with base polish",
-                    img = "/Uploads/Noimage.png",
+                    img = "/Uploads/ServiceImages/1.jpg",
                     companyId = 1
                 },
                 new Service
@@ -93,7 +90,7 @@ namespace server.Db
                     price = 45,
                     duration = 60,
                     description = "Pedicure with massage without nail polish or with base polish",
-                    img = "/Uploads/Noimage.png",
+                    img = "/Uploads/ServiceImages/2.jpg",
                     companyId = 1
                 },
                 new Service
@@ -103,7 +100,7 @@ namespace server.Db
                     price = 35,
                     duration = 110,
                     description = "Lashes extension - 2D, 3D",
-                    img = "/Uploads/Noimage.png",
+                    img = "/Uploads/ServiceImages/3.jpg",
                     companyId = 1
                 },
                 new Service
@@ -113,8 +110,8 @@ namespace server.Db
                     price = 15,
                     duration = 20,
                     description = "Hand massage",
-                    img = "/Uploads/Noimage.png",
-                    companyId = 2
+                    img = "/Uploads/ServiceImages/4.jpg",
+                    companyId = 1
                 },
                 new Service
                 {
@@ -123,8 +120,8 @@ namespace server.Db
                     price = 50,
                     duration = 60,
                     description = "Body massage",
-                    img = "/Uploads/Noimage.png",
-                    companyId = 2
+                    img = "/Uploads/ServiceImages/5.jpg",
+                    companyId = 1
                 }
             );
              mb.Entity<Appointment>().HasData(
@@ -161,7 +158,7 @@ namespace server.Db
                     surname = "Koring",
                     password =  "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.MASTER,
-                    img = "/Uploads/Noimage.png",
+                    img = "/Uploads/UserProfileImages/3.jpg",
                     gender = Gender.Female,
                     DoB = "1999-10-27T12:15:00.942Z",
                     companyId = 1
@@ -177,7 +174,7 @@ namespace server.Db
                     role = Role.MASTER,
                     DoB = "1975-10-27T12:15:00.942Z",
                     companyId = 1,
-                    img = "/Uploads/Noimage.png",
+                    img = "/Uploads/UserProfileImages/1.jpg",
                     gender = Gender.Male,
            
                 },
@@ -190,7 +187,7 @@ namespace server.Db
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.CLIENT,
                     DoB = "1999-10-27T12:15:00.942Z",
-                    img = "/Uploads/UserProfileImages/photo_2022-02-18_08-30-03.jpg",
+                    img = "/Uploads/UserProfileImages/2.jpg",
                     companyId = 1,
                     gender = Gender.Male,
                 },
@@ -203,7 +200,7 @@ namespace server.Db
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.CLIENT,
                     DoB = "2005-10-27T12:15:00.942Z",
-                    companyId = 2,
+                    companyId = 1,
                     img = "/Uploads/Noimage.png",
                     gender = Gender.Female,
                 },
@@ -230,8 +227,55 @@ namespace server.Db
                     DoB = "1989-10-27T12:15:00.942Z",
                     companyId = 2
                 }
-                
+      
             );
+             mb.Entity<ServiceMaster>().HasData(
+                new ServiceMaster
+                {
+                    Id = 1,
+                    masterId = 1,
+                    serviceId = 1,
+                },
+                       new ServiceMaster
+                {
+                    Id = 2,
+                    masterId = 2,
+                    serviceId = 2,
+                },
+                  new ServiceMaster
+                {
+                    Id = 3,
+                    masterId = 2,
+                    serviceId = 3,
+                }
+                );
+                 mb.Entity<Timetable>().HasData(
+                new Timetable
+                {
+                    Id = 1,
+                    companyId=1,
+                    startTime = "09:00",  
+                    endTime = "20:00",
+                    weekday = Weekday.Thu,
+                },
+                new Timetable
+                {
+                    Id = 2,
+                    companyId=1,
+                    startTime = "09:00",  
+                    endTime = "20:00",
+                    weekday = Weekday.Sun,
+                },
+                     new Timetable
+                {
+                    Id = 3,
+                    companyId=1,
+                    startTime = "09:00",  
+                    endTime = "20:00",
+                    weekday = Weekday.Sat,
+                }
+           
+                );
                
             mb.UseIdentityColumns();
         }

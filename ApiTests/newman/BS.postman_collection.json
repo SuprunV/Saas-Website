@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "66bd569b-9166-44f2-8427-6425d9d0bd03",
+		"_postman_id": "fb33664c-8c66-4830-a73a-b9bb13a583d4",
 		"name": "BS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23297773"
@@ -434,9 +434,9 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Clients count must be 2\", function () {\r",
+									"pm.test(\"Clients count must be 3\", function () {\r",
 									"    var users = pm.response.json();\r",
-									"    pm.expect(users.length).to.be.equal(2); \r",
+									"    pm.expect(users.length).to.be.equal(3); \r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1155,12 +1155,12 @@
 									"\r",
 									"pm.test(\"Client in company name\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0].name).to.be.equal(\"Mari\"); \r",
+									"    pm.expect(jsonData[0].name).to.be.equal(\"Eren\"); \r",
 									"\r",
 									"});\r",
-									"pm.test(\"Clients count 1\", function () {\r",
+									"pm.test(\"Clients count 2\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.be.equal(1); \r",
+									"    pm.expect(jsonData.length).to.be.equal(2); \r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1181,14 +1181,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/Company/2/clients",
+							"raw": "{{url}}/api/Company/1/clients",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"Company",
-								"2",
+								"1",
 								"clients"
 							]
 						}
@@ -1261,12 +1261,12 @@
 									"\r",
 									"pm.test(\"Service in company name\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0].name).to.be.equal(\"Lashes extension\"); \r",
+									"    pm.expect(jsonData[0].name).to.be.equal(\"Body massage\"); \r",
 									"\r",
 									"});\r",
-									"pm.test(\"Service count 3\", function () {\r",
+									"pm.test(\"Service count 5\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.be.equal(3); \r",
+									"    pm.expect(jsonData.length).to.be.equal(5); \r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1348,9 +1348,9 @@
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
-									"pm.test(\"Service count is 3\", function () {\r",
+									"pm.test(\"Service count is 5\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.be.equal(3); \r",
+									"    pm.expect(jsonData).to.be.equal(5); \r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1380,54 +1380,6 @@
 								"service",
 								"1",
 								"servicecount"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Company Services",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Services count must be 3\", function () {\r",
-									"    var services = pm.response.json();\r",
-									"    pm.expect(services.length).to.be.equal(3); \r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/service/1/services",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"service",
-								"1",
-								"services"
 							]
 						}
 					},
@@ -1478,6 +1430,53 @@
 							"path": [
 								"api",
 								"service"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Company Service Count Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Service count is 6\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.equal(6); \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/service/1/servicecount",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"service",
+								"1",
+								"servicecount"
 							]
 						}
 					},
