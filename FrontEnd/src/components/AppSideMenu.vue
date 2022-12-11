@@ -4,15 +4,32 @@ import { IconsEnum } from '@/types/Theme';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { storeToRefs } from 'pinia';
 import { RolesEnum } from '@/models/IUser';
+import { useFetching } from '@/hooks/useFetching';
+import { CompanyAPI } from '@/api/CompanyAPI';
+import { ICompany } from '@/models/ICompany';
 
 import { defineComponent, ref } from 'vue';
 export default defineComponent({
     setup: () => {
         const authStore = useAuthStore();
         const { authUser, menuRoutes } = storeToRefs(authStore);
+        const selectedCompany = ref<ICompany>();
+        const {
+            fetchData: getCompanyInfo,
+            isLoading,
+            message,
+        } = useFetching(async () => {
+            selectedCompany.value = await CompanyAPI.getCompany(
+                authUser.value.companyId,
+            );
+           
+        });
+        getCompanyInfo();
 
-        return { authUser, menuRoutes };
+        return { authUser, menuRoutes,       selectedCompany,
+            getCompanyInfo, };
     },
+    
     data: () => ({
         selectedKeys: ['2'],
         IconsEnum,
@@ -38,6 +55,7 @@ export default defineComponent({
         </div>
         <div v-else class="logo-sidebar">
             <a-avatar :src = "authUser.img" v-if="authUser.role != RolesEnum.COMPANY"> </a-avatar>
+            <a-avatar :src = "selectedCompany?.img" v-if="authUser.role == RolesEnum.COMPANY"> </a-avatar>
             <p>
                 {{ authUser.role }}
             </p>

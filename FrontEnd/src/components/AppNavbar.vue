@@ -9,6 +9,9 @@ import { storeToRefs } from 'pinia';
 import { AppRoutes } from '@/router/router';
 import { UserAPI } from '@/api/UserAPI';
 import { RolesEnum } from '@/models/IUser';
+import { ICompany } from '@/models/ICompany';
+import { useFetching } from '@/hooks/useFetching';
+import { CompanyAPI } from '@/api/CompanyAPI';
 
 export default defineComponent({
     data: () => ({
@@ -29,12 +32,27 @@ export default defineComponent({
     setup() {
         const auth = useAuthStore();
         const { loginActionStore, logoutActionStore } = auth;
+        const selectedCompany = ref<ICompany>();
         const { isAuth, authUser } = storeToRefs(auth);
         const { company } = storeToRefs(useCompanyStore());
+        
+           const {
+            fetchData: getCompanyInfo,
+            isLoading,
+            message,
+        } = useFetching(async () => {
+            selectedCompany.value = await CompanyAPI.getCompany(
+                authUser.value.companyId,
+            );
+           
+        });
+        getCompanyInfo();
 
         return {
             isAuth,
             authUser,
+            selectedCompany,
+            getCompanyInfo,
             loginActionStore,
             logoutActionStore,
             company,
@@ -113,7 +131,7 @@ export default defineComponent({
                             </a-avatar>
                         </a-button>
                         <a-button type="text" v-if="authUser.role == RolesEnum.COMPANY">
-                            <a-avatar :src="authUser.img" >
+                            <a-avatar :src="selectedCompany?.img" >
                             </a-avatar>
                         </a-button>
                     </a-col>
