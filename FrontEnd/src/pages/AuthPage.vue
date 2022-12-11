@@ -8,6 +8,10 @@ import { useCompanyStore } from '@/store/useCompany';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/store/useAuth';
+import { ref } from 'vue';
+import { useFetching } from '@/hooks/useFetching';
+import { CompanyAPI } from '@/api/CompanyAPI';
+import { ICompany } from '@/models/ICompany';
 
 export default defineComponent({
     data: () => ({
@@ -16,10 +20,19 @@ export default defineComponent({
     setup: () => {
         const companyStore = useCompanyStore();
         const { company } = storeToRefs(companyStore);
-
+        const selectedCompany = ref<ICompany>();
         companyStore.setCompanyPage();
+        const {
+            fetchData: getCompanyInfo,
+        } = useFetching(async () => {
+            selectedCompany.value = await CompanyAPI.getCompany(
+                  company.value.id
+            );
+           
+        });
+        getCompanyInfo();
 
-        return { company, removeCompanyPage: companyStore.removeCompanyPage };
+        return { selectedCompany,getCompanyInfo,removeCompanyPage: companyStore.removeCompanyPage,company };
     },
     components: { LoginForm, RegCompanyForm, RegClientForm },
 });
@@ -38,7 +51,7 @@ export default defineComponent({
                 </a-row>
                 <div v-if="company.id">
                     <div class="company-image company-image-sm">
-                        <img :src="company.img" alt="avatar" />
+                        <img :src="selectedCompany?.img" />
                     </div>
                 </div>
                 <div

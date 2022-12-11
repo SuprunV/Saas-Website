@@ -181,6 +181,10 @@ namespace server.Controllers
         {
             if(!CompanyExists(companyId)) return BadRequest();
             var mastersInCompany = _context.Users?.Where(x => x.companyId == companyId && x.role == Enums.Role.MASTER);
+               foreach (User master in mastersInCompany)
+            {
+                master.img = "https://" + Request.Host + master.img;
+            }
             
             return Ok(mastersInCompany);
         }
