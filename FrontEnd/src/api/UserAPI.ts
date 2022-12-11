@@ -88,6 +88,7 @@ export class UserAPI {
         // Here will be made request to remove token for this user (userData);
         localStorage.removeItem(LocalStorageItemEnum.userJson);
         localStorage.removeItem(LocalStorageItemEnum.token);
+
     }
 
     static async getUser(userId: number): Promise<IUser> {
@@ -97,7 +98,7 @@ export class UserAPI {
         return response.data;
     }
 
-    static async updateUser(userId: number, user: IUser): Promise<IUser> {
+    static async updateUser(userId: number, user: IUser): Promise<ITokenResponse> {
         var formData = new FormData();
 
         formData.append('files', user.files);
@@ -110,7 +111,10 @@ export class UserAPI {
         } catch(e) {
             user.img = null;
         }
-        const response = await $authHost.put<IUser>(`/user/${userId}`, user);
+        const response = await $authHost.put<ITokenResponse>(`/user/${userId}`, user);
+        
+        localStorage.setItem(LocalStorageItemEnum.token, response.data.token);
+        
         return response.data;
     }
 

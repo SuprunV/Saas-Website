@@ -63,10 +63,10 @@ namespace server.Controllers
         public IActionResult Login([FromBody] User login)
         {
             var dbUser = _context.Users!.Include(u => u.Company).FirstOrDefault(user => (user.login == login.login && user.role == Role.ADMIN) || (user.login == login.login && user.companyId == login.companyId));
-            if (dbUser == null) return NotFound();
+            if (dbUser == null) return NotFound("User is not found");
             
             var test = HashPassword(login.password);
-            if (dbUser.password != HashPassword(login.password)) return Unauthorized();
+            if (dbUser.password != HashPassword(login.password)) return Unauthorized("Incorrect login or passowrd");
             var tokenData = new UserToken() {
                 id = dbUser.Id,
                 companyAlias = dbUser.Company.companyAlias,
@@ -246,33 +246,49 @@ namespace server.Controllers
             if (!UserExists(user.Id, user.login)) {
                 return NotFound();
         }
-            if(user.img == null){
                  var oldUser = _context.Users.Find(id);
+            if(user.img == null){
                user.img =  oldUser.img;
               _context.ChangeTracker.Clear();
             }
-      
-
-            if(_context.Users.Any(u => u.login == user.login && u.companyId == user.companyId )) {
-                var login = _context.Users!.FirstOrDefault(u => u.login == user.login);
-                if (login != null) {
-                    return BadRequest("This user login is already in use");
-                }
-            }
-            else if(_context.Users.Any( x => x.login == user.login)) {
-                var login = _context.Users!.First(u => u.login == user.login);
-                if (login != null) {
-                    return BadRequest("This user login is already in use");
-                }
-              
+            if(user.password == "") {
+                user.password = oldUser.password;
+            } else {
+                user.password = HashPassword(user.password);
             }
 
-            user.password = HashPassword(user.password);
+
+            // if(_context.Users.Any(u => u.login == user.login && u.companyId == user.companyId )) {
+            //     var login = _context.Users!.Where(u => u.login == user.login);
+            //     if (login != null) {
+            //         return BadRequest("This user login is already in use");
+            //     }
+            // }
+            // else if(_context.Users.Any( x => x.login == user.login)) {
+            //     var login = _context.Users!.First(u => u.login == user.login);
+            //     if (login != null) {
+            //         return BadRequest("This user login is already in use");
+            //     }
+            //  }
 
             _context.Entry(user).State = EntityState.Modified;
             _context.SaveChanges();
 
-            return CreatedAtAction(nameof(getUser), new { id = user.Id}, user);
+                var dbUser = _context.Users.Include(u => u.Company).First(c => c.login == user.login && c.companyId== user.companyId);
+                var userToken = new UserToken() {
+                    id = dbUser.Id,
+                    companyAlias = dbUser?.Company?.companyAlias ?? "",
+                    companyId = dbUser?.companyId,
+                    email = dbUser?.login,
+                    companyName = dbUser?.Company?.companyName,
+                    img = "https://" + Request.Host + dbUser?.img,
+                    name = $"{dbUser.name} {dbUser.surname}",
+                    
+                    role = dbUser?.role ?? Role.MASTER 
+                 };
+
+             var token = GenerateJSONWebToken(userToken);
+            return Ok( new { token = token });
         }
 
         [Authorize]

@@ -56,7 +56,9 @@
                             label="Email"
                             :rules="[{ type: 'email' }]"
                         >
-                            <a-input v-model:value="formState.login" />
+                        <a >
+                            {{formState.login}}
+                        </a>
                         </a-form-item>
                         <a-form-item label="Upload">
                             <a-upload
@@ -102,6 +104,7 @@ import { defineComponent, reactive, ref } from 'vue';
 import { PropType } from 'vue-types/dist/types';
 import dayjs, { Dayjs } from 'dayjs';
 import { ResponseTypeEnum } from '@/types/FetchResponse';
+import { LocalStorageItemEnum } from '@/types/LocalStorageItemEnum';
 
 export default defineComponent({
     props: {
@@ -135,7 +138,7 @@ export default defineComponent({
             id: props.editUser?.id ?? -1,
             img: props.editUser?.img ?? '',
             login: props.editUser?.login ?? '',
-            password: props.editUser?.password ?? '',
+            password:  '',
             name: props.editUser?.name ?? '',
             surname: props.editUser?.surname ?? '',
             role: props.editUser?.role ?? RolesEnum.CLIENT,
@@ -149,7 +152,9 @@ export default defineComponent({
             isLoading,
             message,
         } = useFetching(async () => {
-            return await UserAPI.updateUser(authUser.value.id, formState.value);
+            var response =  await UserAPI.updateUser(authUser.value.id, formState.value);
+            auth.loginActionStore(response);
+
         });
 
         return {
@@ -189,7 +194,7 @@ export default defineComponent({
                 id: this.editUser?.id ?? -1,
                 img: this.editUser?.img ?? '',
                 login: this.editUser?.login ?? '',
-                password: this.editUser?.password ?? '',
+                password:'',
                 name: this.editUser?.name ?? '',
                 surname: this.editUser?.surname ?? '',
                 role: this.editUser?.role ?? RolesEnum.CLIENT,

@@ -3,6 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using server.Db;
 using server.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Security.Claims;
+using System.Reflection;
+using System.IdentityModel.Tokens.Jwt;
+
 namespace server.Controllers
 {
     [Route("api/[controller]")]
@@ -14,7 +20,9 @@ namespace server.Controllers
         public CompanyController(DataContext context, IWebHostEnvironment environment) {
             _context = context;
             _environment = environment;
+            _config = _config;
         }
+        private IConfiguration _config;
         public class FileUploadAPI : Company{
         public List<IFormFile>? files {get;set;}
        
@@ -70,7 +78,7 @@ namespace server.Controllers
         [HttpGet("alias-{companyAlias}")]
         public ActionResult<Company> GetCompany(string companyAlias)
         {
-            var company = _context.Companies!.First(c => c.companyAlias == companyAlias);
+            var company = _context.Companies!.FirstOrDefault(c => c.companyAlias == companyAlias);
 
             if (company == null)
             {
@@ -314,6 +322,18 @@ namespace server.Controllers
             }
             _context.Entry(company).State = EntityState.Modified;
             _context.SaveChanges();
+
+            //  var token = GenerateJSONWebToken(new UserToken() {
+            //     id = userData.Id,
+            //     companyAlias = company.companyAlias,
+            //     companyId = userData.companyId,
+            //     email = userData.login,
+            //     companyName = company.companyName,
+            //     img = "https://" + Request.Host + userData.img,
+            //     name = company.companyName,
+            //     role = userData.role 
+            // });
+
             return CreatedAtAction(nameof(GetCompany), new { companyId = company.Id}, company);
         }
         [Authorize]
@@ -410,6 +430,39 @@ namespace server.Controllers
 
             
         }
+         private string GenerateJSONWebToken(UserToken user)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new List<Claim>();
+
+            foreach(var keyPair in DictionaryFromType(user)) {
+                claims.Add(new Claim(keyPair.Key.ToString(), keyPair.Value?.ToString() ?? ""));
+            }
+
+            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+              _config["Jwt:Issuer"],
+              claims,
+              expires: DateTime.Now.AddMinutes(30),
+              signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+          private static Dictionary<string, object> DictionaryFromType(object atype) {
+            if (atype == null) return new Dictionary<string, object>();
+            Type t = atype.GetType();
+            PropertyInfo[] props = t.GetProperties();
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            foreach (PropertyInfo prp in props)
+            {
+                object value = prp.GetValue(atype, new object[]{});
+                dict.Add(prp.Name, value);
+            }
+            return dict;
+}
+
+
         private bool CompanyExists(int id)
         {
             return _context.Companies!.Any(c => c.Id == id);

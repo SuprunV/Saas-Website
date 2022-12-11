@@ -17,7 +17,7 @@ export interface IUser{
     files?:any;
     id: number;
     login: string;
-    password: string;
+    password?: string;
     name: string;
     surname: string;
     doB: any;
