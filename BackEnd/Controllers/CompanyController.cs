@@ -216,8 +216,11 @@ namespace server.Controllers
         [HttpGet("alias-{companyAlias}/services")]
         public ActionResult<IEnumerable<Service>> GetCompanyServices(string companyAlias) {
             if(!_context.Companies!.Any(c => c.companyAlias == companyAlias)) return BadRequest();
-
             var services = _context.Services!.Include(x => x.Company).Where(s => s.Company.companyAlias == companyAlias);
+               foreach (Service service in services)
+            {
+                service.img = "https://" + Request.Host + service.img;
+            }
 
             return Ok(services);
         }
