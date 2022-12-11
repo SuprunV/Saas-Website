@@ -13,6 +13,9 @@ namespace server.Models
         public string? img { get; set; }
 
         [JsonIgnore]
+        public virtual ICollection<Timetable> CompanyTimetable { get; set; } = new List<Timetable>();
+
+        [JsonIgnore]
         public virtual ICollection<User> CompanyUsers { get; set; } = new List<User>();
         [JsonIgnore]
         public virtual ICollection<Service> CompanyServices { get; set; } = new List<Service>();

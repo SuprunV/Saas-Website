@@ -11,6 +11,9 @@ namespace server.Models
         public string? startTime {get; set;} 
         public string? endTime {get; set;} 
         public Weekday weekday {get; set; }
+
+        [JsonIgnore]
+        public virtual Company? Company { get; set; }
         [JsonIgnore]
         public virtual ICollection<User> CompanyUsers { get; set; } = new List<User>();
         [JsonIgnore]

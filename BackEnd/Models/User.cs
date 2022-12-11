@@ -19,9 +19,12 @@ namespace server.Models
         public Role role { get; set; }
         public string? img { get; set; }
         public int? companyId { get; set; }
+        public int? timetableId { get; set; }
 
         // [JsonIgnore]
         public virtual Company? Company { get; set; }
+         [JsonIgnore]
+        public virtual Timetable? Timetable { get; set; }
         [JsonIgnore]
          public virtual ICollection<Appointment> AppointmentClient { get; set; } = new List<Appointment>();
          [JsonIgnore]

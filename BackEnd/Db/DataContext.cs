@@ -28,15 +28,11 @@ namespace server.Db
             
             mb.Entity<Company>().ToTable("Companies").HasKey(x => x.Id);
             
-            // mb.Entity<MasterService>().ToTable("Master&Service")
-            // .HasKey(key => new { key.masterId, key.serviceId });
-
-            // mb.Entity<Client>().ToTable("Clients").HasKey(x => x.Id);
-            // mb.Entity<Client>().HasOne(x => x.User);
-            // mb.Entity<Admin>().ToTable("Admins").HasOne(x => x.User);
+            mb.Entity<Timetable>().ToTable("Timetables").HasKey(x => x.Id);
+              mb.Entity<Timetable>().HasOne(x => x.Company)
+            .WithMany(x => x.CompanyTimetable)
+            .HasForeignKey(x => x.companyId);
             
-            // mb.Entity<Master>().ToTable("Masters").HasKey(x => x.Id);
-            // mb.Entity<Master>().HasOne(x => x.User);
 
             mb.Entity<ServiceMaster>().ToTable("ServiceMaster").HasIndex(p => new {p.masterId, p.serviceId}).IsUnique();
             mb.Entity<ServiceMaster>().ToTable("ServiceMaster").HasKey(x => x.Id);
@@ -231,8 +227,55 @@ namespace server.Db
                     DoB = "1989-10-27T12:15:00.942Z",
                     companyId = 2
                 }
-                
+      
             );
+             mb.Entity<ServiceMaster>().HasData(
+                new ServiceMaster
+                {
+                    Id = 1,
+                    masterId = 1,
+                    serviceId = 1,
+                },
+                       new ServiceMaster
+                {
+                    Id = 2,
+                    masterId = 2,
+                    serviceId = 2,
+                },
+                  new ServiceMaster
+                {
+                    Id = 3,
+                    masterId = 2,
+                    serviceId = 3,
+                }
+                );
+                 mb.Entity<Timetable>().HasData(
+                new Timetable
+                {
+                    Id = 1,
+                    companyId=1,
+                    startTime = "09:00",  
+                    endTime = "20:00",
+                    weekday = Weekday.Thu,
+                },
+                new Timetable
+                {
+                    Id = 2,
+                    companyId=1,
+                    startTime = "09:00",  
+                    endTime = "20:00",
+                    weekday = Weekday.Sun,
+                },
+                     new Timetable
+                {
+                    Id = 3,
+                    companyId=1,
+                    startTime = "09:00",  
+                    endTime = "20:00",
+                    weekday = Weekday.Sat,
+                }
+           
+                );
                
             mb.UseIdentityColumns();
         }
