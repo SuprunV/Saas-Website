@@ -58,8 +58,8 @@ namespace server.Db
                     Id = 1,
                     companyName = "BeautySalon",
                     companyAlias = "myfircom",
-                    address = "Maleva 6",
-                    img = "/Uploads/Noimage.png",
+                    address = "Maleva 6, 11711 Tallinn",
+                    img = "/Uploads/CompanyProfileImages/4.jpg",
                 
             
                 },
@@ -67,7 +67,7 @@ namespace server.Db
                 {
                     Id = 2,
                     companyName = "MassageSalon",
-                    address = "Kadaka 45",
+                    address = "Kadaka tee 45, 12915 Tallinn",
                     img = "/Uploads/Noimage.png",
                  
                 }
@@ -80,7 +80,7 @@ namespace server.Db
                     price = 35,
                     duration = 120,
                     description = "Manicure with massage without nail polish or with base polish",
-                    img = "/Uploads/Noimage.png",
+                    img = "/Uploads/ServiceImages/1.jpg",
                     companyId = 1
                 },
                 new Service
@@ -90,7 +90,7 @@ namespace server.Db
                     price = 45,
                     duration = 60,
                     description = "Pedicure with massage without nail polish or with base polish",
-                    img = "/Uploads/Noimage.png",
+                    img = "/Uploads/ServiceImages/2.jpg",
                     companyId = 1
                 },
                 new Service
@@ -100,7 +100,7 @@ namespace server.Db
                     price = 35,
                     duration = 110,
                     description = "Lashes extension - 2D, 3D",
-                    img = "/Uploads/Noimage.png",
+                    img = "/Uploads/ServiceImages/3.jpg",
                     companyId = 1
                 },
                 new Service
@@ -110,7 +110,7 @@ namespace server.Db
                     price = 15,
                     duration = 20,
                     description = "Hand massage",
-                    img = "/Uploads/Noimage.png",
+                    img = "/Uploads/ServiceImages/4.jpg",
                     companyId = 2
                 },
                 new Service
@@ -120,7 +120,7 @@ namespace server.Db
                     price = 50,
                     duration = 60,
                     description = "Body massage",
-                    img = "/Uploads/Noimage.png",
+                    img = "/Uploads/ServiceImages/5.jpg",
                     companyId = 2
                 }
             );
@@ -158,7 +158,7 @@ namespace server.Db
                     surname = "Koring",
                     password =  "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.MASTER,
-                    img = "/Uploads/Noimage.png",
+                    img = "/Uploads/UserProfileImages/3.jpg",
                     gender = Gender.Female,
                     DoB = "1999-10-27T12:15:00.942Z",
                     companyId = 1
@@ -174,7 +174,7 @@ namespace server.Db
                     role = Role.MASTER,
                     DoB = "1975-10-27T12:15:00.942Z",
                     companyId = 1,
-                    img = "/Uploads/Noimage.png",
+                    img = "/Uploads/UserProfileImages/1.jpg",
                     gender = Gender.Male,
            
                 },
@@ -187,7 +187,7 @@ namespace server.Db
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.CLIENT,
                     DoB = "1999-10-27T12:15:00.942Z",
-                    img = "/Uploads/UserProfileImages/photo_2022-02-18_08-30-03.jpg",
+                    img = "/Uploads/UserProfileImages/2.jpg",
                     companyId = 1,
                     gender = Gender.Male,
                 },
@@ -200,7 +200,7 @@ namespace server.Db
                     password = "fKHdCVgwViFR1Cj7ANzZtlrO1zzGZLwK9eKQmM3eXes=",
                     role = Role.CLIENT,
                     DoB = "2005-10-27T12:15:00.942Z",
-                    companyId = 2,
+                    companyId = 1,
                     img = "/Uploads/Noimage.png",
                     gender = Gender.Female,
                 },
