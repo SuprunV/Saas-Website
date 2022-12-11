@@ -111,7 +111,7 @@ namespace server.Db
                     duration = 20,
                     description = "Hand massage",
                     img = "/Uploads/ServiceImages/4.jpg",
-                    companyId = 2
+                    companyId = 1
                 },
                 new Service
                 {
@@ -121,7 +121,7 @@ namespace server.Db
                     duration = 60,
                     description = "Body massage",
                     img = "/Uploads/ServiceImages/5.jpg",
-                    companyId = 2
+                    companyId = 1
                 }
             );
              mb.Entity<Appointment>().HasData(

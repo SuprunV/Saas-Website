@@ -290,7 +290,6 @@ namespace server.Controllers
         [HttpPut("{companyId}")]
         public ActionResult<FileUploadAPI> UpdateCompany(int companyId, [FromBody] Company company)
         {
-            var admin = _context.Users!.First(x=>x.companyId == companyId && x.role == Enums.Role.ADMIN);
             if (companyId != company.Id)
             {
                 return BadRequest();
@@ -303,10 +302,8 @@ namespace server.Controllers
             if(company.img == null){
                  var oldCompany = _context.Companies.Find(companyId);
                company.img =  oldCompany.img;
-               admin.img = oldCompany.img;
               _context.ChangeTracker.Clear();
             }
-            admin.img = company.img;
             _context.Entry(company).State = EntityState.Modified;
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetCompany), new { companyId = company.Id}, company);
