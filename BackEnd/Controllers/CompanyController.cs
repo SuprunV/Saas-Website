@@ -46,6 +46,10 @@ namespace server.Controllers
         public ActionResult<Company> GetPublicCompanies()
         {
             var companies = _context.Companies!;
+            foreach (Company company in companies)
+            {
+                company.img = "https://" + Request.Host + company.img;
+            }
 
             return Ok(companies);
         }
