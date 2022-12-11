@@ -19,7 +19,11 @@ export const useCompanyStore = defineStore('company', {
         async setCompanyPage(alias: string = '') {
             const route = useRoute();
             alias = alias ? alias : (route.params['companyAlias'] as string);
-            console.log('companyAlias in store', this.company.companyAlias, alias);
+            console.log(
+                'companyAlias in store',
+                this.company.companyAlias,
+                alias,
+            );
 
             if (this.company.companyAlias !== alias) {
                 const router = useRouter();

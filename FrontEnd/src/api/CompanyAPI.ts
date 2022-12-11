@@ -4,7 +4,7 @@ import { IMaster } from '@/models/IMaster';
 import { IUser, IUserToken } from '@/models/IUser';
 import axios from 'axios';
 
-const companyImgUrl= null;
+const companyImgUrl = null;
 
 const companyImgUrl2 =
     'https://www.logodesign.net/logo/bar-graph-with-swooshes-arrow-168ld.png';
@@ -13,43 +13,16 @@ const starplast =
     'https://starplast.ee/wp-content/uploads/elementor/thumbs/logo_for_png-pm7lafk3amqbwy9sve6x409mmv8egtljt9iak8hc2q.png';
 
 export class CompanyAPI {
-    static demoCompanies: ICompany[] = [
-        {
-            id: 1,
-            img: companyImgUrl,
-            companyName: 'My First Company',
-            companyAlias: 'myfircom',
-            address: ''
-        },
-        {
-            id: 2,
-            img: companyImgUrl2,
-            companyName: 'My Second Company',
-            companyAlias: 'myseccom',
-            address: ''
-        },
-        {
-            id: 3,
-            img: starplast,
-            companyName: 'Starplast',
-            companyAlias: 'starplast',
-            address: ''
-        },
-    ];
-
     static async getPublicCompanies(
         limit: number,
-        page: number
+        page: number,
     ): Promise<ICompany[]> {
         try {
-            const response = await $host.get<ICompany[]>(
-                `/company`,
-            );
+            const response = await $host.get<ICompany[]>(`/company`);
             return response.data;
         } catch (e) {
             return [];
         }
-  
     }
     static async getCompany(companyId: number): Promise<ICompany> {
         const response = await $authHost.get<ICompany>(`/company/${companyId}`);
@@ -58,30 +31,40 @@ export class CompanyAPI {
     }
 
     static async getCompanyWithAlias(companyAlias: string): Promise<ICompany> {
-        const response = await $host.get<ICompany>(`/company/alias-${companyAlias}`);
+        const response = await $host.get<ICompany>(
+            `/company/alias-${companyAlias}`,
+        );
         console.log('company', response.data);
         return response.data;
     }
 
-    static async updateCompany(companyId: number, company: ICompany): Promise<ICompany> {
+    static async updateCompany(
+        companyId: number,
+        company: ICompany,
+    ): Promise<ICompany> {
         var formData = new FormData();
         formData.append('files', company.files);
-        try{
+        try {
             const uploadFile = await $authHost.post<string>(
                 `/company/${companyId}/post-photo`,
-                formData,);
-                company.img = uploadFile.data;
-        }
-        catch(e){
+                formData,
+            );
+            company.img = uploadFile.data;
+        } catch (e) {
             company.img = null;
         }
 
-        const response = await $authHost.put<ICompany>(`/company/${companyId}`, company);
+        const response = await $authHost.put<ICompany>(
+            `/company/${companyId}`,
+            company,
+        );
         console.log('updated company', response.data);
         return response.data;
     }
 
-    static async getCompanyServicesCount(companyAlias: string): Promise<number> {
+    static async getCompanyServicesCount(
+        companyAlias: string,
+    ): Promise<number> {
         try {
             const response = await $host.get<number>(
                 `/company/alias-${companyAlias}/servicesCount`,
@@ -117,8 +100,12 @@ export class CompanyAPI {
         }
     }
 
-    static async getCompanyMastersByAlias(companyAlias: string): Promise<IUser[]> {
-        const response = await $host.get<IUser[]>(`/company/alias-${companyAlias}/masters`);
+    static async getCompanyMastersByAlias(
+        companyAlias: string,
+    ): Promise<IUser[]> {
+        const response = await $host.get<IUser[]>(
+            `/company/alias-${companyAlias}/masters`,
+        );
         console.log('company masters', response.data);
         return response.data;
     }
@@ -147,7 +134,9 @@ export class CompanyAPI {
         // });
     }
 
-    static async getCompanyDoneAppointmentsCount(companyAlias: string): Promise<number> {
+    static async getCompanyDoneAppointmentsCount(
+        companyAlias: string,
+    ): Promise<number> {
         try {
             const response = await $host.get<number>(
                 `/appointment/alias-${companyAlias}/companyDoneAppointmentsCount`,
@@ -175,7 +164,6 @@ export class CompanyAPI {
         return response.data;
     }
 
-
     static async deleteCompanyMasters(Id: number): Promise<IUserToken[]> {
         try {
             const response = await $authHost.delete<IUserToken[]>(
@@ -200,25 +188,8 @@ export class CompanyAPI {
         }
     }
 
-
-    static getCompanyById(id: number): Promise<ICompany> {
-        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-            const companyIndex = this.demoCompanies.findIndex(
-                (c) => c.id === id,
-            );
-            if (companyIndex >= 0) {
-                return this.demoCompanies[companyIndex];
-            } else throw Error("this company doesn't exists!");
-        });
-    }
-    static getCompanyByAlias(alias: string): Promise<ICompany> {
-        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
-            const companyIndex = this.demoCompanies.findIndex(
-                (c) => c.companyAlias === alias,
-            );
-            if (companyIndex >= 0) {
-                return this.demoCompanies[companyIndex];
-            } else throw Error("this company doesn't exists!");
-        });
+    static async getCompanyByAlias(alias: string): Promise<ICompany> {
+        const response = await $host.get<ICompany>(`/Company/alias-${alias}`);
+        return response.data;
     }
 }
