@@ -13,7 +13,6 @@ import { ITimetable, Weekday } from '@/models/ITimetable';
 import { makeEnum } from '@/services/makeEnum';
 import { TimetableAPI } from '@/api/TimetableAPI';
 import { Dayjs } from 'dayjs';
-import { useRoute, useRouter } from 'vue-router';
 
 export default defineComponent({
     setup: () => {
@@ -24,7 +23,8 @@ export default defineComponent({
         const isChangeModal = ref<boolean>(false);
         const isChangeWeekdayModal = ref<boolean>(false);
         const auth = useAuthStore();
-
+        const { authUser } = storeToRefs(auth);
+        const selectedCompany = ref<ICompany>();
         const timetable = ref<ITimetable[]>([]);
         const workingTime = ref<string[]>([]);
         const {
@@ -46,38 +46,8 @@ export default defineComponent({
             } else {
                 workingTime.value = [];
             }
-
-        const {authUser} = storeToRefs(auth);
-        const route = useRoute();
-        const servicesCount = ref<number>();
-        const mastersCount = ref<number>();
-        const selectedCompany = ref<ICompany>();
-        const companyIncome = ref<number>()
-
-        const companyAlias = route.params['companyAlias'] as string;
-
-
-        const {
-            fetchData: getInfo,
-            response: companyInfo,
-            isLoading,
-            message,
-        } = useFetching(async () => {
-            const company = await CompanyAPI.getCompany(authUser.value.companyId);
-            selectedCompany.value = company;
-
-            const countS = await CompanyAPI.getCompanyServicesCount(companyAlias);
-            servicesCount.value = countS;
-
-            const countM = await CompanyAPI.getCompanyMastersCount(companyAlias);
-            mastersCount.value = countM;
-
-            const income = await CompanyAPI.getCompanyIncome(companyAlias);
-            companyIncome.value = income;
-            
-            return company;
         });
-        getInfo();
+        getCompanyInfo();
 
         const validateMessages = {
             required: '${label} is required!',
@@ -95,16 +65,12 @@ export default defineComponent({
             layout,
             makeEnum,
             getCompanyInfo,
-            getInfo,
             validateMessages,
             timetable,
             selectedCompany,
             isLoading,
             Weekday,
             message,
-            mastersCount,
-            servicesCount,
-            companyIncome
         };
     },
     methods: {
@@ -121,7 +87,6 @@ export default defineComponent({
         },
         updateFinalAction() {
             this.getCompanyInfo();
-            this.getInfo();
         },
     },
     components: {
@@ -135,7 +100,6 @@ export default defineComponent({
 <template>
     <div>
         <response-alert :message="message" :isLoading="isLoading" />
-        <div v-if="(!isLoading)">
         <h1 class="text-center">Settings for Company</h1>
         <a-space size="middle">
             <a-space direction="vertical" size="middle">
@@ -218,13 +182,11 @@ export default defineComponent({
                     <a-col :span="5">
                         <div class="settingPageStatistic">
                             <a-statistic title="Masters" :value="100" />
-                              <a-statistic title="Masters" :value="mastersCount" />
                         </div>
                     </a-col>
                     <a-col :span="5">
                         <div class="settingPageStatistic">
                             <a-statistic title="Services" :value="70" />
-                        <a-statistic title="Services" :value="servicesCount" />
                         </div>
                     </a-col>
                 </a-row>
@@ -236,11 +198,6 @@ export default defineComponent({
                                 :precision="2"
                                 :value="200000"
                             />
-                        <a-statistic
-                            title="Income (EUR)"
-                            :precision="2"
-                            :value="companyIncome"
-                        />
                         </div>
                     </a-col>
                     <a-col :span="5">
@@ -268,7 +225,6 @@ export default defineComponent({
             @final="updateFinalAction"
             :editCompany="selectedCompany"
         />
-    </div>
     </div>
 </template>
 
