@@ -1,7 +1,7 @@
 .space-align-block {
     margin: 15px 4px;
     margin-bottom: 0px;
-    
+
     border: 1px solid #40a9ff;
     padding: 10px;
     padding-left: 20px;
@@ -11,11 +11,10 @@
 }
 
 .settingPageStatistic {
-    
     border: 1px solid #40a9ff;
-    text-align: center !important; 
+    text-align: center !important;
     border-radius: 50px 50px 50px 50px;
-    flex:auto ;
+    flex: auto;
     margin: 10px;
 }
 
@@ -39,7 +38,20 @@
     border-radius: 50%;
 }
 
-.personInfo{
-    margin-left:  auto !important;
+.personInfo {
+    margin-left: auto !important;
     padding: 10px 0;
+}
+
+.weekday-circle {
+    border: 100%;
+    width: 35px;
+    height: 35px;
+    margin: 0 5px;
+    cursor: pointer;
+    &-active {
+        transform: scale(1.2);
+        background-color: $gold-color-light;
+        color: $black-color;
+    }
 }

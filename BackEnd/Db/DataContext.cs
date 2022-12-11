@@ -13,6 +13,7 @@ namespace server.Db
         public DbSet<Service>? Services { get; set; } 
         public DbSet<ServiceMaster>? ServiceMaster { get; set; } 
         public DbSet<Appointment>? Appointments { get; set; } 
+        public DbSet<Timetable>? Timetables { get; set; } 
         protected override void OnModelCreating(ModelBuilder mb)
         {
             base.OnModelCreating(mb);
