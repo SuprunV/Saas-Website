@@ -98,7 +98,7 @@ export class UserAPI {
         return response.data;
     }
 
-    static async updateUser(userId: number, user: IUser): Promise<IUser> {
+    static async updateUser(userId: number, user: IUser): Promise<ITokenResponse> {
         var formData = new FormData();
 
         formData.append('files', user.files);
@@ -111,7 +111,10 @@ export class UserAPI {
         } catch(e) {
             user.img = null;
         }
-        const response = await $authHost.put<IUser>(`/user/${userId}`, user);
+        const response = await $authHost.put<ITokenResponse>(`/user/${userId}`, user);
+        
+        localStorage.setItem(LocalStorageItemEnum.token, response.data.token);
+        
         return response.data;
     }
 

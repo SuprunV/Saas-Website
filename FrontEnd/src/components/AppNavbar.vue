@@ -47,9 +47,8 @@ export default defineComponent({
         logout() {
             UserAPI.logout(this.authUser);
             this.logoutActionStore  ();
-            //  setTimeout(() => {
-            //     this.$router.push(`${this.company.companyAlias}`);
-            // }, 1500);
+           
+
         },
     },
     components: { MenuUnfoldOutlined, MenuFoldOutlined, UserOutlined },
@@ -121,14 +120,14 @@ export default defineComponent({
                         </a-button>
                     </a-col>
                     <a-col> 
-                        <a-button type="text"  danger @click="logout" > Log Out
+                        <a-button type="text"  danger @click="logout" > 
+                            Log out
                             <!-- <router-link :to="`/${company.companyAlias}`">Log out</router-link>  -->
                         </a-button>
 
-                    <!-- <a-col v-if="logout() != null">
+                         <!-- <a-col v-if="logout() != null">
                         <router-link :to="`/${company.companyAlias}`"></router-link> 
                     </a-col> -->
-                       
                     </a-col>
                 </a-row>
                 <a-col type="flex" justify="end" align="end" v-else>

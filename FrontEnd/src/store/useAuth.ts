@@ -60,7 +60,6 @@ export const useAuthStore = defineStore('auth', {
                     routesToSet = publicRoutes;
                     break;
             }
-            // console.log('routesToSet', routesToSet);
             for (let i = 0; i < routesToSet.length; i++) {
                 var newPath: string = routesToSet[i].path;
                 newPath = newPath.replace(':companyAlias', path);
@@ -69,10 +68,9 @@ export const useAuthStore = defineStore('auth', {
             }
             this.redirectRoute = routesToSet[0];
             this.accessRoutes = routesToSet;
-            // console.log('accessRoutes', this.accessRoutes);
             this.menuRoutes = this.accessRoutes.filter((r) => r.label);
         },
-        async hasAccess(path: string, router: any) {
+        async hasAccess(path: string, router: any, redirectTo: string | undefined = undefined) {
             const pathExists = this.accessRoutes.filter((route) => {
                 const okayPath = route.path === path;
                 var isAuth = false;
@@ -82,9 +80,9 @@ export const useAuthStore = defineStore('auth', {
                 return okayPath || isAuth;
             });
 
-            console.log('pathExists', pathExists);
+            console.log(path, 'for pathExists', pathExists, "from ", this.accessRoutes);
             if (!pathExists.length && this.redirectRoute.path) {
-                router.push(this.redirectRoute.path);
+                router.push(redirectTo ? redirectTo: this.redirectRoute.path);
             }
         },
     },
