@@ -4,6 +4,7 @@ using server.Db;
 using server.Models;
 using Microsoft.AspNetCore.Authorization;
 using BackEnd.DTO;
+using System.IO;
 
 namespace server.Controllers
 {
@@ -32,7 +33,8 @@ namespace server.Controllers
 
                 using (FileStream stream = System.IO.File.Create(Filepath))
                 {
-                    objFile.CopyToAsync(stream);
+                    objFile.CopyTo(stream);
+                    stream.Dispose();
                     return "/Uploads/ServiceImages/" + objFile.FileName;
                 }
             
