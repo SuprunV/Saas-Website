@@ -28,13 +28,11 @@ namespace server.Controllers
             string Filepath = string.Empty;
       
               
-                 Filepath = _environment.WebRootPath + "/Uploads/ServiceImages/" + objFile.FileName;
+                Filepath = _environment.WebRootPath + "/Uploads/ServiceImages/" + objFile.FileName;
 
                 using (FileStream stream = System.IO.File.Create(Filepath))
                 {
-                    objFile.CopyTo(stream);
-                    stream.Flush();
-                    var req = Request;
+                    objFile.CopyToAsync(stream);
                     return "/Uploads/ServiceImages/" + objFile.FileName;
                 }
             
