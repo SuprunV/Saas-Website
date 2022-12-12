@@ -222,7 +222,7 @@ namespace server.Controllers
             return Ok(users);
         }
 
-        [Authorize]
+        // [Authorize]
         [HttpPost("{id}/post-photo")]
         public ActionResult<FileUploadAPI> uploadUserPhoto(int id, [FromForm] List<IFormFile> files) {
             string Filepath = string.Empty;
