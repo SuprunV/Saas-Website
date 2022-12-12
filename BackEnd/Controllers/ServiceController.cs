@@ -27,12 +27,8 @@ namespace server.Controllers
         private string PostFile(int? serviceId, [FromForm]IFormFile objFile){
             string Filepath = string.Empty;
             try {
-                    if (!System.IO.Directory.Exists(_environment.WebRootPath +"\\Uploads\\ServiceImages\\"))
-                    {
-                        System.IO.Directory.CreateDirectory(_environment.WebRootPath +"\\Uploads\\ServiceImages\\");
-                    }
-              
-                 Filepath = _environment.WebRootPath +"\\Uploads\\ServiceImages\\" + objFile.FileName;
+                    
+                 Filepath = "/Uploads/ServiceImages/" + objFile.FileName;
 
                 using (FileStream stream = System.IO.File.Create(Filepath))
                 {
