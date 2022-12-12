@@ -7,58 +7,10 @@ variables:
     DOMAIN: beautyservice.itb2203.tautar.ee
 
 stages:
-    - build
-    - api_test
+    #- build
+    #- api_test
     - deploy
 
-build:
-    image:
-        name: docker:20.10.21-alpine3.16
-    services:
-        - docker:20.10.21-dind-alpine3.16
-    only:
-        - master
-        - main
-    before_script:
-        - apk add --no-cache curl jq python3 py3-pip
-        - pip install awscli
-        - aws ecr get-login-password | docker login --username AWS --password-stdin ${DOCKER_REGISTRY}
-    script:
-        - docker build -t ${DOCKER_REGISTRY}/back:${CI_COMMIT_SHA} ./BackEnd/
-        - docker build -t ${DOCKER_REGISTRY}/front:${CI_COMMIT_SHA} ./FrontEnd/
-        - docker push ${DOCKER_REGISTRY}/back:${CI_COMMIT_SHA}
-        - docker push ${DOCKER_REGISTRY}/front:${CI_COMMIT_SHA}
-    after_script:
-        - docker logout ${DOCKER_REGISTRY}
-    stage: build
-    artifacts:
-        paths:
-
-api_test:
-    variables:
-        DOCKER_HOST: tcp://docker:2375/
-        DOCKER_TLS_CERTDIR: ""
-    image:
-        name: docker/compose:1.29.2
-        entrypoint: ["/bin/sh", "-c"]
-    services:
-        - docker:20.10.21-dind-alpine3.16
-    only:
-        - master
-        - main
-    before_script:
-        - apk add --no-cache curl jq python3 py3-pip
-        - pip install awscli
-        - aws ecr get-login-password | docker login --username AWS --password-stdin ${DOCKER_REGISTRY}
-    script:
-        - cd ApiTests
-        - docker-compose up --abort-on-container-exit --exit-code-from newman
-        - docker-compose down -v
-    after_script:
-        - docker logout ${ITB2203_REGISTRY}
-    stage: api_test
-    tags:
-        - itb2203
 deploy:
     image: docker:20.10.21-alpine3.16
     when: manual
