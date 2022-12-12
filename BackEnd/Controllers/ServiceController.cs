@@ -31,7 +31,7 @@ namespace server.Controllers
       
                 Filepath = _environment.WebRootPath + "/Uploads/ServiceImages/" + objFile.FileName;
 
-                using (FileStream stream = new FileStream(Filepath,FileMode.OpenOrCreate))
+                using (FileStream stream = new FileStream(Filepath,FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
                     objFile.CopyTo(stream);
                     stream.Dispose();
