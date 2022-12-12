@@ -229,9 +229,9 @@ namespace server.Controllers
             string Filepath = string.Empty;
 
             var objFile = files.ElementAt(0);
-            if (!System.IO.Directory.Exists(_environment.WebRootPath +"\\Uploads\\UserProfileImages\\")) {
-                System.IO.Directory.CreateDirectory(_environment.WebRootPath +"\\Uploads\\UserProfileImages\\");
-            }
+            // if (!System.IO.Directory.Exists(_environment.WebRootPath +"\\Uploads\\UserProfileImages\\")) {
+            //     System.IO.Directory.CreateDirectory(_environment.WebRootPath +"\\Uploads\\UserProfileImages\\");
+            // }
             
             Filepath = _environment.WebRootPath +"\\Uploads\\UserProfileImages\\" + objFile.FileName;
 
