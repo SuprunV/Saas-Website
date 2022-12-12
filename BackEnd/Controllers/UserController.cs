@@ -233,15 +233,15 @@ namespace server.Controllers
             //     System.IO.Directory.CreateDirectory(_environment.WebRootPath +"\\Uploads\\UserProfileImages\\");
             // }
             
-            Filepath = _environment.WebRootPath +"\\Uploads\\UserProfileImages\\" + objFile.FileName;
+            Filepath = _environment.WebRootPath +"/Uploads/UserProfileImages/" + objFile.FileName;
 
-            // using (FileStream stream = System.IO.File.Create(Filepath)) {
-            //     objFile.CopyTo(stream);
-            //     stream.Flush();
-            //     var req = Request;
-            // }
+            using (FileStream stream = System.IO.File.Create(Filepath)) {
+                objFile.CopyTo(stream);
+                stream.Flush();
+                var req = Request;
+            }
 
-            // return Ok("/Uploads/UserProfileImages/" + objFile.FileName);
+            return Ok("/Uploads/UserProfileImages/" + objFile.FileName);
             return Ok(Filepath);
         }
         [Authorize]
