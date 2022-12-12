@@ -16,6 +16,7 @@ namespace server.Controllers
         private readonly DataContext _context;
         public static IWebHostEnvironment _environment;
 
+
         public ServiceController(DataContext context, IWebHostEnvironment environment)
         {
             _context = context;
@@ -31,7 +32,7 @@ namespace server.Controllers
               
                 Filepath = _environment.WebRootPath + "/Uploads/ServiceImages/" + objFile.FileName;
 
-                using (FileStream stream = System.IO.File.Create(Filepath))
+                using (FileStream stream = new FileStream(Filepath,FileMode.Create))
                 {
                     objFile.CopyTo(stream);
                     stream.Dispose();
