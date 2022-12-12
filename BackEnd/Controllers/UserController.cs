@@ -253,8 +253,10 @@ namespace server.Controllers
             }
             if(user.password == "") {
                 user.password = oldUser.password;
+                  _context.ChangeTracker.Clear();
             } else {
                 user.password = HashPassword(user.password);
+                  _context.ChangeTracker.Clear();
             }
 
 
