@@ -34,27 +34,22 @@ namespace server.Controllers
         }
         private string PostFile(int? userId, [FromForm]IFormFile objFile){
             string Filepath = string.Empty;
-            try {
-                    if (!System.IO.Directory.Exists(_environment.WebRootPath +"\\Uploads\\UserProfileImages\\"))
-                    {
-                        System.IO.Directory.CreateDirectory(_environment.WebRootPath +"\\Uploads\\UserProfileImages\\");
-                    }
+            // try {
+                if (!System.IO.Directory.Exists(_environment.WebRootPath +"\\Uploads\\UserProfileImages\\")) {
+                    System.IO.Directory.CreateDirectory(_environment.WebRootPath +"\\Uploads\\UserProfileImages\\");
+                }
               
-                 Filepath = _environment.WebRootPath +"\\Uploads\\UserProfileImages\\" + objFile.FileName;
-                
-            
+                Filepath = _environment.WebRootPath +"\\Uploads\\UserProfileImages\\" + objFile.FileName;
 
-
-                using (FileStream stream = System.IO.File.Create(Filepath))
-                {
+                using (FileStream stream = System.IO.File.Create(Filepath)) {
                     objFile.CopyTo(stream);
                     stream.Flush();
                     var req = Request;
                     return "/Uploads/UserProfileImages/" + objFile.FileName;
                 }
             
-        }
-        catch (Exception ex) {}
+        // }
+        // catch (Exception ex) {}
             return "/Uploads/Noimage.png";
         }
 
