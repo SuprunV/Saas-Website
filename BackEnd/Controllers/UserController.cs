@@ -35,11 +35,11 @@ namespace server.Controllers
         private string PostFile(int? userId, [FromForm]IFormFile objFile){
             string Filepath = string.Empty;
             try {
-                if (!System.IO.Directory.Exists(_environment.WebRootPath +"/Uploads/UserProfileImages/")) {
-                    System.IO.Directory.CreateDirectory(_environment.WebRootPath +"/Uploads/UserProfileImages/");
+                if (!System.IO.Directory.Exists(_environment.WebRootPath +"../../wwwroot/Uploads/UserProfileImages/")) {
+                    System.IO.Directory.CreateDirectory(_environment.WebRootPath +"../../wwwroot/Uploads/UserProfileImages/");
                 }
               
-                Filepath = _environment.WebRootPath +"/Uploads/UserProfileImages/" + objFile.FileName;
+                Filepath = _environment.WebRootPath +"../../wwwroot/Uploads/UserProfileImages/" + objFile.FileName;
 
                 using (FileStream stream = new FileStream(Filepath, FileMode.OpenOrCreate)) {
                     objFile.CopyTo(stream);
