@@ -29,10 +29,9 @@ namespace server.Controllers
         private string PostFile(int? serviceId, [FromForm]IFormFile objFile){
             string Filepath = string.Empty;
       
-              
                 Filepath = _environment.WebRootPath + "/Uploads/ServiceImages/" + objFile.FileName;
 
-                using (FileStream stream = new FileStream(Filepath,FileMode.Create))
+                using (FileStream stream = new FileStream(Filepath,FileMode.OpenOrCreate))
                 {
                     objFile.CopyTo(stream);
                     stream.Dispose();
