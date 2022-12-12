@@ -26,9 +26,9 @@ namespace server.Controllers
         }
         private string PostFile(int? serviceId, [FromForm]IFormFile objFile){
             string Filepath = string.Empty;
-            try {
-                    
-                 Filepath = "/Uploads/ServiceImages/" + objFile.FileName;
+      
+              
+                 Filepath = _environment.WebRootPath + "/Uploads/ServiceImages/" + objFile.FileName;
 
                 using (FileStream stream = System.IO.File.Create(Filepath))
                 {
@@ -39,9 +39,8 @@ namespace server.Controllers
                 }
             
         }
-        catch (Exception ex) {}
-            return "/Uploads/Noimage.png";
-        }
+     
+        
         [HttpGet("{serviceId}")]
         public ActionResult<Service> GetService(int serviceId)
         {
