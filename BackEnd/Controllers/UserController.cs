@@ -236,13 +236,12 @@ namespace server.Controllers
             Filepath = _environment.WebRootPath +"/Uploads/UserProfileImages/" + objFile.FileName;
 
             using (FileStream stream = System.IO.File.Create(Filepath)) {
-                objFile.CopyTo(stream);
-                stream.Flush();
-                var req = Request;
+                // objFile.CopyTo(stream);
+                // stream.Flush();
             }
 
             return Ok("/Uploads/UserProfileImages/" + objFile.FileName);
-            return Ok(Filepath);
+            // return Ok(Filepath);
         }
         [Authorize]
         [HttpPut("{id}")]
