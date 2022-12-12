@@ -31,7 +31,7 @@ namespace server.Controllers
       
                 Filepath = _environment.WebRootPath + "/Uploads/ServiceImages/" + objFile.FileName;
 
-                using (FileStream stream = new FileStream(Filepath,FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                using (FileStream stream = new FileStream(Filepath,FileMode.OpenOrCreate, FileAccess.ReadWrite,FileShare.ReadWrite))
                 {
                     objFile.CopyTo(stream);
                     stream.Dispose();
@@ -123,7 +123,7 @@ namespace server.Controllers
             _context.SaveChanges();
             return Ok(service);
         }
-       [Authorize]
+       //[Authorize]
         [HttpPost("{id}/post-photo")]
         public ActionResult<FileUploadAPI> uploadServicePhoto(int id, [FromForm] List<IFormFile> files) {
             if(files.Count() > 0) {
