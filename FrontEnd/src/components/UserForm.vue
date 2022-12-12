@@ -74,14 +74,7 @@
                         > 
                             <a-input v-model:value="formState.password" />
                         </a-form-item>
-                        <a-form-item
-                            v-else-if="( changedUserId != undefined)" :rules="[ {  required: false }]"
-                            name="password"
-                            label="Password"
-                        > 
-                            <a-input v-model = "formState.password"
-                            :true-value="'' " />
-                        </a-form-item>
+                      
                     </div>
                     <div class="ant-modal-footer">
                         <button
