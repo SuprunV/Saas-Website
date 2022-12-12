@@ -88,33 +88,40 @@ export class UserAPI {
         // Here will be made request to remove token for this user (userData);
         localStorage.removeItem(LocalStorageItemEnum.userJson);
         localStorage.removeItem(LocalStorageItemEnum.token);
-
     }
 
     static async getUser(userId: number): Promise<IUser> {
         const response = await $authHost.get<IUser>(`/user/${userId}`);
-        response.data.doB = dayjs(response.data.doB ? new Date(response.data.doB) : new Date());
+        response.data.doB = dayjs(
+            response.data.doB ? new Date(response.data.doB) : new Date(),
+        );
         // console.log('user', response.data);
         return response.data;
     }
 
-    static async updateUser(userId: number, user: IUser): Promise<ITokenResponse> {
+    static async updateUser(
+        userId: number,
+        user: IUser,
+    ): Promise<ITokenResponse> {
         var formData = new FormData();
 
         formData.append('files', user.files);
-        try {
-            const uploadFile = await $authHost.post<string>(
-                `/user/${userId}/post-photo`,
-                formData,
-            );
-            user.img = uploadFile.data;
-        } catch(e) {
-            user.img = null;
-        }
-        const response = await $authHost.put<ITokenResponse>(`/user/${userId}`, user);
-        
+        // try {
+        const uploadFile = await $authHost.post<string>(
+            `/user/${userId}/post-photo`,
+            formData,
+        );
+        user.img = uploadFile.data;
+        // } catch(e) {
+        //     user.img = null;
+        // }
+        const response = await $authHost.put<ITokenResponse>(
+            `/user/${userId}`,
+            user,
+        );
+
         localStorage.setItem(LocalStorageItemEnum.token, response.data.token);
-        
+
         return response.data;
     }
 
@@ -154,9 +161,6 @@ export class UserAPI {
         });
     }
 
- 
-    
-
     static getUserByRole(role: RolesEnum): Promise<IUserToken> {
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
             // const userIndex = this.demoUsers.findIndex((c) => c.role === role);
@@ -167,4 +171,3 @@ export class UserAPI {
         });
     }
 }
-
