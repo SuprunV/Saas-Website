@@ -28,16 +28,25 @@ namespace server.Controllers
         }
         private string PostFile(int? serviceId, [FromForm]IFormFile objFile){
             string Filepath = string.Empty;
-      
-                Filepath = _environment.WebRootPath + "/Uploads/ServiceImages/" + objFile.FileName;
+              try {
+                    if (!System.IO.Directory.Exists(_environment.WebRootPath +"\\Uploads\\ServiceImages\\"))
+                    {
+                        System.IO.Directory.CreateDirectory(_environment.WebRootPath +"\\Uploads\\ServiceImages\\");
+                    }
+              
+                 Filepath = _environment.WebRootPath +"\\Uploads\\ServiceImages\\" + objFile.FileName;
 
-                using (FileStream stream = new FileStream(Filepath,FileMode.OpenOrCreate, FileAccess.ReadWrite,FileShare.ReadWrite))
+                using (FileStream stream = System.IO.File.Create(Filepath))
                 {
                     objFile.CopyTo(stream);
-                    stream.Dispose();
+                    stream.Flush();
+                    var req = Request;
                     return "/Uploads/ServiceImages/" + objFile.FileName;
                 }
             
+        }
+        catch (Exception ex) {}
+            return "/Uploads/Noimage.png";
         }
      
         

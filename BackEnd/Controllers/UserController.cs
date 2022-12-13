@@ -49,9 +49,8 @@ namespace server.Controllers
             
         }
         catch (Exception ex) {
-            return ex.Message;
+           return "/Uploads/Noimage.png";
         }
-            // return "/Uploads/Noimage.png";
         }
 
 
