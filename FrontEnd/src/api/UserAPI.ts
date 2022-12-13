@@ -106,15 +106,15 @@ export class UserAPI {
         var formData = new FormData();
 
         formData.append('files', user.files);
-        // try {
+         try {
         const uploadFile = await $authHost.post<string>(
             `/user/${userId}/post-photo`,
             formData,
         );
         user.img = uploadFile.data;
-        // } catch(e) {
-        //     user.img = null;
-        // }
+        } catch(e) {
+            user.img = null;
+        }
         const response = await $authHost.put<ITokenResponse>(
             `/user/${userId}`,
             user,
