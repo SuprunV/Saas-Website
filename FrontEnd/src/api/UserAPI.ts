@@ -67,7 +67,7 @@ export class UserAPI {
     }
 
     static async registeUser(regForm: IRegClientForm) {
-        console.log('regForm to post', regForm);
+        // console.log('regForm to post', regForm);
         const response = await $host.post<ITokenResponse>(
             `/user/reg-client`,
             regForm,
@@ -106,13 +106,13 @@ export class UserAPI {
         var formData = new FormData();
 
         formData.append('files', user.files);
-         try {
-        const uploadFile = await $authHost.post<string>(
-            `/user/${userId}/post-photo`,
-            formData,
-        );
-        user.img = uploadFile.data;
-        } catch(e) {
+        try {
+            const uploadFile = await $authHost.post<string>(
+                `/user/${userId}/post-photo`,
+                formData,
+            );
+            user.img = uploadFile.data;
+        } catch (e) {
             user.img = null;
         }
         const response = await $authHost.put<ITokenResponse>(
@@ -127,12 +127,12 @@ export class UserAPI {
 
     static async getClientsCount(): Promise<number> {
         const response = await $host.get<number>(`/user/publicClients/count`);
-        console.log('clients count', response.data);
+        // console.log('clients count', response.data);
         return response.data;
     }
     static async getMastersCount(): Promise<number> {
         const response = await $host.get<number>(`/user/publicMasters/count`);
-        console.log('masters count', response.data);
+        // console.log('masters count', response.data);
         return response.data;
     }
 

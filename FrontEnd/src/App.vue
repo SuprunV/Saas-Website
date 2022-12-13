@@ -57,14 +57,19 @@ export default defineComponent({
             const companyAlias = this.authUser.companyAlias
                 ? this.authUser.companyAlias
                 : (this.$route.params['companyAlias'] as string);
-            
-            console.log("companyAllias whenlogout", companyAlias);
+            // console.log(this.authUser);
+            // console.log('companyAllias whenlogout', companyAlias);
             this.auth.checkLoginStore().then(() => {
                 this.auth.setRoutes(companyAlias).then(() => {
                     let redirectTo = undefined;
-                    if(companyAlias && !this.isAuth) redirectTo = "/" + companyAlias;
-                    console.log("redirectTo", redirectTo);
-                    this.auth.hasAccess(this.$route.path, this.$router, redirectTo);
+                    if (companyAlias && !this.isAuth)
+                        redirectTo = '/' + companyAlias;
+                    // console.log('redirectTo', redirectTo);
+                    this.auth.hasAccess(
+                        this.$route.path,
+                        this.$router,
+                        redirectTo,
+                    );
                 });
             });
 

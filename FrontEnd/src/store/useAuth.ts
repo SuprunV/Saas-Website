@@ -48,18 +48,19 @@ export const useAuthStore = defineStore('auth', {
             var routesToSet = [];
             switch (this.authUser.role) {
                 case RolesEnum.COMPANY:
-                    routesToSet = companyRoutes;
+                    routesToSet = companyRoutes();
                     break;
                 case RolesEnum.CLIENT:
-                    routesToSet = clientRoutes;
+                    routesToSet = clientRoutes();
                     break;
                 case RolesEnum.MASTER:
-                    routesToSet = masterRoutes;
+                    routesToSet = masterRoutes();
                     break;
                 default:
-                    routesToSet = publicRoutes;
+                    routesToSet = publicRoutes();
                     break;
             }
+
             for (let i = 0; i < routesToSet.length; i++) {
                 var newPath: string = routesToSet[i].path;
                 newPath = newPath.replace(':companyAlias', path);
@@ -70,7 +71,11 @@ export const useAuthStore = defineStore('auth', {
             this.accessRoutes = routesToSet;
             this.menuRoutes = this.accessRoutes.filter((r) => r.label);
         },
-        async hasAccess(path: string, router: any, redirectTo: string | undefined = undefined) {
+        async hasAccess(
+            path: string,
+            router: any,
+            redirectTo: string | undefined = undefined,
+        ) {
             const pathExists = this.accessRoutes.filter((route) => {
                 const okayPath = route.path === path;
                 var isAuth = false;
@@ -80,9 +85,15 @@ export const useAuthStore = defineStore('auth', {
                 return okayPath || isAuth;
             });
 
-            console.log(path, 'for pathExists', pathExists, "from ", this.accessRoutes);
+            console.log(
+                path,
+                'for pathExists',
+                pathExists,
+                'from ',
+                this.accessRoutes,
+            );
             if (!pathExists.length && this.redirectRoute.path) {
-                router.push(redirectTo ? redirectTo: this.redirectRoute.path);
+                router.push(redirectTo ? redirectTo : this.redirectRoute.path);
             }
         },
     },

@@ -3,12 +3,15 @@ import { IAppointment } from '@/models/IAppointment';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
 export class AppointmentAPI {
-    static async getEvents(selectedDate: Date, userId: number): Promise<IAppointment[]> {
+    static async getEvents(
+        selectedDate: Date,
+        userId: number,
+    ): Promise<IAppointment[]> {
         const date = selectedDate.toISOString().split('T')[0];
         const response = await $authHost.get<IAppointment[]>(
             `/appointment/${date}/events/${userId}`,
         );
-        console.log('appointments', response.data);
+        // console.log('appointments', response.data);
         return response.data;
 
         /*         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() => {
@@ -40,13 +43,13 @@ export class AppointmentAPI {
         }
     }
     static async addEvent(appointment: IAppointment) {
-        console.log('new appointment', appointment);
+        // console.log('new appointment', appointment);
         const response = await $host.post<IAppointment[]>(
             `/appointment`,
             appointment,
         );
 
-        console.log('response new appointmnet', response);
+        // console.log('response new appointmnet', response);
         return response.data;
     }
 

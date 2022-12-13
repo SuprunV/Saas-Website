@@ -59,6 +59,9 @@ export default defineComponent({
             if (this.message.type == ResponseTypeEnum.SUCCESS) {
                 setTimeout(() => {
                     this.loginActionStore(this.userToken);
+                    console.log(
+                        'AUTH GO TO' + `/${this.authUser.companyAlias}`,
+                    );
                     this.$router.push(`/${this.authUser.companyAlias}`);
                 }, 3000);
             }

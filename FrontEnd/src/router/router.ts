@@ -32,7 +32,7 @@ export interface IRoute {
     icon?: IconsEnum;
 }
 
-export const publicRoutes: IRoute[] = [
+export const publicRoutes = (): IRoute[] => [
     { path: AppRoutes.MAIN, component: MainPage, label: 'Main page' },
     { path: AppRoutes.AUTH, component: AuthPage, label: 'Authorization' },
     { path: AppRoutes.COMPANY_PAGE, component: CompanyPublicPage },
@@ -45,7 +45,7 @@ export const publicRoutes: IRoute[] = [
     },
 ];
 
-export const clientRoutes: IRoute[] = [
+export const clientRoutes = (): IRoute[] => [
     {
         path: AppRoutes.COMPANY_PAGE,
         component: CompanyPublicPage,
@@ -72,7 +72,7 @@ export const clientRoutes: IRoute[] = [
     },
 ];
 
-export const masterRoutes: IRoute[] = [
+export const masterRoutes = (): IRoute[] => [
     {
         path: AppRoutes.COMPANY_PAGE,
         component: CompanyPublicPage,
@@ -93,7 +93,7 @@ export const masterRoutes: IRoute[] = [
     },
 ];
 
-export const companyRoutes: IRoute[] = [
+export const companyRoutes = (): IRoute[] => [
     { path: AppRoutes.COMPANY_PAGE, component: CompanyPublicPage },
     {
         path: AppRoutes.COMPANY_PAGE_SETTINGS,
@@ -110,10 +110,10 @@ export const companyRoutes: IRoute[] = [
 ];
 
 const routes = [
-    ...publicRoutes,
-    ...clientRoutes,
-    ...masterRoutes,
-    ...companyRoutes,
+    ...publicRoutes(),
+    ...clientRoutes(),
+    ...masterRoutes(),
+    ...companyRoutes(),
 ];
 
 const router = createRouter({

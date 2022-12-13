@@ -16,8 +16,7 @@ export default defineComponent({
     data: () => ({
         companies: [] as ICompany[],
     }),
-    mounted() {
-    },
+    mounted() {},
 
     setup() {
         const initLoading = ref(true);
@@ -36,21 +35,21 @@ export default defineComponent({
         onMounted(async () => {
             const companies = await CompanyAPI.getPublicCompanies(
                 limit.value,
-                page.value
+                page.value,
             );
             initLoading.value = false;
             data.value = companies;
             companyList.value = companies;
         });
 
-        async function getCounts(){
+        async function getCounts() {
             const companies = await CompanyAPI.getCompaniesCount();
             const clients = await UserAPI.getClientsCount();
             const masters = await UserAPI.getMastersCount();
 
-            console.log('companies count', companies);
-            console.log('clients count', clients);
-            console.log('masters count', masters);
+            // console.log('companies count', companies);
+            // console.log('clients count', clients);
+            // console.log('masters count', masters);
 
             companyCount.value = companies;
             clientCount.value = clients;
@@ -71,7 +70,7 @@ export default defineComponent({
             );
             const new_companies = await CompanyAPI.getPublicCompanies(
                 limit.value,
-                page.value
+                page.value,
             );
             const newData = data.value.concat(new_companies);
 
@@ -82,7 +81,6 @@ export default defineComponent({
                 window.dispatchEvent(new Event('resize'));
             });
         };
-     
 
         return {
             loading,
@@ -93,7 +91,7 @@ export default defineComponent({
             getCount: getCounts,
             companyCount,
             clientCount,
-            masterCount
+            masterCount,
         };
     },
 });
@@ -182,8 +180,7 @@ export default defineComponent({
             </a-col>
         </a-row>
         <h2 class="text-center mt-3 mb-3">List of companies</h2>
-        <p class="text-center mt-3 mb-3">
-        </p>
+        <p class="text-center mt-3 mb-3"></p>
         <a-list
             :loading="initLoading"
             item-layout="horizontal"

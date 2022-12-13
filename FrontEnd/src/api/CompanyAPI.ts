@@ -26,7 +26,7 @@ export class CompanyAPI {
     }
     static async getCompany(companyId: number): Promise<ICompany> {
         const response = await $authHost.get<ICompany>(`/company/${companyId}`);
-        console.log('company', response.data);
+        // console.log('company', response.data);
         return response.data;
     }
 
@@ -34,7 +34,7 @@ export class CompanyAPI {
         const response = await $host.get<ICompany>(
             `/company/alias-${companyAlias}`,
         );
-        console.log('company', response.data);
+        // console.log('company', response.data);
         return response.data;
     }
 
@@ -58,7 +58,7 @@ export class CompanyAPI {
             `/company/${companyId}`,
             company,
         );
-        console.log('updated company', response.data);
+        // console.log('updated company', response.data);
         return response.data;
     }
 
@@ -69,7 +69,7 @@ export class CompanyAPI {
             const response = await $host.get<number>(
                 `/company/alias-${companyAlias}/servicesCount`,
             );
-            console.log('servicesCount', response.data);
+            // console.log('servicesCount', response.data);
             return response.data;
         } catch (e) {
             return -1;
@@ -81,7 +81,7 @@ export class CompanyAPI {
             const response = await $host.get<number>(
                 `/company/alias-${companyAlias}/mastersCount`,
             );
-            console.log('mastersCount', response.data);
+            // console.log('mastersCount', response.data);
             return response.data;
         } catch (e) {
             return -1;
@@ -93,7 +93,7 @@ export class CompanyAPI {
             const response = await $host.get<number>(
                 `/company/alias-${companyAlias}/clientsCount`,
             );
-            console.log('clientsCount', response.data);
+            // console.log('clientsCount', response.data);
             return response.data;
         } catch (e) {
             return -1;
@@ -106,7 +106,7 @@ export class CompanyAPI {
         const response = await $host.get<IUser[]>(
             `/company/alias-${companyAlias}/masters`,
         );
-        console.log('company masters', response.data);
+        // console.log('company masters', response.data);
         return response.data;
     }
 
@@ -115,7 +115,7 @@ export class CompanyAPI {
             const response = await $host.get<IUser[]>(
                 `/Company/${companyId}/masters`,
             );
-            console.log('masters', response.data);
+            // console.log('masters', response.data);
             return response.data;
         } catch (e) {
             return [];
@@ -141,7 +141,7 @@ export class CompanyAPI {
             const response = await $host.get<number>(
                 `/appointment/alias-${companyAlias}/companyDoneAppointmentsCount`,
             );
-            console.log('companyDoneAppointments', response.data);
+            // console.log('companyDoneAppointments', response.data);
             return response.data;
         } catch (e) {
             return -1;
@@ -152,7 +152,7 @@ export class CompanyAPI {
             const response = await $host.get<number>(
                 `/company/alias-${companyAlias}/companyIncome`,
             );
-            console.log('companyIncome', response.data);
+            // console.log('companyIncome', response.data);
             return response.data;
         } catch (e) {
             return -1;
@@ -160,7 +160,7 @@ export class CompanyAPI {
     }
     static async getCompaniesCount(): Promise<number> {
         const response = await $host.get<number>(`/company/count`);
-        console.log('company', response.data);
+        // console.log('company', response.data);
         return response.data;
     }
 
@@ -169,7 +169,7 @@ export class CompanyAPI {
             const response = await $authHost.delete<IUserToken[]>(
                 `/User/${Id}`,
             );
-            console.log('masters', response.data);
+            // console.log('masters', response.data);
             return response.data;
         } catch (e) {
             return [];
@@ -181,7 +181,7 @@ export class CompanyAPI {
             const response = await $host.post<IUserToken[]>(
                 `/Company/${companyId}/masters`,
             );
-            console.log('masters', response.data);
+            // console.log('masters', response.data);
             return response.data;
         } catch (e) {
             return [];

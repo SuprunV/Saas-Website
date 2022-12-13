@@ -67,6 +67,7 @@ namespace server.Db
                 {
                     Id = 2,
                     companyName = "MassageSalon",
+                    companyAlias = "MassageSalon",
                     address = "Kadaka tee 45, 12915 Tallinn",
                     img = "/Uploads/Noimage.png",
                  
